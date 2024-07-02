@@ -1,20 +1,34 @@
-pub use crate::state::{bounty::Bounty, player::Player};
+pub use crate::state::{
+    player::Player,
+    game::Game,
+    game_mode::GameMode,
+    bounty::Bounty,
+    round::Round,
+};
+use crate::errors::PlayerErrorCode;
 use crate::constants::{PLAYER_SEED, ESCROW_SEED, VAULT_SEED, COLLECTOR_SEED};
 use anchor_lang::prelude::*;
 use anchor_spl::token::{Token, TokenAccount};
 
-pub fn play(player: &mut Player, bounty: &Bounty) -> Result<bool> {
-    // TODO: Load game context to play
-    //  load `mode` from `bounty.task`
-    //  load `game` from `mode.game`
-    //  pass `game` and `mode` to `player.play(game, mode)`
-    player.play(bounty)
+pub fn play(player: &mut Player, game: &Game, mode: &GameMode, round: Round) -> Result<bool> {
+    round.verify(mode)?;
+    player.play(game, mode, round)
 }
 
 #[derive(Accounts)]
 pub struct Play<'info> {
     #[account(mut)]
     pub owner: Signer<'info>,
+    pub game: Account<'info, Game>,
+
+    #[account(
+        constraint = game.key() == mode.game @ PlayerErrorCode::GameMismatch,
+    )]
+    pub mode: Account<'info, GameMode>,
+
+    #[account(
+        constraint = mode.key() == bounty.task @ PlayerErrorCode::TaskMismatch,
+    )]
     pub bounty: Account<'info, Bounty>,
 
     #[account(

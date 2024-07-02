@@ -20,7 +20,7 @@ pub enum GameErrorCode {
 
 #[error_code]
 pub enum GameModeErrorCode {
-    #[msg("Slots must be between 1 and 16")]
+    #[msg("Slots must be between 1 and 10")]
     InvalidSlots,
 
     #[msg("Digits must be between 1 and 8")]
@@ -52,4 +52,22 @@ pub enum BountyErrorCode {
 
     #[msg("Total vault reward is uncollectible")]
     UncollectibleReward,
+}
+
+#[error_code]
+pub enum PlayerErrorCode {
+    #[msg("Game provided does not match the game mode")]
+    GameMismatch,
+
+    #[msg("Mode provided does not match the bounty task")]
+    TaskMismatch,
+}
+
+#[error_code]
+pub enum RoundErrorCode {
+    #[msg("Invalid seed")]
+    InvalidSeed,
+
+    #[msg("Invalid choice")]
+    InvalidChoice,
 }
