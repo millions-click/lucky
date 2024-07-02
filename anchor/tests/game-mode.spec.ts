@@ -1,12 +1,11 @@
 import * as anchor from '@coral-xyz/anchor';
-import { Program } from '@coral-xyz/anchor';
 import { Keypair } from '@solana/web3.js';
 
-import { Games } from '../target/types/games';
 import {
   encodeName,
   getGameModePDA,
   getGamePDA,
+  getGamesProgram,
   MAX_DIGITS,
   MAX_SLOTS,
   MIN_CHOICES,
@@ -19,8 +18,7 @@ describe('Game Mode', () => {
   const provider = anchor.AnchorProvider.env();
   anchor.setProvider(provider);
   const payer = provider.wallet as anchor.Wallet;
-
-  const program = anchor.workspace.Games as Program<Games>;
+  const program = getGamesProgram(provider);
 
   type GameMode = Omit<
     ReturnType<typeof program.account.gameMode.fetch> extends Promise<infer T>
@@ -32,6 +30,7 @@ describe('Game Mode', () => {
   const { payer: gamesKeypair } = payer;
   const secret = Keypair.generate();
   const gamePDA = getGamePDA(gamesKeypair.publicKey, secret.publicKey);
+  const max = (digits: number) => Math.pow(10, digits) - 1;
 
   beforeAll(async () => {
     const name = encodeName('Awesome Game Modes');
@@ -46,52 +45,52 @@ describe('Game Mode', () => {
   describe('Valid Settings', () => {
     const VALID_GAMES: GameMode[] = [
       {
-        slots: 1,
-        digits: 1,
-        choices: 2,
+        slots: MIN_SLOTS,
+        digits: MIN_DIGITS,
+        choices: MIN_CHOICES,
         winnerChoice: 1,
         pickWinner: true,
       },
       {
-        slots: 1,
-        digits: 8,
-        choices: 99999999,
-        winnerChoice: 99999999,
+        slots: MIN_SLOTS,
+        digits: MAX_DIGITS,
+        choices: max(MAX_DIGITS),
+        winnerChoice: max(MAX_DIGITS),
         pickWinner: false,
       },
       {
-        slots: 16,
-        digits: 1,
-        choices: 2,
+        slots: MAX_SLOTS,
+        digits: MIN_DIGITS,
+        choices: MIN_CHOICES,
         winnerChoice: 0,
         pickWinner: false,
       },
       {
-        slots: 16,
-        digits: 1,
-        choices: 2,
+        slots: MAX_SLOTS,
+        digits: MIN_DIGITS,
+        choices: MIN_CHOICES,
         winnerChoice: 1,
         pickWinner: true,
       },
       {
-        slots: 16,
-        digits: 8,
-        choices: 99999999,
+        slots: MAX_SLOTS,
+        digits: MAX_DIGITS,
+        choices: max(MAX_DIGITS),
         winnerChoice: 0,
         pickWinner: false,
       },
       {
-        slots: 16,
-        digits: 8,
-        choices: 99999999,
-        winnerChoice: 99999999,
+        slots: MAX_SLOTS,
+        digits: MAX_DIGITS,
+        choices: max(MAX_DIGITS),
+        winnerChoice: max(MAX_DIGITS),
         pickWinner: true,
       },
     ];
     const INVALID_GAME: GameMode = {
-      slots: 1,
-      digits: 1,
-      choices: 2,
+      slots: MIN_SLOTS,
+      digits: MIN_DIGITS,
+      choices: MIN_CHOICES,
       winnerChoice: 0, // not allowed when slots == 1
       pickWinner: false,
     };
@@ -103,7 +102,7 @@ describe('Game Mode', () => {
 
         it(`Should initialize the game with the correct settings`, async () => {
           await program.methods
-            .addGameMode(seed, { ...settings, game: gamePDA })
+            .addGameMode(seed, { ...settings })
             .accounts({ secret: secret.publicKey })
             .signers([gamesKeypair])
             .rpc();
@@ -123,7 +122,7 @@ describe('Game Mode', () => {
             const newSettings = VALID_GAMES[i + 1];
 
             await program.methods
-              .updateGameMode(seed, { ...newSettings, game: gamePDA })
+              .updateGameMode(seed, { ...newSettings })
               .accounts({ secret: secret.publicKey })
               .rpc();
 
@@ -139,7 +138,7 @@ describe('Game Mode', () => {
           it(`Should fail to update the game settings`, async () => {
             await expect(
               program.methods
-                .updateGameMode(seed, { ...INVALID_GAME, game: gamePDA })
+                .updateGameMode(seed, { ...INVALID_GAME })
                 .accounts({ secret: secret.publicKey })
                 .rpc()
             ).rejects.toThrow();
@@ -165,105 +164,105 @@ describe('Game Mode', () => {
     // Invalid game set tests. The goal is to reach all the branches of the verify function.
     const INVALID_GAMES: Array<GameMode & { reason: string }> = [
       {
-        slots: 0,
-        digits: 1,
-        choices: 2,
+        slots: MIN_SLOTS - 1,
+        digits: MIN_DIGITS,
+        choices: MIN_CHOICES,
         winnerChoice: 1,
         pickWinner: false,
         reason: `Slots < ${MIN_SLOTS}`,
       },
       {
-        slots: 17,
-        digits: 1,
-        choices: 2,
+        slots: MAX_SLOTS + 1,
+        digits: MIN_DIGITS,
+        choices: MIN_CHOICES,
         winnerChoice: 1,
         pickWinner: false,
         reason: `Slots > ${MAX_SLOTS}`,
       },
       {
-        slots: 1,
-        digits: 0,
-        choices: 2,
+        slots: MIN_SLOTS,
+        digits: MIN_DIGITS - 1,
+        choices: MIN_CHOICES,
         winnerChoice: 1,
         pickWinner: false,
         reason: `Digits < ${MIN_DIGITS}`,
       },
       {
-        slots: 1,
-        digits: 9,
-        choices: 2,
+        slots: MIN_SLOTS,
+        digits: MAX_DIGITS + 1,
+        choices: MIN_CHOICES,
         winnerChoice: 1,
         pickWinner: false,
         reason: `Digits > ${MAX_DIGITS}`,
       },
       {
-        slots: 1,
-        digits: 1,
-        choices: 1,
+        slots: MIN_SLOTS,
+        digits: MIN_DIGITS,
+        choices: MIN_CHOICES - 1,
         winnerChoice: 1,
         pickWinner: false,
         reason: `Choices < ${MIN_CHOICES}`,
       },
       {
-        slots: 1,
-        digits: 1,
-        choices: 10,
+        slots: MIN_SLOTS,
+        digits: MIN_DIGITS,
+        choices: max(MIN_CHOICES) + 1,
         winnerChoice: 1,
         pickWinner: false,
-        reason: `Choices > (10 ^ digits) - 1`,
+        reason: `Choices(MIN) > (10 ^ digits) - 1`,
       },
       {
-        slots: 1,
-        digits: 8,
-        choices: 100000000,
+        slots: MIN_SLOTS,
+        digits: MAX_DIGITS,
+        choices: max(MAX_DIGITS) + 1,
         winnerChoice: 1,
         pickWinner: false,
-        reason: 'Choices > (10 ^ digits) - 1',
+        reason: 'Choices(MAX) > (10 ^ digits) - 1',
       },
       {
-        slots: 1,
-        digits: 1,
-        choices: 2,
+        slots: MIN_SLOTS,
+        digits: MIN_DIGITS,
+        choices: MIN_CHOICES,
         winnerChoice: 0,
         pickWinner: false,
         reason: 'Winner choice 0 on single slot game',
       },
       {
-        slots: 1,
-        digits: 1,
-        choices: 9,
-        winnerChoice: 10,
+        slots: MIN_SLOTS,
+        digits: MIN_DIGITS,
+        choices: max(MIN_DIGITS),
+        winnerChoice: max(MIN_DIGITS) + 1,
         pickWinner: false,
-        reason: 'Winner choice > choices',
+        reason: 'single => Winner choice > choices | MIN',
       },
       {
         slots: 2,
-        digits: 1,
-        choices: 2,
-        winnerChoice: 3,
+        digits: MIN_DIGITS,
+        choices: MIN_CHOICES,
+        winnerChoice: MIN_CHOICES + 1,
         pickWinner: false,
-        reason: 'Winner choice > choices',
+        reason: 'multi => Winner choice > choices | MIN',
       },
       {
-        slots: 1,
-        digits: 8,
-        choices: 99999999,
-        winnerChoice: 100000000,
+        slots: MIN_SLOTS,
+        digits: MAX_DIGITS,
+        choices: max(MAX_DIGITS),
+        winnerChoice: max(MAX_DIGITS) + 1,
         pickWinner: false,
-        reason: 'Winner choice > choices',
+        reason: 'single => Winner choice > choices | MAX',
       },
       {
         slots: 2,
-        digits: 1,
-        choices: 2,
+        digits: MIN_DIGITS,
+        choices: MIN_CHOICES,
         winnerChoice: -1,
         pickWinner: false,
         reason: 'Winner choice < 0',
       },
       {
         slots: 2,
-        digits: 1,
-        choices: 2,
+        digits: MIN_DIGITS,
+        choices: MIN_CHOICES,
         winnerChoice: 0,
         pickWinner: true,
         reason: 'Pick winner true on winner choice 0',
@@ -277,7 +276,7 @@ describe('Game Mode', () => {
         it(`Should fail to initialize the game with the invalid settings`, async () => {
           await expect(
             program.methods
-              .addGameMode(seed, { ...settings, game: gamePDA })
+              .addGameMode(seed, { ...settings })
               .accounts({ secret: secret.publicKey })
               .signers([gamesKeypair])
               .rpc()

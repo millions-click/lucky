@@ -1092,6 +1092,12 @@
           "signer": true
         },
         {
+          "name": "game"
+        },
+        {
+          "name": "mode"
+        },
+        {
           "name": "bounty"
         },
         {
@@ -1764,23 +1770,18 @@
   "errors": [
     {
       "code": 6000,
-      "name": "InvalidOwner",
-      "msg": "Bounty is not owned by the supplier"
+      "name": "InvalidName",
+      "msg": "Name must be between 3 and 32 characters"
     },
     {
       "code": 6001,
-      "name": "ThresholdNotReached",
-      "msg": "Vault amount is above threshold"
+      "name": "GameEnded",
+      "msg": "Game is already ended"
     },
     {
       "code": 6002,
-      "name": "InvalidGem",
-      "msg": "Invalid gem"
-    },
-    {
-      "code": 6003,
-      "name": "UncollectibleReward",
-      "msg": "Total vault reward is uncollectible"
+      "name": "GameNotEnded",
+      "msg": "Game is not ended"
     }
   ],
   "types": [

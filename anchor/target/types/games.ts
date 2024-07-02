@@ -1098,6 +1098,12 @@ export type Games = {
           "signer": true
         },
         {
+          "name": "game"
+        },
+        {
+          "name": "mode"
+        },
+        {
           "name": "bounty"
         },
         {
@@ -1770,23 +1776,18 @@ export type Games = {
   "errors": [
     {
       "code": 6000,
-      "name": "invalidOwner",
-      "msg": "Bounty is not owned by the supplier"
+      "name": "invalidName",
+      "msg": "Name must be between 3 and 32 characters"
     },
     {
       "code": 6001,
-      "name": "thresholdNotReached",
-      "msg": "Vault amount is above threshold"
+      "name": "gameEnded",
+      "msg": "Game is already ended"
     },
     {
       "code": 6002,
-      "name": "invalidGem",
-      "msg": "Invalid gem"
-    },
-    {
-      "code": 6003,
-      "name": "uncollectibleReward",
-      "msg": "Total vault reward is uncollectible"
+      "name": "gameNotEnded",
+      "msg": "Game is not ended"
     }
   ],
   "types": [

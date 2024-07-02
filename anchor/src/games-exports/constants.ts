@@ -16,7 +16,7 @@ export const GAME_MODE_SEED = 'GAME_MODE';
 
 // CONSTRAINS
 export const MIN_SLOTS = 1;
-export const MAX_SLOTS = 16;
+export const MAX_SLOTS = 10;
 export const MIN_DIGITS = 1;
 export const MAX_DIGITS = 8;
 export const MIN_CHOICES = 2;

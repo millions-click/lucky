@@ -23,6 +23,7 @@ import {
   fromBN,
   fromBigInt,
   getCollectorPDA,
+  MAX_SLOTS,
 } from '../src/games-exports';
 
 const DECIMALS = 8;
@@ -39,6 +40,13 @@ describe('Player', () => {
   const seed = `fantasy-loot`;
   const gamePDA = getGamePDA(supplier.publicKey, secret.publicKey);
   const gameModePDA = getGameModePDA(gamePDA, seed);
+  const settings = {
+    slots: 10,
+    digits: 1,
+    choices: 9,
+    winnerChoice: 8,
+    pickWinner: true,
+  };
 
   let gem: PublicKey; // Mint of token to be used for bounties.
   let trader: PublicKey; // Mint of token to be charged to players for playing the game.
@@ -89,6 +97,7 @@ describe('Player', () => {
 
     const bounty = getBountyPDA(gameModePDA, gem, trader);
     accounts = {
+      game: gamePDA,
       task: gameModePDA,
       gem, // LuckyLand token.
       trader, // Lucky Shot token.
@@ -170,14 +179,6 @@ describe('Player', () => {
     });
 
     it('Should create a game mode', async () => {
-      const settings = {
-        slots: 1,
-        digits: 1,
-        choices: 2,
-        winnerChoice: 1,
-        pickWinner: true,
-      };
-
       await program.methods
         .addGameMode(seed, settings)
         .accounts({ owner: supplier.publicKey, secret: secret.publicKey })
@@ -223,6 +224,16 @@ describe('Player', () => {
   describe('Play', () => {
     const player = Keypair.generate();
     const pda = getPlayerPDA(player.publicKey);
+    const choices = (choice: number, slots: number) =>
+      Array.from({ length: MAX_SLOTS }, (_, i) => (i < slots ? choice : 0));
+
+    const round = () => ({
+      seed: new BN(Math.floor(Math.random() * 1000000)),
+      choices: choices(
+        Math.floor(Math.random() * settings.choices) + 1,
+        settings.slots
+      ),
+    });
 
     beforeAll(async () => {
       const tx = await connection.requestAirdrop(
@@ -244,7 +255,14 @@ describe('Player', () => {
     });
 
     it('Should collect the correct price', async () => {
-      const { owner, bounty, bag, collector: collectorPDA } = accounts;
+      const {
+        owner,
+        bounty,
+        bag,
+        collector: collectorPDA,
+        game,
+        task: mode,
+      } = accounts;
       const collectorBeforeRound = await getAccount(connection, collectorPDA);
       const bountyInfo = await program.account.bounty.fetch(bounty);
       const ammo = await getTokenAccount(player.publicKey, trader);
@@ -254,10 +272,13 @@ describe('Player', () => {
 
       expect(ammoBalance).toBeGreaterThanOrEqual(price);
 
+      // const { seed, choices } = round();
       await program.methods
         .playRound()
         .accounts({
           owner,
+          game,
+          mode,
           bounty,
           bag,
           ammo: ammo.address,
@@ -277,17 +298,20 @@ describe('Player', () => {
     });
 
     it('Should receive the correct reward', async () => {
-      const { owner, bounty, ammo } = accounts;
+      const { owner, bounty, ammo, game, task: mode } = accounts;
       const bountyInfo = await program.account.bounty.fetch(bounty);
       const bagBeforeRound = await getTokenAccount(player.publicKey, gem);
 
       const reward = fromBN(bountyInfo.reward, DECIMALS);
       const bagBalance = fromBigInt(bagBeforeRound.amount, DECIMALS);
 
+      // const { seed, choices } = round();
       await program.methods
         .playRound()
         .accounts({
           owner,
+          game,
+          mode,
           bounty,
           ammo,
           bag: bagBeforeRound.address,
@@ -304,20 +328,24 @@ describe('Player', () => {
     });
 
     it('Should be able to play multiple rounds', async () => {
-      const { owner, bounty, ammo, bag } = accounts;
-      const { rounds } = await program.account.player.fetch(pda);
+      const { owner, bounty, ammo, bag, game, task: mode } = accounts;
+      const { rounds, winningCount } = await program.account.player.fetch(pda);
 
+      // const { seed, choices } = round();
       await program.methods
         .playRound()
-        .accounts({ owner, bounty, ammo, bag })
+        .accounts({ owner, game, mode, bounty, ammo, bag })
         .signers([player])
         .rpc();
 
-      const { rounds: countAfterRound } = await program.account.player.fetch(
-        pda
-      );
+      const {
+        rounds: countAfterRound,
+        winner,
+        winningCount: winnerAfterRound,
+      } = await program.account.player.fetch(pda);
 
       expect(countAfterRound).toEqual(rounds + 1);
+      expect(winnerAfterRound).toEqual(winningCount + (winner ? 1 : 0));
     });
   });
 });
