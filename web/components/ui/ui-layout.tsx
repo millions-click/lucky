@@ -8,6 +8,7 @@ import { usePathname } from 'next/navigation';
 import Image from 'next/image';
 import { AccountChecker } from '../account/account-ui';
 import { FaXTwitter } from 'react-icons/fa6';
+import { HiOutlineWallet } from 'react-icons/hi2';
 import { FaTelegram } from 'react-icons/fa6';
 import {
   ClusterChecker,
@@ -19,6 +20,11 @@ import dinero from '../../public/img/dinero.svg';
 import map from '../../public/img/mapa-vial 1.svg';
 import token from '../../public/img/grafico-circular 1.svg';
 import copa from '../../public/img/futbol-americano 1.svg';
+import reloj from '../../public/img/reloj.svg';
+import polvo from '../../public/img/polvo (1).svg';
+import plata from '../../public/img/plata.svg';
+import bonny from '../../public/img/bunny.svg';
+// import { usePathname } from 'next/navigation';
 export function UiLayout({
   children,
   links,
@@ -30,14 +36,30 @@ export function UiLayout({
 }) {
   const pathname = usePathname();
   const [isOpen, setIsOpen] = useState(false);
+  const [lobby, setLobby] = useState(false);
 
   const toggleMenu = () => {
     setIsOpen(!isOpen);
   };
+  useEffect(() => {
+    console.log('Current pathname:', pathname);
+    if (pathname === '/lobby') {
+      console.log('este es el lobby');
+      setLobby(true);
+    } else {
+      setLobby(false);
+    }
+  }, [pathname]);
+
+  useEffect(() => {
+    console.log(lobby, 'estado');
+  }, [lobby]);
 
   return (
     <div
-      className={`bg-[url('/img/fondo.svg')] bg-center bg-no-repeat  drawer`}
+      className={`${
+        lobby ? "bg-[url('/img/lobby.svg')]" : "bg-[url('/img/fondo.svg')]"
+      } bg-center bg-no-repeat bg-cover min-h-screen drawer`}
     >
       <input
         id="my-drawer-3"
@@ -48,68 +70,130 @@ export function UiLayout({
       <div className=" drawer-content  flex flex-col">
         <div className="w-full justify-between navbar">
           <div className="relative">
-            <div
-              className={`flex items-center cursor-pointer p-2 ${
-                isOpen ? 'bg-black bg-opacity-40 rounded-t-lg ' : ''
-              }`}
-              onClick={toggleMenu}
-            >
-              <Image
-                className="z-10"
-                src={dinero}
-                alt="Dinero"
-                width={50}
-                height={50}
-              />
-              <p
-                className="-m-2 z-0 text-white bg-black px-2 border-2 border-solid border-[#f07a0c] rounded-lg"
-                style={{
-                  boxShadow:
-                    '0 0 10px rgba(240, 122, 12, 0.8), 0 0 20px rgba(240, 122, 12, 0.6), 0 0 30px rgba(240, 122, 12, 0.4)',
-                }}
+            <div className="block">
+              <div
+                className={`flex items-center cursor-pointer p-2 ${
+                  isOpen ? 'bg-black bg-opacity-40 rounded-t-lg ' : ''
+                }`}
+                onClick={toggleMenu}
               >
-                1252515
-              </p>
-            </div>
-            {isOpen && (
-              <div className="absolute top-12 right-0 bg-black bg-opacity-40 rounded-b-lg p-4 shadow-lg space-y-2">
-                <div className="text-white hover:text-orange-400 cursor-pointer flex">
-                  <Image className="z-10" src={map} alt="Map" />
-                  Roadmap
-                </div>
-                <div className="text-white hover:text-orange-400 cursor-pointer flex">
-                  <Image className="z-10" src={token} alt="token" />
-                  Tokenomics
-                </div>
-                <div className="text-white hover:text-orange-400 cursor-pointer flex">
-                  <Image className="z-10" src={copa} alt="cup" />
-                  Leaderboard
-                </div>
+                <Image
+                  className="z-10"
+                  src={dinero}
+                  alt="Dinero"
+                  width={50}
+                  height={50}
+                />
+                <p
+                  className="-m-2 z-0 text-white bg-[#3c1a06] px-2 border-2 border-solid border-[#f07a0c] rounded-lg"
+                  style={{
+                    boxShadow:
+                      '0 0 10px rgba(240, 122, 12, 0.8), 0 0 20px rgba(240, 122, 12, 0.6), 0 0 30px rgba(240, 122, 12, 0.4)',
+                  }}
+                >
+                  {lobby ? (
+                    <div className="flex">
+                      <Image
+                        className="z-10"
+                        src={reloj}
+                        alt="Dinero"
+                        width={20}
+                        height={20}
+                      />
+                      1:00:00
+                    </div>
+                  ) : (
+                    '1252515'
+                  )}
+                </p>
               </div>
+            </div>
+            {lobby ? (
+              <></>
+            ) : (
+              isOpen && (
+                <div className="absolute top-12 right-0 bg-black bg-opacity-40 rounded-b-lg p-4 shadow-lg space-y-2">
+                  <div className="text-white hover:text-orange-400 cursor-pointer flex">
+                    <Image className="z-10" src={map} alt="Map" />
+                    Roadmap
+                  </div>
+                  <div className="text-white hover:text-orange-400 cursor-pointer flex">
+                    <Image className="z-10" src={token} alt="token" />
+                    Tokenomics
+                  </div>
+                  <div className="text-white hover:text-orange-400 cursor-pointer flex">
+                    <Image className="z-10" src={copa} alt="cup" />
+                    Leaderboard
+                  </div>
+                </div>
+              )
             )}
           </div>
-          <div className="flex-none">
-            <label
-              htmlFor="my-drawer-3"
-              aria-label="open sidebar"
-              className="btn btn-square btn-ghost"
-            >
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                fill="none"
-                viewBox="0 0 24 24"
-                className="inline-block w-6 h-6 stroke-current"
+          {lobby ? (
+            <></>
+          ) : (
+            <div className="flex-none bg-[#f07a0c] rounded-lg">
+              <label
+                htmlFor="my-drawer-3"
+                aria-label="open sidebar"
+                className="btn btn-square btn-ghost"
               >
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  strokeWidth="2"
-                  d="M4 6h16M4 12h16M4 18h16"
-                ></path>
-              </svg>
-            </label>
-          </div>
+                <HiOutlineWallet
+                  color="#ffe9b0"
+                  className="inline-block w-8 h-8"
+                />
+              </label>
+            </div>
+          )}
         </div>
+        {lobby ? (
+          <div className="m-2 relative w-20 p-2">
+            <p
+              className="-m-2 z-0 text-white bg-[#3c1a06] px-2 border-2 border-solid border-[#f07a0c] rounded-lg"
+              style={{
+                boxShadow:
+                  '0 0 10px rgba(240, 122, 12, 0.8), 0 0 20px rgba(240, 122, 12, 0.6), 0 0 30px rgba(240, 122, 12, 0.4)',
+              }}
+            >
+              <div className="flex">
+                <Image
+                  className="z-10 -my-2  mr-2"
+                  src={polvo}
+                  alt="Dinero"
+                  width={30}
+                  height={30}
+                />
+                10
+              </div>
+            </p>
+          </div>
+        ) : (
+          <></>
+        )}
+        {lobby ? (
+          <div className="m-2 relative w-20 p-2">
+            <p
+              className="-m-2 z-0 text-white bg-[#3c1a06] px-2 border-2 border-solid border-[#f07a0c] rounded-lg"
+              style={{
+                boxShadow:
+                  '0 0 10px rgba(240, 122, 12, 0.8), 0 0 20px rgba(240, 122, 12, 0.6), 0 0 30px rgba(240, 122, 12, 0.4)',
+              }}
+            >
+              <div className="flex">
+                <Image
+                  className="z-10 -my-2 mr-2"
+                  src={plata}
+                  alt="Dinero"
+                  width={30}
+                  height={30}
+                />
+                35
+              </div>
+            </p>
+          </div>
+        ) : (
+          <></>
+        )}
         <ClusterChecker>
           <AccountChecker />
         </ClusterChecker>
@@ -129,17 +213,6 @@ export function UiLayout({
           <aside className="flex">
             <FaXTwitter color="#FFF" size={20} />
             <FaTelegram color="#FFF" size={20} />
-            {/* <p>
-              Generated by{' '}
-              <a
-                className="link hover:text-white"
-                href="https://github.com/solana-developers/create-solana-dapp"
-                target="_blank"
-                rel="noopener noreferrer"
-              >
-                create-solana-dapp
-              </a>
-            </p> */}
           </aside>
         </footer>
       </div>

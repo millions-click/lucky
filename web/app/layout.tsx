@@ -4,7 +4,7 @@ import { ClusterProvider } from '@/components/cluster/cluster-data-access';
 import { SolanaProvider } from '@/components/solana/solana-provider';
 import { ReactQueryProvider } from './react-query-provider';
 import { Analytics } from '@vercel/analytics/next';
-
+import { PlayButtonProvider } from '@/context/ProtectedContext';
 const { NEXT_PUBLIC_VERCEL_ENV = 'development' } = process.env;
 export const metadata = {
   title: 'Luckyland',
@@ -16,7 +16,7 @@ const links: { label: string; path: string; program?: boolean }[] = [
   { label: 'Lucky', path: '/lucky', program: true },
   { label: 'TinyAdventure', path: '/tiny-adventure', program: true },
   { label: 'Dealer', path: '/dealer', program: true },
-  // { label: 'Roadmap', path: '/roadmap', program: true },
+  { label: 'Lobby', path: '/lobby', program: true },
   // { label: 'Tokenomics', path: '/tokenomics', program: true },
   // { label: 'Leaderboard', path: '/leaderboard', program: true },
 ];
@@ -35,11 +35,13 @@ export default function RootLayout({
         <ReactQueryProvider>
           <ClusterProvider>
             <SolanaProvider>
-              <div className="max-w-md mx-auto">
-                <UiLayout links={links} env={NEXT_PUBLIC_VERCEL_ENV}>
-                  {children}
-                </UiLayout>
-              </div>
+              <PlayButtonProvider>
+                <div className="max-w-md mx-auto">
+                  <UiLayout links={links} env={NEXT_PUBLIC_VERCEL_ENV}>
+                    {children}
+                  </UiLayout>
+                </div>
+              </PlayButtonProvider>
             </SolanaProvider>
           </ClusterProvider>
         </ReactQueryProvider>
