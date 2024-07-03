@@ -1,6 +1,5 @@
-import { PublicKey } from '@solana/web3.js';
-import { useGameAccount } from '../games-data-access';
 import { useMemo } from 'react';
+import { PublicKey } from '@solana/web3.js';
 import {
   IconPlayerPause,
   IconPlayerPlay,
@@ -8,7 +7,15 @@ import {
   IconTrash,
 } from '@tabler/icons-react';
 
-export function StateSwitch({ pda }: { pda: PublicKey }) {
+import { useGameAccount } from '@/hooks';
+
+export function StateSwitch({
+  pda,
+  active,
+}: {
+  pda: PublicKey;
+  active: boolean;
+}) {
   const { isOwner, gameQuery, activate, pause, end, close } = useGameAccount({
     pda,
   });
@@ -83,7 +90,7 @@ export function StateSwitch({ pda }: { pda: PublicKey }) {
         {state}
       </span>
 
-      {state !== 'error' && isOwner && (
+      {active && state !== 'error' && isOwner && (
         <div className="flex gap-1">
           {stateMap[state].actions.map(({ name, action, Icon, color }) => (
             <div key={name} className="tooltip" data-tip={name}>

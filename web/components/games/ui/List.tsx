@@ -1,9 +1,12 @@
 'use client';
 
+import { useState } from 'react';
+
 import { useGamesProgram } from '../games-data-access';
 import { GameCard } from './Card';
 
 export function GamesList() {
+  const [active, setActive] = useState<number>();
   const { games, getProgramAccount } = useGamesProgram();
 
   if (getProgramAccount.isLoading) {
@@ -24,12 +27,14 @@ export function GamesList() {
       {games.isLoading ? (
         <span className="loading loading-spinner loading-lg"></span>
       ) : games.data?.length ? (
-        <div className="flex flex-wrap justify-around gap-4">
-          {games.data?.map(({ publicKey, modes }) => (
+        <div className="grid grid-cols-4 md:grid-cols-12 justify-around gap-4">
+          {games.data?.map(({ publicKey, modes }, i) => (
             <GameCard
               key={publicKey.toString()}
               pda={publicKey}
               modes={modes}
+              active={active === i}
+              onClick={() => setActive(i)}
             />
           ))}
         </div>

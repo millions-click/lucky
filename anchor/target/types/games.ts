@@ -1131,6 +1131,10 @@ export type Games = {
               {
                 "kind": "account",
                 "path": "owner"
+              },
+              {
+                "kind": "account",
+                "path": "mode"
               }
             ]
           }
@@ -1145,7 +1149,6 @@ export type Games = {
         },
         {
           "name": "escrow",
-          "writable": true,
           "pda": {
             "seeds": [
               {
@@ -1243,7 +1246,16 @@ export type Games = {
           "address": "SysvarRent111111111111111111111111111111111"
         }
       ],
-      "args": []
+      "args": [
+        {
+          "name": "round",
+          "type": {
+            "defined": {
+              "name": "round"
+            }
+          }
+        }
+      ]
     },
     {
       "name": "renewBounty",
@@ -1776,18 +1788,13 @@ export type Games = {
   "errors": [
     {
       "code": 6000,
-      "name": "invalidName",
-      "msg": "Name must be between 3 and 32 characters"
+      "name": "invalidSeed",
+      "msg": "Invalid seed"
     },
     {
       "code": 6001,
-      "name": "gameEnded",
-      "msg": "Game is already ended"
-    },
-    {
-      "code": 6002,
-      "name": "gameNotEnded",
-      "msg": "Game is not ended"
+      "name": "invalidChoice",
+      "msg": "Invalid choice"
     }
   ],
   "types": [
@@ -2060,10 +2067,7 @@ export type Games = {
           {
             "name": "lastRound",
             "type": {
-              "array": [
-                "u32",
-                16
-              ]
+              "vec": "u32"
             }
           },
           {
@@ -2073,6 +2077,24 @@ export type Games = {
           {
             "name": "winner",
             "type": "bool"
+          }
+        ]
+      }
+    },
+    {
+      "name": "round",
+      "type": {
+        "kind": "struct",
+        "fields": [
+          {
+            "name": "seed",
+            "type": "u64"
+          },
+          {
+            "name": "choices",
+            "type": {
+              "vec": "u32"
+            }
           }
         ]
       }

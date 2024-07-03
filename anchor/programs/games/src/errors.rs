@@ -11,6 +11,9 @@ pub enum GameErrorCode {
     #[msg("Name must be between 3 and 32 characters")]
     InvalidName,
 
+    #[msg("Game is not active")]
+    GameInactive,
+
     #[msg("Game is already ended")]
     GameEnded,
 

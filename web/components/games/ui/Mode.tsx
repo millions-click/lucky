@@ -15,12 +15,20 @@ import { useGameModeAccount } from '@/hooks';
 import { SettingsForm } from './SettingsForm';
 import { Badge, CreateBounty } from './bounty';
 
-export function GameMode({ pda }: { pda: PublicKey }) {
+export function GameMode({
+  pda,
+  active,
+  onClick,
+}: {
+  pda: PublicKey;
+  active: boolean;
+  onClick?: () => void;
+}) {
   const { isOwner, modeQuery, update, close } = useGameModeAccount({ pda });
   const data = useMemo(() => modeQuery.data, [modeQuery.data]);
   const [activeForm, setActiveForm] = useState('');
 
-  return activeForm ? (
+  return active && activeForm ? (
     activeForm === 'settings' ? (
       <SettingsForm
         settings={data}
@@ -42,7 +50,15 @@ export function GameMode({ pda }: { pda: PublicKey }) {
       )
     )
   ) : (
-    <div className="card border-4 border-base-300">
+    <div
+      className={`card border-4 border-secondary ${
+        active ? 'bg-neutral' : 'cursor-pointer hover:bg-accent'
+      }`}
+      onClick={() => {
+        if (active) return;
+        onClick && onClick();
+      }}
+    >
       {data ? (
         <div className="card-body items-center">
           <div
@@ -80,7 +96,7 @@ export function GameMode({ pda }: { pda: PublicKey }) {
             </span>
           </div>
 
-          {isOwner && (
+          {active && isOwner && (
             <>
               <button
                 className="absolute top-2 left-2 btn btn-xs btn-circle tooltip tooltip-right tooltip-primary"
@@ -124,11 +140,13 @@ export function GameMode({ pda }: { pda: PublicKey }) {
             </>
           )}
 
-          <div className="flex flex-col items-center gap-2 mt-4 w-full">
-            {data.bounties.map(({ publicKey }, i) => (
-              <Badge key={i} pda={publicKey} />
-            ))}
-          </div>
+          {active && (
+            <div className="flex flex-col items-center gap-2 mt-4 w-full">
+              {data.bounties.map(({ publicKey }, i) => (
+                <Badge key={i} pda={publicKey} />
+              ))}
+            </div>
+          )}
 
           <h3
             className="tooltip tooltip-primary tooltip-left text-xs absolute bottom-2 right-2"

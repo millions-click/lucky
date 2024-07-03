@@ -13,25 +13,33 @@ export function decodeName(name: number[]) {
   return new TextDecoder().decode(Uint8Array.from(name));
 }
 
-export function toBigInt(value: number, decimals = 0) {
-  if (isNaN(value)) return BigInt(0);
-  if (isNaN(decimals) || decimals === 0) return BigInt(value);
-  if (decimals < 0) throw new Error('Decimals must be a positive number');
-
-  if (value < 1) return BigInt(Math.round(value * 10 ** decimals));
-  return BigInt(value) * BigInt(10 ** decimals);
+function toPrecision(value: string, decimals = 0) {
+  return Number.parseFloat(value).toFixed(decimals).replace('.', '');
 }
 
-export function toBN(value: number, decimals = 0) {
+export function toBigInt(value?: number, decimals = 0) {
+  if (!value || (typeof value === 'number' && isNaN(value))) return BigInt(0);
+  if (decimals < 0) throw new Error('Decimals must be a positive number');
+
+  return BigInt(toPrecision(value.toString(), decimals));
+}
+
+export function toBN(value?: number, decimals = 0) {
   return new BN(toBigInt(value, decimals).toString());
 }
 
 export function fromBigInt(value?: bigint, decimals = 0) {
   if (!value) return 0;
-  if (isNaN(decimals) || decimals === 0) return Number(value);
   if (decimals < 0) throw new Error('Decimals must be a positive number');
 
-  return Number(value) / 10 ** decimals;
+  const str = value.toString();
+  const floating = str.length - decimals;
+
+  if (floating <= 0) return Number(`0.${str.padStart(decimals, '0')}`);
+
+  const integer = str.slice(0, floating);
+  const fraction = str.slice(floating);
+  return Number(`${integer}.${fraction}`);
 }
 
 export function fromBN(value?: BN, decimals = 0) {

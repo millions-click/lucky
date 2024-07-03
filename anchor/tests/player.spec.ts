@@ -1,6 +1,6 @@
 import * as anchor from '@coral-xyz/anchor';
 import { BN } from '@coral-xyz/anchor';
-import { Keypair, LAMPORTS_PER_SOL, PublicKey } from '@solana/web3.js';
+import { Keypair, PublicKey, LAMPORTS_PER_SOL } from '@solana/web3.js';
 import {
   createMint,
   getOrCreateAssociatedTokenAccount,
@@ -23,7 +23,8 @@ import {
   fromBN,
   fromBigInt,
   getCollectorPDA,
-  MAX_SLOTS,
+  MIN_SLOTS,
+  MIN_DIGITS,
 } from '../src/games-exports';
 
 const DECIMALS = 8;
@@ -41,10 +42,10 @@ describe('Player', () => {
   const gamePDA = getGamePDA(supplier.publicKey, secret.publicKey);
   const gameModePDA = getGameModePDA(gamePDA, seed);
   const settings = {
-    slots: 10,
-    digits: 1,
+    slots: MIN_SLOTS,
+    digits: MIN_DIGITS,
     choices: 9,
-    winnerChoice: 8,
+    winnerChoice: 5,
     pickWinner: true,
   };
 
@@ -170,9 +171,15 @@ describe('Player', () => {
   describe('Preparing the game', () => {
     const name = encodeName('Awesome Game Modes');
 
-    it('Should create a game', async () => {
+    it('Should create and activate game', async () => {
       await program.methods
         .createGame(name)
+        .accounts({ owner: supplier.publicKey, secret: secret.publicKey })
+        .signers([supplier])
+        .rpc();
+
+      await program.methods
+        .activateGame()
         .accounts({ owner: supplier.publicKey, secret: secret.publicKey })
         .signers([supplier])
         .rpc();
@@ -223,9 +230,9 @@ describe('Player', () => {
 
   describe('Play', () => {
     const player = Keypair.generate();
-    const pda = getPlayerPDA(player.publicKey);
+    const pda = getPlayerPDA(player.publicKey, gameModePDA);
     const choices = (choice: number, slots: number) =>
-      Array.from({ length: MAX_SLOTS }, (_, i) => (i < slots ? choice : 0));
+      Array.from({ length: slots }, (_, i) => (i < slots ? choice : 0));
 
     const round = () => ({
       seed: new BN(Math.floor(Math.random() * 1000000)),
@@ -272,9 +279,8 @@ describe('Player', () => {
 
       expect(ammoBalance).toBeGreaterThanOrEqual(price);
 
-      // const { seed, choices } = round();
       await program.methods
-        .playRound()
+        .playRound(round())
         .accounts({
           owner,
           game,
@@ -305,9 +311,8 @@ describe('Player', () => {
       const reward = fromBN(bountyInfo.reward, DECIMALS);
       const bagBalance = fromBigInt(bagBeforeRound.amount, DECIMALS);
 
-      // const { seed, choices } = round();
       await program.methods
-        .playRound()
+        .playRound(round())
         .accounts({
           owner,
           game,
@@ -333,7 +338,7 @@ describe('Player', () => {
 
       // const { seed, choices } = round();
       await program.methods
-        .playRound()
+        .playRound(round())
         .accounts({ owner, game, mode, bounty, ammo, bag })
         .signers([player])
         .rpc();

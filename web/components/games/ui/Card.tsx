@@ -12,11 +12,16 @@ import { StateSwitch } from './StateSwitch';
 
 export function GameCard({
   pda,
+  active,
   modes,
+  onClick,
 }: {
   pda: PublicKey;
+  active: boolean;
+  onClick?: () => void;
   modes: Array<{ publicKey: PublicKey }>;
 }) {
+  const [activeMode, setActiveMode] = useState<number>();
   const { isOwner, gameQuery, createGameMode } = useGameAccount({
     pda,
     callback: () => setAdd(false),
@@ -29,7 +34,7 @@ export function GameCard({
     [gameQuery.data?.name]
   );
 
-  return add && isOwner ? (
+  return active && add && isOwner ? (
     <SettingsForm
       title={`Add New Mode`}
       subtitle={name}
@@ -39,13 +44,21 @@ export function GameCard({
       onCancel={() => setAdd(false)}
     />
   ) : (
-    <div className="card card-bordered border-accent border-4 text-neutral-content max-w-xl w-full">
+    <div
+      className={`card card-bordered border-accent border-4 text-neutral-content max-w-xl w-full col-span-4 mx-auto ${
+        active ? 'bg-neutral md:col-span-12' : 'cursor-pointer hover:bg-accent'
+      }`}
+      onClick={() => {
+        if (active) return;
+        onClick && onClick();
+      }}
+    >
       <div className="card-body items-center text-center">
         <div className="space-y-6">
           <h2 className="card-title justify-center text-3xl">
             {name}
-            <div className="absolute top-0 p-4 w-full">
-              <StateSwitch pda={pda} />
+            <div className="absolute top-0 px-4 py-2 w-full">
+              <StateSwitch pda={pda} active={active} />
             </div>
           </h2>
 
@@ -56,7 +69,7 @@ export function GameCard({
                 label={ellipsify(pda.toString())}
               />
             </p>
-            {isOwner && (
+            {active && isOwner && (
               <button
                 className="btn btn-xs btn-info btn-outline"
                 onClick={() => setAdd(true)}
@@ -66,11 +79,18 @@ export function GameCard({
             )}
           </div>
 
-          <div className="flex flex-wrap gap-4 justify-around items-center">
-            {modes.map(({ publicKey }, i) => (
-              <GameMode key={i} pda={publicKey} />
-            ))}
-          </div>
+          {active && (
+            <div className="flex flex-wrap gap-4 justify-around items-center">
+              {modes.map(({ publicKey }, i) => (
+                <GameMode
+                  key={i}
+                  pda={publicKey}
+                  active={activeMode === i}
+                  onClick={() => setActiveMode(i)}
+                />
+              ))}
+            </div>
+          )}
         </div>
       </div>
     </div>

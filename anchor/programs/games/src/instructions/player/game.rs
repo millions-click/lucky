@@ -11,6 +11,7 @@ use anchor_lang::prelude::*;
 use anchor_spl::token::{Token, TokenAccount};
 
 pub fn play(player: &mut Player, game: &Game, mode: &GameMode, round: Round) -> Result<bool> {
+    game.can_play()?;
     round.verify(mode)?;
     player.play(game, mode, round)
 }
@@ -34,11 +35,11 @@ pub struct Play<'info> {
     #[account(
         init_if_needed,
         payer = owner,
-        seeds = [PLAYER_SEED, owner.key().as_ref()],
+        seeds = [PLAYER_SEED, owner.key().as_ref(), mode.key().as_ref()],
         space = 8 + Player::INIT_SPACE,
         bump
     )]
-    pub player: Account<'info, Player>, // This account seed must include the game account.
+    pub player: Account<'info, Player>,
 
     #[account(
         mut,
@@ -53,7 +54,6 @@ pub struct Play<'info> {
 
     /// CHECK: This is the vault keeper. Needs to sign to pay the reward.
     #[account(
-        mut,
         seeds = [ESCROW_SEED],
         bump
     )]

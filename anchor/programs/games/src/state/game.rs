@@ -46,8 +46,6 @@ pub struct Game {
 }
 
 impl Game {
-    pub const INIT_SPACE: usize = 33 + 8;
-
     pub fn new(name: &[u8; 33]) -> Result<Self> {
         let mut game = Self {
             name: [0; 33],
@@ -103,6 +101,12 @@ impl Game {
 
     pub fn set_ended(&mut self) {
         self.state = GameStatus::Ended;
+    }
+
+    pub fn can_play(&self) -> Result<()> {
+        if !self.active() { return Err(GameErrorCode::GameInactive.into()); }
+
+        Ok(())
     }
 
     fn verify_name(name: &[u8; 33]) -> Result<()> {

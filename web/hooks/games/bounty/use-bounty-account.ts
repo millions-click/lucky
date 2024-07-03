@@ -27,7 +27,7 @@ export function useBountyAccount({ pda }: { pda: PublicKey }) {
   const { connection } = useConnection();
   const { cluster } = useCluster();
   const transactionToast = useTransactionToast();
-  const { program } = useGamesProgram();
+  const { program, games } = useGamesProgram();
 
   const { getGem } = useTreasureGems({});
   const { getTrader } = useTollkeeperTraders({});
@@ -35,9 +35,32 @@ export function useBountyAccount({ pda }: { pda: PublicKey }) {
   const bountyQuery = useQuery({
     queryKey: ['bounty', 'account', { cluster, pda }],
     queryFn: async () => {
-      return program.account.bounty.fetch(pda);
+      if (!games.data) return;
+      const bounty = await program.account.bounty.fetch(pda);
+      if (!bounty) throw new Error('Bounty not found');
+
+      const game = games.data.find((game) =>
+        game.modes.some((mode) => mode.publicKey.equals(bounty.task))
+      );
+      if (!game) throw new Error('Game not found');
+      const mode = game.modes.find((mode) =>
+        mode.publicKey.equals(bounty.task)
+      );
+      if (!mode) throw new Error('Mode not found');
+
+      return { ...bounty, mode, game };
     },
   });
+
+  const game = useMemo(() => {
+    if (!bountyQuery.data) return;
+    return bountyQuery.data.game;
+  }, [bountyQuery.data]);
+
+  const mode = useMemo(() => {
+    if (!bountyQuery.data) return;
+    return bountyQuery.data.mode;
+  }, [bountyQuery.data]);
 
   const gem = useMemo(() => {
     if (!bountyQuery.data) return;
@@ -72,6 +95,8 @@ export function useBountyAccount({ pda }: { pda: PublicKey }) {
     },
   });
 
+  const loading =
+    bountyQuery.isLoading || vaultQuery.isLoading || !gem || !trader;
   const emptyVault = useMemo(() => {
     return (
       !vaultQuery.data ||
@@ -139,7 +164,10 @@ export function useBountyAccount({ pda }: { pda: PublicKey }) {
     bountyQuery,
     vaultQuery,
     isOwner,
+    loading,
 
+    game,
+    mode,
     gem,
     trader,
     price,

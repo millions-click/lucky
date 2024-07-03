@@ -106,15 +106,10 @@ pub mod games {
     }
 
     // ------------------------ PLAYER ------------------------
-    pub fn play_round(ctx: Context<Play>) -> Result<()> {
+    pub fn play_round(ctx: Context<Play>, round: Round) -> Result<()> {
         escrow::accept::payment(&ctx)?;
-        let winner = player::game::play(&mut ctx.accounts.player, &ctx.accounts.bounty)?;
-
-        ctx.accounts.player.winner = winner;
-        if winner {
-            ctx.accounts.player.winning_count = ctx.accounts.player.winning_count.checked_add(1).unwrap();
-            escrow::redeem::reward(&ctx)?;
-        }
+        let winner = player::game::play(&mut ctx.accounts.player, &ctx.accounts.game, &ctx.accounts.mode, round)?;
+        if winner { escrow::redeem::reward(&ctx)?; }
 
         Ok(())
     }
