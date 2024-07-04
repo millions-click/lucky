@@ -2,8 +2,8 @@ pub use crate::state::game::Game;
 use crate::constants::GAME_SEED;
 use anchor_lang::prelude::*;
 
-pub fn new_game(game: &mut Game, name: &[u8; 33]) -> Result<()> {
-    let _game = Game::new(&name)?;
+pub fn new_game(game: &mut Game, name: &String) -> Result<()> {
+    let _game = Game::new(name)?;
 
     game.name = _game.name;
     game.state = _game.state;

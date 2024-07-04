@@ -30,6 +30,8 @@ pub struct GameMode {
     // w == 0; requires slots >= 2; means any equal choice across all slots is a winner.
     // slots == 1; requires 1 <= w <= choices.
     // slots >= 2 & 1 <= w <= choices; means the winning choice is the same in all slots.
+    // if game_choice == Single, the winner_choice is the same for slots.
+    // if game_choice == Multiple, the winner_choice must be 0. To pick the winners on each round.
 
     pub pick_winner: bool,   // If true, the player can pick the winner on each round.
     // w == 0; this is always false.

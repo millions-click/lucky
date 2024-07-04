@@ -371,12 +371,7 @@
       "args": [
         {
           "name": "name",
-          "type": {
-            "array": [
-              "u8",
-              33
-            ]
-          }
+          "type": "string"
         }
       ]
     },
@@ -1605,12 +1600,7 @@
       "args": [
         {
           "name": "name",
-          "type": {
-            "array": [
-              "u8",
-              33
-            ]
-          }
+          "type": "string"
         }
       ]
     },
@@ -1859,12 +1849,7 @@
         "fields": [
           {
             "name": "name",
-            "type": {
-              "array": [
-                "u8",
-                33
-              ]
-            }
+            "type": "string"
           },
           {
             "name": "state",

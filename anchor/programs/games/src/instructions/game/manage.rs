@@ -3,8 +3,8 @@ use crate::errors::GameErrorCode;
 use crate::constants::GAME_SEED;
 use anchor_lang::prelude::*;
 
-pub fn update_game(game: &mut Game, name: &[u8; 33]) -> Result<()> {
-    game.set_name(&name)?;
+pub fn update_game(game: &mut Game, name: &String) -> Result<()> {
+    game.set_name(name)?;
 
     Ok(())
 }

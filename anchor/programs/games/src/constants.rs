@@ -9,7 +9,8 @@ pub const TRADER_LAUNCH_COST: u64 = 50; // 50 SOL
 
 // ----------------------------- Game -----------------------------
 pub const GAME_SEED: &[u8] = b"LUCKY_GAME";
-pub const GAME_NAME_LEN: usize = 33;
+pub const GAME_NAME_MIN_LEN: usize = 3;
+pub const GAME_NAME_MAX_LEN: usize = 32;
 
 // ----------------------------- GameMode -----------------------------
 pub const GAME_MODE_SEED: &[u8] = b"GAME_MODE";

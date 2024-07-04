@@ -107,7 +107,7 @@ describe('Game', () => {
     const INVALID_GAMES: Partial<Game & { reason: string }>[] = [
       { name: encodeName('a'.repeat(2)), reason: 'name too short' },
       {
-        name: Array.from({ length: 33 }).map((_, i) => i + 1),
+        name: 'a'.repeat(33),
         reason: 'name too long',
       },
     ];

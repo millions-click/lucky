@@ -19,12 +19,13 @@ enum ID_NAME {
 export type Portal = {
   portal: Program<Games>;
   authority: Keypair;
+  cluster: Cluster;
 };
 export async function LoadPortal(
   market: Connection,
   cluster: Cluster
 ): Promise<Portal> {
-  if (portal) return { portal, authority };
+  if (portal) return { portal, authority, cluster };
 
   console.log('------------------ Portal ------------------');
   console.log('Fetching authority balance...');
@@ -35,5 +36,5 @@ export async function LoadPortal(
   portal = getGamesProgram(provider);
 
   console.log(`Portal activated...`);
-  return { portal, authority };
+  return { portal, authority, cluster };
 }

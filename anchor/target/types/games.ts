@@ -377,12 +377,7 @@ export type Games = {
       "args": [
         {
           "name": "name",
-          "type": {
-            "array": [
-              "u8",
-              33
-            ]
-          }
+          "type": "string"
         }
       ]
     },
@@ -1611,12 +1606,7 @@ export type Games = {
       "args": [
         {
           "name": "name",
-          "type": {
-            "array": [
-              "u8",
-              33
-            ]
-          }
+          "type": "string"
         }
       ]
     },
@@ -1865,12 +1855,7 @@ export type Games = {
         "fields": [
           {
             "name": "name",
-            "type": {
-              "array": [
-                "u8",
-                33
-              ]
-            }
+            "type": "string"
           },
           {
             "name": "state",

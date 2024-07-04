@@ -1,7 +1,7 @@
 import { useState } from 'react';
 
 import { encodeName, type GameMode } from '@luckyland/anchor';
-import { Keypair, PublicKey } from '@solana/web3.js';
+import { Keypair } from '@solana/web3.js';
 import { IconSeeding } from '@tabler/icons-react';
 
 export function SettingsForm({
@@ -20,7 +20,7 @@ export function SettingsForm({
   className?: string;
   onSubmit: (
     settings: GameMode,
-    gameName?: Array<number>,
+    gameName?: string,
     seed?: string
   ) => Promise<void>;
   onCancel: () => void;
