@@ -5,7 +5,7 @@
  * IDL can be found at `target/idl/games.json`.
  */
 export type Games = {
-  "address": "LuckhEzDRjC8wrPcXQyiK8Vdj5nVuurtfNtq6PQsirw",
+  "address": "HCZ5KdroZ7BQrmkZq1a72t2FVVQuxqVjkR4ZmAvi8CTr",
   "metadata": {
     "name": "games",
     "version": "0.1.0",
@@ -1778,13 +1778,13 @@ export type Games = {
   "errors": [
     {
       "code": 6000,
-      "name": "invalidSeed",
-      "msg": "Invalid seed"
+      "name": "gameMismatch",
+      "msg": "Game provided does not match the game mode"
     },
     {
       "code": 6001,
-      "name": "invalidChoice",
-      "msg": "Invalid choice"
+      "name": "taskMismatch",
+      "msg": "Mode provided does not match the bounty task"
     }
   ],
   "types": [

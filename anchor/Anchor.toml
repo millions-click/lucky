@@ -5,7 +5,7 @@ resolution = true
 skip-lint = false
 
 [programs.localnet]
-games = "LuckhEzDRjC8wrPcXQyiK8Vdj5nVuurtfNtq6PQsirw"
+games = "HCZ5KdroZ7BQrmkZq1a72t2FVVQuxqVjkR4ZmAvi8CTr"
 lucky = "6VCjdiYiU9rAWo7TptZMa423j44GSnyzWMG2KbCCdUz8"
 store = "BJuNDJJkJAFGZGzo8UfaH3t7FgUL5ESCusUFEzKeuLwA"
 
