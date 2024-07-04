@@ -59,13 +59,7 @@ export function useGamesProgram({ callback }: { callback?: () => void } = {}) {
 
   const createGame = useMutation({
     mutationKey: ['games', 'create-game', { cluster }],
-    mutationFn: async ({
-      name,
-      seed,
-    }: {
-      name: Array<number>;
-      seed?: string;
-    }) => {
+    mutationFn: async ({ name, seed }: { name: string; seed?: string }) => {
       const secret = seed ? new PublicKey(seed) : Keypair.generate().publicKey;
 
       if (!owner) throw new Error('Wallet not connected');

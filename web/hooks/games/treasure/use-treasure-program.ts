@@ -4,10 +4,10 @@ import { useMemo } from 'react';
 import { getAssociatedTokenAddress } from '@solana/spl-token';
 import { BN } from '@coral-xyz/anchor';
 import { Cluster, PublicKey } from '@solana/web3.js';
-import { useMutation } from '@tanstack/react-query';
+import { useMutation, useQuery } from '@tanstack/react-query';
 import toast from 'react-hot-toast';
 
-import { getKeeperPDA } from '@luckyland/anchor';
+import { getKeeperPDA, getTreasurePDA } from '@luckyland/anchor';
 
 import { useGamesProgram, useTransactionToast } from '@/hooks';
 import { useCluster } from '@/providers';
@@ -23,6 +23,14 @@ export function useTreasureProgram({
     () => getKeeperPDA(cluster.network as Cluster),
     [cluster.network]
   );
+
+  const treasure = useQuery({
+    queryKey: ['treasure', 'account', { cluster }],
+    queryFn: () =>
+      program.account.treasure.fetch(
+        getTreasurePDA(cluster.network as Cluster)
+      ),
+  });
 
   const initialize = useMutation({
     mutationKey: ['vault', 'initialize', { cluster }],
@@ -90,6 +98,7 @@ export function useTreasureProgram({
     programId,
     getProgramAccount,
     keeperPDA,
+    treasure,
     initialize,
     deposit,
     withdraw,

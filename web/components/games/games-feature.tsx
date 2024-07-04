@@ -1,10 +1,11 @@
 'use client';
 
 import { useWallet } from '@solana/wallet-adapter-react';
-import { WalletButton } from '@/providers';
 
-import { useGamesProgram } from './games-data-access';
-import { GamesCreate, GamesList } from './ui';
+import { WalletButton } from '@/providers';
+import { useGamesProgram } from '@/hooks';
+
+import { DownloadGamesTree, GamesCreate, GamesList } from './ui';
 
 import { AppHero, ellipsify } from '../ui/ui-layout';
 import { ExplorerLink } from '../cluster/cluster-ui';
@@ -21,13 +22,17 @@ export default function GamesFeature() {
           'Create a new account by clicking the "Create" button. The state of a account is stored on-chain and can be manipulated by calling the program\'s methods (increment, decrement, set, and close).'
         }
       >
-        <p className="mb-6">
+        <p className="tooltip tooltip-primary mb-6" data-tip="Program">
           <ExplorerLink
             path={`account/${programId}`}
             label={ellipsify(programId.toString())}
           />
         </p>
         <GamesCreate />
+
+        <div className="absolute top-20 right-10 ">
+          <DownloadGamesTree />
+        </div>
       </AppHero>
       <GamesList />
     </div>

@@ -2,17 +2,18 @@
 
 import { useMemo } from 'react';
 import { useWallet } from '@solana/wallet-adapter-react';
-import { getKeeperPDA } from '@luckyland/anchor';
 
+import { useTreasureProgram } from '@/hooks';
+import { getKeeperPDA } from '@luckyland/anchor';
 import { WalletButton } from '@/providers';
+
+import { TreasureProgram } from './treasure-ui';
 import { AppHero, ellipsify } from '../ui/ui-layout';
 import { ExplorerLink } from '../cluster/cluster-ui';
-import { useTreasureProgram } from './treasure-data-access';
-import { TreasureProgram } from './treasure-ui';
 
 export default function TreasureFeature() {
   const { publicKey } = useWallet();
-  const { programId } = useTreasureProgram();
+  const { programId, treasure } = useTreasureProgram();
   const ownerPDA = useMemo(() => getKeeperPDA(), []);
 
   return publicKey ? (
@@ -35,7 +36,22 @@ export default function TreasureFeature() {
               label={ellipsify(ownerPDA.toString())}
             />
           </p>
+          <p className="tooltip tooltip-info" data-tip="Authority">
+            <ExplorerLink
+              path={`account/${treasure.data?.authority}`}
+              label={ellipsify(treasure.data?.authority.toString())}
+            />
+          </p>
         </div>
+
+        {treasure.data?.authority.equals(publicKey) && (
+          <div className="mt-6">
+            <p className="text-sm text-gray-500">
+              You are the owner of the treasure account. You can forge a new
+              stronghold by depositing a gem.
+            </p>
+          </div>
+        )}
       </AppHero>
       <TreasureProgram player={publicKey} />
     </div>
