@@ -40,7 +40,7 @@ export async function ForgeTrader(
   const supplier = payer;
   let store = await checkBalance(market, supplier, trader);
   console.log(`------------------------------------------------`);
-  if (amount <= 0) {
+  if (amount <= 0 || store.amount >= amount * PIECES_PER_TOKEN) {
     console.log(`No trades to issue.`);
     return { trader, store };
   }
