@@ -12,18 +12,18 @@ import { HiOutlineWallet } from 'react-icons/hi2';
 import { HiOutlineCog } from 'react-icons/hi';
 import { IoStorefrontOutline } from 'react-icons/io5';
 import { HiArrowLeftStartOnRectangle } from 'react-icons/hi2';
-import bonny from '../../public/Img/bunny.svg';
+import bonny from '../../public/img/bunny.svg';
 import map from '../../public/img/mapa-vial 1.svg';
-import ChatLucky from './ChatLucky';
-import Tablet from './Tablet';
-
+// import './RangeSlider.css';
+import front from '../../public/img/front.svg'
+import back from '../../public/img/black.svg'
 import {
   ClusterChecker,
   ClusterUiSelect,
   ExplorerLink,
 } from '../cluster/cluster-ui';
 import toast, { Toaster } from 'react-hot-toast';
-export function Lobby({
+export function MoneyGame({
   children,
   links,
   env = 'development',
@@ -32,31 +32,71 @@ export function Lobby({
   links: { label: string; path: string; program?: boolean }[];
   env?: string;
 }) {
+  const [result, setResult] = useState<number | null>(null);
+  const [prediction, setPrediction] = useState<number>(0.5);
+  const [gameState, setGameState] = useState<string | null>(null);
+
+  const lanzarMoneda = () => {
+    const x = Math.floor(Math.random() * 2); // Valores entre 0 y 1
+    setResult(x);
+    if (prediction !== 0.5) {
+      if (x === prediction) {
+        setGameState('¡Ganaste!');
+      } else {
+        setGameState('Perdiste.');
+      }
+    }
+  };
+
+  const handlePredictionChange = (
+    event: React.ChangeEvent<HTMLInputElement>
+  ) => {
+    const newValue = Number(event.target.value);
+    setPrediction(newValue);
+    setGameState(null); // Reset game state when prediction changes
+
+    if (newValue !== 0.5) {
+      lanzarMoneda();
+    }
+  };
+
   return (
-    <div className="block">
-      <div
-        className="absolute left-0 top-1/2 transform -translate-y-1/2 "
-        onClick={() => document.getElementById('my_modal_2').showModal()}
-      >
-        <Image
-          className="relative z-10 transform cursor-pointer"
-          src={bonny}
-          alt="Lucky"
-          style={{ height: '200%' }}
+    <div className="flex flex-col items-center p-4">
+      <div className="flex items-center  ">
+        <div >
+          <Image
+            src={back}
+            alt="Left Icon"
+            className="w-40 h-40"
+          />
+        </div>
+        <input
+          type="range"
+          min="0"
+          max="1"
+          step="1"
+          value={prediction}
+          onChange={handlePredictionChange}
+          className="range range-primary mx-4 custom-range"
         />
-      </div>  
-      <button
-        className="absolute left-0 top-1/2 transform -translate-y-1/2 bg-orange-500 py-6 rounded-r-lg shadow-lg mt-60"
-        onClick={() => document.getElementById('my_modal_1').showModal()}
+        <div >
+          <Image
+            src={front}
+            alt="Right Icon"
+            className="-ml-8 w-96 h-80"
+          />
+        </div>
+      </div>
+      {/* <button
+        onClick={lanzarMoneda}
+        className="bg-[#f07a0c] text-white px-8 py-2 rounded-full border-4 border-white text-lg"
       >
-        <IoIosArrowForward size={30} color="#ffe9b0" />
-      </button>
-      <dialog id="my_modal_1" className="modal modal-middle mt-40">
-        <Tablet />
-      </dialog>
-      <dialog id="my_modal_2" className="modal mt-20">
-        <ChatLucky />
-      </dialog>
+        JUGAR
+      </button> */}
+      {result !== null && (
+        <p className="text-white mt-4">Resultado: {result}</p>
+      )}
+      {gameState && <p className="text-white">{gameState}</p>}
     </div>
   );
 }

@@ -23,7 +23,7 @@ import copa from '../../public/img/futbol-americano 1.svg';
 import reloj from '../../public/img/reloj.svg';
 import polvo from '../../public/img/polvo (1).svg';
 import plata from '../../public/img/plata.svg';
-import bonny from '../../public/img/bunny.svg';
+import game from '../../public/img/game.svg';
 // import { usePathname } from 'next/navigation';
 export function UiLayout({
   children,
@@ -37,14 +37,12 @@ export function UiLayout({
   const pathname = usePathname();
   const [isOpen, setIsOpen] = useState(false);
   const [lobby, setLobby] = useState(false);
-
+  const [game, setGame] = useState(false);
   const toggleMenu = () => {
     setIsOpen(!isOpen);
   };
   useEffect(() => {
-    console.log('Current pathname:', pathname);
-    if (pathname === '/lobby') {
-      console.log('este es el lobby');
+    if (pathname === '/') {
       setLobby(true);
     } else {
       setLobby(false);
@@ -52,13 +50,21 @@ export function UiLayout({
   }, [pathname]);
 
   useEffect(() => {
-    console.log(lobby, 'estado');
-  }, [lobby]);
+    if (pathname === '/game') {
+      setGame(true);
+    } else {
+      setGame(false);
+    }
+  }, [pathname]);
 
   return (
     <div
       className={`${
-        lobby ? "bg-[url('/img/lobby.svg')]" : "bg-[url('/img/fondo.svg')]"
+        lobby
+          ? "bg-[url('/img/fondo.svg')]"
+          : game
+          ?  "bg-[url('/img/game.svg')]"
+          : "bg-[url('/img/lobby.svg')]"
       } bg-center bg-no-repeat bg-cover min-h-screen drawer`}
     >
       <input
@@ -92,6 +98,8 @@ export function UiLayout({
                   }}
                 >
                   {lobby ? (
+                    '1252515'
+                  ) : (
                     <div className="flex">
                       <Image
                         className="z-10"
@@ -102,15 +110,11 @@ export function UiLayout({
                       />
                       1:00:00
                     </div>
-                  ) : (
-                    '1252515'
                   )}
                 </p>
               </div>
             </div>
             {lobby ? (
-              <></>
-            ) : (
               isOpen && (
                 <div className="absolute top-12 right-0 bg-black bg-opacity-40 rounded-b-lg p-4 shadow-lg space-y-2">
                   <div className="text-white hover:text-orange-400 cursor-pointer flex">
@@ -127,11 +131,11 @@ export function UiLayout({
                   </div>
                 </div>
               )
+            ) : (
+              <></>
             )}
           </div>
           {lobby ? (
-            <></>
-          ) : (
             <div className="flex-none bg-[#f07a0c] rounded-lg">
               <label
                 htmlFor="my-drawer-3"
@@ -144,9 +148,13 @@ export function UiLayout({
                 />
               </label>
             </div>
+          ) : (
+            <></>
           )}
         </div>
         {lobby ? (
+          <></>
+        ) : (
           <div className="m-2 relative w-20 p-2">
             <p
               className="-m-2 z-0 text-white bg-[#3c1a06] px-2 border-2 border-solid border-[#f07a0c] rounded-lg"
@@ -167,10 +175,10 @@ export function UiLayout({
               </div>
             </p>
           </div>
-        ) : (
-          <></>
         )}
         {lobby ? (
+          <></>
+        ) : (
           <div className="m-2 relative w-20 p-2">
             <p
               className="-m-2 z-0 text-white bg-[#3c1a06] px-2 border-2 border-solid border-[#f07a0c] rounded-lg"
@@ -191,8 +199,6 @@ export function UiLayout({
               </div>
             </p>
           </div>
-        ) : (
-          <></>
         )}
         <ClusterChecker>
           <AccountChecker />

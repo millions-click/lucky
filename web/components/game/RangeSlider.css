@@ -1,0 +1,74 @@
+/* RangeSlider.css */
+input[type="range"].custom-range {
+    -webkit-appearance: none;
+    width: 100%;
+    height: 10px;
+    background: transparent;
+  }
+  
+  input[type="range"].custom-range::-webkit-slider-runnable-track {
+    width: 100%;
+    height: 10px;
+    cursor: pointer;
+    background: linear-gradient(to right, #f07a0c 0%, #f07a0c 50%, #f07a0c 100%);
+    border-radius: 5px;
+    border: none;
+  }
+  
+  input[type="range"].custom-range::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    appearance: none;
+    width: 24px;
+    height: 24px;
+    background: #fff;
+    cursor: pointer;
+    border-radius: 50%;
+    border: 2px solid #f07a0c;
+  }
+  
+  input[type="range"].custom-range::-moz-range-track {
+    width: 100%;
+    height: 10px;
+    cursor: pointer;
+    background: linear-gradient(to right, #f07a0c 0%, #f07a0c 50%, #f07a0c 100%);
+    border-radius: 5px;
+    border: none;
+  }
+  
+  input[type="range"].custom-range::-moz-range-thumb {
+    width: 24px;
+    height: 24px;
+    background: #fff;
+    cursor: pointer;
+    border-radius: 50%;
+    border: 2px solid #f07a0c;
+  }
+  
+  input[type="range"].custom-range::-ms-track {
+    width: 100%;
+    height: 10px;
+    cursor: pointer;
+    background: transparent;
+    border-color: transparent;
+    color: transparent;
+  }
+  
+  input[type="range"].custom-range::-ms-fill-lower {
+    background: #f07a0c;
+    border-radius: 10px;
+  }
+  
+  input[type="range"].custom-range::-ms-fill-upper {
+    background: #f07a0c;
+    border-radius: 10px;
+  }
+  
+  input[type="range"].custom-range::-ms-thumb {
+    width: 24px;
+    height: 24px;
+    background: #fff;
+    cursor: pointer;
+    border-radius: 50%;
+    border: 2px solid #f07a0c;
+  }
+  
