@@ -1,4 +1,5 @@
 use crate::errors::GameErrorCode;
+use crate::constants::{GAME_NAME_MAX_LEN, GAME_NAME_MIN_LEN};
 use anchor_lang::prelude::*;
 
 #[derive(InitSpace, AnchorSerialize, AnchorDeserialize, Clone, PartialEq)]
@@ -36,7 +37,8 @@ pub enum GameAlgorithm {
 #[account]
 #[derive(InitSpace)]
 pub struct Game {
-    pub name: [u8; 33], // Only 32 bytes are used. The last byte is a null terminator.
+    #[max_len(GAME_NAME_MAX_LEN)]
+    pub name: String,
     pub state: GameStatus,
 
     pub mode: GameType,
@@ -46,9 +48,9 @@ pub struct Game {
 }
 
 impl Game {
-    pub fn new(name: &[u8; 33]) -> Result<Self> {
+    pub fn new(name: &String) -> Result<Self> {
         let mut game = Self {
-            name: [0; 33],
+            name: String::new(),
             state: GameStatus::Created,
 
             mode: GameType::SinglePlayer,
@@ -62,7 +64,7 @@ impl Game {
         Ok(game)
     }
 
-    pub fn set_name(&mut self, name: &[u8; 33]) -> Result<()> {
+    pub fn set_name(&mut self, name: &String) -> Result<()> {
         Self::verify_name(name)?;
         self.name = name.clone();
 
@@ -109,9 +111,8 @@ impl Game {
         Ok(())
     }
 
-    fn verify_name(name: &[u8; 33]) -> Result<()> {
-        if !(name[0] != 0 && name[1] != 0 && name[2] != 0) { return Err(GameErrorCode::InvalidName.into()); }
-        if name[32] != 0 { return Err(GameErrorCode::InvalidName.into()); }
+    fn verify_name(name: &String) -> Result<()> {
+        if name.len() < GAME_NAME_MIN_LEN { return Err(GameErrorCode::InvalidName.into()); }
 
         Ok(())
     }

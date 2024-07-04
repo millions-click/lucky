@@ -40,11 +40,11 @@ pub mod games {
     }
 
     // ------------------------ GAME ------------------------
-    pub fn create_game(ctx: Context<InitializeGame>, name: [u8; 33]) -> Result<()> {
+    pub fn create_game(ctx: Context<InitializeGame>, name: String) -> Result<()> {
         game::init::new_game(&mut ctx.accounts.game, &name)
     }
 
-    pub fn update_game(ctx: Context<UpdateGame>, name: [u8; 33]) -> Result<()> {
+    pub fn update_game(ctx: Context<UpdateGame>, name: String) -> Result<()> {
         game::manage::update_game(&mut ctx.accounts.game, &name)
     }
 
