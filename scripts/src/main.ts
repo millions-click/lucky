@@ -5,8 +5,15 @@ import { CLUSTERS, createConnection } from './utils';
 
 import { LoadPortal } from './utils';
 import { CreateGem, CreateTrader } from './tokens';
-import { CreateTreasure, InitStronghold, StockpileGems } from './features';
-import { LaunchTrader } from './features/escrow';
+import {
+  CreateTreasure,
+  InitGames,
+  InitStronghold,
+  LaunchTrader,
+  UpsertGameModes,
+  PublishBounties,
+  FundBounties,
+} from './features';
 
 const { CLUSTER } = process.env;
 if (!CLUSTER) throw new Error('CLUSTER is required');
@@ -23,19 +30,23 @@ LoadPortal(connection, cluster)
   .then(async (portal) => {
     await CreateTreasure(portal, cluster);
 
-    const { gem, reserve } = await CreateGem(connection, cluster);
-    const { trader } = await CreateTrader(connection, cluster);
+    const [modes, { gem }, { trader }] = await Promise.all([
+      (async () => {
+        const games = await InitGames(portal);
+        return UpsertGameModes(portal, games);
+      })(),
+      (async () => {
+        const { gem } = await CreateGem(connection, cluster);
+        return InitStronghold(gem, portal, cluster);
+      })(),
+      (async () => {
+        const { trader } = await CreateTrader(connection, cluster);
+        return LaunchTrader(portal, trader, cluster);
+      })(),
+    ]);
 
-    const { gem: token } = await InitStronghold(gem, portal, cluster);
-    await LaunchTrader(portal, trader, cluster);
-
-    await StockpileGems(
-      token,
-      reserve.address,
-      reserve.amount,
-      portal,
-      cluster
-    );
+    await PublishBounties(portal, modes, gem, trader);
+    await FundBounties(portal, gem);
   })
   .catch((e) => {
     console.error('Failed to run script.');
