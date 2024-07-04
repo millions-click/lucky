@@ -456,6 +456,29 @@ export type Games = {
           }
         },
         {
+          "name": "tollkeeper",
+          "writable": true,
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  84,
+                  79,
+                  76,
+                  76,
+                  75,
+                  69,
+                  69,
+                  80,
+                  69,
+                  82
+                ]
+              }
+            ]
+          }
+        },
+        {
           "name": "treasure",
           "writable": true,
           "pda": {
@@ -909,7 +932,7 @@ export type Games = {
       ],
       "accounts": [
         {
-          "name": "escrow",
+          "name": "tollkeeper",
           "writable": true,
           "pda": {
             "seeds": [
@@ -917,20 +940,15 @@ export type Games = {
                 "kind": "const",
                 "value": [
                   84,
-                  82,
-                  69,
-                  65,
-                  83,
-                  85,
-                  82,
-                  69,
-                  95,
-                  69,
-                  83,
-                  67,
-                  82,
                   79,
-                  87
+                  76,
+                  76,
+                  75,
+                  69,
+                  69,
+                  80,
+                  69,
+                  82
                 ]
               }
             ]
@@ -1080,6 +1098,12 @@ export type Games = {
           "signer": true
         },
         {
+          "name": "game"
+        },
+        {
+          "name": "mode"
+        },
+        {
           "name": "bounty"
         },
         {
@@ -1107,6 +1131,10 @@ export type Games = {
               {
                 "kind": "account",
                 "path": "owner"
+              },
+              {
+                "kind": "account",
+                "path": "mode"
               }
             ]
           }
@@ -1121,7 +1149,6 @@ export type Games = {
         },
         {
           "name": "escrow",
-          "writable": true,
           "pda": {
             "seeds": [
               {
@@ -1219,7 +1246,16 @@ export type Games = {
           "address": "SysvarRent111111111111111111111111111111111"
         }
       ],
-      "args": []
+      "args": [
+        {
+          "name": "round",
+          "type": {
+            "defined": {
+              "name": "round"
+            }
+          }
+        }
+      ]
     },
     {
       "name": "renewBounty",
@@ -1752,33 +1788,13 @@ export type Games = {
   "errors": [
     {
       "code": 6000,
-      "name": "invalidSlots",
-      "msg": "Slots must be between 1 and 16"
+      "name": "invalidSeed",
+      "msg": "Invalid seed"
     },
     {
       "code": 6001,
-      "name": "invalidDigits",
-      "msg": "Digits must be between 1 and 8"
-    },
-    {
-      "code": 6002,
-      "name": "invalidChoices",
-      "msg": "Choices must be between 2 and max value of digits"
-    },
-    {
-      "code": 6003,
-      "name": "invalidWinnerSingleChoice",
-      "msg": "Winner choice must be between 1 and choices"
-    },
-    {
-      "code": 6004,
-      "name": "invalidWinnerChoice",
-      "msg": "Winner choice must be between 0 and choices"
-    },
-    {
-      "code": 6005,
-      "name": "invalidPickWinner",
-      "msg": "Pick winner is true but winner choice is 0"
+      "name": "invalidChoice",
+      "msg": "Invalid choice"
     }
   ],
   "types": [
@@ -2045,16 +2061,13 @@ export type Games = {
             "type": "pubkey"
           },
           {
-            "name": "count",
+            "name": "rounds",
             "type": "u32"
           },
           {
             "name": "lastRound",
             "type": {
-              "array": [
-                "u32",
-                16
-              ]
+              "vec": "u32"
             }
           },
           {
@@ -2064,6 +2077,24 @@ export type Games = {
           {
             "name": "winner",
             "type": "bool"
+          }
+        ]
+      }
+    },
+    {
+      "name": "round",
+      "type": {
+        "kind": "struct",
+        "fields": [
+          {
+            "name": "seed",
+            "type": "u64"
+          },
+          {
+            "name": "choices",
+            "type": {
+              "vec": "u32"
+            }
           }
         ]
       }

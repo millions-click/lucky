@@ -8,11 +8,11 @@ import { type Bounty } from '@luckyland/anchor';
 import { useGamesProgram } from '@/hooks';
 import toast from 'react-hot-toast';
 
-export function useBountyProgram() {
+export function useBountyProgram({ callback }: { callback?: () => void } = {}) {
   const { publicKey } = useWallet();
   const { cluster } = useCluster();
   const transactionToast = useTransactionToast();
-  const { program, games } = useGamesProgram({});
+  const { program, games } = useGamesProgram();
 
   const create = useMutation({
     mutationKey: ['bounty', 'create', { cluster }],
@@ -25,9 +25,9 @@ export function useBountyProgram() {
         .accounts({ gem, trader, task, supplier: publicKey })
         .rpc();
     },
-    onSuccess: (tx) => {
-      transactionToast(tx);
-      return games.refetch();
+    onSuccess: async (tx) => {
+      transactionToast(tx, 'Bounty created');
+      return games.refetch().then(() => callback && callback());
     },
     onError: () => {
       toast.error('Failed to create Bounty');

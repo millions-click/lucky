@@ -450,6 +450,29 @@
           }
         },
         {
+          "name": "tollkeeper",
+          "writable": true,
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  84,
+                  79,
+                  76,
+                  76,
+                  75,
+                  69,
+                  69,
+                  80,
+                  69,
+                  82
+                ]
+              }
+            ]
+          }
+        },
+        {
           "name": "treasure",
           "writable": true,
           "pda": {
@@ -903,7 +926,7 @@
       ],
       "accounts": [
         {
-          "name": "escrow",
+          "name": "tollkeeper",
           "writable": true,
           "pda": {
             "seeds": [
@@ -911,20 +934,15 @@
                 "kind": "const",
                 "value": [
                   84,
-                  82,
-                  69,
-                  65,
-                  83,
-                  85,
-                  82,
-                  69,
-                  95,
-                  69,
-                  83,
-                  67,
-                  82,
                   79,
-                  87
+                  76,
+                  76,
+                  75,
+                  69,
+                  69,
+                  80,
+                  69,
+                  82
                 ]
               }
             ]
@@ -1074,6 +1092,12 @@
           "signer": true
         },
         {
+          "name": "game"
+        },
+        {
+          "name": "mode"
+        },
+        {
           "name": "bounty"
         },
         {
@@ -1101,6 +1125,10 @@
               {
                 "kind": "account",
                 "path": "owner"
+              },
+              {
+                "kind": "account",
+                "path": "mode"
               }
             ]
           }
@@ -1115,7 +1143,6 @@
         },
         {
           "name": "escrow",
-          "writable": true,
           "pda": {
             "seeds": [
               {
@@ -1213,7 +1240,16 @@
           "address": "SysvarRent111111111111111111111111111111111"
         }
       ],
-      "args": []
+      "args": [
+        {
+          "name": "round",
+          "type": {
+            "defined": {
+              "name": "Round"
+            }
+          }
+        }
+      ]
     },
     {
       "name": "renew_bounty",
@@ -1746,33 +1782,13 @@
   "errors": [
     {
       "code": 6000,
-      "name": "InvalidSlots",
-      "msg": "Slots must be between 1 and 16"
+      "name": "InvalidSeed",
+      "msg": "Invalid seed"
     },
     {
       "code": 6001,
-      "name": "InvalidDigits",
-      "msg": "Digits must be between 1 and 8"
-    },
-    {
-      "code": 6002,
-      "name": "InvalidChoices",
-      "msg": "Choices must be between 2 and max value of digits"
-    },
-    {
-      "code": 6003,
-      "name": "InvalidWinnerSingleChoice",
-      "msg": "Winner choice must be between 1 and choices"
-    },
-    {
-      "code": 6004,
-      "name": "InvalidWinnerChoice",
-      "msg": "Winner choice must be between 0 and choices"
-    },
-    {
-      "code": 6005,
-      "name": "InvalidPickWinner",
-      "msg": "Pick winner is true but winner choice is 0"
+      "name": "InvalidChoice",
+      "msg": "Invalid choice"
     }
   ],
   "types": [
@@ -2039,16 +2055,13 @@
             "type": "pubkey"
           },
           {
-            "name": "count",
+            "name": "rounds",
             "type": "u32"
           },
           {
             "name": "last_round",
             "type": {
-              "array": [
-                "u32",
-                16
-              ]
+              "vec": "u32"
             }
           },
           {
@@ -2058,6 +2071,24 @@
           {
             "name": "winner",
             "type": "bool"
+          }
+        ]
+      }
+    },
+    {
+      "name": "Round",
+      "type": {
+        "kind": "struct",
+        "fields": [
+          {
+            "name": "seed",
+            "type": "u64"
+          },
+          {
+            "name": "choices",
+            "type": {
+              "vec": "u32"
+            }
           }
         ]
       }

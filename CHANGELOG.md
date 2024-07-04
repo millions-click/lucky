@@ -2,6 +2,21 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [0.1.6](///compare/v0.1.5...v0.1.6) (2024-07-04)
+
+
+### Features
+
+* 👻 Round | Player 245e80e
+* **anchor:** 👻 Escrow | Games 7ad4501
+* **anchor:** 👻 Player | Games Program 1770ede
+* **anchor:** 👻 Round | Player 4c99cb5
+* **anchor:** 👻 Tollkeeper | Collector 38c4ed6
+* **scripts:** 👻 Deploy d1dd796
+* **web:** 👻 Bounty | Game Mode 71c723e
+* **web:** 👻 Create Token Account | Store f271f3e
+* **web:** 👻 Player | Bounty 1033b32
+
 ### [0.1.5](///compare/v0.1.4...v0.1.5) (2024-06-30)
 
 

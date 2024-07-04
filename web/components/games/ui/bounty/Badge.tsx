@@ -2,31 +2,37 @@ import { useMemo, useState } from 'react';
 import { PublicKey } from '@solana/web3.js';
 import {
   IconAlertTriangle,
+  IconBrandDaysCounter,
+  IconBuildingBank,
   IconCoins,
-  IconDeviceGamepad2,
   IconDotsVertical,
-  IconTransform,
+  IconMoneybag,
+  IconNotebook,
   IconTrophy,
 } from '@tabler/icons-react';
 
+import { useBountyAccount, usePlayerGame } from '@/hooks';
 import { fromBN, formatAmount, fromBigInt } from '@luckyland/anchor';
-import { useBountyAccount, useTreasureGems } from '@/hooks';
 
 import { UpdateBounty } from './Update';
 import { FundBounty } from './Fund';
+import { PlayForBounty } from './Play';
+import { ExplorerWrapper } from '@/components/cluster/cluster-ui';
 
 export function Badge({ pda }: { pda: PublicKey }) {
-  const { mints } = useTreasureGems({});
-  const { bountyQuery, vaultQuery, isOwner } = useBountyAccount({ pda });
+  const {
+    loading,
+    bountyQuery,
+    vaultQuery,
+    gem,
+    trader,
+    emptyVault,
+    canUpdate,
+  } = useBountyAccount({
+    pda,
+  });
+  const { ammo, player, account } = usePlayerGame({ bounty: pda });
   const [updating, setUpdating] = useState(false);
-
-  const { gem, trader } = useMemo(() => {
-    if (!bountyQuery?.data) return {};
-    const gem = mints[bountyQuery.data.gem.toString()];
-    const trader = mints[bountyQuery.data.trader.toString()];
-
-    return { gem, trader };
-  }, [mints, bountyQuery?.data]);
 
   const reward = useMemo(
     () =>
@@ -42,7 +48,10 @@ export function Badge({ pda }: { pda: PublicKey }) {
         : 0,
     [bountyQuery?.data?.price, trader]
   );
-  const vaultMissed = !vaultQuery.isPending && !vaultQuery.data?.amount;
+  const shots = useMemo(() => {
+    if (!ammo.token) return 0;
+    return Math.floor(ammo.token.amount / price);
+  }, [ammo, price]);
 
   const vaultAmount = useMemo(() => {
     if (!vaultQuery.data?.amount || !gem) return '0';
@@ -51,72 +60,103 @@ export function Badge({ pda }: { pda: PublicKey }) {
     )} $${gem.symbol}`;
   }, [vaultQuery.data, gem]);
 
-  return updating && isOwner ? (
+  return updating && canUpdate ? (
     <UpdateBounty pda={pda} onChange={(active) => setUpdating(active)} />
+  ) : loading ? (
+    <span className="loading loading-infinity loading-lg"></span>
   ) : (
     <div
-      className={`badge badge-outline h-auto uppercase py-4 text-xl group ${
+      className={`badge badge-outline h-auto uppercase py-4 text-xl relative group ${
         vaultQuery.isPending
           ? 'badge-secondary'
-          : vaultMissed
+          : emptyVault
           ? 'badge-error'
-          : 'badge-primary'
+          : 'badge-primary animate-glow hover:shadow-glow hover:animate-none transition-transform hover:scale-110'
       }`}
     >
-      {vaultQuery.isLoading ? (
-        <span className="loading loading-ring loading-xs"></span>
-      ) : (
-        <>
-          <span className="tooltip tooltip-primary" data-tip={vaultAmount}>
-            <IconTrophy />
-          </span>
-          <div className="space-x-2 mx-2 flex max-md:flex-col items-center justify-center">
-            <span
-              className="cursor-default tooltip tooltip-accent"
-              data-tip={gem?.name}
-            >
-              {reward}
-            </span>
+      <IconTrophy />
+      <div className="space-x-2 mx-2 flex max-md:flex-col items-center justify-center">
+        <span
+          className="cursor-default tooltip tooltip-accent"
+          data-tip={gem?.name}
+        >
+          {reward}
+        </span>
 
-            {vaultMissed ? (
-              <IconAlertTriangle />
-            ) : (
-              <div className="tooltip tooltip-info" data-tip="Play">
-                <span className="swap swap-rotate group-hover:swap-active">
-                  <div className="btn btn-sm btn-circle swap-off">
-                    <IconTransform size={20} />
-                  </div>
-                  <div className="btn btn-sm btn-circle btn-outline btn-info swap-on">
-                    <IconDeviceGamepad2 size={20} />
-                  </div>
-                </span>
-              </div>
+        {emptyVault ? (
+          <IconAlertTriangle />
+        ) : (
+          <PlayForBounty bounty={pda} onSucceed={() => vaultQuery.refetch()} />
+        )}
+
+        <span
+          className="cursor-default tooltip tooltip-accent"
+          data-tip={trader?.name}
+        >
+          {price}
+        </span>
+      </div>
+      <IconCoins />
+      {emptyVault && <FundBounty pda={pda} />}
+      {canUpdate && (
+        <button
+          className="btn btn-xs btn-circle btn-ghost"
+          onClick={() => setUpdating(true)}
+        >
+          <div className="tooltip tooltip-primary" data-tip="Update Bounty">
+            <IconDotsVertical />
+          </div>
+        </button>
+      )}
+
+      {!emptyVault && (
+        <>
+          <div className="absolute hidden group-hover:flex gap-2 top-[-30px]">
+            {player.data && (
+              <span className="tooltip tooltip-primary flex" data-tip="Wins">
+                {player.data.winningCount}
+                <IconTrophy />
+              </span>
             )}
 
             <span
-              className="cursor-default tooltip tooltip-accent"
-              data-tip={trader?.name}
+              className="tooltip tooltip-primary flex gap-1"
+              data-tip="Vault"
             >
-              {price}
+              <IconBuildingBank />
+              {vaultAmount}
             </span>
           </div>
-          <IconCoins />
-          {isOwner &&
-            (vaultMissed ? (
-              <FundBounty pda={pda} />
-            ) : (
-              <button
-                className="btn btn-xs btn-circle btn-ghost"
-                onClick={() => setUpdating(true)}
+
+          <div className="absolute hidden group-hover:flex gap-2 bottom-[-30px]">
+            {player.data && (
+              <span
+                className="tooltip tooltip-primary flex gap-1"
+                data-tip="Rounds"
               >
-                <div
-                  className="tooltip tooltip-primary"
-                  data-tip="Update Bounty"
-                >
-                  <IconDotsVertical />
-                </div>
-              </button>
-            ))}
+                {player.data.rounds}
+                <IconBrandDaysCounter />
+              </span>
+            )}
+            <span
+              className="tooltip tooltip-primary flex gap-1"
+              data-tip="Ammo"
+            >
+              <IconMoneybag />
+              {shots}
+            </span>
+          </div>
+
+          {player.data && (
+            <ExplorerWrapper
+              path={`account/${account}`}
+              className="absolute hidden group-hover:flex right-[-35px] btn btn-circle btn-sm btn-outline"
+            >
+              <span className="tooltip tooltip-info" data-tip="Player Account">
+                <IconNotebook />
+              </span>
+            </ExplorerWrapper>
+          )}
         </>
       )}
     </div>

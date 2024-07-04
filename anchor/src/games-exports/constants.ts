@@ -16,10 +16,14 @@ export const GAME_MODE_SEED = 'GAME_MODE';
 
 // CONSTRAINS
 export const MIN_SLOTS = 1;
-export const MAX_SLOTS = 16;
+export const MAX_SLOTS = 10;
 export const MIN_DIGITS = 1;
 export const MAX_DIGITS = 8;
 export const MIN_CHOICES = 2;
 
 // ----------------------------- Bounty -----------------------------
 export const BOUNTY_SEED = 'BOUNTY';
+export const RENEW_THRESHOLD = BigInt(10); // 10% of the last issued bounty.
+
+// ----------------------------- Player -----------------------------
+export const PLAYER_SEED = 'LUCKY_PLAYER';

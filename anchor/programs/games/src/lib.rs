@@ -4,6 +4,7 @@ use anchor_lang::prelude::*;
 
 pub mod constants;
 pub mod errors;
+pub mod utils;
 pub mod instructions;
 pub mod state;
 
@@ -26,7 +27,7 @@ pub mod games {
         treasure::forge::pay(&ctx)
     }
 
-    pub fn launch_escrow(ctx: Context<LaunchEscrow>) -> Result<()> {
+    pub fn launch_escrow(ctx: Context<LaunchTrader>) -> Result<()> {
         escrow::launch::pay_definition(&ctx)
     }
 
@@ -102,5 +103,14 @@ pub mod games {
 
     pub fn renew_bounty(ctx: Context<RenewBounty>, settings: BountySettings) -> Result<()> {
         bounty::renew::existent_bounty(&mut ctx.accounts.bounty, settings)
+    }
+
+    // ------------------------ PLAYER ------------------------
+    pub fn play_round(ctx: Context<Play>, round: Round) -> Result<()> {
+        escrow::accept::payment(&ctx)?;
+        let winner = player::game::play(&mut ctx.accounts.player, &ctx.accounts.game, &ctx.accounts.mode, round)?;
+        if winner { escrow::redeem::reward(&ctx)?; }
+
+        Ok(())
     }
 }

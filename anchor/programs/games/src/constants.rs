@@ -14,10 +14,11 @@ pub const GAME_NAME_LEN: usize = 33;
 // ----------------------------- GameMode -----------------------------
 pub const GAME_MODE_SEED: &[u8] = b"GAME_MODE";
 pub const MIN_SLOTS: u8 = 1;
-pub const MAX_SLOTS: u8 = 16;
+pub const MAX_SLOTS: u8 = 10;
 pub const MIN_DIGITS: u8 = 1;
 pub const MAX_DIGITS: u8 = 8;
 pub const MIN_CHOICES: u32 = 2;
+pub type SLOTS = Vec<u32>;
 
 // ----------------------------- Bounty -----------------------------
 pub const BOUNTY_SEED: &[u8] = b"BOUNTY";
