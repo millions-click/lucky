@@ -78,11 +78,9 @@ impl GameMode {
     }
 
     fn verify_winner_choice(winner_choice: u32, slots: u8, choices: u32) -> Result<()> {
-        if slots == 1 {
-            if winner_choice < 1 || winner_choice > choices { return Err(GameModeErrorCode::InvalidWinnerSingleChoice.into()); }
-        } else {
-            if winner_choice > choices { return Err(GameModeErrorCode::InvalidWinnerChoice.into()); }
-        }
+        if winner_choice > choices { return Err(GameModeErrorCode::InvalidWinnerChoice.into()); }
+        if slots == 1 && winner_choice < 1 { return Err(GameModeErrorCode::InvalidWinnerSingleChoice.into()); }
+
         Ok(())
     }
 

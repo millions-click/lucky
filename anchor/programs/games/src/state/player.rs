@@ -4,7 +4,7 @@ use crate::state::{
     round::Round,
 };
 use anchor_lang::prelude::*;
-use crate::constants::{MAX_SLOTS, SLOTS};
+use crate::constants::{MAX_SLOTS};
 
 #[account]
 #[derive(InitSpace)]
@@ -30,11 +30,11 @@ impl Player {
         }
     }
 
-    pub fn play(&mut self, _game: &Game, mode: &GameMode, player_round: Round) -> Result<bool> {
+    pub fn play(&mut self, game: &Game, mode: &GameMode, player_round: Round) -> Result<bool> {
         let nonce = self.rounds + 1;
         let round = player_round.generate_round(nonce, mode, &mode.game)?;
         let winner_choice = if mode.pick_winner { player_round.choices } else { vec![mode.winner_choice; mode.slots as usize] };
-        let winner = self.check_winner(&round, mode, winner_choice);
+        let winner = game.play_round(mode, &round, winner_choice)?;
 
         self.last_round = round;
         self.add_round();
@@ -50,17 +50,5 @@ impl Player {
 
     fn add_round(&mut self) {
         self.rounds += 1;
-    }
-
-    fn check_winner(&self, round: &SLOTS, mode: &GameMode, winner_choice: SLOTS) -> bool {
-        let mut winner = true;
-
-        (0..mode.slots).for_each(|slot| {
-            if winner_choice[slot as usize] != (round[slot as usize] % mode.choices) + 1 {
-                winner = false;
-            }
-        });
-
-        winner
     }
 }

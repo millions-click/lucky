@@ -39,7 +39,7 @@ impl Round {
         let total_choices = mode.choices;
         let winners = &choices[0..slots as usize];
 
-        if winners.iter().any(|&choice| choice == 0 || choice > total_choices) { return Err(RoundErrorCode::InvalidChoice.into()); }
+        if winners.iter().any(|&choice| choice == 0 || choice > total_choices) { return Err(RoundErrorCode::InvalidPlayerChoice.into()); }
         Ok(())
     }
 

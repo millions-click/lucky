@@ -19,6 +19,9 @@ pub enum GameErrorCode {
 
     #[msg("Game is not ended")]
     GameNotEnded,
+
+    #[msg("Unimplemented")]
+    Unimplemented,
 }
 
 #[error_code]
@@ -72,5 +75,5 @@ pub enum RoundErrorCode {
     InvalidSeed,
 
     #[msg("Invalid choice")]
-    InvalidChoice,
+    InvalidPlayerChoice,
 }

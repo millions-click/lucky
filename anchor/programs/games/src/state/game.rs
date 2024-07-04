@@ -1,5 +1,7 @@
+use crate::state::game_mode::GameMode;
 use crate::errors::GameErrorCode;
-use crate::constants::{GAME_NAME_MAX_LEN, GAME_NAME_MIN_LEN};
+use crate::constants::{GAME_NAME_MAX_LEN, GAME_NAME_MIN_LEN, SLOTS};
+use crate::utils::number::range_it;
 use anchor_lang::prelude::*;
 
 #[derive(InitSpace, AnchorSerialize, AnchorDeserialize, Clone, PartialEq)]
@@ -115,5 +117,100 @@ impl Game {
         if name.len() < GAME_NAME_MIN_LEN { return Err(GameErrorCode::InvalidName.into()); }
 
         Ok(())
+    }
+
+    pub fn play_round(&self, mode: &GameMode, round: &SLOTS, winner_choice: SLOTS) -> Result<bool> {
+        self.mode.play_round(self, mode, round, winner_choice)
+    }
+}
+
+impl GameType {
+    pub fn play_round(&self, game: &Game, mode: &GameMode, round: &SLOTS, winner_choice: SLOTS) -> Result<bool> {
+        match self {
+            GameType::SinglePlayer => Self::single_player(game, mode, round, winner_choice),
+            GameType::MultiPlayer => Self::multi_player(game, mode, round, winner_choice),
+        }
+    }
+
+    fn single_player(game: &Game, mode: &GameMode, round: &SLOTS, winner_choice: SLOTS) -> Result<bool> {
+        // Game => Single Player
+        game.algorithm.play_round(game, mode, round, winner_choice)
+    }
+
+    fn multi_player(_game: &Game, _mode: &GameMode, _round: &SLOTS, _winner_choice: SLOTS) -> Result<bool> {
+        return Err(GameErrorCode::Unimplemented.into());
+    }
+}
+
+impl GameRound {
+    pub fn play_round(&self, game: &Game, mode: &GameMode, round: &SLOTS, winner_choice: SLOTS) -> Result<bool> {
+        match self {
+            GameRound::Single => Self::single(game, mode, round, winner_choice),
+            GameRound::Multiple => Self::multiple(game, mode, round, winner_choice),
+        }
+    }
+
+    fn single(game: &Game, mode: &GameMode, round: &SLOTS, winner_choice: SLOTS) -> Result<bool> {
+        // Game => Single Player > Random > Single Round
+        game.choice.play_round(game, mode, round, winner_choice)
+    }
+
+    fn multiple(_game: &Game, _mode: &GameMode, _round: &SLOTS, _winner_choice: SLOTS) -> Result<bool> {
+        return Err(GameErrorCode::Unimplemented.into());
+    }
+}
+
+impl GameChoice {
+    pub fn play_round(&self, game: &Game, mode: &GameMode, round: &SLOTS, winner_choice: SLOTS) -> Result<bool> {
+        match self {
+            GameChoice::Single => Self::single(game, mode, round, winner_choice),
+            GameChoice::Multiple => Self::multiple(game, mode, round, winner_choice),
+        }
+    }
+
+    fn single(_game: &Game, mode: &GameMode, round: &SLOTS, winner_choice: SLOTS) -> Result<bool> {
+        // Game => Single Player > Random > Single Round > Single Choice
+        msg!("🎰 Playing lucky game");
+        msg!("⚙️ Game Settings | Single Player > Random > Single Round > Single Choice");
+        msg!("🎰 Mode: slots: {}, digits: {}, choices: {}, winner_choice: {}, pick_winner: {}", mode.slots, mode.digits, mode.choices, mode.winner_choice, mode.pick_winner);
+        msg!("🎰 Original Round: {:?}", round);
+
+        let shoots = round.iter().map(|&choice| range_it(choice, mode.choices)).collect::<SLOTS>();
+
+        msg!("🎰 Ranged Round: {:?}", shoots);
+        msg!("🎰 Winner Choice: {:?}", winner_choice);
+
+        let result = shoots.iter().fold(*shoots.first().unwrap_or(&0), |prev, &current| if prev == current { current } else { mode.choices + 1 });
+        let winner = winner_choice[0];
+
+        msg!("🎰 Result: {}, Winner: {}", result, winner);
+
+        let is_winner = if result > mode.choices { false } else { winner == 0 || result == winner };
+
+        msg!("🎰 Is Winner: {}", is_winner);
+
+        Ok(is_winner)
+    }
+
+    fn multiple(_game: &Game, _mode: &GameMode, _round: &SLOTS, _winner_choice: SLOTS) -> Result<bool> {
+        return Err(GameErrorCode::Unimplemented.into());
+    }
+}
+
+impl GameAlgorithm {
+    pub fn play_round(&self, game: &Game, mode: &GameMode, round: &SLOTS, winner_choice: SLOTS) -> Result<bool> {
+        match self {
+            GameAlgorithm::Random => Self::random(game, mode, round, winner_choice),
+            GameAlgorithm::Deterministic => Self::deterministic(game, mode, round, winner_choice),
+        }
+    }
+
+    fn random(game: &Game, mode: &GameMode, round: &SLOTS, winner_choice: SLOTS) -> Result<bool> {
+        // Game => Single Player > Random
+        game.round.play_round(game, mode, round, winner_choice)
+    }
+
+    fn deterministic(_game: &Game, _mode: &GameMode, _round: &SLOTS, _winner_choice: SLOTS) -> Result<bool> {
+        return Err(GameErrorCode::Unimplemented.into());
     }
 }

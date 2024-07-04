@@ -108,123 +108,125 @@ describe('Player', () => {
     };
   });
 
-  describe('Preparing the Stronghold', () => {
-    const payer = Keypair.generate();
+  describe('Preparing ENV', () => {
+    describe('Stronghold', () => {
+      const payer = Keypair.generate();
 
-    beforeAll(async () => {
-      const tx = await connection.requestAirdrop(
-        payer.publicKey,
-        (TREASURE_FORGE_COST + 0.1) * LAMPORTS_PER_SOL
-      );
-      await connection.confirmTransaction(tx);
-    });
-
-    it('Should forge a stronghold for the gem', async () => {
-      const { gem } = accounts;
-      const treasure = await program.account.treasure.fetchNullable(
-        getTreasurePDA()
-      );
-
-      const timeout = new Promise((resolve) => {
-        const id = setTimeout(() => resolve(id), treasure ? 0 : 1000);
+      beforeAll(async () => {
+        const tx = await connection.requestAirdrop(
+          payer.publicKey,
+          (TREASURE_FORGE_COST + 0.1) * LAMPORTS_PER_SOL
+        );
+        await connection.confirmTransaction(tx);
       });
 
-      clearTimeout(((await timeout) as NodeJS.Timeout).unref());
-      await program.methods
-        .forgeStronghold()
-        .accounts({ gem, supplier: payer.publicKey })
-        .signers([payer])
-        .rpc();
+      it('Should forge a stronghold for the gem', async () => {
+        const { gem } = accounts;
+        const treasure = await program.account.treasure.fetchNullable(
+          getTreasurePDA()
+        );
+
+        const timeout = new Promise((resolve) => {
+          const id = setTimeout(() => resolve(id), treasure ? 0 : 1000);
+        });
+
+        clearTimeout(((await timeout) as NodeJS.Timeout).unref());
+        await program.methods
+          .forgeStronghold()
+          .accounts({ gem, supplier: payer.publicKey })
+          .signers([payer])
+          .rpc();
+      });
     });
-  });
 
-  describe('Preparing the Escrow', () => {
-    const payer = Keypair.generate();
+    describe('Escrow', () => {
+      const payer = Keypair.generate();
 
-    beforeAll(async () => {
-      const tx = await connection.requestAirdrop(
-        payer.publicKey,
-        (TRADER_LAUNCH_COST + 0.1) * LAMPORTS_PER_SOL
-      );
-      await connection.confirmTransaction(tx);
-    });
-
-    it('Should launch a trader for the gem', async () => {
-      const { trader } = accounts;
-      const treasure = await program.account.treasure.fetchNullable(
-        getTreasurePDA()
-      );
-
-      const timeout = new Promise((resolve) => {
-        const id = setTimeout(() => resolve(id), treasure ? 0 : 1000);
+      beforeAll(async () => {
+        const tx = await connection.requestAirdrop(
+          payer.publicKey,
+          (TRADER_LAUNCH_COST + 0.1) * LAMPORTS_PER_SOL
+        );
+        await connection.confirmTransaction(tx);
       });
 
-      clearTimeout(((await timeout) as NodeJS.Timeout).unref());
-      await program.methods
-        .launchEscrow()
-        .accounts({ trader, supplier: payer.publicKey })
-        .signers([payer])
-        .rpc();
-    });
-  });
+      it('Should launch a trader for the gem', async () => {
+        const { trader } = accounts;
+        const treasure = await program.account.treasure.fetchNullable(
+          getTreasurePDA()
+        );
 
-  describe('Preparing the game', () => {
-    const name = encodeName('Awesome Game Modes');
+        const timeout = new Promise((resolve) => {
+          const id = setTimeout(() => resolve(id), treasure ? 0 : 1000);
+        });
 
-    it('Should create and activate game', async () => {
-      await program.methods
-        .createGame(name)
-        .accounts({ owner: supplier.publicKey, secret: secret.publicKey })
-        .signers([supplier])
-        .rpc();
-
-      await program.methods
-        .activateGame()
-        .accounts({ owner: supplier.publicKey, secret: secret.publicKey })
-        .signers([supplier])
-        .rpc();
+        clearTimeout(((await timeout) as NodeJS.Timeout).unref());
+        await program.methods
+          .launchEscrow()
+          .accounts({ trader, supplier: payer.publicKey })
+          .signers([payer])
+          .rpc();
+      });
     });
 
-    it('Should create a game mode', async () => {
-      await program.methods
-        .addGameMode(seed, settings)
-        .accounts({ owner: supplier.publicKey, secret: secret.publicKey })
-        .signers([supplier])
-        .rpc();
-    });
-  });
+    describe('Game', () => {
+      const name = encodeName('Awesome Game Modes');
 
-  describe('Preparing the bounty', () => {
-    beforeAll(async () => {
-      const reserve = await getTokenAccount(supplier.publicKey, gem);
-      await mintTo(reserve.address, toBN(100_000_000, DECIMALS), gem);
+      it('Should create and activate game', async () => {
+        await program.methods
+          .createGame(name)
+          .accounts({ owner: supplier.publicKey, secret: secret.publicKey })
+          .signers([supplier])
+          .rpc();
 
-      accounts['reserve'] = reserve.address;
-    });
+        await program.methods
+          .activateGame()
+          .accounts({ owner: supplier.publicKey, secret: secret.publicKey })
+          .signers([supplier])
+          .rpc();
+      });
 
-    it('Should initialize a bounty', async () => {
-      const settings = {
-        reward: toBN(1000, DECIMALS),
-        price: toBN(0.5, DECIMALS),
-      };
-
-      await program.methods
-        .issueBounty(settings)
-        .accounts(accounts)
-        .signers([supplier])
-        .rpc();
+      it('Should create a game mode', async () => {
+        await program.methods
+          .addGameMode(seed, settings)
+          .accounts({ owner: supplier.publicKey, secret: secret.publicKey })
+          .signers([supplier])
+          .rpc();
+      });
     });
 
-    it(`Should init bounty vault and transport the gems from reserve`, async () => {
-      const { bounty: bountyPDA } = accounts;
-      const bounty = await program.account.bounty.fetch(bountyPDA);
-      const amount = BigInt(bounty.reward * 10);
+    describe('Bounty', () => {
+      beforeAll(async () => {
+        const reserve = await getTokenAccount(supplier.publicKey, gem);
+        await mintTo(reserve.address, toBN(100_000_000, DECIMALS), gem);
 
-      await program.methods
-        .fundBounty(new BN(amount))
-        .accounts(accounts)
-        .signers([supplier])
-        .rpc();
+        accounts['reserve'] = reserve.address;
+      });
+
+      it('Should initialize a bounty', async () => {
+        const settings = {
+          reward: toBN(1000, DECIMALS),
+          price: toBN(0.5, DECIMALS),
+        };
+
+        await program.methods
+          .issueBounty(settings)
+          .accounts(accounts)
+          .signers([supplier])
+          .rpc();
+      });
+
+      it(`Should init bounty vault and transport the gems from reserve`, async () => {
+        const { bounty: bountyPDA } = accounts;
+        const bounty = await program.account.bounty.fetch(bountyPDA);
+        const amount = BigInt(bounty.reward * 10);
+
+        await program.methods
+          .fundBounty(new BN(amount))
+          .accounts(accounts)
+          .signers([supplier])
+          .rpc();
+      });
     });
   });
 

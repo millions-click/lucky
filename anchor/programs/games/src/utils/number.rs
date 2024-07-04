@@ -5,6 +5,10 @@ pub fn find_range(digits: u8) -> (u64, u64) {
     (min, max)
 }
 
+pub fn range_it(value: u32, max: u32) -> u32 {
+    if value <= max { return value; }
+    max - (value % max)
+}
 pub fn range(value: u64, digits: u8) -> u32 {
     let (min, max) = find_range(digits);
     if value >= min && value < max { return value as u32; }
