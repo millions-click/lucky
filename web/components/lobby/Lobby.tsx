@@ -1,42 +1,25 @@
 'use client';
 
-import { WalletButton } from '../solana/solana-provider';
 import * as React from 'react';
-import { ReactNode, Suspense, useEffect, useRef, useState } from 'react';
-import Link from 'next/link';
-import { usePathname } from 'next/navigation';
+
 import Image from 'next/image';
-import { AccountChecker } from '../account/account-ui';
+
 import { IoIosArrowForward } from 'react-icons/io';
-import { HiOutlineWallet } from 'react-icons/hi2';
-import { HiOutlineCog } from 'react-icons/hi';
-import { IoStorefrontOutline } from 'react-icons/io5';
-import { HiArrowLeftStartOnRectangle } from 'react-icons/hi2';
+
 import bonny from '../../public/Img/bunny.svg';
-import map from '../../public/img/mapa-vial 1.svg';
 import ChatLucky from './ChatLucky';
 import Tablet from './Tablet';
 
-import {
-  ClusterChecker,
-  ClusterUiSelect,
-  ExplorerLink,
-} from '../cluster/cluster-ui';
-import toast, { Toaster } from 'react-hot-toast';
-export function Lobby({
-  children,
-  links,
-  env = 'development',
-}: {
-  children: ReactNode;
-  links: { label: string; path: string; program?: boolean }[];
-  env?: string;
-}) {
+export function Lobby() {
   return (
     <div className="block">
       <div
         className="absolute left-0 top-1/2 transform -translate-y-1/2 "
-        onClick={() => document.getElementById('my_modal_2').showModal()}
+        onClick={() =>
+          (
+            document.getElementById('my_modal_2') as HTMLDialogElement
+          ).showModal()
+        }
       >
         <Image
           className="relative z-10 transform cursor-pointer"
@@ -44,10 +27,14 @@ export function Lobby({
           alt="Lucky"
           style={{ height: '200%' }}
         />
-      </div>  
+      </div>
       <button
         className="absolute left-0 top-1/2 transform -translate-y-1/2 bg-orange-500 py-6 rounded-r-lg shadow-lg mt-60"
-        onClick={() => document.getElementById('my_modal_1').showModal()}
+        onClick={() =>
+          (
+            document.getElementById('my_modal_1') as HTMLDialogElement
+          ).showModal()
+        }
       >
         <IoIosArrowForward size={30} color="#ffe9b0" />
       </button>
@@ -59,112 +46,4 @@ export function Lobby({
       </dialog>
     </div>
   );
-}
-
-export function AppModal({
-  children,
-  title,
-  hide,
-  show,
-  submit,
-  submitDisabled,
-  submitLabel,
-}: {
-  children: ReactNode;
-  title: string;
-  hide: () => void;
-  show: boolean;
-  submit?: () => void;
-  submitDisabled?: boolean;
-  submitLabel?: string;
-}) {
-  const dialogRef = useRef<HTMLDialogElement | null>(null);
-
-  useEffect(() => {
-    if (!dialogRef.current) return;
-    if (show) {
-      dialogRef.current.showModal();
-    } else {
-      dialogRef.current.close();
-    }
-  }, [show, dialogRef]);
-
-  return (
-    <dialog className="modal" ref={dialogRef}>
-      <div className="modal-box space-y-5">
-        <h3 className="font-bold text-lg">{title}</h3>
-        {children}
-        <div className="modal-action">
-          <div className="join space-x-2">
-            {submit ? (
-              <button
-                className="btn btn-xs lg:btn-md btn-primary"
-                onClick={submit}
-                disabled={submitDisabled}
-              >
-                {submitLabel || 'Save'}
-              </button>
-            ) : null}
-            <button onClick={hide} className="btn">
-              Close
-            </button>
-          </div>
-        </div>
-      </div>
-    </dialog>
-  );
-}
-
-export function AppHero({
-  children,
-  title,
-  subtitle,
-}: {
-  children?: ReactNode;
-  title: ReactNode;
-  subtitle: ReactNode;
-}) {
-  return (
-    <div className="hero py-[64px]">
-      <div className="hero-content text-center">
-        <div className="max-w-2xl">
-          {typeof title === 'string' ? (
-            <h1 className="text-5xl font-bold">{title}</h1>
-          ) : (
-            title
-          )}
-          {typeof subtitle === 'string' ? (
-            <p className="py-6">{subtitle}</p>
-          ) : (
-            subtitle
-          )}
-          {children}
-        </div>
-      </div>
-    </div>
-  );
-}
-
-export function ellipsify(str = '', len = 4) {
-  if (str.length > 30) {
-    return (
-      str.substring(0, len) + '..' + str.substring(str.length - len, str.length)
-    );
-  }
-  return str;
-}
-
-export function useTransactionToast() {
-  return (signature: string, message = 'Transaction sent') => {
-    toast.success(
-      <div className={'text-center'}>
-        <div className="text-lg">{message}</div>
-        <ExplorerLink
-          path={`tx/${signature}`}
-          label={'View Transaction'}
-          className="btn btn-xs btn-primary"
-        />
-      </div>
-    );
-  };
 }
