@@ -1,25 +1,26 @@
 'use client';
 
-import { useMemo } from 'react';
 import { useWallet } from '@solana/wallet-adapter-react';
-import { getVaultAccountOwnerPDA } from '@luckyland/anchor';
-
 import { WalletButton } from '@/providers';
 import { AppHero, ellipsify } from '../ui/ui-layout';
 import { ExplorerLink } from '../cluster/cluster-ui';
-import { useVaultProgram } from './vault-data-access';
-import { VaultProgram } from './vault-ui';
+import { useStoreProgram } from './store-data-access';
+import { StoreCreate, StoreList } from './store-ui';
+import { useMemo } from 'react';
+import { getMintAuthorityPDA } from '@luckyland/anchor';
 
-export default function VaultFeature() {
+export default function StoreFeature() {
   const { publicKey } = useWallet();
-  const { programId } = useVaultProgram();
-  const ownerPDA = useMemo(() => getVaultAccountOwnerPDA(), []);
+  const { programId } = useStoreProgram();
+  const ownerPDA = useMemo(() => getMintAuthorityPDA(), []);
 
   return publicKey ? (
     <div>
       <AppHero
-        title="Vault"
-        subtitle={'Run the program by clicking the "Run program" button.'}
+        title="Store"
+        subtitle={
+          'InitVault a new account by clicking the "InitVault" button. The state of a account is stored on-chain and can be manipulated by calling the program\'s methods (increment, decrement, set, and close).'
+        }
       >
         <div className="flex flex-row gap-8 items-center justify-center mb-6">
           <p className="tooltip tooltip-primary" data-tip="Program">
@@ -35,14 +36,15 @@ export default function VaultFeature() {
             />
           </p>
         </div>
+        <StoreCreate owner={publicKey} />
       </AppHero>
-      <VaultProgram player={publicKey} />
+      <StoreList />
     </div>
   ) : (
     <div className="max-w-4xl mx-auto">
       <div className="hero py-[64px]">
         <div className="hero-content text-center">
-          <WalletButton className="btn btn-primary" />
+          <WalletButton />
         </div>
       </div>
     </div>

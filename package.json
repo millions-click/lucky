@@ -1,6 +1,6 @@
 {
   "name": "@luckyland/source",
-  "version": "0.0.0",
+  "version": "0.1.1",
   "license": "MIT",
   "scripts": {
     "anchor": "nx run anchor:anchor",
@@ -10,14 +10,17 @@
     "feature": "nx generate @solana-developers/preset-react:feature",
     "build": "nx build web",
     "dev": "nx serve web",
-    "start": "next start ./dist/web"
+    "start": "next start ./dist/web",
+    "release": "standard-version"
   },
   "private": true,
   "dependencies": {
+    "@chainlink/solana-sdk": "^0.2.2",
     "@coral-xyz/anchor": "^0.30.0",
     "@metaplex-foundation/mpl-token-metadata": "^3.2.1",
     "@metaplex-foundation/umi": "^0.9.2",
     "@metaplex-foundation/umi-bundle-defaults": "^0.9.2",
+    "@metaplex-foundation/umi-web3js-adapters": "^0.9.2",
     "@solana-developers/preset-next": "3.0.1",
     "@solana/spl-token": "0.4.6",
     "@solana/wallet-adapter-base": "^0.9.23",
@@ -72,6 +75,7 @@
     "nx": "19.0.0",
     "postcss": "8.4.21",
     "prettier": "^2.6.2",
+    "standard-version": "^9.5.0",
     "tailwindcss": "3.2.7",
     "ts-jest": "^29.1.0",
     "ts-node": "10.9.1",
