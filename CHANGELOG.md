@@ -2,6 +2,21 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [0.1.7](///compare/v0.1.6...v0.1.7) (2024-07-05)
+
+
+### Features
+
+* **anchor:** 👻 Game | Decision Tree 6c99f86
+* **anchor:** 👻 Game Name ba90b3a
+* **scripts:** 👻 Fund | Bounty Feature c54182e
+* **scripts:** 👻 Games, Modes, and Bounties | Deploy & Fund e83eb5e
+* **scripts:** 👻 Loader | Game Feature 851a04e
+* **scripts:** 👻 Mint When Necessary | GEM & TRADER. 2707453
+* **scripts:** 👻 Publish | Bounty Feature ee66bf9
+* **scripts:** 👻 Upsert | Game Mode Feature 3e9d7e3
+* **web:** 👻 Download Games Tree dcaf284
+
 ### [0.1.6](///compare/v0.1.5...v0.1.6) (2024-07-04)
 
 
