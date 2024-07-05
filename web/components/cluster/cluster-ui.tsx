@@ -30,6 +30,28 @@ export function ExplorerLink({
   );
 }
 
+export function ExplorerWrapper({
+  children,
+  path,
+  className,
+}: {
+  children: ReactNode;
+  path: string;
+  className?: string;
+}) {
+  const { getExplorerUrl } = useCluster();
+  return (
+    <a
+      href={getExplorerUrl(path)}
+      target="_blank"
+      rel="noopener noreferrer"
+      className={className ? className : `link font-mono`}
+    >
+      {children}
+    </a>
+  );
+}
+
 export function ClusterChecker({ children }: { children: ReactNode }) {
   const { cluster } = useCluster();
   const { connection } = useConnection();

@@ -1,10 +1,12 @@
 import { PublicKey } from '@solana/web3.js';
+import { getAccount } from '@solana/spl-token';
 import { useConnection } from '@solana/wallet-adapter-react';
 import { useQuery } from '@tanstack/react-query';
-import type { TokenAccount } from './splt-token.d';
-import { getAccount } from '@solana/spl-token';
-import { getToken } from './use-get-token';
 
+import { getToken } from '@utils/token';
+import { fromBigInt } from '@luckyland/anchor';
+
+import type { TokenAccount } from './splt-token.d';
 /*
  * @desc Custom hook to get all details of a token account
  *
@@ -34,7 +36,8 @@ export function useGetTokenAccount({ address }: { address: PublicKey }) {
 
       return {
         ...token,
-        amount: Number(account.amount / BigInt(10 ** token.decimals)),
+        balance: account.amount,
+        amount: fromBigInt(account.amount, token.decimals),
         address: address.toString(),
       };
     },
