@@ -69,7 +69,7 @@
   }
 
   &[data-result="4"]::before {
-    transform: rotate(179deg);
+    transform: rotate(180deg);
   }
 
   &[data-result="3"]::before {
@@ -221,7 +221,7 @@
 
     &[data-area="i4"]::before {
       bottom: 30%;
-      right: 32%;
+      right: 35%;
     }
 
     &.active {
