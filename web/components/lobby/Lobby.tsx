@@ -22,10 +22,9 @@ export function Lobby() {
         }
       >
         <Image
-          className="relative z-10 transform cursor-pointer"
+          className="h-full  z-10 transform cursor-pointer -ml-6 mt-10"
           src={bonny}
           alt="Lucky"
-          style={{ height: '200%' }}
         />
       </div>
       <button

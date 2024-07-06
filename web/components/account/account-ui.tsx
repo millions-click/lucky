@@ -47,19 +47,24 @@ export function AccountBalanceCheck({ address }: { address: PublicKey }) {
   }
   if (query.isError || !query.data) {
     return (
-      <div className="alert alert-warning text-warning-content/80 rounded-none flex justify-center">
-        <span>
-          You are connected to <strong>{cluster.name}</strong> but your account
-          is not found on this cluster.
-        </span>
-        <button
-          className="btn btn-xs btn-neutral"
-          onClick={() =>
-            mutation.mutateAsync(1).catch((err) => console.log(err))
-          }
-        >
-          Request Airdrop
-        </button>
+      <div className="relative w-full h-full">
+        <div className="absolute top-0 left-0 w-full z-50">
+          <div className="alert alert-warning text-warning-content/80 rounded-none flex justify-center">
+            <span>
+              You are connected to <strong>{cluster.name}</strong> but your
+              account is not found on this cluster.
+            </span>
+            <button
+              className="btn btn-xs btn-neutral"
+              onClick={() =>
+                mutation.mutateAsync(1).catch((err) => console.log(err))
+              }
+            >
+              Request Airdrop
+            </button>
+          </div>
+        </div>
+        {/* Aquí va el resto del contenido del mockup */}
       </div>
     );
   }

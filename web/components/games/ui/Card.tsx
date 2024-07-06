@@ -58,7 +58,7 @@ export function GameCard({
           <h2 className="card-title justify-center text-3xl">
             {name}
             <div className="absolute top-0 px-4 py-2 w-full">
-              <StateSwitch pda={pda} active={active} />
+              <StateSwitch pda={pda} active={active} /> 
             </div>
           </h2>
 

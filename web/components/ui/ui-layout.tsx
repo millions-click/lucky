@@ -3,86 +3,68 @@
 import { WalletButton } from '@/providers';
 import * as React from 'react';
 import { ReactNode, Suspense, useEffect, useRef, useState } from 'react';
+
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import Image from 'next/image';
 import { AccountChecker } from '../account/account-ui';
-import { FaXTwitter } from 'react-icons/fa6';
-import { HiOutlineWallet } from 'react-icons/hi2';
-import { FaTelegram } from 'react-icons/fa6';
 import {
   ClusterChecker,
   ClusterUiSelect,
   ExplorerLink,
 } from '../cluster/cluster-ui';
 import toast, { Toaster } from 'react-hot-toast';
+import { HiOutlineWallet } from 'react-icons/hi2';
+import { FaXTwitter } from 'react-icons/fa6';
+import { FaTelegram } from 'react-icons/fa';
+
+import { decodeName } from '@luckyland/anchor';
+
 import dinero from '../../public/img/dinero.svg';
-import map from '../../public/img/mapa-vial 1.svg';
-import token from '../../public/img/grafico-circular 1.svg';
-import copa from '../../public/img/futbol-americano 1.svg';
-import reloj from '../../public/img/reloj.svg';
-import polvo from '../../public/img/polvo (1).svg';
-import plata from '../../public/img/plata.svg';
-import game from '../../public/img/game.svg';
-// import { usePathname } from 'next/navigation';
+import './css/style.css';
+
 export function UiLayout({
   children,
   links,
   env = 'development',
 }: {
   children: ReactNode;
-  links: { label: string; path: string; program?: boolean }[];
+  links: { label: string; path: string; program?: boolean; img?: string }[];
   env?: string;
 }) {
   const pathname = usePathname();
-  const [isOpen, setIsOpen] = useState(false);
-  const [lobby, setLobby] = useState(false);
-  const [game, setGame] = useState(false);
-  const toggleMenu = () => {
-    setIsOpen(!isOpen);
-  };
+  const [backgroundImage, setBackgroundImage] = useState('/img/fondo.svg');
+
+
+  console.log(decodeName,'datos');
+  
   useEffect(() => {
-    if (pathname === '/') {
-      setLobby(true);
-    } else {
-      setLobby(false);
+    switch (pathname) {
+      case '/lobby':
+        setBackgroundImage('/img/lobby.svg');
+        break;
+      case '/about':
+        setBackgroundImage('/img/about-background.svg');
+        break;
+      default:
+        setBackgroundImage('/img/fondo.svg');
     }
   }, [pathname]);
-
-  useEffect(() => {
-    if (pathname === '/game') {
-      setGame(true);
-    } else {
-      setGame(false);
-    }
-  }, [pathname]);
-
   return (
     <div
-      className={`${
-        lobby
-          ? "bg-[url('/img/fondo.svg')]"
-          : game
-          ?  "bg-[url('/img/game.svg')]"
-          : "bg-[url('/img/lobby.svg')]"
-      } bg-center bg-no-repeat bg-cover min-h-screen drawer`}
+      className="drawer"
+      style={{
+        backgroundImage: `url(${backgroundImage})`,
+        backgroundSize: 'cover',
+        backgroundPosition: 'top',
+      }}
     >
-      <input
-        id="my-drawer-3"
-        type="checkbox"
-        className="drawer-toggle appearance-none h-8 w-8 bg-orange-400 border-2 border-solid border-orange-500 rounded-lg checked:bg-orange-500 checked:border-transparent focus:outline-none"
-      />
-
-      <div className=" drawer-content  flex flex-col">
-        <div className="w-full justify-between navbar">
-          <div className="relative">
-            <div className="block">
-              <div
-                className={`flex items-center cursor-pointer p-2 ${
-                  isOpen ? 'bg-black bg-opacity-40 rounded-t-lg ' : ''
-                }`}
-                onClick={toggleMenu}
-              >
+      <div className="drawer-content flex flex-col">
+        {/* Navbar */}
+        <div className="w-full navbar flex justify-center items-center">
+          <div className="flex-1 ">
+            <details className="dropdown w-3/4">
+              <summary className="flex cursor-pointer m-1 items-center">
                 <Image
                   className="z-10"
                   src={dinero}
@@ -91,119 +73,62 @@ export function UiLayout({
                   height={50}
                 />
                 <p
-                  className="-m-2 z-0 text-white bg-[#3c1a06] px-2 border-2 border-solid border-[#f07a0c] rounded-lg"
+                  className="-ml-2 mt-2 z-0 text-white bg-[#3c1a06] px-2 border-2 border-solid border-[#f07a0c] rounded-lg text-base"
                   style={{
                     boxShadow:
                       '0 0 10px rgba(240, 122, 12, 0.8), 0 0 20px rgba(240, 122, 12, 0.6), 0 0 30px rgba(240, 122, 12, 0.4)',
                   }}
                 >
-                  {lobby ? (
-                    '1252515'
-                  ) : (
-                    <div className="flex">
-                      <Image
-                        className="z-10"
-                        src={reloj}
-                        alt="Dinero"
-                        width={20}
-                        height={20}
-                      />
-                      1:00:00
-                    </div>
-                  )}
+                  123,567,00
                 </p>
+              </summary>
+              <div className="menu dropdown-content bg-black bg-opacity-50  rounded-xl z-[1] w-52 p-2 shadow ">
+                <ul className="menu p-4 w-full">
+                  {links.map(({ label, path, program, img }) => (
+                    <li key={path}>
+                      <Link
+                        className={`text-base font-semibold	text-white ${
+                          pathname.startsWith(path)
+                            ? 'bg-opacity-100 bg-[#f07a0c] rounded-lg p-2'
+                            : ''
+                        } `}
+                        href={path}
+                      >
+                        {img && (
+                          <Image
+                            src={img}
+                            alt={`${label} icon`}
+                            className="min-h-6 min-w-6 mr-2"
+                          />
+                        )}
+                        {label}
+                      </Link>
+                    </li>
+                  ))}
+                </ul>
               </div>
-            </div>
-            {lobby ? (
-              isOpen && (
-                <div className="absolute top-12 right-0 bg-black bg-opacity-40 rounded-b-lg p-4 shadow-lg space-y-2">
-                  <div className="text-white hover:text-orange-400 cursor-pointer flex">
-                    <Image className="z-10" src={map} alt="Map" />
-                    Roadmap
-                  </div>
-                  <div className="text-white hover:text-orange-400 cursor-pointer flex">
-                    <Image className="z-10" src={token} alt="token" />
-                    Tokenomics
-                  </div>
-                  <div className="text-white hover:text-orange-400 cursor-pointer flex">
-                    <Image className="z-10" src={copa} alt="cup" />
-                    Leaderboard
-                  </div>
-                </div>
-              )
-            ) : (
-              <></>
-            )}
+            </details>
           </div>
-          {lobby ? (
-            <div className="flex-none bg-[#f07a0c] rounded-lg">
-              <label
-                htmlFor="my-drawer-3"
-                aria-label="open sidebar"
-                className="btn btn-square btn-ghost"
-              >
-                <HiOutlineWallet
-                  color="#ffe9b0"
-                  className="inline-block w-8 h-8"
-                />
-              </label>
-            </div>
-          ) : (
-            <></>
-          )}
+          <details className="dropdown dropdown-end">
+            <summary className=" m-1 flex justify-center items-center bg-[#f07a0c] rounded-lg p-2 cursor-pointer">
+              <HiOutlineWallet
+                color="#ffe9b0"
+                className="inline-block w-8 h-8"
+              />
+            </summary>
+            <ul className="menu dropdown-content bg-base-100 rounded-box z-[1] w-52 p-2 shadow">
+              <div className="flex-none space-x-2">
+                <WalletButton />
+                {env !== 'production' && <ClusterUiSelect />}
+              </div>
+            </ul>
+          </details>
         </div>
-        {lobby ? (
-          <></>
-        ) : (
-          <div className="m-2 relative w-20 p-2">
-            <p
-              className="-m-2 z-0 text-white bg-[#3c1a06] px-2 border-2 border-solid border-[#f07a0c] rounded-lg"
-              style={{
-                boxShadow:
-                  '0 0 10px rgba(240, 122, 12, 0.8), 0 0 20px rgba(240, 122, 12, 0.6), 0 0 30px rgba(240, 122, 12, 0.4)',
-              }}
-            >
-              <div className="flex">
-                <Image
-                  className="z-10 -my-2  mr-2"
-                  src={polvo}
-                  alt="Dinero"
-                  width={30}
-                  height={30}
-                />
-                10
-              </div>
-            </p>
-          </div>
-        )}
-        {lobby ? (
-          <></>
-        ) : (
-          <div className="m-2 relative w-20 p-2">
-            <p
-              className="-m-2 z-0 text-white bg-[#3c1a06] px-2 border-2 border-solid border-[#f07a0c] rounded-lg"
-              style={{
-                boxShadow:
-                  '0 0 10px rgba(240, 122, 12, 0.8), 0 0 20px rgba(240, 122, 12, 0.6), 0 0 30px rgba(240, 122, 12, 0.4)',
-              }}
-            >
-              <div className="flex">
-                <Image
-                  className="z-10 -my-2 mr-2"
-                  src={plata}
-                  alt="Dinero"
-                  width={30}
-                  height={30}
-                />
-                35
-              </div>
-            </p>
-          </div>
-        )}
+        {/* Page content here */}
         <ClusterChecker>
           <AccountChecker />
         </ClusterChecker>
-        <div className="flex-grow min-h-[calc(100dvh_-_114px)] lg:min-h-[calc(100dvh_-_120px)] flex items-center justify-center">
+        <div className="flex flex-col justify-center items-center min-h-[calc(85dvh_-_60px)] ">
           <Suspense
             fallback={
               <div className="text-center my-32">
@@ -215,40 +140,13 @@ export function UiLayout({
           </Suspense>
           <Toaster position="bottom-right" />
         </div>
-        <footer className="footer footer-left p-4 text-while bg-black bg-opacity-40 rounded-t-lg ">
-          <aside className="flex">
+
+        <footer className="footer footer-center p-4  text-base-content flex">
+          <aside className="flex justify-start">
             <FaXTwitter color="#FFF" size={20} />
             <FaTelegram color="#FFF" size={20} />
           </aside>
         </footer>
-      </div>
-      {/* routes */}
-
-      <div className="drawer-side">
-        <label
-          htmlFor="my-drawer-3"
-          aria-label="close sidebar"
-          className="drawer-overlay"
-        ></label>
-        <div className={'flexNone'}>
-          <WalletButton />
-          {env !== 'production' && <ClusterUiSelect />}
-        </div>
-        <ul className="menu p-4 w-80 min-h-full bg-base-200">
-          {/* Sidebar content here */}
-          {links.map(({ label, path, program }) => (
-            <li key={path}>
-              <Link
-                className={`${pathname.startsWith(path) ? 'active' : ''} ${
-                  program ? 'border border-accent' : ''
-                }`}
-                href={path}
-              >
-                {label}
-              </Link>
-            </li>
-          ))}
-        </ul>
       </div>
     </div>
   );
