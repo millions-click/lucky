@@ -64,7 +64,7 @@ export function PlayButton({
 
   return (
     <button
-      className={`${styles.border} bg-[url('/img/push-me/play.svg')] bg-center bg-no-repeat bg-cover`}
+      className={`${styles.border} bg-[url('/img/entry-lock/locker.svg')] bg-center bg-no-repeat bg-cover`}
       onMouseDown={start}
       onMouseUp={play}
       onTouchStart={start}
@@ -76,11 +76,9 @@ export function PlayButton({
       data-result={result || undefined}
     >
       <div className={`${styles.door} w-full h-full`}>
-        <div className={`${styles.button}`}>
-          Push
-          <br />
-          Me
-        </div>
+        <div
+          className={`${styles.button} bg-[url('/img/entry-lock/front.svg')] bg-center bg-no-repeat bg-cover`}
+        />
         {values.map((value, i) => (
           <div
             key={i}

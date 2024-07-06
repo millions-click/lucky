@@ -41,7 +41,7 @@
   }
 
   &::before {
-    content: "🥕";
+    content: url("/img/entry-lock/pointer.svg");
     position: absolute;
     top: -2px;
     left: -2px;
@@ -57,7 +57,7 @@
   }
 
   &[data-result="2"]::before {
-    transform: rotate(45deg);
+    transform: rotate(41deg);
   }
 
   &[data-result="6"]::before {
@@ -65,15 +65,15 @@
   }
 
   &[data-result="7"]::before {
-    transform: rotate(135deg);
+    transform: rotate(138deg);
   }
 
   &[data-result="4"]::before {
-    transform: rotate(180deg);
+    transform: rotate(179deg);
   }
 
   &[data-result="3"]::before {
-    transform: rotate(225deg);
+    transform: rotate(220deg);
   }
 
   &[data-result="5"]::before {
@@ -81,7 +81,7 @@
   }
 
   &[data-result="8"]::before {
-    transform: rotate(315deg);
+    transform: rotate(319deg);
   }
 
   &[data-pending="true"]::before {
@@ -139,21 +139,25 @@
 }
 
 .button {
-  @apply text-yellow-300;
-  @apply text-2xl;
+  @apply w-36;
+  @apply h-36;
+  @apply rounded-full;
+
+  position: absolute;
+  overflow: hidden;
   animation: blink 1s linear infinite;
 }
 
 .door {
   display: inline-grid;
   grid-template-areas:
-    ". .  .  .  .  . ."
-    ". .  . i1  .  . ."
-    ". . i8  .  i2 . ."
-    ". i5 . i0  . i6 ."
-    ". . i3  .  i7 . ."
-    ". .  . i4  .  . ."
-    ". .  .  .  .  . .";
+    ".  .  . i1  .  .  ."
+    ". i8  .  .  . i2  ."
+    ".  .  .  .  .  .  ."
+    "i5 .  . i0  .  . i6"
+    ".  .  .  .  .  .  ."
+    ". i3  .  .  .  i7 ."
+    ".  .  . i4  .  .  .";
   justify-items: center;
   align-items: center;
 
@@ -172,45 +176,52 @@
 
     &::before {
       position: absolute;
-      content: "🕳️";
+      content: "";
+    }
+
+    &[data-area="i0"] {
+      top: 50%;
+      left: 50%;
     }
 
     &[data-area="i1"]::before {
-      top: 50%;
-      left: 20%;
+      top: 10%;
+      left: 32%;
     }
 
     &[data-area="i2"]::before {
-      right: 10%;
-      top: 10%;
+      right: 15%;
+      bottom: 50%;
     }
 
     &[data-area="i8"]::before {
-      left: 20%;
-      top: 10%;
+      left: 15%;
+      bottom: 50%;
     }
 
     &[data-area="i5"]::before {
-      left: 70%;
+      left: 48%;
+      bottom: 5%;
     }
 
     &[data-area="i6"]::before {
-      right: 60%;
+      right: 48%;
+      bottom: 5%;
     }
 
     &[data-area="i3"]::before {
-      left: 10%;
-      bottom: 20%;
+      left: 15%;
+      top: 38%;
     }
 
     &[data-area="i7"]::before {
-      right: 10%;
-      bottom: 20%;
+      right: 12%;
+      top: 35%;
     }
 
     &[data-area="i4"]::before {
-      bottom: 50%;
-      left: 20%;
+      bottom: 30%;
+      right: 32%;
     }
 
     &.active {
@@ -221,7 +232,7 @@
 
     &.match {
       &::before {
-        content: "🐰";
+        content: url("/img/entry-lock/gem.svg");
       }
     }
   }
