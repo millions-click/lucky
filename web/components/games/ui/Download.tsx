@@ -1,6 +1,6 @@
 import { useGamesProgram, usePlayer, useTreasureProgram } from '@/hooks';
 import { IconWorldDownload } from '@tabler/icons-react';
-import { useGames } from '@/app/games/_provider/games-provider';
+import { useGames } from '@/app/console/games/_provider/games-provider';
 
 export function DownloadGamesTree() {
   const { owner } = usePlayer();
