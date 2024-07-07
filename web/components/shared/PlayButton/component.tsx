@@ -14,19 +14,25 @@ function randomArray(length: number, min: number, max: number) {
   return Array.from({ length }, () => randomInt(min, max));
 }
 
+export type Seed = { value: number; trigger: number; timestamp: number };
+
 export function PlayButton({
-  reset,
+  reset = true,
   onPlay,
 }: {
-  onPlay?: (seed: number) => void;
+  onPlay?: (match: boolean, seed: Seed) => void;
   reset?: boolean;
 }) {
+  const [holding, setHolding] = useState<boolean>(true);
+
   const [result, setResult] = useState<number>(NaN);
   const [pending, setPending] = useState<boolean>(false);
   const [values, setValues] = useState<number[]>(randomArray(8, MIN, MAX));
+  const [match, setMatch] = useState(false);
+
   const [intervalRef, setIntervalRef] = useState<NodeJS.Timeout | null>(null);
   const [playTimeout, setPlayTimeout] = useState<number>(1000);
-  const [match, setMatch] = useState(false);
+  const [restartRef, setRestartRef] = useState<NodeJS.Timeout | null>(null);
 
   const shiftAndPush = () => {
     setValues((values) => randomArray(values.length, MIN, MAX));
@@ -34,13 +40,21 @@ export function PlayButton({
   };
 
   const start = () => {
+    if (pending || match) return;
+
+    setHolding(false);
+    restartRef && clearTimeout(restartRef);
+
     setResult(NaN);
     shiftAndPush();
 
-    setIntervalRef(setInterval(shiftAndPush, 100));
+    setIntervalRef(setInterval(shiftAndPush, 200));
   };
 
   const play = () => {
+    if (pending || match) return;
+
+    const timestamp = Date.now();
     setPending(true);
     intervalRef && clearInterval(intervalRef);
 
@@ -50,15 +64,20 @@ export function PlayButton({
       const match = value % values.length === pos - 1;
       setResult(pos);
       setMatch(match);
-      onPlay && onPlay(value);
+      onPlay && onPlay(match, { value, trigger: playTimeout, timestamp });
       setPending(false);
 
       reset &&
-        match &&
-        setTimeout(() => {
-          setMatch(false);
-          setResult(NaN);
-        }, 5000);
+        setRestartRef(
+          setTimeout(
+            () => {
+              setMatch(false);
+              setResult(NaN);
+              setHolding(true);
+            },
+            match ? 10000 : 5000
+          )
+        );
     }, playTimeout);
   };
 
@@ -81,6 +100,7 @@ export function PlayButton({
             key={i}
             className={[
               styles.value,
+              holding ? styles.holding : '',
               result === i + 1 ? styles.active : '',
               value % values.length === i ? styles.match : '',
             ].join(' ')}

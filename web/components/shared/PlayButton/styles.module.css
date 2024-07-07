@@ -50,38 +50,88 @@
     border-radius: 50%;
     animation: rotate 10s linear infinite;
     opacity: 1;
+    z-index: 1;
+    filter: hue-rotate(220deg) brightness(4) contrast(1.5);
   }
 
-  &[data-result="1"]::before {
-    transform: rotate(0deg);
+  &[data-result="1"] {
+    &::before {
+      transform: rotate(359deg);
+    }
+
+    &[data-match="true"]::before {
+      filter: hue-rotate(25deg) saturate(1.5) brightness(1.7);
+    }
   }
 
-  &[data-result="2"]::before {
-    transform: rotate(41deg);
+  &[data-result="2"] {
+    &::before {
+      transform: rotate(43deg);
+    }
+
+    &[data-match="true"]::before {
+      filter: hue-rotate(225deg) saturate(1.5) brightness(1.5);
+    }
   }
 
-  &[data-result="6"]::before {
-    transform: rotate(90deg);
+  &[data-result="6"] {
+    &::before {
+      transform: rotate(91deg);
+    }
+
+    &[data-match="true"]::before {
+      filter: hue-rotate(45deg) brightness(300%) contrast(1.7);
+    }
   }
 
-  &[data-result="7"]::before {
-    transform: rotate(138deg);
+  &[data-result="7"] {
+    &::before {
+      transform: rotate(136deg);
+    }
+
+    &[data-match="true"]::before {
+      filter: hue-rotate(325deg) saturate(1.5) brightness(1.7);
+    }
   }
 
-  &[data-result="4"]::before {
-    transform: rotate(180deg);
+  &[data-result="4"] {
+    &::before {
+      transform: rotate(180deg);
+    }
+
+    &[data-match="true"]::before {
+      filter: hue-rotate(180deg) saturate(1.5) brightness(1.7);
+    }
   }
 
-  &[data-result="3"]::before {
-    transform: rotate(220deg);
+  &[data-result="3"] {
+    &::before {
+      transform: rotate(223deg);
+    }
+
+    &[data-match="true"]::before {
+      filter: hue-rotate(0deg) saturate(1.5) brightness(1.7);
+    }
   }
 
-  &[data-result="5"]::before {
-    transform: rotate(270deg);
+  &[data-result="5"] {
+    &::before {
+      transform: rotate(269deg);
+    }
+
+    &[data-match="true"]::before {
+      filter: hue-rotate(270deg) saturate(1.5) brightness(1.7);
+    }
   }
 
-  &[data-result="8"]::before {
-    transform: rotate(319deg);
+  &[data-result="8"] {
+    &::before {
+      transform: rotate(318deg);
+    }
+
+    &[data-match="true"]::before {
+      filter: hue-rotate(120deg) saturate(1.5) brightness(1.7);
+    }
   }
 
   &[data-pending="true"]::before {
@@ -173,10 +223,11 @@
     @apply w-8;
     position: relative;
     transition: transform 0.3s ease;
+    transform: scale(0);
 
     &::before {
       position: absolute;
-      content: "";
+      content: url("/img/entry-lock/gem.svg");
     }
 
     &[data-area="i0"] {
@@ -185,54 +236,57 @@
     }
 
     &[data-area="i1"]::before {
-      top: 10%;
       left: 32%;
+      filter: hue-rotate(45deg) saturate(1.5) brightness(1.2);
     }
 
     &[data-area="i2"]::before {
-      right: 15%;
-      bottom: 50%;
-    }
-
-    &[data-area="i8"]::before {
-      left: 15%;
-      bottom: 50%;
-    }
-
-    &[data-area="i5"]::before {
-      left: 48%;
-      bottom: 5%;
+      bottom: 30%;
+      filter: hue-rotate(225deg) saturate(1.5) brightness(1.2);
     }
 
     &[data-area="i6"]::before {
-      right: 48%;
+      right: 40%;
       bottom: 5%;
-    }
-
-    &[data-area="i3"]::before {
-      left: 15%;
-      top: 38%;
+      filter: hue-rotate(45deg) brightness(300%) contrast(1.5);
     }
 
     &[data-area="i7"]::before {
-      right: 12%;
-      top: 35%;
+      top: 10%;
+      filter: hue-rotate(325deg) saturate(1.5) brightness(1.2);
     }
 
     &[data-area="i4"]::before {
-      bottom: 30%;
+      bottom: 20%;
       right: 35%;
+      filter: hue-rotate(180deg) saturate(1.5) brightness(1.2);
     }
 
-    &.active {
-      &::before {
-        transform: scale(1.1);
-      }
+    &[data-area="i3"]::before {
+      left: 20%;
+      top: 10%;
+      filter: hue-rotate(120deg) saturate(1.5) brightness(1.2);
     }
 
+    &[data-area="i5"]::before {
+      left: 40%;
+      bottom: 5%;
+      filter: hue-rotate(270deg) saturate(1.5) brightness(1.2);
+    }
+
+    &[data-area="i8"]::before {
+      left: 20%;
+      bottom: 30%;
+      filter: hue-rotate(0deg) saturate(1.5) brightness(1.2);
+    }
+
+
+    &.holding,
     &.match {
-      &::before {
-        content: url("/img/entry-lock/gem.svg");
+      transform: scale(2);
+
+      &.active {
+        transform: scale(2.5);
       }
     }
   }
