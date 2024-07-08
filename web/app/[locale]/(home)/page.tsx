@@ -1,6 +1,7 @@
+import type { Params } from '../locale';
 import { PlayButton } from './_ui/PlayButton';
 
-export default function Landing() {
+export default async function Landing(_params: Params) {
   const bg = "bg-[url('/assets/images/landing.jpg')]";
   const className = [
     'hero min-h-screen w-full container mx-auto',
