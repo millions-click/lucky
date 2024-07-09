@@ -1,0 +1,41 @@
+{
+  "Metadata": {
+    "title": "Luckyland",
+    "description": "¡Donde los premios 🎉 y la DIVERSIÓN 😃 nunca se detienen!"
+  },
+  "Index": {
+    "title": "¡Hola mundo!",
+    "messages": [
+      {
+        "name": "Conejo de la suerte",
+        "message": "Parece que tienes suerte hoy. Haz conseguido una de las entradas secretas a la tierra de la suerte.",
+        "advise": "¿Puedes atrapar una gema de la suerte para entrar?"
+      },
+      {
+        "name": "Conejo de la suerte",
+        "message": "¡Atrapa una gema de la suerte y podras entrar!",
+        "advise": "!Pero cuidado! Solo tienes 3 intentos."
+      },
+      {
+        "name": "Conejo de la suerte",
+        "message": "Pareces persistente. ¡Vamos a intentarlo de nuevo!",
+        "advise": "¡Mejor suerte esta vez!"
+      },
+      {
+        "name": "Conejo de la suerte",
+        "message": "Volviste. ¡Vamos a intentarlo de nuevo!",
+        "advise": "Recuerda que solo tienes 3 intentos. ¡Buena suerte!"
+      },
+      {
+        "name": "Conejo de la suerte",
+        "message": "Creo que ya sabes cómo funciona. ¡Vamos a intentarlo de nuevo!",
+        "advise": "!Buena suerte!"
+      }
+    ],
+    "turns": {
+      "attempts": "Intentos",
+      "left": "Turnos restantes",
+      "hold": "Tus turnos se restauran en"
+    }
+  }
+}

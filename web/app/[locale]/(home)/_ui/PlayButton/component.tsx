@@ -3,6 +3,8 @@
 import { useState } from 'react';
 import styles from './styles.module.css';
 
+import type { Seed } from '@/actions/types';
+
 const MIN = 1;
 const MAX = 99;
 
@@ -14,12 +16,12 @@ function randomArray(length: number, min: number, max: number) {
   return Array.from({ length }, () => randomInt(min, max));
 }
 
-export type Seed = { value: number; trigger: number; timestamp: number };
-
 export function PlayButton({
+  disabled = false,
   reset = true,
   onPlay,
 }: {
+  disabled?: boolean;
   onPlay?: (match: boolean, seed: Seed) => void;
   reset?: boolean;
 }) {
@@ -40,7 +42,7 @@ export function PlayButton({
   };
 
   const start = () => {
-    if (pending || match) return;
+    if (pending || match || disabled) return;
 
     setHolding(false);
     restartRef && clearTimeout(restartRef);
@@ -52,7 +54,7 @@ export function PlayButton({
   };
 
   const play = () => {
-    if (pending || match) return;
+    if (pending || match || disabled) return;
 
     const timestamp = Date.now();
     setPending(true);
@@ -64,8 +66,8 @@ export function PlayButton({
       const match = value % values.length === pos - 1;
       setResult(pos);
       setMatch(match);
-      onPlay && onPlay(match, { value, trigger: playTimeout, timestamp });
       setPending(false);
+      onPlay && onPlay(match, { value, trigger: playTimeout, timestamp });
 
       reset &&
         setRestartRef(
@@ -88,7 +90,7 @@ export function PlayButton({
       onMouseUp={play}
       onTouchStart={start}
       onTouchEnd={play}
-      disabled={pending || match}
+      disabled={pending || match || disabled}
       data-pending={pending}
       data-match={match}
       data-revealed={!Number.isNaN(result)}
@@ -102,7 +104,7 @@ export function PlayButton({
               styles.value,
               holding ? styles.holding : '',
               result === i + 1 ? styles.active : '',
-              value % values.length === i ? styles.match : '',
+              !holding && value % values.length === i ? styles.match : '',
             ].join(' ')}
             style={{ gridArea: `i${i + 1}` }}
             data-area={`i${i + 1}`}

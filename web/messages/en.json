@@ -1,0 +1,41 @@
+{
+  "Metadata": {
+    "title": "Luckyland",
+    "description": "Where Prizes 🎉 and FUN 😃 never stops!"
+  },
+  "Index": {
+    "title": "Hello world!",
+    "messages": [
+      {
+        "name": "Lucky Rabbit",
+        "message": "Looks like you're lucky today. You've found one of the secret entrances to Luckyland.",
+        "advise": "Can you catch a lucky gem to enter?"
+      },
+      {
+        "name": "Lucky Rabbit",
+        "message": "Catch a lucky gem and you can enter!",
+        "advise": "But be careful! You only have 3 attempts."
+      },
+      {
+        "name": "Lucky Rabbit",
+        "message": "You seem persistent. Let's try again!",
+        "advise": "Better luck this time!"
+      },
+      {
+        "name": "Lucky Rabbit",
+        "message": "You're back. Let's try again!",
+        "advise": "Remember you only have 3 attempts. Good luck!"
+      },
+      {
+        "name": "Lucky Rabbit",
+        "message": "I think you already know how it works. Let's try again!",
+        "advise": "Good luck!"
+      }
+    ],
+    "turns": {
+      "attempts": "Attempts",
+      "left": "Turns left",
+      "hold": "Your turns reset in"
+    }
+  }
+}

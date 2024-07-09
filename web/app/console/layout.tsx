@@ -1,4 +1,5 @@
 import { PropsWithChildren } from 'react';
+import '../global.css';
 
 import {
   ReactQueryProvider,
@@ -25,20 +26,24 @@ if (NEXT_PUBLIC_VERCEL_ENV !== 'production')
 
 export default function Layout({ children }: PropsWithChildren) {
   return (
-    <ReactQueryProvider>
-      <ClusterProvider>
-        <CryptoProvider>
-          <LuckyBagsProvider>
-            <SolanaProvider>
-              <DataFeedProvider>
-                <UiLayout links={links} env={NEXT_PUBLIC_VERCEL_ENV}>
-                  {children}
-                </UiLayout>
-              </DataFeedProvider>
-            </SolanaProvider>
-          </LuckyBagsProvider>
-        </CryptoProvider>
-      </ClusterProvider>
-    </ReactQueryProvider>
+    <html lang="en">
+      <body>
+        <ReactQueryProvider>
+          <ClusterProvider>
+            <CryptoProvider>
+              <LuckyBagsProvider>
+                <SolanaProvider>
+                  <DataFeedProvider>
+                    <UiLayout links={links} env={NEXT_PUBLIC_VERCEL_ENV}>
+                      {children}
+                    </UiLayout>
+                  </DataFeedProvider>
+                </SolanaProvider>
+              </LuckyBagsProvider>
+            </CryptoProvider>
+          </ClusterProvider>
+        </ReactQueryProvider>
+      </body>
+    </html>
   );
 }
