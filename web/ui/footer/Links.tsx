@@ -29,7 +29,7 @@ const LINKS = [
 
 export function Links() {
   return (
-    <div className="flex flex-col-reverse lg:flex-row lg:gap-4 text-white bg-base-300/20 px-4 py-4 rounded-box">
+    <div className="flex flex-col-reverse lg:flex-row lg:gap-4 text-white bg-base-300/20 p-2 xs:p-4 rounded-box">
       {LINKS.map(({ name, href }) => (
         <a
           key={name}

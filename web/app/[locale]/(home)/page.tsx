@@ -1,7 +1,13 @@
-import type { Params } from '../locale';
-import { PlayButton } from './_ui/PlayButton';
+import { NextIntlClientProvider } from 'next-intl';
+import { getMessages, unstable_setRequestLocale } from 'next-intl/server';
 
-export default async function Landing(_params: Params) {
+import type { Params } from '../locale';
+import { Session } from './_ui/Session';
+
+export default async function Landing({ params: { locale } }: Params) {
+  unstable_setRequestLocale(locale);
+  const messages = await getMessages();
+
   const bg = "bg-[url('/assets/images/landing.jpg')]";
   const className = [
     'hero min-h-screen w-full container mx-auto',
@@ -14,7 +20,9 @@ export default async function Landing(_params: Params) {
     <div className={className}>
       <div className="hero-content text-neutral-content text-center">
         <div className="max-w-md">
-          <PlayButton />
+          <NextIntlClientProvider messages={messages}>
+            <Session />
+          </NextIntlClientProvider>
         </div>
       </div>
     </div>

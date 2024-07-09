@@ -165,6 +165,7 @@
 
   &:disabled {
     pointer-events: none;
+    animation: none;
   }
 
   &[data-pending="true"] {

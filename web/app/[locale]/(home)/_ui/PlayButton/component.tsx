@@ -17,9 +17,11 @@ function randomArray(length: number, min: number, max: number) {
 }
 
 export function PlayButton({
+  disabled = false,
   reset = true,
   onPlay,
 }: {
+  disabled?: boolean;
   onPlay?: (match: boolean, seed: Seed) => void;
   reset?: boolean;
 }) {
@@ -40,7 +42,7 @@ export function PlayButton({
   };
 
   const start = () => {
-    if (pending || match) return;
+    if (pending || match || disabled) return;
 
     setHolding(false);
     restartRef && clearTimeout(restartRef);
@@ -52,7 +54,7 @@ export function PlayButton({
   };
 
   const play = () => {
-    if (pending || match) return;
+    if (pending || match || disabled) return;
 
     const timestamp = Date.now();
     setPending(true);
@@ -88,7 +90,7 @@ export function PlayButton({
       onMouseUp={play}
       onTouchStart={start}
       onTouchEnd={play}
-      disabled={pending || match}
+      disabled={pending || match || disabled}
       data-pending={pending}
       data-match={match}
       data-revealed={!Number.isNaN(result)}
