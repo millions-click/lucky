@@ -1,3 +1,8 @@
+type JWTProps = {
+  iat: number;
+  exp: number;
+};
+
 export type Seed = {
   value: number;
   trigger: number;
@@ -12,11 +17,17 @@ export type Turns = {
   attempts: number;
 };
 
-export type TurnsSession = Turns & {
-  iat: number;
-  exp: number;
+export type TurnsSession = Turns & JWTProps;
+
+export type LuckyPass = {
+  address?: string;
+  seed: Seed;
+  expires: number;
 };
+
+export type LuckyPassSession = LuckyPass & JWTProps;
 
 export const TURNS_AVAILABLE = 2;
 export const TURNS_COOKIE = 'll-turns';
 export const ATTEMPTS_COOKIE = 'll-attempts';
+export const LUCKY_PASS_COOKIE = 'll-pass';

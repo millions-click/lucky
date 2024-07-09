@@ -2,38 +2,17 @@
 
 import { NextRequest, NextResponse } from 'next/server';
 import { cookies } from 'next/headers';
-import { SignJWT, jwtVerify } from 'jose';
 
 import {
-  type Turns,
   type TurnsSession,
   TURNS_AVAILABLE,
   TURNS_COOKIE,
   ATTEMPTS_COOKIE,
 } from './types';
+import { decrypt, encrypt } from '@/utils/jwt';
 
-const { AUTH_SECRET } = process.env;
-if (!AUTH_SECRET) throw new Error('AUTH_SECRET is required');
-
-const key = new TextEncoder().encode(AUTH_SECRET);
 const TTL = 30 * 1000;
 const cookie = TURNS_COOKIE;
-
-async function encrypt(payload: Turns) {
-  return await new SignJWT(payload)
-    .setProtectedHeader({ alg: 'HS256' })
-    .setIssuedAt()
-    .setExpirationTime('1 h')
-    .sign(key);
-}
-
-async function decrypt(input: string): Promise<TurnsSession> {
-  const { payload } = await jwtVerify(input, key, {
-    algorithms: ['HS256'],
-  });
-
-  return payload as TurnsSession;
-}
 
 /**
  * Exponentially increase the TTL based on the number of attempts
@@ -55,7 +34,7 @@ async function createTurns(address?: string) {
     sameSite: 'strict',
   });
 
-  return decrypt(session);
+  return (await decrypt(session)) as TurnsSession;
 }
 
 function setAttempts(attempts = 1) {
@@ -84,7 +63,7 @@ export async function getAttempts(newAttempt = false) {
 export async function getTurns() {
   const session = cookies().get(cookie)?.value;
   if (!session) return null;
-  return await decrypt(session);
+  return (await decrypt(session)) as TurnsSession;
 }
 
 export async function playATurn(address?: string) {

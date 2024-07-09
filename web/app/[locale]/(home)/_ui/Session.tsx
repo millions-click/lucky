@@ -5,7 +5,7 @@ import { useEffect, useState } from 'react';
 import { PlayButton } from './PlayButton';
 import { Turns } from './Turns';
 
-import { getAttempts, getTurns, playATurn } from '@/actions';
+import { createLuckyPass, getAttempts, getTurns, playATurn } from '@/actions';
 import type { TurnsSession } from '@/actions/types';
 
 export function Session() {
@@ -24,8 +24,9 @@ export function Session() {
     <>
       <PlayButton
         disabled={session?.hold}
-        onPlay={async (_match, _seed) => {
+        onPlay={async (match, seed) => {
           setSession(await playATurn());
+          if (match) await createLuckyPass(seed);
         }}
       />
 

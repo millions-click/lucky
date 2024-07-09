@@ -1,12 +1,20 @@
-import type { NextRequest } from 'next/server';
+import { NextRequest, NextResponse } from 'next/server';
 import { NextFetchEvent } from 'next/server';
 import createMiddleware from 'next-intl/middleware';
 
 import { locales, defaultLocale } from '@/i18n';
+import { getLuckyPass } from '@/actions';
 
 const i18n = createMiddleware({ locales, defaultLocale });
 
-export function middleware(req: NextRequest, _event: NextFetchEvent) {
+export async function middleware(req: NextRequest, _event: NextFetchEvent) {
+  const { pathname } = req.nextUrl;
+
+  if (pathname.includes('/game')) {
+    const luckyPass = await getLuckyPass();
+    if (!luckyPass) return NextResponse.redirect(new URL('/', req.url));
+  }
+
   // internationalize the request
   return i18n(req);
 }

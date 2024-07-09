@@ -3,10 +3,9 @@ import { Analytics } from '@vercel/analytics/next';
 import { getTranslations, unstable_setRequestLocale } from 'next-intl/server';
 
 import '../global.css';
-import type { Params } from './locale';
+import type { Params } from './locale.d';
 
 import { locales } from '@/i18n';
-import { Footer, Header } from '@/ui';
 
 export function generateStaticParams() {
   return locales.map((locale) => ({ locale }));
@@ -31,10 +30,7 @@ export default async function LocaleLayout({
   return (
     <html lang={locale}>
       <body>
-        <Header />
         <main>{children}</main>
-        <Footer />
-
         <Analytics />
       </body>
     </html>
