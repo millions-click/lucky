@@ -7,12 +7,36 @@
   }
 }
 
+@keyframes shine {
+  0%, 100% {
+    filter: brightness(120%);
+  }
+  50% {
+    filter: brightness(100%);
+  }
+}
+
 @keyframes blink-shadow {
   0%, 100% {
     box-shadow: 0 0 10px #ffc600, 0 0 20px #ffc600, 0 0 30px #ffc600, 0 0 40px #ffc600;
   }
   50% {
     box-shadow: none;
+  }
+}
+
+@keyframes pulsate-shadow {
+  0%, 100% {
+    box-shadow: 0 0 0 50px rgba(0, 0, 0, 0.7),
+    0 0 0 100px rgba(0, 0, 0, 0.5),
+    0 0 0 150px rgba(0, 0, 0, 0.3),
+    0 0 0 200px rgba(0, 0, 0, 0.1);
+  }
+  50% {
+    box-shadow: 0 0 0 60px rgba(0, 0, 0, 0.6),
+    0 0 0 120px rgba(0, 0, 0, 0.4),
+    0 0 0 180px rgba(0, 0, 0, 0.2),
+    0 0 0 240px rgba(0, 0, 0, 0.05);
   }
 }
 
@@ -41,7 +65,7 @@
   }
 
   &::before {
-    content: url("/img/entry-lock/pointer.svg");
+    content: url("/assets/images/entry/lock/pointer.svg");
     position: absolute;
     top: -2px;
     left: -2px;
@@ -58,19 +82,11 @@
     &::before {
       transform: rotate(359deg);
     }
-
-    &[data-match="true"]::before {
-      filter: hue-rotate(25deg) saturate(1.5) brightness(1.7);
-    }
   }
 
   &[data-result="2"] {
     &::before {
       transform: rotate(43deg);
-    }
-
-    &[data-match="true"]::before {
-      filter: hue-rotate(225deg) saturate(1.5) brightness(1.5);
     }
   }
 
@@ -78,19 +94,11 @@
     &::before {
       transform: rotate(91deg);
     }
-
-    &[data-match="true"]::before {
-      filter: hue-rotate(45deg) brightness(300%) contrast(1.7);
-    }
   }
 
   &[data-result="7"] {
     &::before {
       transform: rotate(136deg);
-    }
-
-    &[data-match="true"]::before {
-      filter: hue-rotate(325deg) saturate(1.5) brightness(1.7);
     }
   }
 
@@ -98,19 +106,11 @@
     &::before {
       transform: rotate(180deg);
     }
-
-    &[data-match="true"]::before {
-      filter: hue-rotate(180deg) saturate(1.5) brightness(1.7);
-    }
   }
 
   &[data-result="3"] {
     &::before {
       transform: rotate(223deg);
-    }
-
-    &[data-match="true"]::before {
-      filter: hue-rotate(0deg) saturate(1.5) brightness(1.7);
     }
   }
 
@@ -118,19 +118,11 @@
     &::before {
       transform: rotate(269deg);
     }
-
-    &[data-match="true"]::before {
-      filter: hue-rotate(270deg) saturate(1.5) brightness(1.7);
-    }
   }
 
   &[data-result="8"] {
     &::before {
       transform: rotate(318deg);
-    }
-
-    &[data-match="true"]::before {
-      filter: hue-rotate(120deg) saturate(1.5) brightness(1.7);
     }
   }
 
@@ -175,9 +167,15 @@
   }
 
   &[data-match="true"] {
-    box-shadow: 0 0 10px #1c6bd1, 0 0 20px #1c6bd1, 0 0 30px #1c6bd1, 0 0 40px #1c6bd1;
-    animation: none;
+    animation: rotate 20s linear infinite, pulsate-shadow 2s ease-in-out infinite, shine 2s infinite ease-in-out;
+    background: url("/assets/images/entry/portal-r.webp") no-repeat 52% 52%;
+    background-size: 350%;
+
     transform: scale(1.1);
+
+    &::before {
+      content: none;
+    }
   }
 
   &[data-pending="true"],
@@ -228,7 +226,7 @@
 
     &::before {
       position: absolute;
-      content: url("/img/entry-lock/gem.svg");
+      content: url("/assets/images/entry/lock/gem.svg");
     }
 
     &[data-area="i0"] {
@@ -280,7 +278,6 @@
       bottom: 30%;
       filter: hue-rotate(0deg) saturate(1.5) brightness(1.2);
     }
-
 
     &.holding,
     &.match {
