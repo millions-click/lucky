@@ -37,5 +37,40 @@
       "left": "Turnos restantes",
       "hold": "Tus turnos se restauran en"
     }
+  },
+  "Lobby": {
+    "title": "¡Bienvenido a la tierra de la suerte!",
+    "messages": [],
+    "links": {
+      "realms": "Reinos"
+    },
+    "actions": {
+      "enter": "Entrar",
+      "exit": "Salir"
+    }
+  },
+  "Realms": {
+    "title": "Reinos",
+    "messages": [],
+    "links": {
+      "lobby": "Lobby",
+      "coins": "Monedas"
+    },
+    "actions": {
+      "enter": "Entrar",
+      "exit": "Salir"
+    }
+  },
+  "Coins": {
+    "title": "Monedas",
+    "messages": [],
+    "links": {
+      "lobby": "Lobby",
+      "realms": "Reinos"
+    },
+    "actions": {
+      "enter": "Entrar",
+      "exit": "Salir"
+    }
   }
 }

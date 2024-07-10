@@ -37,5 +37,40 @@
       "left": "Turns left",
       "hold": "Your turns reset in"
     }
+  },
+  "Lobby": {
+    "title": "Welcome to Luckyland!",
+    "messages": [],
+    "links": {
+      "realms": "Realms"
+    },
+    "actions": {
+      "enter": "Enter",
+      "exit": "Exit"
+    }
+  },
+  "Realms": {
+    "title": "Realms",
+    "messages": [],
+    "links": {
+      "lobby": "Lobby",
+      "coins": "Coins"
+    },
+    "actions": {
+      "enter": "Enter",
+      "exit": "Exit"
+    }
+  },
+  "Coins": {
+    "title": "Coins",
+    "messages": [],
+    "links": {
+      "lobby": "Lobby",
+      "realms": "Realms"
+    },
+    "actions": {
+      "enter": "Enter",
+      "exit": "Exit"
+    }
   }
 }

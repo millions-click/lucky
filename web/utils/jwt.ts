@@ -5,11 +5,14 @@ if (!AUTH_SECRET) throw new Error('AUTH_SECRET is required');
 
 const key = new TextEncoder().encode(AUTH_SECRET);
 
-export async function encrypt(payload: Record<string, unknown>) {
+export async function encrypt(
+  payload: Record<string, unknown>,
+  expires: string | number | Date = '1 h'
+) {
   return await new SignJWT(payload)
     .setProtectedHeader({ alg: 'HS256' })
     .setIssuedAt()
-    .setExpirationTime('1 h')
+    .setExpirationTime(expires)
     .sign(key);
 }
 

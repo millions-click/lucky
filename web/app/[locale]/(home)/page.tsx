@@ -8,7 +8,7 @@ export default async function Landing({ params: { locale } }: Params) {
   unstable_setRequestLocale(locale);
   const messages = await getMessages();
 
-  const bg = "bg-[url('/assets/images/landing.jpg')]";
+  const bg = "bg-[url('/assets/images/bg/landing.jpg')]";
   const className = [
     'hero min-h-screen w-full container mx-auto',
     bg,

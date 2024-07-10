@@ -19,11 +19,14 @@ export async function getLuckyPass(): Promise<LuckyPassSession | null> {
 
 export async function createLuckyPass(seed: Seed, address?: string) {
   const expires = Date.now() + TTL;
-  const session = await encrypt({
-    address,
-    seed,
-    expires,
-  });
+  const session = await encrypt(
+    {
+      address,
+      seed,
+      expires,
+    },
+    expires
+  );
 
   cookies().set(LUCKY_PASS_COOKIE, session, {
     expires,

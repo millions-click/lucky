@@ -1,3 +1,5 @@
+export * from './bg-provider';
+
 export * from './react-query-provider';
 export * from './crypto-provider';
 export * from './lucky-bags-provider';
