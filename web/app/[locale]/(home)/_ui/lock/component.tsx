@@ -17,12 +17,12 @@ function randomArray(length: number, min: number, max: number) {
 }
 
 export function LockDoor({
-  winner,
+  vortex,
   disabled = false,
   reset = true,
   onAttempt,
 }: {
-  winner?: boolean;
+  vortex?: boolean;
   disabled?: boolean;
   onAttempt?: (match: boolean, seed: Seed) => void;
   reset?: boolean;
@@ -93,7 +93,7 @@ export function LockDoor({
       disabled={pending || match || disabled}
       data-pending={pending}
       data-match={match}
-      data-winner={winner}
+      data-vortex={vortex}
       data-revealed={!Number.isNaN(result)}
       data-result={result || undefined}
     >

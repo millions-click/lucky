@@ -17,8 +17,9 @@ export async function middleware(req: NextRequest, _event: NextFetchEvent) {
     const path = match[2];
 
     if (!path) {
-      const luckyPass = await getLuckyPass();
-      if (luckyPass) return NextResponse.redirect(new URL('/game', req.url));
+      // Forward to the game if the user has a lucky pass.
+      // const luckyPass = await getLuckyPass();
+      // if (luckyPass) return NextResponse.redirect(new URL('/game', req.url));
     }
 
     if (path.startsWith('/game')) {

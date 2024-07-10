@@ -1,0 +1,156 @@
+@keyframes shine {
+  0%, 100% {
+    filter: brightness(120%);
+  }
+  50% {
+    filter: brightness(0%);
+  }
+}
+
+@keyframes pulsate-shadow {
+  0%, 100% {
+    box-shadow: 0 0 0 50px rgba(0, 0, 0, 0.7),
+    0 0 0 100px rgba(0, 0, 0, 0.5),
+    0 0 0 150px rgba(0, 0, 0, 0.3),
+    0 0 0 200px rgba(0, 0, 0, 0.1);
+  }
+  50% {
+    box-shadow: 0 0 0 60px rgba(0, 0, 0, 0.6),
+    0 0 0 120px rgba(0, 0, 0, 0.4),
+    0 0 0 180px rgba(0, 0, 0, 0.2),
+    0 0 0 240px rgba(0, 0, 0, 0.05);
+  }
+}
+
+@keyframes rotate {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}
+
+@keyframes activate {
+  0% {
+    box-shadow: none;
+    transform: scale(0) rotate(0deg);
+  }
+  100% {
+    transform: scale(1) rotate(360deg);
+    box-shadow: 0 0 0 50px rgba(0, 0, 0, 0.7),
+    0 0 0 100px rgba(0, 0, 0, 0.5),
+    0 0 0 150px rgba(0, 0, 0, 0.3),
+    0 0 0 200px rgba(0, 0, 0, 0.1);
+  }
+}
+
+.portal {
+  @apply w-48;
+  @apply h-48;
+  @apply rounded-full;
+
+  position: absolute;
+  overflow: hidden;
+  user-select: none;
+  animation: activate 3s ease-out forwards;
+
+  &[data-portal="entrance"] {
+    background: url("/assets/images/entry/portal-r.webp") no-repeat 52% 52%;
+    background-size: 350%;
+  }
+
+  &[data-portal="lucky"] {
+    background: url("/assets/images/entry/portal.webp") no-repeat 76% 52%;
+    background-size: 240%;
+  }
+
+  &[data-portal="unlucky"] {
+    background: url("/assets/images/entry/portal-l.webp") no-repeat 53% 55%;
+    background-size: 300%;
+  }
+
+  & * {
+    user-select: none;
+  }
+
+  &[data-activated="true"] {
+    &[data-portal="entrance"] {
+      animation: rotate 20s linear infinite, pulsate-shadow 2s ease-in-out infinite;
+    }
+
+    &[data-portal="lucky"] {
+      animation: rotate 10s linear reverse infinite, pulsate-shadow 3s ease-in-out infinite;
+    }
+
+    &[data-portal="unlucky"] {
+      animation: rotate 10s linear reverse infinite, pulsate-shadow 2.5s ease-in-out infinite;
+    }
+
+    &::before {
+      content: "";
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: radial-gradient(circle, rgba(255, 255, 255, 0.25) 0%, rgba(255, 255, 255, 0) 50%);
+      animation: shine 3s infinite ease-in-out;
+    }
+  }
+
+  &:disabled {
+    @apply hidden;
+
+    pointer-events: none;
+    animation: none;
+  }
+
+  @media (hover: hover) {
+    &:hover:not(:active):not([data-warping="true"]) {
+      &[data-portal="entrance"] {
+        animation: rotate 5s linear infinite, pulsate-shadow 1.5s ease-in-out infinite;
+      }
+
+      &[data-portal="lucky"] {
+        animation: rotate 5s linear reverse infinite, pulsate-shadow 1.5s ease-in-out infinite;
+      }
+
+      &[data-portal="unlucky"] {
+        animation: rotate 5s linear reverse infinite, pulsate-shadow 1.5s ease-in-out infinite;
+      }
+
+      transform: scale(1.1);
+    }
+  }
+
+  &:active:not([data-warping="true"]) {
+    &[data-portal="entrance"] {
+      animation: rotate 2.5s linear infinite, pulsate-shadow 1s ease-in-out infinite;
+    }
+
+    &[data-portal="lucky"] {
+      animation: rotate 2.5s linear reverse infinite, pulsate-shadow 1s ease-in-out infinite;
+    }
+
+    &[data-portal="unlucky"] {
+      animation: rotate 2.5s linear reverse infinite, pulsate-shadow 1s ease-in-out infinite;
+    }
+
+    transform: scale(1.5);
+  }
+
+  &[data-warping="true"] {
+    &[data-portal="entrance"] {
+      animation: rotate 1s linear infinite, pulsate-shadow 0.5s ease-in-out infinite;
+    }
+
+    &[data-portal="lucky"] {
+      animation: rotate 1s linear reverse infinite, pulsate-shadow 0.5s ease-in-out infinite;
+    }
+
+    &[data-portal="unlucky"] {
+      animation: rotate 1s linear reverse infinite, pulsate-shadow 0.5s ease-in-out infinite;
+    }
+  }
+}

@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from 'react';
 
+import { Portal } from './portal';
 import { LockDoor } from './lock';
 import { Turns } from './Turns';
 
@@ -12,9 +13,11 @@ export function LockController() {
   const [session, setSession] = useState<TurnsSession | null>(null);
   const [attempts, setAttempts] = useState<number | null>(null);
   const [winner, setWinner] = useState<boolean>(false);
+  const [vortexActivated, setVortexActivated] = useState<boolean>(false);
 
   const load = async () => {
-    const { turns, attempts } = await getTurns();
+    const { turns, attempts, pass } = await getTurns();
+    setWinner(Boolean(pass));
     setSession(turns);
     setAttempts(attempts);
   };
@@ -25,9 +28,20 @@ export function LockController() {
 
   return (
     <>
+      {winner && (
+        <Portal
+          active={winner}
+          type="entrance"
+          onActive={setVortexActivated}
+          onWarping={() => {
+            // Activate portal effect and transport user to the next realm.
+          }}
+        />
+      )}
+
       <LockDoor
-        winner={winner}
-        disabled={session?.hold}
+        vortex={vortexActivated}
+        disabled={session?.hold || winner}
         onAttempt={async (match, seed) => {
           if (match) {
             const { turns } = await createLuckyPass(seed);
@@ -37,7 +51,12 @@ export function LockController() {
         }}
       />
 
-      <Turns attempts={attempts} session={session} onRenew={load} />
+      <Turns
+        attempts={attempts}
+        winner={winner}
+        session={session}
+        onRenew={load}
+      />
     </>
   );
 }

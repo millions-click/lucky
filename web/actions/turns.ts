@@ -10,6 +10,7 @@ import {
   ATTEMPTS_COOKIE,
 } from './types';
 import { decrypt, encrypt } from '@/utils/jwt';
+import { getLuckyPass } from './lucky-pass';
 
 const TTL = 30 * 1000;
 const cookie = TURNS_COOKIE;
@@ -62,11 +63,12 @@ async function getAttempts(newAttempt = false): Promise<number> {
 
 export async function getTurns() {
   const attempts = await getAttempts();
+  const pass = await getLuckyPass();
   const session = cookies().get(cookie)?.value;
-  if (!session) return { attempts, turns: null };
+  if (!session) return { attempts, turns: null, pass };
 
   const turns = (await decrypt(session)) as TurnsSession;
-  return { turns, attempts };
+  return { turns, attempts, pass };
 }
 
 export async function playATurn(address?: string) {

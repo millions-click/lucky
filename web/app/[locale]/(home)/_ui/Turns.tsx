@@ -9,22 +9,25 @@ import { useCountDown } from '@/hooks';
 export function Turns({
   session,
   attempts,
+  winner,
   onRenew,
 }: {
   session: TurnsSession | null;
   attempts: number | null;
+  winner?: boolean;
   onRenew?: () => void;
 }) {
   const t = useTranslations('Index');
   const countDown = useCountDown({
     expire: session?.expires,
+    pause: winner,
     onFinished: onRenew,
   });
-  const message = Math.min(attempts || 0, 4);
+  const message = winner ? (session ? 5 : 6) : Math.min(attempts || 0, 4);
 
   return (
     <div className="absolute bottom-0 max-lg:left-0 lg:right-0">
-      {!session ? (
+      {!session || winner ? (
         attempts !== null ? (
           <div className="chat chat-start lg:chat-end mx-4 max-w-xs lg:max-w-lg">
             <div className="chat-image avatar">
@@ -38,11 +41,12 @@ export function Turns({
                 />
               </div>
             </div>
-            <div className="chat-bubble chat-bubble-warning">
+            <div className="chat-header">{t(`messages.${message}.name`)}</div>
+            <div className="chat-bubble text-base-content shadow-lg">
               {t(`messages.${message}.message`)}
-            </div>
-            <div className="chat-footer opacity-50">
-              {t(`messages.${message}.advise`)}
+              <div className="bg-accent label-text-alt p-2 mt-4 rounded-box text-accent-content">
+                {t(`messages.${message}.advise`)}
+              </div>
             </div>
           </div>
         ) : (

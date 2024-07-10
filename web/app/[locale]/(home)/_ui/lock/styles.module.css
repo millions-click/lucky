@@ -25,6 +25,16 @@
   }
 }
 
+@keyframes vortex {
+  0% {
+    transform: scale(1) rotate(0deg);
+  }
+  100% {
+    transform: scale(0) rotate(360deg);
+    opacity: 0;
+  }
+}
+
 .border {
   @apply w-48;
   @apply h-48;
@@ -177,7 +187,6 @@
   &[data-match="true"] {
     box-shadow: 0 0 10px #1c6bd1, 0 0 20px #1c6bd1, 0 0 30px #1c6bd1, 0 0 40px #1c6bd1;
     animation: none;
-    transform: scale(1.1);
   }
 
   &[data-pending="true"],
@@ -186,6 +195,10 @@
       text-shadow: 0 0 10px #ffc600, 0 0 20px #ffc600, 0 0 30px #ffc600, 0 0 40px #ffc600;
       animation: none;
     }
+  }
+
+  &[data-vortex="true"]{
+    animation: vortex 5s cubic-bezier(0.4, 0, 0.2, 1) forwards;
   }
 }
 
