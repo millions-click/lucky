@@ -8,6 +8,7 @@ import {
 import { decrypt, encrypt } from '@/utils/jwt';
 
 import { cookies } from 'next/headers';
+import { playATurn } from './turns';
 
 const TTL = 60 * 60 * 24 * 1000;
 
@@ -18,6 +19,8 @@ export async function getLuckyPass(): Promise<LuckyPassSession | null> {
 }
 
 export async function createLuckyPass(seed: Seed, address?: string) {
+  const turns = await playATurn();
+
   const expires = Date.now() + TTL;
   const session = await encrypt(
     {
@@ -34,5 +37,5 @@ export async function createLuckyPass(seed: Seed, address?: string) {
     sameSite: 'strict',
   });
 
-  return (await decrypt(session)) as LuckyPassSession;
+  return { pass: (await decrypt(session)) as LuckyPassSession, turns };
 }

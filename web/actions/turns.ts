@@ -37,11 +37,12 @@ async function createTurns(address?: string) {
   return (await decrypt(session)) as TurnsSession;
 }
 
-function setAttempts(attempts = 1) {
+async function setAttempts(attempts = 1) {
   const oneMothInFuture = new Date();
   oneMothInFuture.setMonth(oneMothInFuture.getMonth() + 1);
 
-  cookies().set(ATTEMPTS_COOKIE, attempts.toString(), {
+  const session = await encrypt({ attempts }, oneMothInFuture);
+  cookies().set(ATTEMPTS_COOKIE, session, {
     expires: oneMothInFuture,
     httpOnly: true,
     sameSite: 'strict',
@@ -50,24 +51,26 @@ function setAttempts(attempts = 1) {
   return attempts;
 }
 
-export async function getAttempts(newAttempt = false) {
-  const attempts = Number(cookies().get(ATTEMPTS_COOKIE)?.value);
-  if (!Number.isNaN(attempts)) {
-    if (newAttempt) return setAttempts(attempts + 1);
-    return attempts;
-  }
+async function getAttempts(newAttempt = false): Promise<number> {
+  const session = cookies().get(ATTEMPTS_COOKIE)?.value;
+  if (!session) return newAttempt ? setAttempts() : 0;
 
-  return newAttempt ? setAttempts() : 0;
+  const attempts = Number((await decrypt(session))?.attempts);
+  if (newAttempt) return setAttempts(attempts + 1);
+  return attempts;
 }
 
 export async function getTurns() {
+  const attempts = await getAttempts();
   const session = cookies().get(cookie)?.value;
-  if (!session) return null;
-  return (await decrypt(session)) as TurnsSession;
+  if (!session) return { attempts, turns: null };
+
+  const turns = (await decrypt(session)) as TurnsSession;
+  return { turns, attempts };
 }
 
 export async function playATurn(address?: string) {
-  const session = await getTurns();
+  const { turns: session } = await getTurns();
   if (!session) return createTurns(address);
   if (session.hold) {
     if (session.expires > Date.now()) return session;

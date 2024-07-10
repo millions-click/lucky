@@ -1,4 +1,5 @@
 import { PropsWithChildren } from 'react';
+import type { Viewport } from 'next';
 import { Analytics } from '@vercel/analytics/next';
 import { getTranslations, unstable_setRequestLocale } from 'next-intl/server';
 
@@ -6,6 +7,13 @@ import '../global.css';
 import type { Params } from './locale.d';
 
 import { locales } from '@/i18n';
+
+export const viewport: Viewport = {
+  width: 'device-width',
+  initialScale: 1,
+  maximumScale: 1,
+  userScalable: false,
+};
 
 export function generateStaticParams() {
   return locales.map((locale) => ({ locale }));

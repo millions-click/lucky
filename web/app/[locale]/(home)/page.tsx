@@ -2,7 +2,7 @@ import { NextIntlClientProvider } from 'next-intl';
 import { getMessages, unstable_setRequestLocale } from 'next-intl/server';
 
 import type { Params } from '../locale';
-import { Session } from './_ui/Session';
+import { LockController } from './_ui';
 
 export default async function Landing({ params: { locale } }: Params) {
   unstable_setRequestLocale(locale);
@@ -21,7 +21,7 @@ export default async function Landing({ params: { locale } }: Params) {
       <div className="hero-content text-neutral-content text-center">
         <div className="max-w-md">
           <NextIntlClientProvider messages={messages}>
-            <Session />
+            <LockController />
           </NextIntlClientProvider>
         </div>
       </div>

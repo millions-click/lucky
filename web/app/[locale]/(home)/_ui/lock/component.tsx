@@ -16,13 +16,15 @@ function randomArray(length: number, min: number, max: number) {
   return Array.from({ length }, () => randomInt(min, max));
 }
 
-export function PlayButton({
+export function LockDoor({
+  winner,
   disabled = false,
   reset = true,
-  onPlay,
+  onAttempt,
 }: {
+  winner?: boolean;
   disabled?: boolean;
-  onPlay?: (match: boolean, seed: Seed) => void;
+  onAttempt?: (match: boolean, seed: Seed) => void;
   reset?: boolean;
 }) {
   const [holding, setHolding] = useState<boolean>(true);
@@ -67,19 +69,16 @@ export function PlayButton({
       setResult(pos);
       setMatch(match);
       setPending(false);
-      onPlay && onPlay(match, { value, trigger: playTimeout, timestamp });
+      onAttempt && onAttempt(match, { value, trigger: playTimeout, timestamp });
 
       reset &&
         !match &&
         setRestartRef(
-          setTimeout(
-            () => {
-              setMatch(false);
-              setResult(NaN);
-              setHolding(true);
-            },
-            match ? 10000 : 5000
-          )
+          setTimeout(() => {
+            setMatch(false);
+            setResult(NaN);
+            setHolding(true);
+          }, 5000)
         );
     }, playTimeout);
   };
@@ -94,6 +93,7 @@ export function PlayButton({
       disabled={pending || match || disabled}
       data-pending={pending}
       data-match={match}
+      data-winner={winner}
       data-revealed={!Number.isNaN(result)}
       data-result={result || undefined}
     >
