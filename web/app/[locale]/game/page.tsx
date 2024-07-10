@@ -1,9 +1,13 @@
 import { Background } from '@/providers';
+import { unstable_setRequestLocale } from 'next-intl/server';
 import { useTranslations } from 'next-intl';
+
+import type { Params } from '@/app/[locale]/locale';
 
 const bg = 'lobby.jpeg';
 
-export default function Lobby() {
+export default function Lobby({ params: { locale } }: Params) {
+  unstable_setRequestLocale(locale);
   const t = useTranslations('Lobby');
 
   return (

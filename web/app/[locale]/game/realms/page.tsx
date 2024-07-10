@@ -1,6 +1,10 @@
 import { useTranslations } from 'next-intl';
+import { unstable_setRequestLocale } from 'next-intl/server';
 
-export default function Realms() {
+import type { Params } from '@/app/[locale]/locale';
+
+export default function Realms({ params: { locale } }: Params) {
+  unstable_setRequestLocale(locale);
   const t = useTranslations('Realms');
 
   return (
