@@ -5,7 +5,7 @@ import {
   type LuckyPassSession,
   type Seed,
 } from '@/actions/types';
-import { decrypt, encrypt } from '@/utils/jwt';
+import { decrypt, encrypt, safeDecrypt } from '@/utils/jwt';
 
 import { cookies } from 'next/headers';
 import { playATurn } from './turns';
@@ -15,7 +15,7 @@ const TTL = 60 * 60 * 24 * 1000;
 export async function getLuckyPass(): Promise<LuckyPassSession | null> {
   const session = cookies().get(LUCKY_PASS_COOKIE)?.value;
   if (!session) return null;
-  return (await decrypt(session)) as LuckyPassSession;
+  return (await safeDecrypt(session, LUCKY_PASS_COOKIE)) as LuckyPassSession;
 }
 
 export async function createLuckyPass(seed: Seed, address?: string) {

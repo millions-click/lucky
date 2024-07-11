@@ -1,3 +1,4 @@
+import { cookies } from 'next/headers';
 import { type JWTPayload, jwtVerify, SignJWT } from 'jose';
 
 const { AUTH_SECRET } = process.env;
@@ -7,7 +8,7 @@ const key = new TextEncoder().encode(AUTH_SECRET);
 
 export async function encrypt(
   payload: Record<string, unknown>,
-  expires: string | number | Date = '1 h'
+  expires: string | number | Date = '1 minute'
 ) {
   return await new SignJWT(payload)
     .setProtectedHeader({ alg: 'HS256' })
@@ -22,4 +23,21 @@ export async function decrypt(input: string): Promise<JWTPayload> {
   });
 
   return payload;
+}
+
+export async function safeDecrypt(input: string, cookie: string) {
+  try {
+    return await decrypt(input);
+  } catch (e: any) {
+    switch (e.code) {
+      case 'ERR_JWT_EXPIRED':
+      case 'ERR_JWS_SIGNATURE_VERIFICATION_FAILED':
+      case 'ERR_JWS_INVALID':
+        cookies().set(cookie, '', { maxAge: 0 });
+        break;
+      default:
+        console.log('safeDecrypt', cookie, e.name, e.code, e.message);
+    }
+  }
+  return null;
 }
