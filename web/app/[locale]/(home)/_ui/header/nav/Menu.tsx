@@ -21,9 +21,9 @@ export const Menu = ({ children }: Props) => {
       <OpenButton onClick={openMenu} aria-controls="menu" />
       <Transition show={isOpen}>
         <Dialog onClose={closeMenu}>
-          <Dialog.Panel className="fixed inset-0 z-20 flex h-svh w-screen flex-col overflow-y-scroll">
+          <Dialog.Panel className="fixed inset-0 z-20 flex h-dvh w-screen flex-col overflow-y-scroll">
             <Transition.Child
-              className="sticky top-0 z-10 flex h-16 shrink-0 bg-primary px-3 backdrop-blur-md sm:px-8 justify-between items-center"
+              className="sticky top-0 z-20 flex h-16 shrink-0 bg-primary px-3 backdrop-blur-md sm:px-8 justify-between items-center"
               enter="motion-safe:transition-all motion-safe:duration-150"
               enterFrom="bg-transparent"
               enterTo="bg-neutral-100"

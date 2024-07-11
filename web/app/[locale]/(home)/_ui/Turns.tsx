@@ -26,7 +26,7 @@ export function Turns({
   const message = winner ? (session ? 5 : 6) : Math.min(attempts || 0, 4);
 
   return (
-    <div className="absolute bottom-0 max-lg:left-0 lg:right-0">
+    <div className="fixed bottom-0 max-lg:left-0 lg:right-0">
       {!session || winner ? (
         attempts !== null ? (
           <div className="chat chat-start lg:chat-end mx-4 max-w-xs lg:max-w-lg">

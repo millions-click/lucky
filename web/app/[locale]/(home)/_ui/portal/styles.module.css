@@ -1,9 +1,23 @@
-@keyframes shine {
-  0%, 100% {
-    filter: brightness(120%);
+@keyframes activate {
+  0% {
+    box-shadow: none;
+    transform: scale(0) rotate(0deg);
   }
-  50% {
-    filter: brightness(0%);
+  100% {
+    transform: scale(1) rotate(360deg);
+    box-shadow: 0 0 0 50px rgba(0, 0, 0, 0.7),
+    0 0 0 100px rgba(0, 0, 0, 0.5),
+    0 0 0 150px rgba(0, 0, 0, 0.3),
+    0 0 0 200px rgba(0, 0, 0, 0.1);
+  }
+}
+
+@keyframes rotate {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
   }
 }
 
@@ -22,26 +36,35 @@
   }
 }
 
-@keyframes rotate {
-  0% {
-    transform: rotate(0deg);
+@keyframes shine {
+  0%, 100% {
+    filter: brightness(120%);
   }
-  100% {
-    transform: rotate(360deg);
+  50% {
+    filter: brightness(0%);
   }
 }
 
-@keyframes activate {
+@keyframes hop-in {
   0% {
-    box-shadow: none;
-    transform: scale(0) rotate(0deg);
+    transform: scale(1) rotate(0deg);
+    opacity: 1;
+  }
+  10% {
+    transform: scale(3) rotate(360deg);
+    opacity: 1;
+  }
+  20% {
+    transform: scale(6) rotate(720deg);
+    opacity: 1;
+  }
+  30% {
+    transform: scale(9) rotate(1080deg);
+    opacity: 1;
   }
   100% {
-    transform: scale(1) rotate(360deg);
-    box-shadow: 0 0 0 50px rgba(0, 0, 0, 0.7),
-    0 0 0 100px rgba(0, 0, 0, 0.5),
-    0 0 0 150px rgba(0, 0, 0, 0.3),
-    0 0 0 200px rgba(0, 0, 0, 0.1);
+    transform: scale(100) rotate(360deg);
+    opacity: 0.5;
   }
 }
 
@@ -74,6 +97,13 @@
     user-select: none;
   }
 
+  &:disabled {
+    @apply hidden;
+
+    pointer-events: none;
+    animation: none;
+  }
+
   &[data-activated="true"] {
     &[data-portal="entrance"] {
       animation: rotate 20s linear infinite, pulsate-shadow 2s ease-in-out infinite;
@@ -97,60 +127,47 @@
       background: radial-gradient(circle, rgba(255, 255, 255, 0.25) 0%, rgba(255, 255, 255, 0) 50%);
       animation: shine 3s infinite ease-in-out;
     }
-  }
 
-  &:disabled {
-    @apply hidden;
+    @media (hover: hover) {
+      &:hover:not(:active):not([data-warping="true"]) {
+        &[data-portal="entrance"] {
+          animation: rotate 5s linear infinite, pulsate-shadow 1.5s ease-in-out infinite;
+        }
 
-    pointer-events: none;
-    animation: none;
-  }
+        &[data-portal="lucky"] {
+          animation: rotate 5s linear reverse infinite, pulsate-shadow 1.5s ease-in-out infinite;
+        }
 
-  @media (hover: hover) {
-    &:hover:not(:active):not([data-warping="true"]) {
+        &[data-portal="unlucky"] {
+          animation: rotate 5s linear reverse infinite, pulsate-shadow 1.5s ease-in-out infinite;
+        }
+
+        transform: scale(1.1);
+      }
+    }
+
+    &:active:not([data-warping="true"]) {
       &[data-portal="entrance"] {
-        animation: rotate 5s linear infinite, pulsate-shadow 1.5s ease-in-out infinite;
+        animation: rotate 2.5s linear infinite, pulsate-shadow 1s ease-in-out infinite;
       }
 
       &[data-portal="lucky"] {
-        animation: rotate 5s linear reverse infinite, pulsate-shadow 1.5s ease-in-out infinite;
+        animation: rotate 2.5s linear reverse infinite, pulsate-shadow 1s ease-in-out infinite;
       }
 
       &[data-portal="unlucky"] {
-        animation: rotate 5s linear reverse infinite, pulsate-shadow 1.5s ease-in-out infinite;
+        animation: rotate 2.5s linear reverse infinite, pulsate-shadow 1s ease-in-out infinite;
       }
 
-      transform: scale(1.1);
+      transform: scale(1.5);
     }
-  }
-
-  &:active:not([data-warping="true"]) {
-    &[data-portal="entrance"] {
-      animation: rotate 2.5s linear infinite, pulsate-shadow 1s ease-in-out infinite;
-    }
-
-    &[data-portal="lucky"] {
-      animation: rotate 2.5s linear reverse infinite, pulsate-shadow 1s ease-in-out infinite;
-    }
-
-    &[data-portal="unlucky"] {
-      animation: rotate 2.5s linear reverse infinite, pulsate-shadow 1s ease-in-out infinite;
-    }
-
-    transform: scale(1.5);
   }
 
   &[data-warping="true"] {
-    &[data-portal="entrance"] {
-      animation: rotate 1s linear infinite, pulsate-shadow 0.5s ease-in-out infinite;
-    }
+    pointer-events: none;
+    user-select: none;
+    z-index: 100;
 
-    &[data-portal="lucky"] {
-      animation: rotate 1s linear reverse infinite, pulsate-shadow 0.5s ease-in-out infinite;
-    }
-
-    &[data-portal="unlucky"] {
-      animation: rotate 1s linear reverse infinite, pulsate-shadow 0.5s ease-in-out infinite;
-    }
+    animation: pulsate-shadow 0.5s ease-in-out infinite, hop-in 18s linear forwards !important;
   }
 }

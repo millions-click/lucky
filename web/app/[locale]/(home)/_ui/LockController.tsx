@@ -32,10 +32,8 @@ export function LockController() {
         <Portal
           active={winner}
           type="entrance"
+          href="/game"
           onActive={setVortexActivated}
-          onWarping={() => {
-            // Activate portal effect and transport user to the next realm.
-          }}
         />
       )}
 

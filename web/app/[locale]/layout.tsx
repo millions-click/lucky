@@ -38,7 +38,7 @@ export default async function LocaleLayout({
   return (
     <html lang={locale}>
       <body>
-        <main>{children}</main>
+        {children}
         <Analytics />
       </body>
     </html>

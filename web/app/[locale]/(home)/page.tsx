@@ -17,12 +17,14 @@ export default async function Landing({ params: { locale } }: Params) {
 
   // TODO: Generate a backdrop filter for the image to be used as a background
   return (
-    <div className={className}>
-      <div className="hero-content text-neutral-content text-center">
-        <div className="max-w-md">
-          <NextIntlClientProvider messages={messages}>
-            <LockController />
-          </NextIntlClientProvider>
+    <div className="w-full min-h-screen overflow-hidden relative">
+      <div className={className}>
+        <div className="hero-content text-neutral-content text-center">
+          <div className="max-w-md">
+            <NextIntlClientProvider messages={messages}>
+              <LockController />
+            </NextIntlClientProvider>
+          </div>
         </div>
       </div>
     </div>
