@@ -1,6 +1,6 @@
 'use client';
 
-import { PlayButton } from '@/components/shared';
+import { LockDoor } from '@/components/shared';
 
 export default function DashboardFeature() {
   return (
@@ -12,7 +12,7 @@ export default function DashboardFeature() {
             Wanna try your luck?
             <span className="text-2xl font-bold block">Feed a rabbit</span>
           </p>
-          <PlayButton />
+          <LockDoor />
         </div>
       </div>
     </div>

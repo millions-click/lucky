@@ -16,13 +16,15 @@ function randomArray(length: number, min: number, max: number) {
   return Array.from({ length }, () => randomInt(min, max));
 }
 
-export function PlayButton({
+export function LockDoor({
+  vortex,
   disabled = false,
   reset = true,
-  onPlay,
+  onAttempt,
 }: {
+  vortex?: boolean;
   disabled?: boolean;
-  onPlay?: (match: boolean, seed: Seed) => void;
+  onAttempt?: (match: boolean, seed: Seed) => void;
   reset?: boolean;
 }) {
   const [holding, setHolding] = useState<boolean>(true);
@@ -67,25 +69,23 @@ export function PlayButton({
       setResult(pos);
       setMatch(match);
       setPending(false);
-      onPlay && onPlay(match, { value, trigger: playTimeout, timestamp });
+      onAttempt && onAttempt(match, { value, trigger: playTimeout, timestamp });
 
       reset &&
+        !match &&
         setRestartRef(
-          setTimeout(
-            () => {
-              setMatch(false);
-              setResult(NaN);
-              setHolding(true);
-            },
-            match ? 10000 : 5000
-          )
+          setTimeout(() => {
+            setMatch(false);
+            setResult(NaN);
+            setHolding(true);
+          }, 5000)
         );
     }, playTimeout);
   };
 
   return (
     <button
-      className={`${styles.border} bg-[url('/img/entry-lock/full.svg')] bg-center bg-no-repeat bg-cover`}
+      className={`${styles.border} bg-[url('/assets/images/entry/lock/full.svg')] bg-center bg-no-repeat bg-cover`}
       onMouseDown={start}
       onMouseUp={play}
       onTouchStart={start}
@@ -93,6 +93,7 @@ export function PlayButton({
       disabled={pending || match || disabled}
       data-pending={pending}
       data-match={match}
+      data-vortex={vortex}
       data-revealed={!Number.isNaN(result)}
       data-result={result || undefined}
     >

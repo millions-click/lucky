@@ -29,7 +29,7 @@ export function useBountyAccount({ pda }: { pda: PublicKey }) {
   const transactionToast = useTransactionToast();
   const { program, games } = useGamesProgram();
 
-  const { getGem } = useTreasureGems({});
+  const { getGem } = useTreasureGems();
   const { getTrader } = useTollkeeperTraders({});
 
   const bountyQuery = useQuery({

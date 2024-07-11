@@ -2,38 +2,17 @@
 
 import { NextRequest, NextResponse } from 'next/server';
 import { cookies } from 'next/headers';
-import { SignJWT, jwtVerify } from 'jose';
 
 import {
-  type Turns,
   type TurnsSession,
   TURNS_AVAILABLE,
   TURNS_COOKIE,
   ATTEMPTS_COOKIE,
 } from './types';
+import { decrypt, encrypt, safeDecrypt } from '@/utils/jwt';
+import { getLuckyPass } from './lucky-pass';
 
-const { AUTH_SECRET } = process.env;
-if (!AUTH_SECRET) throw new Error('AUTH_SECRET is required');
-
-const key = new TextEncoder().encode(AUTH_SECRET);
 const TTL = 30 * 1000;
-const cookie = TURNS_COOKIE;
-
-async function encrypt(payload: Turns) {
-  return await new SignJWT(payload)
-    .setProtectedHeader({ alg: 'HS256' })
-    .setIssuedAt()
-    .setExpirationTime('1 h')
-    .sign(key);
-}
-
-async function decrypt(input: string): Promise<TurnsSession> {
-  const { payload } = await jwtVerify(input, key, {
-    algorithms: ['HS256'],
-  });
-
-  return payload as TurnsSession;
-}
 
 /**
  * Exponentially increase the TTL based on the number of attempts
@@ -47,22 +26,23 @@ async function createTurns(address?: string) {
   const user = { address, turns: TURNS_AVAILABLE };
 
   const expires = Date.now() + computeTTL(attempts);
-  const session = await encrypt({ ...user, expires, attempts });
+  const session = await encrypt({ ...user, expires, attempts }, expires);
 
-  cookies().set(cookie, session, {
+  cookies().set(TURNS_COOKIE, session, {
     expires,
     httpOnly: true,
     sameSite: 'strict',
   });
 
-  return decrypt(session);
+  return (await decrypt(session)) as TurnsSession;
 }
 
-function setAttempts(attempts = 1) {
+async function setAttempts(attempts = 1) {
   const oneMothInFuture = new Date();
   oneMothInFuture.setMonth(oneMothInFuture.getMonth() + 1);
 
-  cookies().set(ATTEMPTS_COOKIE, attempts.toString(), {
+  const session = await encrypt({ attempts }, oneMothInFuture);
+  cookies().set(ATTEMPTS_COOKIE, session, {
     expires: oneMothInFuture,
     httpOnly: true,
     sameSite: 'strict',
@@ -71,24 +51,28 @@ function setAttempts(attempts = 1) {
   return attempts;
 }
 
-export async function getAttempts(newAttempt = false) {
-  const attempts = Number(cookies().get(ATTEMPTS_COOKIE)?.value);
-  if (!Number.isNaN(attempts)) {
-    if (newAttempt) return setAttempts(attempts + 1);
-    return attempts;
-  }
+async function getAttempts(newAttempt = false): Promise<number> {
+  const session = cookies().get(ATTEMPTS_COOKIE)?.value;
+  if (!session) return newAttempt ? setAttempts() : 0;
 
-  return newAttempt ? setAttempts() : 0;
+  const attempts =
+    Number((await safeDecrypt(session, ATTEMPTS_COOKIE))?.attempts) || 0;
+  if (newAttempt) return setAttempts(attempts + 1);
+  return attempts;
 }
 
 export async function getTurns() {
-  const session = cookies().get(cookie)?.value;
-  if (!session) return null;
-  return await decrypt(session);
+  const attempts = await getAttempts();
+  const pass = await getLuckyPass();
+  const session = cookies().get(TURNS_COOKIE)?.value;
+  if (!session) return { attempts, turns: null, pass };
+
+  const turns = (await safeDecrypt(session, TURNS_COOKIE)) as TurnsSession;
+  return { turns, attempts, pass };
 }
 
 export async function playATurn(address?: string) {
-  const session = await getTurns();
+  const { turns: session } = await getTurns();
   if (!session) return createTurns(address);
   if (session.hold) {
     if (session.expires > Date.now()) return session;
@@ -98,7 +82,7 @@ export async function playATurn(address?: string) {
   session.turns -= 1;
   session.hold = session.turns <= 0;
 
-  cookies().set(cookie, await encrypt(session), {
+  cookies().set(TURNS_COOKIE, await encrypt(session, session.expires), {
     expires: session.expires,
     httpOnly: true,
     sameSite: 'strict',
@@ -117,7 +101,7 @@ export async function updateSession(request: NextRequest) {
   oneMothInFuture.setMonth(oneMothInFuture.getMonth() + 1);
 
   res.cookies.set({
-    name: cookie,
+    name: TURNS_COOKIE,
     value: attempts,
     httpOnly: true,
     expires: oneMothInFuture,

@@ -1,4 +1,5 @@
 import { PropsWithChildren } from 'react';
+import type { Viewport } from 'next';
 import '../global.css';
 
 import {
@@ -10,6 +11,13 @@ import {
   DataFeedProvider,
 } from '@/providers';
 import { UiLayout } from '@/components/ui/ui-layout';
+
+export const viewport: Viewport = {
+  width: 'device-width',
+  initialScale: 1,
+  maximumScale: 1,
+  userScalable: false,
+};
 
 const { NEXT_PUBLIC_VERCEL_ENV = 'development' } = process.env;
 

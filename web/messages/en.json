@@ -3,6 +3,13 @@
     "title": "Luckyland",
     "description": "Where Prizes 🎉 and FUN 😃 never stops!"
   },
+  "General": {
+    "bounty": {
+      "title": "Bounty",
+      "tooltip": "Available treasures in Luckyland",
+      "description": "Earn treasures beating the odds!"
+    }
+  },
   "Index": {
     "title": "Hello world!",
     "messages": [
@@ -14,7 +21,7 @@
       {
         "name": "Lucky Rabbit",
         "message": "Catch a lucky gem and you can enter!",
-        "advise": "But be careful! You only have 3 attempts."
+        "advise": "Does gems are not easy to catch! Press the lock until you see more gems!"
       },
       {
         "name": "Lucky Rabbit",
@@ -30,12 +37,57 @@
         "name": "Lucky Rabbit",
         "message": "I think you already know how it works. Let's try again!",
         "advise": "Good luck!"
+      },
+      {
+        "name": "Lucky Rabbit",
+        "message": "🎉 Winner winner chicken dinner! You made it!\n\nWelcome to Luckyland!",
+        "advise": "Touch the portal to hop in!"
+      },
+      {
+        "name": "Lucky Rabbit",
+        "message": "Welcome back, you are definitely a lucky one!",
+        "advise": "Touch the portal and let's earn some treasures!"
       }
     ],
     "turns": {
       "attempts": "Attempts",
       "left": "Turns left",
       "hold": "Your turns reset in"
+    }
+  },
+  "Lobby": {
+    "title": "Welcome to Luckyland!",
+    "messages": [],
+    "links": {
+      "realms": "Realms"
+    },
+    "actions": {
+      "enter": "Enter",
+      "exit": "Exit"
+    }
+  },
+  "Realms": {
+    "title": "Realms",
+    "messages": [],
+    "links": {
+      "lobby": "Lobby",
+      "coins": "Coins"
+    },
+    "actions": {
+      "enter": "Enter",
+      "exit": "Exit"
+    }
+  },
+  "Coins": {
+    "title": "Coins",
+    "messages": [],
+    "links": {
+      "lobby": "Lobby",
+      "realms": "Realms"
+    },
+    "actions": {
+      "enter": "Enter",
+      "exit": "Exit"
     }
   }
 }

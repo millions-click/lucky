@@ -25,6 +25,16 @@
   }
 }
 
+@keyframes vortex {
+  0% {
+    transform: scale(1) rotate(0deg);
+  }
+  100% {
+    transform: scale(0) rotate(360deg);
+    opacity: 0;
+  }
+}
+
 .border {
   @apply w-48;
   @apply h-48;
@@ -41,7 +51,7 @@
   }
 
   &::before {
-    content: url("/img/entry-lock/pointer.svg");
+    content: url("/assets/images/entry/lock/pointer.svg");
     position: absolute;
     top: -2px;
     left: -2px;
@@ -90,7 +100,7 @@
     }
 
     &[data-match="true"]::before {
-      filter: hue-rotate(325deg) saturate(1.5) brightness(1.7);
+      filter: hue-rotate(325deg) saturate(1.5) brightness(1.2)
     }
   }
 
@@ -110,7 +120,7 @@
     }
 
     &[data-match="true"]::before {
-      filter: hue-rotate(0deg) saturate(1.5) brightness(1.7);
+      filter: hue-rotate(120deg) saturate(1.5) brightness(1.7);
     }
   }
 
@@ -120,7 +130,7 @@
     }
 
     &[data-match="true"]::before {
-      filter: hue-rotate(270deg) saturate(1.5) brightness(1.7);
+      filter: hue-rotate(270deg) saturate(1.5) brightness(1.5)
     }
   }
 
@@ -130,7 +140,7 @@
     }
 
     &[data-match="true"]::before {
-      filter: hue-rotate(120deg) saturate(1.5) brightness(1.7);
+      filter: hue-rotate(0deg) saturate(1.5) brightness(1.5)
     }
   }
 
@@ -177,7 +187,6 @@
   &[data-match="true"] {
     box-shadow: 0 0 10px #1c6bd1, 0 0 20px #1c6bd1, 0 0 30px #1c6bd1, 0 0 40px #1c6bd1;
     animation: none;
-    transform: scale(1.1);
   }
 
   &[data-pending="true"],
@@ -186,6 +195,10 @@
       text-shadow: 0 0 10px #ffc600, 0 0 20px #ffc600, 0 0 30px #ffc600, 0 0 40px #ffc600;
       animation: none;
     }
+  }
+
+  &[data-vortex="true"]{
+    animation: vortex 5s cubic-bezier(0.4, 0, 0.2, 1) forwards;
   }
 }
 
@@ -228,7 +241,7 @@
 
     &::before {
       position: absolute;
-      content: url("/img/entry-lock/gem.svg");
+      content: url("/assets/images/entry/lock/gem.svg");
     }
 
     &[data-area="i0"] {
@@ -280,7 +293,6 @@
       bottom: 30%;
       filter: hue-rotate(0deg) saturate(1.5) brightness(1.2);
     }
-
 
     &.holding,
     &.match {

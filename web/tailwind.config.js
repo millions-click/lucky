@@ -13,7 +13,7 @@ module.exports = {
   theme: {
     extend: {
       screens: {
-        xs: '428px',
+        // xs: '428px',
       },
       boxShadow: {
         // glow: '0 0 10px #0f0, 0 0 20px #0f0, 0 0 30px #0f0, 0 0 40px #0f0',
