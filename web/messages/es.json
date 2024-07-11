@@ -3,6 +3,13 @@
     "title": "Luckyland",
     "description": "¡Donde los premios 🎉 y la DIVERSIÓN 😃 nunca se detienen!"
   },
+  "General": {
+    "bounty": {
+      "title": "Recompensa",
+      "tooltip": "Tesoros disponibles en Luckyland",
+      "description": "¡Gana tesoros venciendo las probabilidades!"
+    }
+  },
   "Index": {
     "title": "¡Hola mundo!",
     "messages": [

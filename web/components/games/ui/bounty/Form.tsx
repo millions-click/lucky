@@ -89,7 +89,7 @@ export function BountyForm({
   onSubmit,
   onCancel,
 }: BountyFormProps) {
-  const { gems, getGem } = useTreasureGems({});
+  const { gems, getGem } = useTreasureGems();
   const { traders, getTrader } = useTollkeeperTraders({});
 
   const [submitting, setSubmitting] = useState(false);
