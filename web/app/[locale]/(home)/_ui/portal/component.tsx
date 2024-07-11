@@ -17,7 +17,7 @@ type PortalProps = {
 };
 
 const PORTAL_ACTIVATION_TIME = 3000;
-const PORTAL_WARPING_TIME = 6000;
+const PORTAL_WARPING_TIME = 4000;
 
 export function Portal({
   active,
@@ -53,7 +53,7 @@ export function Portal({
           onWarped && onWarped();
           const link = document.getElementById('target');
           link && link.click();
-        }, PORTAL_WARPING_TIME / 3),
+        }, PORTAL_WARPING_TIME / 2),
       PORTAL_WARPING_TIME
     );
   };
@@ -70,6 +70,7 @@ export function Portal({
         data-warping={warping}
       />
       {href && activated && <Link id="target" href={href} prefetch hidden />}
+      {warping && <div id="screen" className={styles.warp} />}
     </>
   );
 }
