@@ -37,5 +37,5 @@ export async function middleware(req: NextRequest, _event: NextFetchEvent) {
 //  missing cookies on /game and /game/*
 //  existing cookies on landing / and /:lang (where :lang is a valid locale)
 export const config = {
-  matcher: ['/((?!api|static|.*\\..*|_next|console).*)'],
+  matcher: ['/((?!api|static|.*\\..*|_next|console|ipfs).*)'],
 };

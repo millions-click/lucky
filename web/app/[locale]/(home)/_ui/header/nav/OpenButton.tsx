@@ -47,12 +47,13 @@ export const OpenButton = (props: Props) => {
       data-tip={t('bounty.tooltip')}
     >
       <button
-        className="btn btn-ghost btn-sm flex-row-reverse px-0 rounded-full"
+        className="btn btn-ghost btn-sm px-0 rounded-full"
         aria-controls={props['aria-controls']}
         aria-expanded={false}
         aria-label="Open menu"
         onClick={props.onClick}
       >
+        <MoneyBagIcon className="z-10 h-8 w-8 self-center" aria-hidden />
         <span className="div bg-neutral text-white border-2 border-primary animate-glow rounded-xl px-2 py-1 ml-[-16px]">
           {total ? (
             '$ ' + formatAmount(total)
@@ -60,7 +61,6 @@ export const OpenButton = (props: Props) => {
             <span className="loading loading-ring loading-xs" />
           )}
         </span>
-        <MoneyBagIcon className="h-8 w-8 self-center" aria-hidden />
       </button>
     </div>
   );
