@@ -2,6 +2,31 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [0.1.8](///compare/v0.1.7...v0.1.8) (2024-07-11)
+
+
+### Features
+
+* **component:** 👻 Footer | Landing 4ed4969
+* **web:** 👻 Console 5c5a4c6
+* **web:** 👻 Game Background | Layout ad96c44
+* **web:** 👻 i18n Middleware cb99492
+* **web:** 👻 i18n Setup 0362dc2
+* **web:** 👻 Landing e691cf6
+* **web:** 👻 Lucky Pass | Redirect cc593d5
+* **web:** 👻 Lucky Pass | Session edac244
+* **web:** 👻 Portal | Illusion 154c874
+* **web:** 👻 Treasure Balance a5ee48d
+* **web:** 👻 Turns | Session b934b8f
+* **web:** 👻 Warp | Portal 8136a51
+
+
+### Bug Fixes
+
+* **web:** 👻 Build 2e0f9de
+* **web:** 👻 IPFS 87883e5
+* **web:** 👻 Session Decrypt | JWT & JWS 4b4bb46
+
 ### [0.1.7](///compare/v0.1.6...v0.1.7) (2024-07-05)
 
 

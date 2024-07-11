@@ -1,6 +1,6 @@
 {
   "name": "@luckyland/source",
-  "version": "0.1.7",
+  "version": "0.1.8",
   "license": "MIT",
   "scripts": {
     "anchor": "nx run anchor:anchor",
@@ -19,6 +19,7 @@
   "dependencies": {
     "@chainlink/solana-sdk": "^0.2.2",
     "@coral-xyz/anchor": "^0.30.0",
+    "@headlessui/react": "^1.7.19",
     "@metaplex-foundation/js": "^0.20.1",
     "@metaplex-foundation/mpl-token-metadata": "^3.2.1",
     "@metaplex-foundation/mpl-toolbox": "^0.9.4",
@@ -41,8 +42,11 @@
     "buffer": "6.0.3",
     "daisyui": "4.11.1",
     "encoding": "0.1.13",
+    "jose": "^5.6.3",
     "jotai": "2.8.3",
+    "moment": "^2.30.1",
     "next": "14.0.4",
+    "next-intl": "^3.15.4",
     "react": "18.3.1",
     "react-dom": "18.3.1",
     "react-hot-toast": "2.4.1",

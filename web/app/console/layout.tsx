@@ -1,4 +1,6 @@
-import './global.css';
+import { PropsWithChildren } from 'react';
+import type { Viewport } from 'next';
+import '../global.css';
 
 import {
   ReactQueryProvider,
@@ -9,13 +11,15 @@ import {
   DataFeedProvider,
 } from '@/providers';
 import { UiLayout } from '@/components/ui/ui-layout';
-import { Analytics } from '@vercel/analytics/next';
+
+export const viewport: Viewport = {
+  width: 'device-width',
+  initialScale: 1,
+  maximumScale: 1,
+  userScalable: false,
+};
 
 const { NEXT_PUBLIC_VERCEL_ENV = 'development' } = process.env;
-export const metadata = {
-  title: 'Luckyland',
-  description: 'Where Prizes 🎉 and FUN 😃 never stops!',
-};
 
 const links: { label: string; path: string; program?: boolean }[] = [
   { label: 'Account', path: '/account' },
@@ -23,16 +27,12 @@ const links: { label: string; path: string; program?: boolean }[] = [
   { label: 'Games', path: '/games', program: true },
   { label: 'Lucky', path: '/lucky', program: true },
   { label: 'Store', path: '/store', program: true },
-];
+].map((link) => ({ ...link, path: `/console${link.path}` }));
 
 if (NEXT_PUBLIC_VERCEL_ENV !== 'production')
-  links.push({ label: 'Clusters', path: '/clusters' });
+  links.push({ label: 'Clusters', path: '/console/clusters' });
 
-export default function RootLayout({
-  children,
-}: {
-  children: React.ReactNode;
-}) {
+export default function Layout({ children }: PropsWithChildren) {
   return (
     <html lang="en">
       <body>
@@ -51,7 +51,6 @@ export default function RootLayout({
             </CryptoProvider>
           </ClusterProvider>
         </ReactQueryProvider>
-        <Analytics />
       </body>
     </html>
   );

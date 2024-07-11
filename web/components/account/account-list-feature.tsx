@@ -9,7 +9,7 @@ export default function AccountListFeature() {
   const { publicKey } = useWallet();
 
   if (publicKey) {
-    return redirect(`/account/${publicKey.toString()}`);
+    return redirect(`/console/account/${publicKey.toString()}`);
   }
 
   return (

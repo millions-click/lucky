@@ -1,10 +1,15 @@
-import { PublicKey } from '@solana/web3.js';
+import { useMemo } from 'react';
+import { Cluster, PublicKey } from '@solana/web3.js';
 
-import { useTreasureProgram } from '@/components/treasure/treasure-data-access';
-import { useOwnedTokens } from '@/hooks';
+import { getKeeperPDA } from '@luckyland/anchor';
+import { useCluster, useOwnedTokens } from '@/hooks';
 
-export function useTreasureGems({ callback }: { callback?: () => void }) {
-  const { keeperPDA } = useTreasureProgram({ callback });
+export function useTreasureGems() {
+  const { cluster } = useCluster();
+  const keeperPDA = useMemo(
+    () => getKeeperPDA(cluster.network as Cluster),
+    [cluster]
+  );
   const { tokens: gems, mints, ..._ } = useOwnedTokens(keeperPDA);
 
   return {

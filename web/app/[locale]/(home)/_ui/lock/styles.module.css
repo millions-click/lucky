@@ -1,0 +1,306 @@
+@keyframes blink {
+  0%, 100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.75;
+  }
+}
+
+@keyframes blink-shadow {
+  0%, 100% {
+    box-shadow: 0 0 10px #ffc600, 0 0 20px #ffc600, 0 0 30px #ffc600, 0 0 40px #ffc600;
+  }
+  50% {
+    box-shadow: none;
+  }
+}
+
+@keyframes rotate {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}
+
+@keyframes vortex {
+  0% {
+    transform: scale(1) rotate(0deg);
+  }
+  100% {
+    transform: scale(0) rotate(360deg);
+    opacity: 0;
+  }
+}
+
+.border {
+  @apply w-48;
+  @apply h-48;
+  @apply rounded-full;
+
+  position: relative;
+  overflow: hidden;
+  animation: blink-shadow 1s linear infinite;
+  transition: transform 0.3s ease;
+  user-select: none;
+
+  & * {
+    user-select: none;
+  }
+
+  &::before {
+    content: url("/assets/images/entry/lock/pointer.svg");
+    position: absolute;
+    top: -2px;
+    left: -2px;
+    right: -2px;
+    bottom: -2px;
+    border-radius: 50%;
+    animation: rotate 10s linear infinite;
+    opacity: 1;
+    z-index: 1;
+    filter: hue-rotate(220deg) brightness(4) contrast(1.5);
+  }
+
+  &[data-result="1"] {
+    &::before {
+      transform: rotate(359deg);
+    }
+
+    &[data-match="true"]::before {
+      filter: hue-rotate(25deg) saturate(1.5) brightness(1.7);
+    }
+  }
+
+  &[data-result="2"] {
+    &::before {
+      transform: rotate(43deg);
+    }
+
+    &[data-match="true"]::before {
+      filter: hue-rotate(225deg) saturate(1.5) brightness(1.5);
+    }
+  }
+
+  &[data-result="6"] {
+    &::before {
+      transform: rotate(91deg);
+    }
+
+    &[data-match="true"]::before {
+      filter: hue-rotate(45deg) brightness(300%) contrast(1.7);
+    }
+  }
+
+  &[data-result="7"] {
+    &::before {
+      transform: rotate(136deg);
+    }
+
+    &[data-match="true"]::before {
+      filter: hue-rotate(325deg) saturate(1.5) brightness(1.2)
+    }
+  }
+
+  &[data-result="4"] {
+    &::before {
+      transform: rotate(180deg);
+    }
+
+    &[data-match="true"]::before {
+      filter: hue-rotate(180deg) saturate(1.5) brightness(1.7);
+    }
+  }
+
+  &[data-result="3"] {
+    &::before {
+      transform: rotate(223deg);
+    }
+
+    &[data-match="true"]::before {
+      filter: hue-rotate(120deg) saturate(1.5) brightness(1.7);
+    }
+  }
+
+  &[data-result="5"] {
+    &::before {
+      transform: rotate(269deg);
+    }
+
+    &[data-match="true"]::before {
+      filter: hue-rotate(270deg) saturate(1.5) brightness(1.5)
+    }
+  }
+
+  &[data-result="8"] {
+    &::before {
+      transform: rotate(318deg);
+    }
+
+    &[data-match="true"]::before {
+      filter: hue-rotate(0deg) saturate(1.5) brightness(1.5)
+    }
+  }
+
+  &[data-pending="true"]::before {
+    animation-duration: 0.5s;
+  }
+
+  &[data-revealed="true"]::before {
+    animation: none;
+  }
+
+  @media (hover: hover) {
+    &:hover:not(:active) {
+      box-shadow: 0 0 10px #ffc600, 0 0 20px #ffc600, 0 0 30px #ffc600, 0 0 40px #ffc600;
+      animation: none;
+      transform: scale(1.1);
+
+      .button {
+        text-shadow: 0 0 10px #ffc600, 0 0 20px #ffc600, 0 0 30px #ffc600, 0 0 40px #ffc600;
+        animation: none;
+      }
+    }
+  }
+
+  &:active {
+    transform: scale(0.95);
+
+    &::before {
+      animation: rotate 1s linear infinite;
+    }
+  }
+
+  &:disabled {
+    pointer-events: none;
+    animation: none;
+  }
+
+  &[data-pending="true"] {
+    box-shadow: 0 0 10px #ffc600, 0 0 20px #ffc600, 0 0 30px #ffc600, 0 0 40px #ffc600;
+    animation: none;
+    transform: scale(1.1);
+  }
+
+  &[data-match="true"] {
+    box-shadow: 0 0 10px #1c6bd1, 0 0 20px #1c6bd1, 0 0 30px #1c6bd1, 0 0 40px #1c6bd1;
+    animation: none;
+  }
+
+  &[data-pending="true"],
+  &[data-match="true"] {
+    .button {
+      text-shadow: 0 0 10px #ffc600, 0 0 20px #ffc600, 0 0 30px #ffc600, 0 0 40px #ffc600;
+      animation: none;
+    }
+  }
+
+  &[data-vortex="true"]{
+    animation: vortex 5s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+  }
+}
+
+.button {
+  @apply w-36;
+  @apply h-36;
+  @apply rounded-full;
+
+  position: absolute;
+  overflow: hidden;
+  animation: blink 1s linear infinite;
+}
+
+.door {
+  display: inline-grid;
+  grid-template-areas:
+    ".  .  . i1  .  .  ."
+    ". i8  .  .  . i2  ."
+    ".  .  .  .  .  .  ."
+    "i5 .  . i0  .  . i6"
+    ".  .  .  .  .  .  ."
+    ". i3  .  .  .  i7 ."
+    ".  .  . i4  .  .  .";
+  justify-items: center;
+  align-items: center;
+
+  & .button {
+    grid-area: i0;
+  }
+
+  & .value {
+    @apply text-white;
+    @apply text-lg;
+    @apply font-bold;
+    @apply h-7;
+    @apply w-8;
+    position: relative;
+    transition: transform 0.3s ease;
+    transform: scale(0);
+
+    &::before {
+      position: absolute;
+      content: url("/assets/images/entry/lock/gem.svg");
+    }
+
+    &[data-area="i0"] {
+      top: 50%;
+      left: 50%;
+    }
+
+    &[data-area="i1"]::before {
+      left: 32%;
+      filter: hue-rotate(45deg) saturate(1.5) brightness(1.2);
+    }
+
+    &[data-area="i2"]::before {
+      bottom: 30%;
+      filter: hue-rotate(225deg) saturate(1.5) brightness(1.2);
+    }
+
+    &[data-area="i6"]::before {
+      right: 40%;
+      bottom: 5%;
+      filter: hue-rotate(45deg) brightness(300%) contrast(1.5);
+    }
+
+    &[data-area="i7"]::before {
+      top: 10%;
+      filter: hue-rotate(325deg) saturate(1.5) brightness(1.2);
+    }
+
+    &[data-area="i4"]::before {
+      bottom: 20%;
+      right: 35%;
+      filter: hue-rotate(180deg) saturate(1.5) brightness(1.2);
+    }
+
+    &[data-area="i3"]::before {
+      left: 20%;
+      top: 10%;
+      filter: hue-rotate(120deg) saturate(1.5) brightness(1.2);
+    }
+
+    &[data-area="i5"]::before {
+      left: 40%;
+      bottom: 5%;
+      filter: hue-rotate(270deg) saturate(1.5) brightness(1.2);
+    }
+
+    &[data-area="i8"]::before {
+      left: 20%;
+      bottom: 30%;
+      filter: hue-rotate(0deg) saturate(1.5) brightness(1.2);
+    }
+
+    &.holding,
+    &.match {
+      transform: scale(2);
+
+      &.active {
+        transform: scale(2.5);
+      }
+    }
+  }
+}

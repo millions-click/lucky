@@ -1,0 +1,93 @@
+{
+  "Metadata": {
+    "title": "Luckyland",
+    "description": "¡Donde los premios 🎉 y la DIVERSIÓN 😃 nunca se detienen!"
+  },
+  "General": {
+    "bounty": {
+      "title": "Recompensa",
+      "tooltip": "Tesoros disponibles en Luckyland",
+      "description": "¡Gana tesoros venciendo las probabilidades!"
+    }
+  },
+  "Index": {
+    "title": "¡Hola mundo!",
+    "messages": [
+      {
+        "name": "Conejo de la suerte",
+        "message": "Parece que tienes suerte hoy. Has encontrado una de las entradas secretas a la tierra de la suerte.",
+        "advise": "¿Puedes atrapar una gema de la suerte para entrar?"
+      },
+      {
+        "name": "Conejo de la suerte",
+        "message": "¡Atrapa una gema de la suerte y podras entrar!",
+        "advise": "¡Las gemas no son fáciles de atrapar! ¡Presiona el candado hasta que veas más gemas!"
+      },
+      {
+        "name": "Conejo de la suerte",
+        "message": "Pareces persistente. ¡Vamos a intentarlo de nuevo!",
+        "advise": "¡Mejor suerte esta vez!"
+      },
+      {
+        "name": "Conejo de la suerte",
+        "message": "Volviste. ¡Vamos a intentarlo de nuevo!",
+        "advise": "Recuerda que solo tienes 3 intentos. ¡Buena suerte!"
+      },
+      {
+        "name": "Conejo de la suerte",
+        "message": "Creo que ya sabes cómo funciona. ¡Vamos a intentarlo de nuevo!",
+        "advise": "!Buena suerte!"
+      },
+      {
+        "name": "Conejo de la suerte",
+        "message": "🎉¡Lo lograste! Atraspaste una gema de la suerte. ¡Bienvenido a la tierra de la suerte!",
+        "advise": "¡Toca el portal para entrar!"
+      },
+      {
+        "name": "Conejo de la suerte",
+        "message": "¡Bienvenido de nuevo, definitivamente eres un afortunado!",
+        "advise": "¡Toca el portal y vamos a reclamar algunos tesoros!"
+      }
+    ],
+    "turns": {
+      "attempts": "Intentos",
+      "left": "Turnos restantes",
+      "hold": "Tus turnos se restauran en"
+    }
+  },
+  "Lobby": {
+    "title": "¡Bienvenido a la tierra de la suerte!",
+    "messages": [],
+    "links": {
+      "realms": "Reinos"
+    },
+    "actions": {
+      "enter": "Entrar",
+      "exit": "Salir"
+    }
+  },
+  "Realms": {
+    "title": "Reinos",
+    "messages": [],
+    "links": {
+      "lobby": "Lobby",
+      "coins": "Monedas"
+    },
+    "actions": {
+      "enter": "Entrar",
+      "exit": "Salir"
+    }
+  },
+  "Coins": {
+    "title": "Monedas",
+    "messages": [],
+    "links": {
+      "lobby": "Lobby",
+      "realms": "Reinos"
+    },
+    "actions": {
+      "enter": "Entrar",
+      "exit": "Salir"
+    }
+  }
+}
