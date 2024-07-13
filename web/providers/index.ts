@@ -1,4 +1,6 @@
 export * from './bg-provider';
+export * from './game-pal';
+export * from './messages';
 
 export * from './react-query-provider';
 export * from './crypto-provider';
