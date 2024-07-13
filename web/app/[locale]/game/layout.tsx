@@ -1,25 +1,21 @@
 import { PropsWithChildren } from 'react';
-import { NextIntlClientProvider } from 'next-intl';
-import { getMessages, unstable_setRequestLocale } from 'next-intl/server';
+import { unstable_setRequestLocale } from 'next-intl/server';
 
 import type { Params } from '../locale';
 import { GameLayout } from './_ui';
 
-import { BgProvider } from '@/providers';
+import { BgProvider, MessagesProvider } from '@/providers';
 
 export default async function Layout({
   children,
   params: { locale },
 }: PropsWithChildren<Params>) {
   unstable_setRequestLocale(locale);
-  const messages = await getMessages();
 
   return (
     <BgProvider>
       <GameLayout>
-        <NextIntlClientProvider messages={messages}>
-          {children}
-        </NextIntlClientProvider>
+        <MessagesProvider>{children}</MessagesProvider>
       </GameLayout>
     </BgProvider>
   );

@@ -3,6 +3,11 @@
     "title": "Luckyland",
     "description": "Where Prizes 🎉 and FUN 😃 never stops!"
   },
+  "Components": {
+    "Message": {
+      "next": "Next"
+    }
+  },
   "General": {
     "bounty": {
       "title": "Bounty",
@@ -14,39 +19,32 @@
     "title": "Hello world!",
     "messages": [
       {
-        "name": "Lucky Rabbit",
-        "message": "Looks like you're lucky today. You've found one of the secret entrances to Luckyland.",
-        "advise": "Can you catch a lucky gem to enter?"
+        "text": "Looks like you're lucky today. You've found one of the secret entrances to Luckyland.",
+        "advice": "Can you catch a lucky gem to enter?"
       },
       {
-        "name": "Lucky Rabbit",
-        "message": "Catch a lucky gem and you can enter!",
-        "advise": "Does gems are not easy to catch! Press the lock until you see more gems!"
+        "text": "Catch a lucky gem and you can enter!",
+        "advice": "Does gems are not easy to catch! Press the lock until you see more gems!"
       },
       {
-        "name": "Lucky Rabbit",
-        "message": "You seem persistent. Let's try again!",
-        "advise": "Better luck this time!"
+        "text": "You seem persistent. Let's try again!",
+        "advice": "Better luck this time!"
       },
       {
-        "name": "Lucky Rabbit",
-        "message": "You're back. Let's try again!",
-        "advise": "Remember you only have 3 attempts. Good luck!"
+        "text": "You're back. Let's try again!",
+        "advice": "Remember you only have 3 attempts. Good luck!"
       },
       {
-        "name": "Lucky Rabbit",
-        "message": "I think you already know how it works. Let's try again!",
-        "advise": "Good luck!"
+        "text": "I think you already know how it works. Let's try again!",
+        "advice": "Good luck!"
       },
       {
-        "name": "Lucky Rabbit",
-        "message": "🎉 Winner winner chicken dinner! You made it!\n\nWelcome to Luckyland!",
-        "advise": "Touch the portal to hop in!"
+        "text": "🎉 Winner winner chicken dinner! You made it!\n\nWelcome to Luckyland!",
+        "advice": "Touch the portal to hop in!"
       },
       {
-        "name": "Lucky Rabbit",
-        "message": "Welcome back, you are definitely a lucky one!",
-        "advise": "Touch the portal and let's earn some treasures!"
+        "text": "Welcome back, you are definitely a lucky one!",
+        "advice": "Touch the portal and let's earn some treasures!"
       }
     ],
     "turns": {
@@ -57,7 +55,28 @@
   },
   "Lobby": {
     "title": "Welcome to Luckyland!",
-    "messages": [],
+    "messages": {
+      "welcome": {
+        "text": "Greetings lucky traveler! My name is Jessie, you've been transported to the rabbit hole, you might feel dizzy from the trip. Don't worry, it's normal for newbies passing through the lucky portal."
+      },
+      "mood": {
+        "text": "I'm here to guide you through Luckyland. You'll find many treasures and challenges along the way. How are you feeling today?",
+        "select": {
+          "title": "Select your mood",
+          "options": "Ready to WIN, Eager to claim treasures, Calm and Cautious, Excited and Lucky"
+        }
+      },
+      "lucky": {
+        "text": "Awesome, I'm also excited to have new lucky ones in this place, it's been quite lonely lately. This place is not for everyone, Luck can drive you crazy that's why you are only allowed to be here for a certain amount of time."
+      },
+      "ready": {},
+      "eager": {},
+      "calm": {},
+      "timer": {
+        "text": "This is your countdown timer to leave Luckyland. You have 60 minutes to explore Luckyland and claim your treasures.",
+        "advice": "Don't worry, if you are lucky enough --which it seems you are-- you could get at the end of your journey another lucky pass."
+      }
+    },
     "links": {
       "realms": "Realms"
     },
