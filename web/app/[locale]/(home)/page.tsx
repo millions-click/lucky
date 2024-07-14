@@ -1,12 +1,12 @@
-import { NextIntlClientProvider } from 'next-intl';
-import { getMessages, unstable_setRequestLocale } from 'next-intl/server';
+import { unstable_setRequestLocale } from 'next-intl/server';
 
 import type { Params } from '../locale';
 import { LockController } from './_ui';
+import { MessagesProvider } from '@/providers';
+import { Messages } from '@/ui';
 
 export default async function Landing({ params: { locale } }: Params) {
   unstable_setRequestLocale(locale);
-  const messages = await getMessages();
 
   const bg = "bg-[url('/assets/images/bg/landing.jpg')]";
   const className = [
@@ -21,9 +21,10 @@ export default async function Landing({ params: { locale } }: Params) {
       <div className={className}>
         <div className="hero-content text-neutral-content text-center">
           <div className="max-w-md">
-            <NextIntlClientProvider messages={messages}>
+            <MessagesProvider namespace="Index">
               <LockController />
-            </NextIntlClientProvider>
+              <Messages />
+            </MessagesProvider>
           </div>
         </div>
       </div>

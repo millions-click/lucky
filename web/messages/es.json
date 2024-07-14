@@ -3,6 +3,11 @@
     "title": "Luckyland",
     "description": "¡Donde los premios 🎉 y la DIVERSIÓN 😃 nunca se detienen!"
   },
+  "Components": {
+    "Message": {
+      "next": "Continuar"
+    }
+  },
   "General": {
     "bounty": {
       "title": "Recompensa",
@@ -14,39 +19,32 @@
     "title": "¡Hola mundo!",
     "messages": [
       {
-        "name": "Conejo de la suerte",
-        "message": "Parece que tienes suerte hoy. Has encontrado una de las entradas secretas a la tierra de la suerte.",
-        "advise": "¿Puedes atrapar una gema de la suerte para entrar?"
+        "text": "Parece que tienes suerte hoy. Has encontrado una de las entradas secretas a la tierra de la suerte.",
+        "advice": "¿Puedes atrapar una gema de la suerte para entrar?"
       },
       {
-        "name": "Conejo de la suerte",
-        "message": "¡Atrapa una gema de la suerte y podras entrar!",
-        "advise": "¡Las gemas no son fáciles de atrapar! ¡Presiona el candado hasta que veas más gemas!"
+        "text": "¡Atrapa una gema de la suerte y podras entrar!",
+        "advice": "¡Las gemas no son fáciles de atrapar! ¡Presiona el candado hasta que veas más gemas!"
       },
       {
-        "name": "Conejo de la suerte",
-        "message": "Pareces persistente. ¡Vamos a intentarlo de nuevo!",
-        "advise": "¡Mejor suerte esta vez!"
+        "text": "Pareces persistente. ¡Vamos a intentarlo de nuevo!",
+        "advice": "¡Mejor suerte esta vez!"
       },
       {
-        "name": "Conejo de la suerte",
-        "message": "Volviste. ¡Vamos a intentarlo de nuevo!",
-        "advise": "Recuerda que solo tienes 3 intentos. ¡Buena suerte!"
+        "text": "Volviste. ¡Vamos a intentarlo de nuevo!",
+        "advice": "Recuerda que solo tienes 3 intentos. ¡Buena suerte!"
       },
       {
-        "name": "Conejo de la suerte",
-        "message": "Creo que ya sabes cómo funciona. ¡Vamos a intentarlo de nuevo!",
-        "advise": "!Buena suerte!"
+        "text": "Creo que ya sabes cómo funciona. ¡Vamos a intentarlo de nuevo!",
+        "advice": "!Buena suerte!"
       },
       {
-        "name": "Conejo de la suerte",
-        "message": "🎉¡Lo lograste! Atraspaste una gema de la suerte. ¡Bienvenido a la tierra de la suerte!",
-        "advise": "¡Toca el portal para entrar!"
+        "text": "🎉¡Lo lograste! Atraspaste una gema de la suerte. ¡Bienvenido a la tierra de la suerte!",
+        "advice": "¡Toca el portal para entrar!"
       },
       {
-        "name": "Conejo de la suerte",
-        "message": "¡Bienvenido de nuevo, definitivamente eres un afortunado!",
-        "advise": "¡Toca el portal y vamos a reclamar algunos tesoros!"
+        "text": "¡Bienvenido de nuevo, definitivamente eres un afortunado!",
+        "advice": "¡Toca el portal y vamos a reclamar algunos tesoros!"
       }
     ],
     "turns": {
@@ -57,7 +55,28 @@
   },
   "Lobby": {
     "title": "¡Bienvenido a la tierra de la suerte!",
-    "messages": [],
+    "messages": {
+      "welcome": {
+        "text": "Saludos viajero afortunado! Mi nombre es Jessie, has sido transportado al agujero del conejo, es posible que te sientas mareado por el viaje. No te preocupes, es normal para los novatos que pasan por el portal de la suerte."
+      },
+      "mood": {
+        "text": "Estoy aquí para ser tu guia en la tierra de la suerte. Encontrarás muchos tesoros y desafíos en el camino. ¿Cómo te sientes hoy?",
+        "select": {
+          "title": "Selecciona tu estado de ánimo",
+          "options": "Listo para GANAR, Ansioso por reclamar tesoros, Tranquilo y Cauteloso, Emocionado y Afortunado"
+        }
+      },
+      "lucky": {
+        "text": "Fantástico! Yo también me emocionado de ver nuevos rostros afortunados en la tierra de la suerte. Ultimamente ha estado un poco tranquilo por aquí. Este lugar no es para cualquiera, la fortuna te puede enloquecer, Por eso solo tienes permitido estar aquí por un tiempo limitado."
+      },
+      "ready": {},
+      "eager": {},
+      "calm": {},
+      "timer": {
+        "text": "Este es tu cronómetro de la suerte. Cuando se acabe el tiempo, serás transportado de regreso a tu mundo. Tienes 60 minutos para explorar la tierra de la suerte y reclamar tus tesoros.",
+        "advice": "No te preocupes, si eres sufiencientemente afortunado -- que parece que si -- al final del tu viaje, podrias obtener otro pase de la suerte."
+      }
+    },
     "links": {
       "realms": "Reinos"
     },
