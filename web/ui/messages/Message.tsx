@@ -1,29 +1,24 @@
 import React, { useEffect, useState } from 'react';
 import Image from 'next/image';
-import { useTranslations } from 'next-intl';
-import { IconChevronRight } from '@tabler/icons-react';
 
 import type { Message } from '@/providers';
+import { type NavProps, Nav } from './Nav';
 
-export type MessageProps = {
+export type MessageProps = NavProps & {
   message: Message;
-  next?: string;
-  onNext?: (next: string) => void;
+  noNav?: boolean;
   typing?: number;
-  backdrop?: boolean;
-  Actions?: React.FC<{ message: Message; onNext?: (next: string) => void }>;
+  Actions?: React.FC<NavProps & { message: Message }>;
 };
 
 export function Message({
   message,
-  next,
+  noNav,
   backdrop,
   typing,
-  onNext,
   Actions,
+  ...nav
 }: MessageProps) {
-  const t = useTranslations('Components');
-
   const [text, setText] = useState('');
   const [advice, setAdvice] = useState('');
   const [finished, setFinished] = useState(false);
@@ -90,20 +85,8 @@ export function Message({
             {advice}
           </div>
         )}
-        {finished && Actions && <Actions message={message} onNext={onNext} />}
-        {finished && next && onNext && (
-          <div className="w-full flex justify-end">
-            <button
-              className={`btn btn-ghost ${
-                backdrop ? 'text-orange-500 btn-lg' : 'text-primary'
-              }`}
-              onClick={() => onNext(next)}
-            >
-              {t('Message.next')}
-              <IconChevronRight />
-            </button>
-          </div>
-        )}
+        {finished && Actions && <Actions message={message} {...nav} />}
+        {finished && !noNav && <Nav {...nav} backdrop={backdrop} />}
       </div>
     </div>
   );

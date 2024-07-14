@@ -1,10 +1,13 @@
 'use client';
 
-import { type MessagesSettings, useMessages } from '@/providers';
 import { type MessageProps, Message } from './Message';
+import { type NavProps } from './Nav';
 
-type MessagesProps = MessagesSettings &
-  Pick<MessageProps, 'typing' | 'next' | 'onNext' | 'Actions'> & {
+import { type MessagesSettings, useMessages } from '@/providers';
+
+type MessagesProps = Omit<NavProps, 'backdrop'> &
+  Pick<MessageProps, 'typing' | 'Actions'> &
+  MessagesSettings & {
     backdrop?: string;
   };
 
