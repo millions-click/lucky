@@ -5,7 +5,22 @@
   },
   "Components": {
     "Message": {
-      "next": "Continuar"
+      "next": "Continuar",
+      "back": "Regresar"
+    },
+    "Generate": {
+      "activate": "Activar",
+      "download": {
+        "title": "Clave Privada de LuckyBag",
+        "encrypt": "Cifra tu clave",
+        "recommend": "Esto es altamente recomendado.",
+        "button": "Descargar"
+      },
+      "copy": {
+        "title": "Clave Privada de LuckyBag",
+        "button": "Copiar"
+      },
+      "cloud": "Almacenamiento seguro en la nube"
     }
   },
   "General": {
@@ -43,7 +58,7 @@
         "advice": "¡Toca el portal para entrar!"
       },
       {
-        "text": "¡Bienvenido de nuevo, definitivamente eres un afortunado!",
+        "text": "¡Bienvenido de nuevo afortunado viajero!",
         "advice": "¡Toca el portal y vamos a reclamar algunos tesoros!"
       }
     ],
@@ -67,14 +82,50 @@
         }
       },
       "lucky": {
-        "text": "Fantástico! Yo también me emocionado de ver nuevos rostros afortunados en la tierra de la suerte. Ultimamente ha estado un poco tranquilo por aquí. Este lugar no es para cualquiera, la fortuna te puede enloquecer, Por eso solo tienes permitido estar aquí por un tiempo limitado."
+        "text": "Fantástico! Yo también estoy emocionado de ver nuevos rostros afortunados en la tierra de la suerte. Ultimamente ha estado un poco tranquilo por aquí. Este lugar no es para cualquiera, la fortuna te puede enloquecer, Por eso solo tienes permitido estar aquí por un tiempo limitado."
       },
       "ready": {},
       "eager": {},
       "calm": {},
+      "pass": {
+        "text": "Para reclamar tus tesoros, debes tener un LuckyPass. Como has demostrado ser afortunado, se te ha otorgado uno.",
+        "advice": "Este pase te permitirá entrar a los reinos de LuckyLand",
+        "select": {
+          "title": "¿Qué te gustaría hacer?",
+          "options": "Reclamar tesoros, Volveré más tarde"
+        }
+      },
       "timer": {
-        "text": "Este es tu cronómetro de la suerte. Cuando se acabe el tiempo, serás transportado de regreso a tu mundo. Tienes 60 minutos para explorar la tierra de la suerte y reclamar tus tesoros.",
-        "advice": "No te preocupes, si eres sufiencientemente afortunado -- que parece que si -- al final del tu viaje, podrias obtener otro pase de la suerte."
+        "text": "Este es tu cronómetro, te indica cuánto tiempo le queda a tu pase de la suerte. Una vez activado tendrás 60 minutos para explorar Luckyland y reclamar tus tesoros.",
+        "advice": "No te preocupes, si eres suficientemente afortunado -- que parece que si -- al final del tu viaje, podrias obtener otro LuckyPass."
+      },
+      "bag": {
+        "text": "Cada LuckyPass es único y solo puede usarse una vez. Ten cuidado, si lo pierdes, no hay forma de recuperarlo.",
+        "advice": "Por suerte para ti, nuestro equipo de hadas ha construido una bolsa mágica impenetrable para mantener tus tesoros y tu pase seguros.",
+        "select": {
+          "title": "Conecta tu LuckyBag",
+          "options": "Dame un LuckyBag, Ya tengo uno, Traeré el mío"
+        }
+      },
+      "generate": {
+        "text": "¡Genial! Aquí está tu LuckyBag. Mantenlo seguro, recibirás tu clave solo una vez.",
+        "advice": "Puedes usar esta clave para recuperarlo o conectarlo a otro dispositivo o aplicación.",
+        "select": {
+          "title": "¿Cómo te gustaría guardar tu CLAVE PRIVADA?",
+          "options": "Descargarla, Copiarla, Almacenamiento seguro en la nube"
+        }
+      },
+      "secure": {
+        "text": "Como paso final necesitamos asegurar tu dispositivo. Por favor, proporciona una contraseña para proteger tu LuckyBag.",
+        "advice": "Esta contraseña será requerida para iniciar sesión en este dispositivo solamente"
+      },
+      "activate": {
+        "text": "Tu LuckyBag está listo. Ahora puedes activar tu LuckyPass.",
+        "advice": "Una vez que lo actives, tendrás 60 minutos para explorar Luckyland y reclamar tus tesoros.",
+        "select": {
+          "title": "¿Qué te gustaría hacer?",
+          "options": "Activar mi LuckyPass, Volveré más tarde"
+        }
       }
     },
     "links": {
