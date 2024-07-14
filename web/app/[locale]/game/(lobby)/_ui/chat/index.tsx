@@ -27,14 +27,16 @@ const MESSAGES = {
 type MessageKey = keyof typeof MESSAGES;
 
 export function ChatController() {
-  // TODO: Save the active message in the local storage and restore it on reload.
   const { show } = useMessages({ namespace: 'Lobby', palId: 'jessie' });
   const { bag } = useLuckyBags();
 
-  const [active, setActive] = useState<MessageKey>(
-    bag ? 'generate' : 'welcome'
+  // TODO: Save the path in the local storage and restore it on reload. Use it to initialize the active message.
+  const [path, setPath] = useState<MessageKey[]>([]);
+
+  const [active, setActive] = useState<MessageKey>(bag ? 'secure' : 'welcome');
+  const [prev, setPrev] = useState<MessageKey | undefined>(
+    path.length ? path[path.length - 1] : undefined
   );
-  const [prev, setPrev] = useState<MessageKey>();
   const [message, setMessage] = useState<MessageDef>({});
 
   useEffect(() => {
@@ -46,10 +48,18 @@ export function ChatController() {
   }, [active, show]);
 
   const onNext = (next: string) => {
-    if (next in MESSAGES) {
-      setActive(next as MessageKey);
-      setPrev(next === 'welcome' ? undefined : active);
+    if (!(next in MESSAGES)) return;
+
+    if (next === prev) {
+      const _path = path.slice(0, -1);
+      setPrev(_path[_path.length - 1]);
+      setPath(_path);
+    } else {
+      setPrev(active);
+      setPath((current) => [...current, active]);
     }
+
+    setActive(next);
   };
 
   return (
