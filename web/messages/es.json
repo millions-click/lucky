@@ -4,9 +4,41 @@
     "description": "¡Donde los premios 🎉 y la DIVERSIÓN 😃 nunca se detienen!"
   },
   "Components": {
-    "Message": {
-      "next": "Continuar",
-      "back": "Regresar"
+    "Common": {
+      "title": "Luckyland",
+      "description": "¡Donde los premios 🎉 y la DIVERSIÓN 😃 nunca se detienen!",
+      "action": {
+        "next": "Continuar",
+        "enter": "Entrar",
+        "proceed": "Proceder",
+        "activate": "Activar",
+
+        "exit": "Salir",
+        "back": "Regresar",
+        "close": "Cerrar",
+        "cancel": "Cancelar",
+
+        "save": "Guardar",
+        "done": "Hecho",
+
+        "lock": "Bloquear",
+        "unlock": "Desbloquear"
+      },
+      "alert": {
+        "password": {
+          "mismatch": "Las contraseñas no coinciden",
+          "invalid": "Contraseña inválida"
+        }
+      },
+      "input": {
+        "password": "Contraseña",
+        "confirm": "Confirmar contraseña"
+      },
+      "links": {
+        "lobby": "Lobby",
+        "realms": "Reinos",
+        "coins": "Monedas"
+      }
     },
     "Generate": {
       "activate": "Activar",
@@ -21,6 +53,45 @@
         "button": "Copiar"
       },
       "cloud": "Almacenamiento seguro en la nube"
+    },
+    "Secure": {
+      "title": "Asegura tu LuckyBag",
+      "description": "Por favor, proporciona una contraseña para proteger tu LuckyBag.",
+      "session": "Tiempo de sesión",
+      "button": {
+        "safe": "Configurar contraseña",
+        "unsafe": "Continuar sin contraseña"
+      },
+      "unsafe": {
+        "confirm": "¿Estás seguro? Sin una contraseña, tu LuckyBag estará vulnerable a accesos no autorizados."
+      }
+    },
+    "Activate": {
+      "title": "Selecciona tu cartera",
+      "description": "Necesitarás proporcionar tu contraseña para desbloquearla.",
+      "delete": {
+        "confirm": "¿Estás seguro de borrar esta cartera? Esta acción es irreversible."
+      }
+    },
+    "Locked": {
+      "title": {
+        "locked": "LuckyBag bloqueado",
+        "unlocked": "LuckyBag fue accedido"
+      },
+      "description": "Por favor, proporciona tu contraseña para desbloquearla.",
+      "error": {
+        "change": "Cambiar cartera",
+        "reset": "Importar"
+      }
+    },
+    "BagKey": {
+      "title": "Clave de encriptación",
+      "description": "Esta clave se usara para guardar tu LuckyBag de forma segura.",
+      "ttl": {
+        "title": "Tiempo de sesión",
+        "description": "¿Cuánto tiempo deseas que tu sesión permanezca activa?",
+        "options": "día, semana, mes, 3 meses, 6 meses"
+      }
     }
   },
   "General": {
@@ -74,6 +145,13 @@
       "welcome": {
         "text": "Saludos viajero afortunado! Mi nombre es Jessie, has sido transportado al agujero del conejo, es posible que te sientas mareado por el viaje. No te preocupes, es normal para los novatos que pasan por el portal de la suerte."
       },
+      "activate": {
+        "text": "¡Bienvenido de vuelta viajero afortunado! Es bueno verte de nuevo."
+      },
+      "locked": {
+        "text": "¡Bienvenido de vuelta! Tu cartera está bloqueada.",
+        "advice": "Usa la contraseña que estableciste en este dispositivo para desbloquearla."
+      },
       "mood": {
         "text": "Estoy aquí para ser tu guia en la tierra de la suerte. Encontrarás muchos tesoros y desafíos en el camino. ¿Cómo te sientes hoy?",
         "select": {
@@ -84,9 +162,6 @@
       "lucky": {
         "text": "Fantástico! Yo también estoy emocionado de ver nuevos rostros afortunados en la tierra de la suerte. Ultimamente ha estado un poco tranquilo por aquí. Este lugar no es para cualquiera, la fortuna te puede enloquecer, Por eso solo tienes permitido estar aquí por un tiempo limitado."
       },
-      "ready": {},
-      "eager": {},
-      "calm": {},
       "pass": {
         "text": "Para reclamar tus tesoros, debes tener un LuckyPass. Como has demostrado ser afortunado, se te ha otorgado uno.",
         "advice": "Este pase te permitirá entrar a los reinos de LuckyLand",
@@ -108,7 +183,7 @@
         }
       },
       "generate": {
-        "text": "¡Genial! Aquí está tu LuckyBag. Mantenlo seguro, recibirás tu clave solo una vez.",
+        "text": "¡Genial! Aquí está tu LuckyBag. Mantenla seguro, recibirás tu clave solo una vez.",
         "advice": "Puedes usar esta clave para recuperarlo o conectarlo a otro dispositivo o aplicación.",
         "select": {
           "title": "¿Cómo te gustaría guardar tu CLAVE PRIVADA?",
@@ -116,10 +191,18 @@
         }
       },
       "secure": {
-        "text": "Como paso final necesitamos asegurar tu dispositivo. Por favor, proporciona una contraseña para proteger tu LuckyBag.",
-        "advice": "Esta contraseña será requerida para iniciar sesión en este dispositivo solamente"
+        "text": "Como paso final necesitamos asegurar tu dispositivo.",
+        "advice": "Esta contraseña será requerida para iniciar sesión unicamente en este dispositivo"
       },
-      "activate": {
+      "gifts": {
+        "text": "¡Felicidades! Has activado exitosamente tu LuckyBag.",
+        "advice": "Podrás recibir algunos regalos de bienvenida.",
+        "select": {
+          "title": "¿Qué te gustaría hacer?",
+          "options": "Reclamar regalos, Volveré más tarde"
+        }
+      },
+      "claim": {
         "text": "Tu LuckyBag está listo. Ahora puedes activar tu LuckyPass.",
         "advice": "Una vez que lo actives, tendrás 60 minutos para explorar Luckyland y reclamar tus tesoros.",
         "select": {

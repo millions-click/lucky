@@ -49,7 +49,7 @@ export function Nav({
   previous,
   backdrop,
 }: NavProps & { className?: string }) {
-  const t = useTranslations('Components');
+  const t = useTranslations('Components.Common.action');
   if (!onNext) return null;
 
   return (
@@ -58,7 +58,7 @@ export function Nav({
         <NavAction
           icon="left"
           target={previous}
-          message={t('Message.back')}
+          message={t('back')}
           onClick={onNext}
           backdrop={backdrop}
         />
@@ -70,7 +70,7 @@ export function Nav({
         <NavAction
           icon="right"
           target={next}
-          message={t('Message.next')}
+          message={t('next')}
           onClick={onNext}
           backdrop={backdrop}
         />
