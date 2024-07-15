@@ -1,45 +1,67 @@
 'use client';
 
-import { useLuckyBags, useMessages } from '@/providers';
+import { Activate, Locked, Timer, Generate, Secure } from './messages';
+import { Selector } from './Selector';
+
+import {
+  type CryptoState,
+  useCrypto,
+  useLuckyBags,
+  useMessages,
+} from '@/providers';
 import { useEffect, useState } from 'react';
 import { Messages, type MessageProps } from '@/ui';
-
-import { Selector } from './Selector';
-import { Generate, Timer } from './messages';
+import type { LuckyBagState } from '@/adapters';
 
 type MessageDef = Partial<Omit<MessageProps, 'backdrop'>> & {
   backdrop?: string;
 };
 const MESSAGES = {
-  welcome: {
-    next: 'mood',
-  },
-  mood: {
-    Actions: Selector({ actions: ['ready', 'eager', 'calm', 'lucky'] }),
-  },
+  welcome: { next: 'mood' },
+  activate: { Actions: Activate },
+  locked: { Actions: Locked },
+  mood: { Actions: Selector({ actions: ['ready', 'eager', 'calm', 'lucky'] }) },
   lucky: { next: 'pass' },
   pass: { Actions: Selector({ actions: ['timer', 'later'] }) },
-  timer: { backdrop: '', Actions: Timer, noNav: true },
+  timer: { Actions: Timer, noNav: true },
   bag: { Actions: Selector({ actions: ['generate', 'import', 'connect'] }) },
   generate: { Actions: Generate },
-  secure: {},
+  secure: { Actions: Secure },
+  gifts: {},
 } as Record<string, MessageDef>;
 type MessageKey = keyof typeof MESSAGES;
 
+function getActiveMessage(key: CryptoState, bag: LuckyBagState) {
+  switch (bag) {
+    case 'empty':
+      return 'welcome';
+    case 'idle':
+      return 'activate';
+    case 'locked':
+      return 'locked';
+    case 'unlocked':
+      return key === 'unsafe' ? 'secure' : 'gifts';
+  }
+}
+
 export function ChatController() {
   const { show } = useMessages({ namespace: 'Lobby', palId: 'jessie' });
-  const { bag } = useLuckyBags();
+  const { state: key } = useCrypto();
+  const { state: bag } = useLuckyBags();
 
   // TODO: Save the path in the local storage and restore it on reload. Use it to initialize the active message.
   const [path, setPath] = useState<MessageKey[]>([]);
-
-  const [active, setActive] = useState<MessageKey>(bag ? 'secure' : 'welcome');
+  const [active, setActive] = useState<MessageKey | undefined>(
+    getActiveMessage(key, bag)
+  );
   const [prev, setPrev] = useState<MessageKey | undefined>(
     path.length ? path[path.length - 1] : undefined
   );
   const [message, setMessage] = useState<MessageDef>({});
 
   useEffect(() => {
+    if (!active) return;
+
     const message = MESSAGES[active];
     if (message) {
       show(active);
@@ -55,6 +77,7 @@ export function ChatController() {
       setPrev(_path[_path.length - 1]);
       setPath(_path);
     } else {
+      if (!active) throw new Error('This should not happen');
       setPrev(active);
       setPath((current) => [...current, active]);
     }
