@@ -87,9 +87,9 @@ export function LuckyBagsProvider({ children }: PropsWithChildren) {
       const key = getKey(bag.kp.publicKey);
       if (bags[key]) return bag;
 
+      setBags((prev) => ({ ...prev, [key]: encryptBag(bag, crypto) }));
       setBag(bag);
       setActive(key);
-      setBags((prev) => ({ ...prev, [key]: encryptBag(bag, crypto) }));
 
       return bag;
     },

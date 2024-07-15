@@ -14,7 +14,7 @@ export const Secure: MessageProps['Actions'] = ({ message, onNext }) => {
 
   const setPassword = async (key?: string, ttl?: number) => {
     if (!key) {
-      const confirmed = confirm(t('unsafe.title'));
+      const confirmed = confirm(t('unsafe.confirm'));
       if (!confirmed) return false;
     } else {
       // TODO: Verify Crypto state, if it's 'safe' then prev Key is required.
