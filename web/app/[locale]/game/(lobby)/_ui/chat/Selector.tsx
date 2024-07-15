@@ -15,7 +15,7 @@ export function Selector({
           {message.options.map((option, i) => (
             <li
               key={i}
-              className="btn bg-orange-500 hover:btn-accent text-amber-100"
+              className="btn bg-orange-500 max-sm:btn-sm hover:btn-accent text-amber-100"
               onClick={() => onNext?.(actions[i])}
             >
               {option}

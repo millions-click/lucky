@@ -1,9 +1,9 @@
 import { useTranslations } from 'next-intl';
+import { IconMinus, IconPlus } from '@tabler/icons-react';
 
 import { MessageProps } from '@/ui';
 import { useLuckyBags } from '@/providers';
 import { ellipsify } from '@/utils';
-import { IconMinus, IconPlus } from '@tabler/icons-react';
 
 const next = 'gifts';
 
@@ -56,7 +56,7 @@ export const Activate: MessageProps['Actions'] = ({ onNext }) => {
       {keys.length < 4 && (
         <button
           className="btn btn-outline btn-circle btn-info absolute top-2 right-2 btn-sm"
-          onClick={() => onNext?.('generate')}
+          onClick={() => onNext?.('bag')}
         >
           <IconPlus />
         </button>

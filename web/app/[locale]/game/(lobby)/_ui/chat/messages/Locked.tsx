@@ -1,14 +1,14 @@
 import { useState } from 'react';
 import { useTranslations } from 'next-intl';
-
-import { BagKeyForm, MessageProps } from '@/ui';
-import { useLuckyBags } from '@/providers';
 import {
   IconLock,
   IconLockOpen,
   IconLockX,
   IconShoppingBagEdit,
 } from '@tabler/icons-react';
+
+import { BagKeyForm, MessageProps } from '@/ui';
+import { useLuckyBags } from '@/providers';
 
 const next = 'gifts';
 

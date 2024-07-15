@@ -34,9 +34,15 @@ module.exports = {
               '0 0 5px #0f0, 0 0 10px #0f0, 0 0 15px #0f0, 0 0 20px #0f0',
           },
         },
+        scale: {
+          '0%': { transform: 'scale(0)' },
+          '100%': { transform: 'scale(1)' },
+        },
       },
       animation: {
         glow: 'glow 2s ease-in-out infinite',
+        'scale-up': 'scale 0.5s ease-out forwards',
+        'scale-down': 'scale 0.5s ease-out reverse forwards',
       },
     },
   },
