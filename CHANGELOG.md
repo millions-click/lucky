@@ -2,6 +2,19 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [0.1.11](///compare/v0.1.10...v0.1.11) (2024-07-16)
+
+
+### Features
+
+* **i18n:** 👻 Bag | Messages 39e24c7
+* **i18n:** 👻 Connect | External Wallet ff14d30
+* **web:** 👻 Bag | Messages 6de0e0d
+* **web:** 👻 Generated | Messages 55a70b9
+* **web:** 👻 Locked | Messages a4338ec
+* **web:** 👻 LuckyWallet | Context ad0e22e
+* **web:** 👻 Selector | Messages e5d40a5
+
 ### [0.1.10](///compare/v0.1.9...v0.1.10) (2024-07-15)
 
 
