@@ -10,6 +10,7 @@ type CryptoContext = {
   state: CryptoState;
   crypto: Crypto;
   updateKey: (key: string, ttl?: number) => void;
+  clearKey: () => void;
 };
 
 const keyAtom = atomWithStorage<string | undefined>(
@@ -47,6 +48,10 @@ export function CryptoProvider({ children }: { children: React.ReactNode }) {
       const crypto = new Crypto();
       setKey(crypto.encrypt(key));
       setCrypto(new Crypto(key));
+    },
+    clearKey: () => {
+      setKey(undefined);
+      setCrypto(new Crypto());
     },
   };
 

@@ -17,4 +17,5 @@ export interface LuckyBagProviderContext {
   deleteBag: (luckyKey: PublicKey | string) => boolean;
   setBagKey: (key: string, ttl?: number) => boolean;
   updateBagsKey: (newKey: string, prevKey?: string, ttl?: number) => void;
+  closeBag: (clean?: boolean) => void;
 }

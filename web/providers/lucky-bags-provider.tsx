@@ -41,7 +41,7 @@ const Context = createContext({
 } as LuckyBagProviderContext);
 
 export function LuckyBagsProvider({ children }: PropsWithChildren) {
-  const { crypto, updateKey } = useCrypto();
+  const { crypto, updateKey, clearKey } = useCrypto();
   const bags = useAtomValue(availableBagsAtom);
   const active = useAtomValue(activeBagAtom);
   const setBags = useSetAtom(bagsAtom);
@@ -184,6 +184,11 @@ export function LuckyBagsProvider({ children }: PropsWithChildren) {
     deleteBag,
     setBagKey,
     updateBagsKey,
+    closeBag: (clean = false) => {
+      if (clean) clearKey();
+      setBag(null);
+      setActive(null);
+    },
   };
 
   return <Context.Provider value={value}>{children}</Context.Provider>;

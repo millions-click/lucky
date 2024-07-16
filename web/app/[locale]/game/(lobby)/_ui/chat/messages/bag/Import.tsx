@@ -95,7 +95,7 @@ export function Import({
 
         {keyPair && (
           <>
-            <span className="badge badge-info badge-xs py-2 px-4 sm:badge-lg">
+            <span className="badge badge-info badge-xs py-2 px-4 sm:badge-lg self-center">
               {keyPair.publicKey.toString()}
             </span>
             <label className="form-control">

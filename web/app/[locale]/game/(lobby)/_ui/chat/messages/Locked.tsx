@@ -15,7 +15,7 @@ const next = 'gifts';
 type BagStatus = 'locked' | 'unlocked' | 'error';
 export const Locked: MessageProps['Actions'] = ({ onNext }) => {
   const t = useTranslations('Components');
-  const { state, setBagKey } = useLuckyBags();
+  const { state, setBagKey, closeBag } = useLuckyBags();
 
   const [status, setStatus] = useState(state as BagStatus);
   const [open, setOpen] = useState(false);
@@ -68,7 +68,10 @@ export const Locked: MessageProps['Actions'] = ({ onNext }) => {
 
             <button
               className="btn btn-ghost btn-block btn-sm btn-info"
-              onClick={() => onNext?.('activate')}
+              onClick={() => {
+                closeBag(true);
+                onNext?.('activate');
+              }}
             >
               <IconShoppingBagEdit />
               {t('Locked.error.change')}
