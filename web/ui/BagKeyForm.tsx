@@ -7,6 +7,8 @@ import {
   IconEye,
   IconEyeOff,
   IconKey,
+  IconMoneybag,
+  IconPencil,
 } from '@tabler/icons-react';
 
 type TTLOption = {
@@ -20,13 +22,62 @@ const TTLS = [
   { color: 'checked:bg-green-500', value: 7 },
   { color: 'checked:bg-yellow-500', value: 30 },
   { color: 'checked:bg-orange-500', value: 90 },
-  // { color: 'checked:bg-red-500', value: 180 },
 ] as Array<TTLOption>; // days
 const defaultValue = 7;
 
 type FormProps = {
-  onConfirm: (password: string, ttl: number) => boolean | Promise<boolean>;
+  name?: string;
+  onConfirm: (
+    password: string,
+    ttl: number,
+    name: string
+  ) => boolean | Promise<boolean>;
+  unlock?: boolean;
 };
+
+function BagName({
+  current,
+  label,
+  readOnly,
+}: {
+  current?: string;
+  label: string;
+  readOnly?: boolean;
+}) {
+  const [name, setName] = useState(current);
+  const [editable, setEditable] = useState(false);
+
+  return editable ? (
+    <label className="form-control w-full">
+      <div className="label">
+        <span className="label-text">{label}</span>
+      </div>
+      <label className="input input-bordered input-primary flex items-center gap-2">
+        <IconMoneybag />
+        <input
+          name="name"
+          required
+          value={name}
+          onChange={(e) => setName(e.target.value)}
+          className="grow"
+          placeholder="Bag Name"
+        />
+      </label>
+    </label>
+  ) : (
+    <div className="bg-primary w-fit self-center rounded-box px-4 text-xl py-2 flex gap-2.5 items-center">
+      {current}
+      {!readOnly && (
+        <span
+          className="btn btn-circle btn-sm btn-ghost"
+          onClick={() => setEditable(true)}
+        >
+          <IconPencil />
+        </span>
+      )}
+    </div>
+  );
+}
 
 function PasswordInput({
   name,
@@ -61,12 +112,12 @@ function PasswordInput({
 function TTLOption({ color, value, label, checked }: TTLOption) {
   return (
     <div className="form-control card card-compact col-span-4 sm:col-span-2 group bg-base-300 hover:bg-base-100">
-      <label className="card-body gap-2.5 items-center cursor-pointer">
+      <label className="card-body gap-2.5 items-center cursor-pointer max-sm:flex-row justify-between">
         <span className="card-title capitalize label-text">{label}</span>
         <input
           type="radio"
           name="ttl"
-          value={value}
+          value={value * 24 * 60 * 60 * 1000}
           className={`radio ${color} group-hover:border-primary`}
           defaultChecked={checked}
         />
@@ -75,13 +126,14 @@ function TTLOption({ color, value, label, checked }: TTLOption) {
   );
 }
 
-export function BagKeyForm({ onConfirm }: FormProps) {
+export function BagKeyForm({ name, unlock, onConfirm }: FormProps) {
   const [visible, setVisible] = useState(false);
   const t = useTranslations('Components');
 
   const setPassword = async (formData: FormData) => {
     const password = formData.get('password') as string;
     const confirm = formData.get('confirm') as string;
+    const name = formData.get('name') as string;
 
     if (password !== confirm) {
       alert(t('Common.alert.password.mismatch'));
@@ -90,7 +142,7 @@ export function BagKeyForm({ onConfirm }: FormProps) {
 
     const ttl = Number(formData.get('ttl'));
 
-    onConfirm(password, ttl);
+    onConfirm(password, ttl, name);
   };
 
   const labels = t('BagKey.ttl.options').split(',');
@@ -101,9 +153,15 @@ export function BagKeyForm({ onConfirm }: FormProps) {
   }));
 
   return (
-    <form action={setPassword}>
+    <form className="flex flex-col justify-center" action={setPassword}>
       <h1 className="text-center text-3xl">{t('BagKey.title')}</h1>
       <div className="divider" />
+
+      <BagName
+        current={name}
+        label={t('BagKey.input.name.label')}
+        readOnly={unlock}
+      />
 
       <label className="form-control w-full">
         <div className="label">

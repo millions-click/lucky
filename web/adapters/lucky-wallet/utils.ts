@@ -1,23 +1,41 @@
 import { Keypair, PublicKey } from '@solana/web3.js';
+import bs58 from 'bs58';
 
-import type { EncryptedBag, LuckyBag } from './LuckyWallet.d';
+import type { EncryptedLuckyBag, LuckyBag } from './LuckyWallet.d';
+
 import { Crypto } from '@/utils';
-import { Buffer } from 'buffer';
 
 export const getKey = (luckyKey: PublicKey | string) =>
   typeof luckyKey === 'string' ? luckyKey : luckyKey.toString();
 
-export const encryptBag = (bag: LuckyBag, crypto: Crypto): EncryptedBag => {
-  const { name, kp } = bag;
-  const _ = JSON.stringify({
-    name,
-    kp: Buffer.from(kp.secretKey).toString('base64'),
-  });
-  return crypto.encrypt(_);
+export const encryptBag = (
+  bag: LuckyBag,
+  crypto: Crypto
+): EncryptedLuckyBag => {
+  return {
+    ...bag,
+    kp: crypto.encrypt(bs58.encode(bag.kp.secretKey)),
+  };
 };
 
-export const decryptBag = (encrypted: string, crypto: Crypto): LuckyBag => {
+// TODO: Remove this in 5 versions TOP.
+export const legacyDecryptBag = (
+  encrypted: string,
+  crypto: Crypto
+): LuckyBag => {
   const _ = crypto.decrypt(encrypted);
   const { name, kp } = JSON.parse(_);
   return { name, kp: Keypair.fromSecretKey(Buffer.from(kp, 'base64')) };
+};
+
+export const decryptBag = (
+  encrypted: EncryptedLuckyBag,
+  crypto: Crypto
+): LuckyBag => {
+  const { kp, ...bag } = encrypted;
+
+  return {
+    ...bag,
+    kp: Keypair.fromSecretKey(bs58.decode(crypto.decrypt(kp))),
+  };
 };

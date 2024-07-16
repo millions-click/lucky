@@ -140,6 +140,12 @@
         "title": "Session Time",
         "description": "How long should we keep your session alive?",
         "options": "day, week, month, 3 months, 6 months"
+      },
+      "input": {
+        "name": {
+          "label": "Bag name",
+          "placeholder": "Enter a name for your LuckyBag"
+        }
       }
     }
   },

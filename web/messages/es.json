@@ -139,6 +139,12 @@
         "title": "Tiempo de sesión",
         "description": "¿Cuánto tiempo deseas que tu sesión permanezca activa?",
         "options": "día, semana, mes, 3 meses, 6 meses"
+      },
+      "input": {
+        "name": {
+          "label": "Nombre de la cartera",
+          "placeholder": "Escribe un nombre para tu LuckyBag"
+        }
       }
     }
   },

@@ -12,13 +12,14 @@ import { PublicKey } from '@solana/web3.js';
 import { atomWithStorage } from 'jotai/utils';
 import { atom } from 'jotai/index';
 import { useAtomValue, useSetAtom } from 'jotai';
-import { Crypto } from '@/utils';
+import { Crypto, legacyDecryptBag } from '@/utils';
 
 import type {
   BagKey,
   LuckyBag,
   LuckyBags,
   LuckyBagState,
+  EncryptedLuckyBag,
   LuckyBagProviderContext,
 } from '@/adapters';
 
@@ -47,12 +48,34 @@ export function LuckyBagsProvider({ children }: PropsWithChildren) {
   const setBags = useSetAtom(bagsAtom);
   const setActive = useSetAtom(bagAtom);
 
+  // TODO: Remove this in 5 versions TOP.
+  function migrateBagDecryption(
+    bag: string | EncryptedLuckyBag,
+    crypto: Crypto
+  ) {
+    if (typeof bag !== 'string') return;
+
+    const decrypted = legacyDecryptBag(bag, crypto);
+    setTimeout(
+      () =>
+        setBags((prev) => ({
+          ...prev,
+          [getKey(decrypted.kp.publicKey)]: encryptBag(decrypted, crypto),
+        })),
+      500
+    );
+    return decrypted;
+  }
+
   const getBag = useCallback(
     (luckyKey: PublicKey | string) => {
       const bag = bags[getKey(luckyKey)];
       if (!bag) throw new Error('Bag does not exist');
 
       try {
+        const _bag = migrateBagDecryption(bag, crypto);
+        if (_bag) return _bag;
+
         return decryptBag(bag, crypto);
       } catch (e) {
         return null;
@@ -119,8 +142,15 @@ export function LuckyBagsProvider({ children }: PropsWithChildren) {
   const setBagKey = useCallback(
     (key: string, ttl?: number) => {
       if (!active || !bags[active]) throw new Error('Bag does not exist');
+
       try {
-        decryptBag(bags[active], new Crypto(key));
+        const newCrypto = new Crypto(key);
+        const bag = bags[active];
+
+        const _bag = migrateBagDecryption(bag, newCrypto);
+        if (_bag) return true;
+
+        decryptBag(bag, newCrypto);
         updateKey(key, ttl);
         return true;
       } catch (e) {
@@ -131,7 +161,7 @@ export function LuckyBagsProvider({ children }: PropsWithChildren) {
   );
 
   const updateBagsKey = useCallback(
-    (newKey: string, prevKey?: string, ttl?: number) => {
+    (newKey: string, prevKey?: string, ttl?: number, name?: string) => {
       const keys = Object.keys(bags);
       if (!keys.length) return;
 
@@ -141,6 +171,7 @@ export function LuckyBagsProvider({ children }: PropsWithChildren) {
       const encryptedBags = Object.fromEntries(
         keys.map((key) => {
           const bag = bags[key];
+          if (name && key === active) bag.name = name;
 
           try {
             return [key, encryptBag(decryptBag(bag, prevCrypto), newCrypto)];
@@ -176,19 +207,27 @@ export function LuckyBagsProvider({ children }: PropsWithChildren) {
   const value: LuckyBagProviderContext = {
     bags,
     state,
+
     active,
     bag,
+    get name() {
+      if (bag) return bag.name;
+      if (active) return bags[active]?.name;
+    },
+
     openBag,
-    getBag,
-    addBag,
-    deleteBag,
-    setBagKey,
-    updateBagsKey,
     closeBag: (clean = false) => {
       if (clean) clearKey();
       setBag(null);
       setActive(null);
     },
+
+    getBag,
+    addBag,
+    deleteBag,
+
+    setBagKey,
+    updateBagsKey,
   };
 
   return <Context.Provider value={value}>{children}</Context.Provider>;

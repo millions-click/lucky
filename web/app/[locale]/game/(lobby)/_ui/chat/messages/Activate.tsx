@@ -11,7 +11,7 @@ export const Activate: MessageProps['Actions'] = ({ onNext }) => {
   const t = useTranslations('Components');
   const { active, bags, openBag, deleteBag } = useLuckyBags();
 
-  const keys = Object.keys(bags);
+  const keys = Object.entries(bags);
   const activate = (key: string) => {
     const bag = openBag(key);
 
@@ -25,14 +25,17 @@ export const Activate: MessageProps['Actions'] = ({ onNext }) => {
       <p className="label-text-alt text-center">{t('Activate.description')}</p>
 
       <ul className="flex flex-wrap justify-around gap-4 sm:p-4 max-w-sm">
-        {keys.map((key) => (
+        {keys.map(([key, value]) => (
           <li
             key={key}
             className="card max-sm:card-compact glass group w-24 sm:w-36"
             onClick={() => activate(key)}
           >
             <div className="card-body items-center cursor-pointer relative">
-              <span className="group-hover:text-primary pointer-events-none">
+              {value.name && (
+                <span className="text-center label-text">{value.name}</span>
+              )}
+              <span className="group-hover:text-info pointer-events-none">
                 {ellipsify(key)}
               </span>
               <button

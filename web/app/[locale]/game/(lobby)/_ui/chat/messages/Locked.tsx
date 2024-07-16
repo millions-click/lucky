@@ -15,12 +15,12 @@ const next = 'gifts';
 type BagStatus = 'locked' | 'unlocked' | 'error';
 export const Locked: MessageProps['Actions'] = ({ onNext }) => {
   const t = useTranslations('Components');
-  const { state, setBagKey, closeBag } = useLuckyBags();
+  const { name, state, setBagKey, closeBag } = useLuckyBags();
 
   const [status, setStatus] = useState(state as BagStatus);
   const [open, setOpen] = useState(false);
 
-  const setPassword = async (key: string, ttl: number) => {
+  const setPassword = async (key: string, ttl: number, _name: string) => {
     const valid = setBagKey(key, ttl);
 
     setStatus(valid ? 'unlocked' : 'error');
@@ -85,7 +85,7 @@ export const Locked: MessageProps['Actions'] = ({ onNext }) => {
         }`}
       >
         <div className="modal-box glass">
-          <BagKeyForm onConfirm={setPassword} />
+          <BagKeyForm name={name} onConfirm={setPassword} unlock={true} />
         </div>
         <form method="dialog" className="modal-backdrop">
           <button onClick={() => setOpen(false)}>Close</button>

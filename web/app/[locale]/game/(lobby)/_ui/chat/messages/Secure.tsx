@@ -8,18 +8,18 @@ const next = 'gifts';
 
 export const Secure: MessageProps['Actions'] = ({ message, onNext }) => {
   const t = useTranslations('Components.Secure');
-  const { updateBagsKey } = useLuckyBags();
+  const { name, updateBagsKey } = useLuckyBags();
 
   const [open, setOpen] = useState(false);
 
-  const setPassword = async (key?: string, ttl?: number) => {
+  const setPassword = async (key?: string, ttl?: number, name?: string) => {
     if (!key) {
       const confirmed = confirm(t('unsafe.confirm'));
       if (!confirmed) return false;
     } else {
       // TODO: Verify Crypto state, if it's 'safe' then prev Key is required.
       // On this particular message the key will probably be always empty.
-      updateBagsKey(key, undefined, ttl);
+      updateBagsKey(key, undefined, ttl, name);
     }
 
     onNext?.(next);
@@ -50,7 +50,7 @@ export const Secure: MessageProps['Actions'] = ({ message, onNext }) => {
         }`}
       >
         <div className="modal-box glass">
-          <BagKeyForm onConfirm={setPassword} />
+          <BagKeyForm name={name} onConfirm={setPassword} />
         </div>
         <form method="dialog" className="modal-backdrop">
           <button onClick={() => setOpen(false)}>Close</button>
