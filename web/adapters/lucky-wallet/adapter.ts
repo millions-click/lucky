@@ -21,14 +21,14 @@ import {
 
 import type { LuckyBagProviderContext } from './LuckyWallet.d';
 
-export const LuckyWalletName = 'Lucky Bag' as WalletName<'Burner Wallet'>;
+export const LuckyWalletName = 'Lucky Bag' as WalletName<'Lucky Bag'>;
 /**
  * This burner wallet adapter is unsafe to use and is only included to provide an easy way for applications to test
  * Wallet Adapter without using a third-party wallet.
  */
 export class LuckyWalletAdapter extends BaseSignInMessageSignerWalletAdapter {
   name = LuckyWalletName;
-  url = 'https://github.com/anza-xyz/wallet-adapter#usage';
+  url = 'https://github.com/millions-click/lucky/web/adapters/lucky-wallet';
   icon =
     'data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMzQiIGhlaWdodD0iMzAiIGZpbGw9Im5vbmUiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+PHBhdGggZmlsbC1ydWxlPSJldmVub2RkIiBjbGlwLXJ1bGU9ImV2ZW5vZGQiIGQ9Ik0zNCAxMC42djIuN2wtOS41IDE2LjVoLTQuNmw2LTEwLjVhMi4xIDIuMSAwIDEgMCAyLTMuNGw0LjgtOC4zYTQgNCAwIDAgMSAxLjMgM1ptLTQuMyAxOS4xaC0uNmw0LjktOC40djQuMmMwIDIuMy0yIDQuMy00LjMgNC4zWm0yLTI4LjRjLS4zLS44LTEtMS4zLTItMS4zaC0xLjlsLTIuNCA0LjNIMzBsMS43LTNabS0zIDVoLTQuNkwxMC42IDI5LjhoNC43TDI4LjggNi40Wk0xOC43IDBoNC42bC0yLjUgNC4zaC00LjZMMTguNiAwWk0xNSA2LjRoNC42TDYgMjkuOEg0LjJjLS44IDAtMS43LS4zLTIuNC0uOEwxNSA2LjRaTTE0IDBIOS40TDcgNC4zaDQuNkwxNCAwWm0tMy42IDYuNEg1LjdMMCAxNi4ydjhMMTAuMyA2LjRaTTQuMyAwaC40TDAgOC4ydi00QzAgMiAxLjkgMCA0LjMgMFoiIGZpbGw9IiM5OTQ1RkYiLz48L3N2Zz4=';
   supportedTransactionVersions: ReadonlySet<TransactionVersion> = new Set([
@@ -72,11 +72,16 @@ export class LuckyWalletAdapter extends BaseSignInMessageSignerWalletAdapter {
 
       if (!publicKey) {
         let bag = this.context.openBag();
-        if (!bag)
+
+        if (!bag) {
+          const len = this.context.bags
+            ? Object.keys(this.context.bags).length
+            : 0;
           bag = this.context.addBag({
-            name: 'Lucky Bag',
+            name: `Lucky Bag #${len + 1}`,
             kp: Keypair.generate(),
           });
+        }
 
         publicKey = bag.kp.publicKey;
       }
