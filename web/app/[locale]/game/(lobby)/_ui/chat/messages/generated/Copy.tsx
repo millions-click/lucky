@@ -1,6 +1,7 @@
 import { Keypair } from '@solana/web3.js';
 import { IconClipboardCopy } from '@tabler/icons-react';
 import { useTranslations } from 'next-intl';
+import bs58 from 'bs58';
 
 export function Copy(_: {
   keypair: Keypair;
@@ -10,7 +11,7 @@ export function Copy(_: {
 
   const copyToClipboard = () => {
     // TODO: FIX => not working on android mobile devices.
-    const serializedKey = JSON.stringify(Array.from(_.keypair.secretKey));
+    const serializedKey = bs58.encode(_.keypair.secretKey);
     navigator.clipboard.writeText(serializedKey);
     _.onChange(true);
   };
