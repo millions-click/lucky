@@ -1,6 +1,6 @@
 'use client';
 
-import { Activate, Locked, Timer, Generate, Secure } from './messages';
+import { Activate, Locked, Timer, Generated, Secure, Bag } from './messages';
 import { Selector } from './Selector';
 
 import {
@@ -24,8 +24,8 @@ const MESSAGES = {
   lucky: { next: 'pass' },
   pass: { Actions: Selector({ actions: ['timer', 'later'] }) },
   timer: { Actions: Timer, noNav: true },
-  bag: { Actions: Selector({ actions: ['generate', 'import', 'connect'] }) },
-  generate: { Actions: Generate },
+  bag: { Actions: Bag },
+  generated: { Actions: Generated },
   secure: { Actions: Secure },
   gifts: {},
 } as Record<string, MessageDef>;
