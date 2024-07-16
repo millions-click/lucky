@@ -1,5 +1,4 @@
-import { useRef, useState } from 'react';
-import { Keypair } from '@solana/web3.js';
+import { useState } from 'react';
 
 import { Options, actions } from './actions';
 
@@ -10,21 +9,16 @@ import { useCrypto, useLuckyBags } from '@/providers';
 const next = 'gifts';
 
 type ActionKey = keyof typeof actions;
-export const Generate: MessageProps['Actions'] = ({ onNext, ...props }) => {
-  const t = useTranslations('Components.Generate');
-  const keypair = useRef(Keypair.generate());
+export const Generated: MessageProps['Actions'] = ({ onNext, ...props }) => {
+  const t = useTranslations('Components.Common.action');
   const { state } = useCrypto();
-  const { addBag } = useLuckyBags();
+  const { bag } = useLuckyBags();
 
   const [active, setActive] = useState<ActionKey>();
   const [confirmed, setConfirmed] = useState(false);
-  const Action = active && actions[active];
+  if (!bag) throw new Error('bag is not defined');
 
-  const store = (confirmed: boolean) => {
-    setConfirmed(confirmed);
-    if (!confirmed) return;
-    addBag({ kp: keypair.current, name: 'generated' });
-  };
+  const Action = active && actions[active];
 
   return (
     <>
@@ -32,7 +26,7 @@ export const Generate: MessageProps['Actions'] = ({ onNext, ...props }) => {
       {Action && (
         <dialog className="modal modal-bottom sm:modal-middle modal-open">
           <div className="modal-box">
-            <Action keypair={keypair.current} onChange={store} />
+            <Action keypair={bag.kp} onChange={setConfirmed} />
             {confirmed && (
               <div className="modal-action">
                 <button
@@ -41,7 +35,7 @@ export const Generate: MessageProps['Actions'] = ({ onNext, ...props }) => {
                     onNext?.(state === 'unsafe' ? 'secure' : next)
                   }
                 >
-                  {t('activate')}
+                  {t(state === 'unsafe' ? 'secure' : 'next')}
                 </button>
               </div>
             )}

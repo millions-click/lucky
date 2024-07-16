@@ -9,7 +9,7 @@ const next = 'gifts';
 
 export const Activate: MessageProps['Actions'] = ({ onNext }) => {
   const t = useTranslations('Components');
-  const { bags, openBag, deleteBag } = useLuckyBags();
+  const { active, bags, openBag, deleteBag } = useLuckyBags();
 
   const keys = Object.keys(bags);
   const activate = (key: string) => {
@@ -53,7 +53,7 @@ export const Activate: MessageProps['Actions'] = ({ onNext }) => {
         ))}
       </ul>
 
-      {keys.length < 4 && (
+      {keys.length < 4 && !active && (
         <button
           className="btn btn-outline btn-circle btn-info absolute top-2 right-2 btn-sm"
           onClick={() => onNext?.('bag')}
