@@ -20,6 +20,8 @@
 
         "save": "Guardar",
         "done": "Hecho",
+        "retry": "Reintentar",
+        "secure": "Asegurar",
 
         "lock": "Bloquear",
         "unlock": "Desbloquear"
@@ -38,6 +40,42 @@
         "lobby": "Lobby",
         "realms": "Reinos",
         "coins": "Monedas"
+      }
+    },
+    "Bag": {
+      "title": "Conecta tu LuckyBag",
+      "description": "Hay diferentes formas de hacerlo.",
+      "options": {
+        "generate": "Dame una LuckyBag",
+        "import": "Ya tengo una",
+        "connect": "Traeré la mía"
+      },
+      "Generate": {
+        "loading": "Generando...",
+        "success": "¡LuckyBag generada con éxito!",
+        "error": "¡Error al generar LuckyBag!"
+      },
+      "Import": {
+        "title": "Importar LuckyBag",
+        "description": "Debes proporciona tu clave privada para importar tu LuckyBag.",
+        "action": {
+          "import": "Importar",
+          "paste": "Pegar clave",
+          "upload": "Subir archivo",
+          "drop": "Arrastra y suelta"
+        },
+        "input": {
+          "pk": {
+            "label": "Clave privada",
+            "placeholder": "Ingresa tu clave privada",
+            "valid": "Clave privada válida",
+            "invalid": "Clave privada inválida"
+          },
+          "name": {
+            "label": "Nombre de la cartera",
+            "placeholder": "Escribe un nombre para tu cartera"
+          }
+        }
       }
     },
     "Generate": {
@@ -176,13 +214,9 @@
       },
       "bag": {
         "text": "Cada LuckyPass es único y solo puede usarse una vez. Ten cuidado, si lo pierdes, no hay forma de recuperarlo.",
-        "advice": "Por suerte para ti, nuestro equipo de hadas ha construido una bolsa mágica impenetrable para mantener tus tesoros y tu pase seguros.",
-        "select": {
-          "title": "Conecta tu LuckyBag",
-          "options": "Dame un LuckyBag, Ya tengo uno, Traeré el mío"
-        }
+        "advice": "Por suerte para ti, nuestro equipo de hadas ha construido una bolsa mágica impenetrable para mantener tus tesoros y tu pase seguros."
       },
-      "generate": {
+      "generated": {
         "text": "¡Genial! Aquí está tu LuckyBag. Mantenla seguro, recibirás tu clave solo una vez.",
         "advice": "Puedes usar esta clave para recuperarlo o conectarlo a otro dispositivo o aplicación.",
         "select": {

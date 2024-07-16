@@ -20,6 +20,8 @@
 
         "save": "Save",
         "done": "Done",
+        "retry": "Retry",
+        "secure": "Secure",
 
         "lock": "Lock",
         "unlock": "Unlock"
@@ -38,6 +40,42 @@
         "lobby": "Lobby",
         "realms": "Realms",
         "coins": "Coins"
+      }
+    },
+    "Bag": {
+      "title": "Connect your LuckyBag",
+      "description": "There are different ways to do it.",
+      "options": {
+        "generate": "Give me a LuckyBag",
+        "import": "I already have one",
+        "connect": "I'll bring my own"
+      },
+      "Generate": {
+        "loading": "Generating...",
+        "success": "LuckyBag successfully generated!",
+        "error": "Error generating LuckyBag!"
+      },
+      "Import": {
+        "title": "Import LuckyBag",
+        "description": "You must provide your private key to import your LuckyBag.",
+        "action": {
+          "import": "Import",
+          "paste": "Paste key",
+          "upload": "Upload file",
+          "drop": "Drag and drop"
+        },
+        "input": {
+          "pk": {
+            "label": "Private key",
+            "placeholder": "Enter your private key",
+            "valid": "Valid private key",
+            "invalid": "Invalid private key"
+          },
+          "name": {
+            "label": "Name",
+            "placeholder": "Enter a name for your LuckyBag"
+          }
+        }
       }
     },
     "Generate": {
@@ -177,13 +215,9 @@
       },
       "bag": {
         "text": "Every LuckyPass is unique and can only be used once. Be careful, if you lose it, there's no way to recover it.",
-        "advice": "Let's set up your LuckyBag so you can get your LuckyPass and some welcome gifts for this journey.",
-        "select": {
-          "title": "Connect your LuckyBag",
-          "options": "Give me a LuckyBag, I already have one, I'll bring my own"
-        }
+        "advice": "Let's set up your LuckyBag so you can get your LuckyPass and some welcome gifts for this journey."
       },
-      "generate": {
+      "generated": {
         "text": "Great! Here is your LuckyBag. Keep it safe, you will only receive your key once.",
         "advice": "You can use this key to recover it or connect it to another device or app.",
         "select": {
