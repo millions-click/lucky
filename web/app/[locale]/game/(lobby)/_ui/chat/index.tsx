@@ -31,6 +31,7 @@ const MESSAGES = {
 } as Record<string, MessageDef>;
 type MessageKey = keyof typeof MESSAGES;
 
+// TODO: If the user is using an external wallet, it should go directly to the last message.
 function getActiveMessage(key: CryptoState, bag: LuckyBagState) {
   switch (bag) {
     case 'empty':

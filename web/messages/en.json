@@ -76,6 +76,16 @@
             "placeholder": "Enter a name for your LuckyBag"
           }
         }
+      },
+      "Connect": {
+        "title": "Connect your LuckyBag",
+        "description": "This feature is to use external wallets or services.",
+        "advice": "For an improved game experience we highly recommend to use the Lucky Wallet",
+        "action": {
+          "idle": "Connect",
+          "connected": "Connected",
+          "disconnect": "Disconnect"
+        }
       }
     },
     "Generate": {

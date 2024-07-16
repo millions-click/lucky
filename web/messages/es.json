@@ -76,6 +76,16 @@
             "placeholder": "Escribe un nombre para tu cartera"
           }
         }
+      },
+      "Connect": {
+        "title": "Conecta tu LuckyBag",
+        "description": "Esta característica te permite usar billeteras o servicios externos.",
+        "advice": "Para una experiencia de juego mejorada, es altamente recomendado usar el Lucky Wallet",
+        "action": {
+          "idle": "Connectar",
+          "connected": "Conectado",
+          "disconnect": "Desconectar"
+        }
       }
     },
     "Generate": {
