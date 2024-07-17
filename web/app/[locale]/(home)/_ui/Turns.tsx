@@ -3,24 +3,21 @@
 import { useTranslations } from 'next-intl';
 
 import { TURNS_AVAILABLE, type TurnsSession } from '@/actions/types';
-import { useCountDown } from '@/hooks';
+import { useConfigurableCountdown } from '@/providers';
 
 export function Turns({
   session,
   attempts,
   winner,
-  onRenew,
 }: {
   session: TurnsSession | null;
   attempts: number | null;
   winner?: boolean;
-  onRenew?: () => void;
 }) {
   const t = useTranslations('Index');
-  const countDown = useCountDown({
-    expire: session?.expires,
+  const { countdown } = useConfigurableCountdown({
+    expires: session?.expires,
     pause: winner,
-    onFinished: onRenew,
   });
 
   if (winner) return null;
@@ -44,7 +41,7 @@ export function Turns({
             data-tip={t('turns.hold')}
           >
             <div className="grid grid-flow-col gap-2 text-center auto-cols-max *:pointer-events-none">
-              {Object.entries(countDown)
+              {Object.entries(countdown)
                 .filter(([_, value]) => value > 0)
                 .map(([key, value], i) => (
                   <div

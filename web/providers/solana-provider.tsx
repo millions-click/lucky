@@ -10,6 +10,7 @@ import {
 } from '@solana/wallet-adapter-react';
 import { ReactNode, useMemo } from 'react';
 import { useCluster, LuckyWalletProvider } from '.';
+import { WalletModalProvider } from '@solana/wallet-adapter-react-ui';
 
 require('@solana/wallet-adapter-react-ui/styles.css');
 
@@ -27,6 +28,14 @@ export function SolanaProvider({ children }: { children: ReactNode }) {
     <ConnectionProvider endpoint={endpoint}>
       <LuckyWalletProvider>{children}</LuckyWalletProvider>
     </ConnectionProvider>
+  );
+}
+
+export function SolanaModalProvider({ children }: { children: ReactNode }) {
+  return (
+    <SolanaProvider>
+      <WalletModalProvider>{children}</WalletModalProvider>
+    </SolanaProvider>
   );
 }
 

@@ -21,17 +21,17 @@ export function Message({
 }: MessageProps) {
   const [text, setText] = useState('');
   const [advice, setAdvice] = useState('');
-  const [finished, setFinished] = useState(false);
+  const [finished, setFinished] = useState(0);
 
   useEffect(() => {
     if (!typing) {
       setText(message.text);
       if (message.advice) setAdvice(message.advice);
-      setFinished(true);
+      setFinished(2);
       return;
     }
 
-    setFinished(false);
+    setFinished(0);
     setText('');
     setAdvice('');
 
@@ -40,7 +40,10 @@ export function Message({
         if (prev.length === message.text.length) {
           clearInterval(interval);
           if (message.advice) setAdvice(message.advice);
-          setFinished(true);
+          setTimeout(() => {
+            setFinished(1);
+            setTimeout(() => setFinished(2), 500);
+          }, 500);
           return prev;
         }
 
@@ -72,21 +75,25 @@ export function Message({
       <div
         className={[
           'chat-bubble text-base-content text-start shadow-lg p-4',
-          backdrop ? 'bg-base-100/50 text-white text-xl' : 'text-lg',
+          backdrop ? 'bg-base-100/50 text-white sm:text-xl' : 'sm:text-lg',
         ].join(' ')}
       >
         {text}
         {advice && (
           <div
-            className={`bg-accent text-sm font-sans px-4 py-2 mt-4 rounded-box text-accent-content ${
+            className={`bg-accent text-xs sm:text-sm font-sans px-4 py-2 mt-4 rounded-box text-accent-content ${
               backdrop ? 'font-bold' : ''
             }`}
           >
             {advice}
           </div>
         )}
-        {finished && Actions && <Actions message={message} {...nav} />}
-        {finished && !noNav && <Nav {...nav} backdrop={backdrop} />}
+        {Boolean(finished) && (
+          <div className={finished === 1 ? 'animate-scale-up' : ''}>
+            {Actions && <Actions {...nav} message={message} />}
+            {!noNav && <Nav {...nav} backdrop={backdrop} />}
+          </div>
+        )}
       </div>
     </div>
   );

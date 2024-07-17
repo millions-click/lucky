@@ -4,7 +4,6 @@ import { type PropsWithChildren, useCallback, useMemo } from 'react';
 
 import { WalletProvider } from '@solana/wallet-adapter-react';
 import { WalletError } from '@solana/wallet-adapter-base';
-import { WalletModalProvider } from '@solana/wallet-adapter-react-ui';
 
 import { useLuckyBags } from '.';
 import { LuckyWalletAdapter } from '@/adapters';
@@ -20,7 +19,7 @@ export function LuckyWalletProvider({ children }: PropsWithChildren) {
 
   return (
     <WalletProvider wallets={wallets} onError={onError} autoConnect={true}>
-      <WalletModalProvider>{children}</WalletModalProvider>
+      {children}
     </WalletProvider>
   );
 }

@@ -6,7 +6,6 @@ import { ReactNode, Suspense, useEffect, useRef } from 'react';
 
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
-
 import { AccountChecker } from '../account/account-ui';
 import {
   ClusterChecker,
@@ -14,6 +13,9 @@ import {
   ExplorerLink,
 } from '../cluster/cluster-ui';
 import toast, { Toaster } from 'react-hot-toast';
+import { ellipsify } from '@/utils';
+
+export { ellipsify };
 
 export function UiLayout({
   children,
@@ -220,15 +222,6 @@ export function AppHero({
       </div>
     </div>
   );
-}
-
-export function ellipsify(str = '', len = 4) {
-  if (str.length > 30) {
-    return (
-      str.substring(0, len) + '..' + str.substring(str.length - len, str.length)
-    );
-  }
-  return str;
 }
 
 export function useTransactionToast() {

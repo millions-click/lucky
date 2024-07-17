@@ -7,7 +7,7 @@ import {
   ClusterProvider,
   CryptoProvider,
   LuckyBagsProvider,
-  SolanaProvider,
+  SolanaModalProvider,
   DataFeedProvider,
 } from '@/providers';
 import { UiLayout } from '@/components/ui/ui-layout';
@@ -40,13 +40,13 @@ export default function Layout({ children }: PropsWithChildren) {
           <ClusterProvider>
             <CryptoProvider>
               <LuckyBagsProvider>
-                <SolanaProvider>
+                <SolanaModalProvider>
                   <DataFeedProvider>
                     <UiLayout links={links} env={NEXT_PUBLIC_VERCEL_ENV}>
                       {children}
                     </UiLayout>
                   </DataFeedProvider>
-                </SolanaProvider>
+                </SolanaModalProvider>
               </LuckyBagsProvider>
             </CryptoProvider>
           </ClusterProvider>

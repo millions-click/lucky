@@ -6,7 +6,7 @@ import { Portal } from './portal';
 import { LockDoor } from './lock';
 import { Turns } from './Turns';
 
-import { useMessages } from '@/providers';
+import { CountdownProvider, useMessages } from '@/providers';
 import { createLuckyPass, getTurns, playATurn } from '@/actions';
 import type { TurnsSession } from '@/actions/types';
 
@@ -42,7 +42,7 @@ export function LockController() {
   }, []);
 
   return (
-    <>
+    <CountdownProvider onFinished={load}>
       {winner && (
         <Portal
           active={winner}
@@ -66,12 +66,7 @@ export function LockController() {
         }}
       />
 
-      <Turns
-        attempts={attempts}
-        winner={winner}
-        session={session}
-        onRenew={load}
-      />
-    </>
+      <Turns attempts={attempts} winner={winner} session={session} />
+    </CountdownProvider>
   );
 }
