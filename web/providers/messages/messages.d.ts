@@ -23,9 +23,10 @@ export type MessagesContext = {
   messages: Messages;
   setMessages: Dispatch<SetStateAction<Messages>>;
   clear: () => void;
-  show: (id: MessageId, values?: TranslationValues, replace?: boolean) => void;
+};
 
-  last?: Message;
+export type MessagesContextHandler = MessagesContext & {
+  show: (id: MessageId, values?: TranslationValues, replace?: boolean) => void;
 };
 
 export type MessagesSettings = {

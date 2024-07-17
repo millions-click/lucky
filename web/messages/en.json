@@ -246,12 +246,16 @@
         "advice": "This password will be required to login on this device only."
       },
       "gifts": {
-        "text": "Congratulations! You've successfully connected your LuckyBag.",
-        "advice": "You can receive some welcome gifts.",
+        "text": "Congratulations! Now that your lucky bag is ready to claim these treasures and you are ready for the fun, let's begin with our journey.",
+        "advice": "As a welcome gift, you can get some free lucky shots. Would you like to get them?",
         "select": {
           "title": "What would you like to do?",
-          "options": "Claim my gifts, I'll be back later"
+          "options": "Yes! what do I need to do?, I'll buy my lucky shots."
         }
+      },
+      "store": {
+        "text": "Great! You can use these lucky shots to play in the realms of Luckyland.",
+        "advice": "You can get more lucky shots in the Coins realm."
       },
       "claim": {
         "text": "Your LuckyBag is ready. You can now activate your LuckyPass.",

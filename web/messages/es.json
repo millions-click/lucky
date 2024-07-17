@@ -245,11 +245,11 @@
         "advice": "Esta contraseña será requerida para iniciar sesión unicamente en este dispositivo"
       },
       "gifts": {
-        "text": "¡Felicidades! Has activado exitosamente tu LuckyBag.",
-        "advice": "Podrás recibir algunos regalos de bienvenida.",
+        "text": "¡Felicidades! Ahora que tienes tu LuckyBag lista para recibir tesoros, y tu estas listo para la diversión. Comecemos con nuestro viaje.",
+        "advice": "Como regalo de bienvenida, puedes reclamar algunos tiros de suerte gratis. Quisieras reclamarlos?",
         "select": {
-          "title": "¿Qué te gustaría hacer?",
-          "options": "Reclamar regalos, Volveré más tarde"
+          "title": "Que te gustaria hacer?",
+          "options": "¡Si! Que tengo que hacer?, Comprare mis tiros de suerte"
         }
       },
       "claim": {

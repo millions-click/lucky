@@ -3,16 +3,15 @@
 import { type MessageProps, Message } from './Message';
 import { type NavProps } from './Nav';
 
-import { type MessagesSettings, useMessages } from '@/providers';
+import { useMessages } from '@/providers';
 
-type MessagesProps = Omit<NavProps, 'backdrop'> &
-  Pick<MessageProps, 'typing' | 'Actions'> &
-  MessagesSettings & {
+export type MessagesProps = Omit<NavProps, 'backdrop'> &
+  Pick<MessageProps, 'typing' | 'Actions'> & {
     backdrop?: string;
   };
 
 export function Messages({ backdrop, ...settings }: MessagesProps) {
-  const { messages } = useMessages(settings);
+  const { messages } = useMessages();
   if (!messages.length) return null;
 
   return (
@@ -39,5 +38,3 @@ export function Messages({ backdrop, ...settings }: MessagesProps) {
     </>
   );
 }
-
-export { Message, MessageProps };
