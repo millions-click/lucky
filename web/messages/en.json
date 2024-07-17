@@ -147,6 +147,54 @@
           "placeholder": "Enter a name for your LuckyBag"
         }
       }
+    },
+    "Buy": {
+      "title": "Buy {token}",
+      "description": "Get your {token} and claim your treasures!",
+      "package": {
+        "pouch": {
+          "title": "Pouch",
+          "description": "Starter package"
+        },
+        "bag": {
+          "title": "Bag",
+          "description": "Common package"
+        },
+        "sack": {
+          "title": "Sack",
+          "description": "Rare package"
+        },
+        "chest": {
+          "title": "Chest",
+          "description": "Epic package"
+        },
+        "vault": {
+          "title": "Vault",
+          "description": "Mythical package"
+        },
+        "treasure": {
+          "title": "Treasure",
+          "description": "Divine package"
+        }
+      },
+      "Pay": {
+        "title": "Confirm your purchase",
+        "disconnected": "You can pay using your favorite wallet.",
+        "success": {
+          "title": "Purchase successful",
+          "description": "Thank you for your purchase! Your {name} have been added to your LuckyBag. You now have {balance} {symbol} to use in Luckyland. Enjoy your adventure!"
+        },
+        "action": {
+          "idle": "Pay",
+          "paying": "Processing...",
+          "completed": "Completed",
+          "error": "Failed"
+        }
+      },
+      "action": {
+        "buy": "Buy {amount} {token}",
+        "continue": "Continue"
+      }
     }
   },
   "General": {
@@ -253,10 +301,6 @@
           "options": "Yes! what do I need to do?, I'll buy my lucky shots."
         }
       },
-      "store": {
-        "text": "Great! You can use these lucky shots to play in the realms of Luckyland.",
-        "advice": "You can get more lucky shots in the Coins realm."
-      },
       "claim": {
         "text": "Your LuckyBag is ready. You can now activate your LuckyPass.",
         "advice": "Once you, activate it, you'll have 60 minutes to explore Luckyland and claim your treasures.",
@@ -272,6 +316,27 @@
     "actions": {
       "enter": "Enter",
       "exit": "Exit"
+    }
+  },
+  "Store": {
+    "title": "Store",
+    "description": "Get your Lucky Shots and claim your treasures!",
+    "messages": {
+      "welcome": {
+        "text": "Greetings lucky traveler! My name is Clover, and I'm here to assist you. You've been transported to the LuckyStore.",
+        "advice": "This is the place where you can buy $LS (Lucky Shots) and claim your gifts"
+      },
+      "intro": {
+        "text": "I see you have a special entry to Luckyland! Before you start exploring, you will need some $LS to claim your treasures.",
+        "select": {
+          "title": "Choose your action",
+          "options": "Buy some $LS, Get some Free $LS"
+        }
+      },
+      "buy": {
+        "text": "Great choice! Here are the $LS packages available for purchase.",
+        "advice": "Select the package that best suits your needs."
+      }
     }
   },
   "Realms": {

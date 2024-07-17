@@ -1772,33 +1772,28 @@
   "errors": [
     {
       "code": 6000,
-      "name": "InvalidSlots",
-      "msg": "Slots must be between 1 and 10"
+      "name": "InvalidName",
+      "msg": "Name must be between 3 and 32 characters"
     },
     {
       "code": 6001,
-      "name": "InvalidDigits",
-      "msg": "Digits must be between 1 and 8"
+      "name": "GameInactive",
+      "msg": "Game is not active"
     },
     {
       "code": 6002,
-      "name": "InvalidChoices",
-      "msg": "Choices must be between 2 and max value of digits"
+      "name": "GameEnded",
+      "msg": "Game is already ended"
     },
     {
       "code": 6003,
-      "name": "InvalidWinnerSingleChoice",
-      "msg": "Winner choice must be between 1 and choices"
+      "name": "GameNotEnded",
+      "msg": "Game is not ended"
     },
     {
       "code": 6004,
-      "name": "InvalidWinnerChoice",
-      "msg": "Winner choice must be between 0 and choices"
-    },
-    {
-      "code": 6005,
-      "name": "InvalidPickWinner",
-      "msg": "Pick winner is true but winner choice is 0"
+      "name": "Unimplemented",
+      "msg": "Unimplemented"
     }
   ],
   "types": [

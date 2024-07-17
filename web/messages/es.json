@@ -146,6 +146,54 @@
           "placeholder": "Escribe un nombre para tu LuckyBag"
         }
       }
+    },
+    "Buy": {
+      "title": "Comprar {token}",
+      "description": "¡Obtén tus {token} y reclama tesoros!",
+      "packages": {
+        "pouch": {
+          "title": "Puñado",
+          "description": "Paquete inicial"
+        },
+        "bag": {
+          "title": "Bolsa",
+          "description": "Paquete comun"
+        },
+        "sack": {
+          "title": "Saco",
+          "description": "Paquete raro"
+        },
+        "chest": {
+          "title": "Cofre",
+          "description": "Paquete epico"
+        },
+        "vault": {
+          "title": "Bóveda",
+          "description": "Paquete mitico"
+        },
+        "treasure": {
+          "title": "Tesoro",
+          "description": "Paquete divino"
+        }
+      },
+      "Pay": {
+        "title": "Confirma tu compra",
+        "disconnected": "Puedes pagar con tu billetera preferida",
+        "success": {
+          "title": "¡Compra exitosa!",
+          "description": "¡Gracias por tu compra! Tus {name} han sido añadidos a tu LuckyBag. Ahora tienes {balance} {symbol} para reclamar tesoros. ¡Disfruta tu aventura!"
+        },
+        "action": {
+          "idle": "Pagar",
+          "paying": "Procesando...",
+          "completed": "Completado",
+          "error": "Fallido"
+        }
+      },
+      "action": {
+        "buy": "Comprar {amount} {token}",
+        "continue": "Continuar"
+      }
     }
   },
   "General": {
@@ -267,6 +315,27 @@
     "actions": {
       "enter": "Entrar",
       "exit": "Salir"
+    }
+  },
+  "Store": {
+    "title": "Tienda",
+    "description": "¡Consigue tus Lucky Shots y reclama tus tesoros!",
+    "messages": {
+      "welcome": {
+        "text": "¡Saludos, viajero afortunado! Mi nombre es Clover, y estoy aquí para ayudarte. Has sido transportado a la LuckyStore.",
+        "advice": "Este es el lugar donde puedes comprar $LS (Lucky Shots) y reclamar tus regalos."
+      },
+      "intro": {
+        "text": "Veo que tienes una entrada especial a Luckyland. Antes de comenzar a explorar, necesitarás algunos $LS para reclamar tus tesoros.",
+        "select": {
+          "title": "Elige tu acción",
+          "options": "Comprar algunos $LS, Obtener algunos $LS gratis"
+        }
+      },
+      "buy": {
+        "text": "¡Buena elección! Aquí están los paquetes de $LS disponibles para la compra.",
+        "advice": "Selecciona el paquete que mejor se adapte a tus necesidades."
+      }
     }
   },
   "Realms": {

@@ -26,10 +26,10 @@ const PALS: Record<string, GamePal> = {
     name: 'Jessie',
     avatar: '/assets/avatars/jessie.svg',
   },
-  sarah: {
-    id: 'sarah',
-    name: 'Sarah',
-    avatar: '/assets/avatars/sarah.webp',
+  clover: {
+    id: 'clover',
+    name: 'Clover',
+    avatar: '/assets/avatars/clover.webp',
   },
   mike: {
     id: 'mike',
