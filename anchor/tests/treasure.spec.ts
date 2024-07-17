@@ -24,6 +24,7 @@ import {
   toBN,
 } from '../src/games-exports';
 
+const DECIMALS = 8;
 describe('Treasure', () => {
   // Configure the client to use the local cluster.
   const provider = anchor.AnchorProvider.env();
@@ -45,7 +46,7 @@ describe('Treasure', () => {
       payer, // fee payer
       payer.publicKey, // mint authority
       null, // freeze authority (you can use `null` to disable it. when you disable it, you can't turn it on again)
-      8 // decimals
+      DECIMALS
     );
 
     trader = await createMint(
@@ -53,7 +54,7 @@ describe('Treasure', () => {
       payer, // fee payer
       payer.publicKey, // mint authority
       null, // freeze authority (you can use `null` to disable it. when you disable it, you can't turn it on again)
-      8 // decimals
+      DECIMALS
     );
 
     const ata = await createAssociatedTokenAccount(
@@ -79,8 +80,8 @@ describe('Treasure', () => {
       gem, // mint
       ata, // receiver (should be a token account)
       payer, // mint authority
-      1000e8, // amount. if your decimals is 8, you mint 10^8 for 1 token.
-      8 // decimals
+      1000 * 10 ** DECIMALS, // amount. if your decimals is 8, you mint 10^8 for 1 token.
+      DECIMALS
     );
   });
 
@@ -136,7 +137,7 @@ describe('Treasure', () => {
           authority, // fee payer
           authority.publicKey, // mint authority
           null, // freeze authority (you can use `null` to disable it. when you disable it, you can't turn it on again)
-          8 // decimals
+          DECIMALS
         );
       });
 
@@ -200,7 +201,7 @@ describe('Treasure', () => {
           authority, // fee payer
           authority.publicKey, // mint authority
           null, // freeze authority (you can use `null` to disable it. when you disable it, you can't turn it on again)
-          8 // decimals
+          DECIMALS
         );
       });
 
@@ -302,47 +303,111 @@ describe('Treasure', () => {
   });
 
   describe('Deposit', () => {
-    const { payer } = provider.wallet as anchor.Wallet;
-    const sender = Keypair.generate();
-    let reserve: PublicKey;
-    let senderAccount: Account;
+    describe('Stronghold', () => {
+      const { payer } = provider.wallet as anchor.Wallet;
+      const sender = Keypair.generate();
+      let reserve: PublicKey;
+      let senderAccount: Account;
 
-    beforeAll(async () => {
-      const { address } = await getOrCreateAssociatedTokenAccount(
-        connection,
-        payer,
-        gem,
-        sender.publicKey
-      );
+      beforeAll(async () => {
+        const { address } = await getOrCreateAssociatedTokenAccount(
+          connection,
+          payer,
+          gem,
+          sender.publicKey
+        );
 
-      reserve = address;
-      await mintToChecked(connection, payer, gem, reserve, payer, 10e8, 8);
-    });
-
-    beforeEach(async () => {
-      senderAccount = await getAccount(connection, reserve);
-    });
-
-    it('Should store gems', async () => {
-      const { stronghold } = accounts;
-
-      const { amount } = senderAccount;
-      const vaultBeforeDeposit = await getAccount(connection, stronghold);
-
-      await program.methods
-        .stockpileGems(new BN(amount))
-        .accounts({
-          ...accounts,
-          supplier: sender.publicKey,
+        reserve = address;
+        await mintToChecked(
+          connection,
+          payer,
+          gem,
           reserve,
-        })
-        .signers([sender])
-        .rpc();
+          payer,
+          10 * 10 ** DECIMALS,
+          DECIMALS
+        );
+      });
 
-      const vaultAccount = await getAccount(connection, stronghold);
-      const senderAfterDeposit = await getAccount(connection, reserve);
-      expect(vaultAccount.amount).toEqual(vaultBeforeDeposit.amount + amount);
-      expect(senderAfterDeposit.amount.toString()).toEqual('0');
+      beforeEach(async () => {
+        senderAccount = await getAccount(connection, reserve);
+      });
+
+      it('Should store gems', async () => {
+        const { stronghold } = accounts;
+
+        const { amount } = senderAccount;
+        const vaultBeforeDeposit = await getAccount(connection, stronghold);
+
+        await program.methods
+          .stockpileGems(new BN(amount))
+          .accounts({
+            ...accounts,
+            supplier: sender.publicKey,
+            reserve,
+          })
+          .signers([sender])
+          .rpc();
+
+        const vaultAccount = await getAccount(connection, stronghold);
+        const senderAfterDeposit = await getAccount(connection, reserve);
+        expect(vaultAccount.amount).toEqual(vaultBeforeDeposit.amount + amount);
+        expect(senderAfterDeposit.amount.toString()).toEqual('0');
+      });
+    });
+
+    describe('Store', () => {
+      const { payer } = provider.wallet as anchor.Wallet;
+      const sender = Keypair.generate();
+      let reserve: PublicKey;
+      let senderAccount: Account;
+
+      beforeAll(async () => {
+        const { address } = await getOrCreateAssociatedTokenAccount(
+          connection,
+          payer,
+          trader,
+          sender.publicKey
+        );
+
+        reserve = address;
+        await mintToChecked(
+          connection,
+          payer,
+          trader,
+          reserve,
+          payer,
+          10 * 10 ** DECIMALS,
+          DECIMALS
+        );
+      });
+
+      beforeEach(async () => {
+        senderAccount = await getAccount(connection, reserve);
+      });
+
+      it('Should fill collector vault with trader', async () => {
+        const collector = getCollectorPDA(trader);
+
+        const { amount } = senderAccount;
+        const vaultBeforeDeposit = await getAccount(connection, collector);
+        expect(amount).toBeGreaterThan(0);
+
+        await program.methods
+          .storeFill(new BN(amount))
+          .accounts({
+            trader,
+            reserve,
+            supplier: sender.publicKey,
+          })
+          .signers([sender])
+          .rpc();
+
+        const vaultAccount = await getAccount(connection, collector);
+        const senderAfterDeposit = await getAccount(connection, reserve);
+        expect(vaultAccount.amount).toEqual(vaultBeforeDeposit.amount + amount);
+        expect(senderAfterDeposit.amount.toString()).toEqual('0');
+      });
     });
   });
 

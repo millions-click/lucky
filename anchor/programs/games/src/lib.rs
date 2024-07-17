@@ -39,6 +39,10 @@ pub mod games {
         treasure::stockpile::receive(&ctx, amount)
     }
 
+    pub fn store_fill(ctx: Context<StoreStockFill>, amount: u64) -> Result<()> {
+        store::stock::fill(&ctx, amount)
+    }
+
     pub fn retrieve_gems(ctx: Context<UnlockStronghold>, amount: u64) -> Result<()> {
         treasure::unlock::acquire_loot(&ctx, amount)
     }

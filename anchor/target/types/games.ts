@@ -1666,6 +1666,78 @@ export type Games = {
       ]
     },
     {
+      "name": "storeFill",
+      "discriminator": [
+        243,
+        168,
+        93,
+        10,
+        206,
+        99,
+        57,
+        186
+      ],
+      "accounts": [
+        {
+          "name": "collector",
+          "writable": true,
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  84,
+                  79,
+                  76,
+                  76,
+                  75,
+                  69,
+                  69,
+                  80,
+                  69,
+                  82
+                ]
+              },
+              {
+                "kind": "account",
+                "path": "trader"
+              }
+            ]
+          }
+        },
+        {
+          "name": "reserve",
+          "writable": true
+        },
+        {
+          "name": "trader"
+        },
+        {
+          "name": "supplier",
+          "writable": true,
+          "signer": true
+        },
+        {
+          "name": "systemProgram",
+          "address": "11111111111111111111111111111111"
+        },
+        {
+          "name": "tokenProgram",
+          "address": "TokenkegQfeZyiNwAJbNbGKPFXCWuBvf9Ss623VQ5DA"
+        },
+        {
+          "name": "rent",
+          "address": "SysvarRent111111111111111111111111111111111"
+        }
+      ],
+      "args": [
+        {
+          "name": "amount",
+          "type": "u64"
+        }
+      ]
+    },
+    {
       "name": "updateGame",
       "discriminator": [
         159,
