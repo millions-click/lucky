@@ -18,8 +18,10 @@ import {
   getTreasurePDA,
   getStrongholdPDA,
   getCollectorPDA,
+  getStorePDA,
   TREASURE_FORGE_COST,
   TRADER_LAUNCH_COST,
+  toBN,
 } from '../src/games-exports';
 
 describe('Treasure', () => {
@@ -202,21 +204,50 @@ describe('Treasure', () => {
         );
       });
 
-      it('Should launch a tollkeeper collector', async () => {
-        const { tollkeeper } = accounts;
-        const balance = await connection.getBalance(authority.publicKey);
-        expect(balance).toBeLessThan(TRADER_LAUNCH_COST * LAMPORTS_PER_SOL);
+      describe('Collector', () => {
+        it('Should launch a tollkeeper collector', async () => {
+          const { tollkeeper } = accounts;
+          const balance = await connection.getBalance(authority.publicKey);
+          expect(balance).toBeLessThan(TRADER_LAUNCH_COST * LAMPORTS_PER_SOL);
 
-        await program.methods
-          .launchEscrow()
-          .accounts({ supplier: authority.publicKey, trader })
-          .signers([authority])
-          .rpc();
+          await program.methods
+            .launchEscrow()
+            .accounts({ supplier: authority.publicKey, trader })
+            .signers([authority])
+            .rpc();
 
-        const collector = await getAccount(connection, getCollectorPDA(trader));
-        expect(collector.owner).toEqual(tollkeeper);
-        expect(collector.mint).toEqual(trader);
-        expect(collector.amount.toString()).toEqual('0');
+          const collector = await getAccount(
+            connection,
+            getCollectorPDA(trader)
+          );
+          expect(collector.owner).toEqual(tollkeeper);
+          expect(collector.mint).toEqual(trader);
+          expect(collector.amount.toString()).toEqual('0');
+        });
+      });
+
+      describe('Store', () => {
+        // Chainlink DEVNET feed (SOL/USD)
+        const feed = new PublicKey(
+          '99B2bTijsU6f1GCT73HmdR7HCFFjGMBcPZY6jZ96ynrR'
+        );
+
+        it('Should define a new store for the trader', async () => {
+          const price = toBN(100);
+
+          await program.methods
+            .launchStore({ price })
+            .accounts({ authority: authority.publicKey, trader, feed })
+            .signers([authority])
+            .rpc();
+
+          const pda = getStorePDA(trader, feed);
+          const store = await program.account.store.fetch(pda);
+
+          expect(store.feed).toEqual(feed);
+          expect(store.trader).toEqual(trader);
+          expect(store.price).toEqual(price);
+        });
       });
     });
 
@@ -249,6 +280,23 @@ describe('Treasure', () => {
         expect(collector.owner).toEqual(tollkeeper);
         expect(collector.mint).toEqual(trader);
         expect(collector.amount.toString()).toEqual('0');
+      });
+
+      describe('Store', () => {
+        // Chainlink DEVNET feed (SOL/USD)
+        const feed = new PublicKey(
+          '99B2bTijsU6f1GCT73HmdR7HCFFjGMBcPZY6jZ96ynrR'
+        );
+
+        it('Should fail to define a new store | Only Treasure Authority allowed', async () => {
+          await expect(
+            program.methods
+              .launchStore({ price: toBN(100) })
+              .accounts({ authority: payer.publicKey, trader, feed })
+              .signers([payer])
+              .rpc()
+          ).rejects.toThrow(/InvalidAuthority/);
+        });
       });
     });
   });

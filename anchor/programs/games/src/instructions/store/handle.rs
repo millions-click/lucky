@@ -1,0 +1,53 @@
+pub use crate::state::{
+    treasure::Treasure,
+    store::{Store, StoreSettings}
+};
+use crate::errors::TreasureErrorCode;
+use crate::constants::{TREASURE_SEED, STORE_SEED, COLLECTOR_SEED};
+use anchor_lang::prelude::*;
+use anchor_spl::token::{Mint, TokenAccount};
+
+pub fn new_vendor(ctx: Context<InitializeStore>, settings: StoreSettings) -> Result<()> {
+    let store = &mut ctx.accounts.store;
+
+    store.set_price(settings.price.clone());
+    store.set_trader(ctx.accounts.trader.key());
+    store.set_feed(ctx.accounts.feed.key());
+
+    Ok(())
+}
+
+#[derive(Accounts)]
+pub struct InitializeStore<'info> {
+    pub trader: Account<'info, Mint>,
+    /// CHECK: This is the chainlink feed account, to get the latest price rate.
+    pub feed: AccountInfo<'info>,
+
+    #[account(
+        init,
+        payer = authority,
+        seeds = [STORE_SEED, trader.key().as_ref(), feed.key().as_ref()],
+        bump,
+        space = 8 + Store::INIT_SPACE
+    )]
+    pub store: Account<'info, Store>,
+
+    // To prevent charging an unknown token.
+    #[account(
+        seeds = [COLLECTOR_SEED, trader.key().as_ref()],
+        token::mint = trader,
+        bump
+    )]
+    collector: Account<'info, TokenAccount>,
+
+    #[account(
+        has_one = authority @ TreasureErrorCode::InvalidAuthority,
+        seeds = [TREASURE_SEED],
+        bump,
+    )]
+    treasure: Account<'info, Treasure>,
+
+    #[account(mut)]
+    authority: Signer<'info>,
+    system_program: Program<'info, System>,
+}

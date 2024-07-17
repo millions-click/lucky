@@ -4,6 +4,7 @@ pub const ESCROW_SEED: &[u8] = b"TREASURE_ESCROW";
 pub const VAULT_SEED: &[u8] = b"TREASURE_VAULT";
 pub const COLLECTOR_SEED: &[u8] = b"TOLLKEEPER";
 pub const TREASURE_SEED: &[u8] = b"TREASURE";
+pub const STORE_SEED: &[u8] = b"STORE";
 pub const TREASURE_FORGE_COST: u64 = 25; // 25 SOL
 pub const TRADER_LAUNCH_COST: u64 = 50; // 50 SOL
 

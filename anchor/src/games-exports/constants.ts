@@ -4,6 +4,7 @@ export const ESCROW_SEED = 'TREASURE_ESCROW';
 export const VAULT_SEED = 'TREASURE_VAULT';
 export const COLLECTOR_SEED = 'TOLLKEEPER';
 export const TREASURE_SEED = 'TREASURE';
+export const STORE_SEED = 'STORE';
 export const TREASURE_FORGE_COST = 25; // 25 SOL
 export const TRADER_LAUNCH_COST = 50; // 50 SOL
 

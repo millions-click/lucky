@@ -31,6 +31,10 @@ pub mod games {
         escrow::launch::pay_definition(&ctx)
     }
 
+    pub fn launch_store(ctx: Context<InitializeStore>, settings: StoreSettings) -> Result<()> {
+        store::handle::new_vendor(ctx, settings)
+    }
+
     pub fn stockpile_gems(ctx: Context<Stockpile>, amount: u64) -> Result<()> {
         treasure::stockpile::receive(&ctx, amount)
     }
