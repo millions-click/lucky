@@ -5,7 +5,6 @@ import { Options, actions } from './actions';
 import { type MessageProps } from '@/ui';
 import { useTranslations } from 'next-intl';
 import { LuckyBagProvider, useCrypto } from '@/providers';
-import { BagButton } from '@/ui/bag';
 
 type ActionKey = keyof typeof actions;
 const next = {
@@ -35,7 +34,6 @@ export const Bag: MessageProps['Actions'] = ({ onNext, message, ...props }) => {
         onNext={(action) => setActive(action as ActionKey)}
       />
       <LuckyBagProvider>
-        <BagButton className="absolute top-0 right-0" />
         {Action && (
           <dialog className="modal modal-bottom sm:modal-middle modal-open">
             <div className="modal-box">

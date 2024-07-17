@@ -1,12 +1,19 @@
+import { PropsWithChildren, useMemo } from 'react';
 import type { MessageProps } from '@/ui';
-import { useMemo } from 'react';
+
+type ItemComponentProps = PropsWithChildren<{
+  className?: string;
+  onClick?: () => void;
+}>;
 
 type Action = string;
 type ActionProps = {
-  next: Action;
+  next: string;
   className?: string;
   label?: string;
   onClick?: (next: string) => void;
+  Component?: React.ElementType;
+  props?: Record<string, unknown>;
 };
 type Option = ActionProps & { label: string };
 type SelectorProps = {
@@ -14,6 +21,41 @@ type SelectorProps = {
   className?: string;
   noTitle?: boolean;
 };
+
+const DefaultComponent: React.FC<ItemComponentProps> = ({
+  className,
+  onClick,
+  children,
+}) => (
+  <li className={className} onClick={onClick}>
+    {children}
+  </li>
+);
+
+function Item({
+  label,
+  className,
+  next,
+  onClick,
+  onNext,
+  Component,
+  props,
+}: ActionProps & { onNext?: (next: string) => void }) {
+  const Li = Component || DefaultComponent;
+
+  return (
+    <Li
+      className={
+        className ||
+        'btn text-amber-100 bg-orange-500 max-sm:btn-sm hover:btn-accent'
+      }
+      onClick={() => (onClick ? onClick(next) : onNext?.(next))}
+      {...props}
+    >
+      {label}
+    </Li>
+  );
+}
 
 export function Selector({
   actions,
@@ -50,17 +92,8 @@ export function Selector({
           }
         >
           {!noTitle && <li className="menu-title">{message.select}</li>}
-          {options.map(({ label, className, next, onClick }, i) => (
-            <li
-              key={i}
-              className={
-                className ||
-                'btn text-amber-100 bg-orange-500 max-sm:btn-sm hover:btn-accent'
-              }
-              onClick={() => (onClick ? onClick(next) : onNext?.(next))}
-            >
-              {label}
-            </li>
+          {options.map((options, i) => (
+            <Item key={i} {...options} onNext={onNext} />
           ))}
         </ul>
       )

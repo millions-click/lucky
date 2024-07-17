@@ -30,7 +30,7 @@ export function NavAction({
   return (
     <button
       className={`btn btn-ghost text-orange-500 ${
-        backdrop ? 'max-md:btn-circle btn-lg' : 'btn-circle'
+        backdrop ? 'max-md:btn-circle sm:btn-lg' : 'btn-circle'
       }
       ${icon === 'left' ? '' : 'flex-row-reverse'}
       `}

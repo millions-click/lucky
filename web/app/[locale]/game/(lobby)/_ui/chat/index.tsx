@@ -1,11 +1,20 @@
 'use client';
 
+import { useState } from 'react';
+import Link from 'next/link';
+
 import { Activate, Locked, Timer, Generated, Secure, Bag } from './messages';
 
 import { type CryptoState, useCrypto, useLuckyBags } from '@/providers';
-import { useState } from 'react';
 import { type ChatMessages, ChatController, Selector } from '@/ui';
 import type { LuckyBagState } from '@/adapters';
+
+const asLink = (href: string) => ({
+  next: '',
+  Component: Link,
+  props: { href },
+  onClick: () => void 0,
+});
 
 const MESSAGES = {
   welcome: { next: 'mood' },
@@ -18,7 +27,11 @@ const MESSAGES = {
   bag: { Actions: Bag },
   generated: { Actions: Generated },
   secure: { Actions: Secure },
-  gifts: { Actions: Selector({ actions: ['socials', 'store'] }) },
+  gifts: {
+    Actions: Selector({
+      actions: ['socials', asLink('game/store?no_gifts')],
+    }),
+  },
   store: { palId: 'lucky' },
 } as ChatMessages;
 type MessageKey = keyof typeof MESSAGES;
