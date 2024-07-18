@@ -2,13 +2,14 @@ import * as anchor from '@coral-xyz/anchor';
 import { BN } from '@coral-xyz/anchor';
 import { Keypair, LAMPORTS_PER_SOL, PublicKey } from '@solana/web3.js';
 import {
-  Account,
+  type Account,
   createAssociatedTokenAccount,
   createMint,
   getAccount,
   getOrCreateAssociatedTokenAccount,
   mintToChecked,
 } from '@solana/spl-token';
+import { CHAINLINK_STORE_PROGRAM_ID } from '@chainlink/solana-sdk';
 
 import {
   getGamesProgram,
@@ -22,9 +23,12 @@ import {
   TREASURE_FORGE_COST,
   TRADER_LAUNCH_COST,
   toBN,
+  toBigInt,
 } from '../src/games-exports';
 
 const DECIMALS = 8;
+// Chainlink MAIN-NET feed (SOL/USD)
+const feed = new PublicKey('CH31Xns5z3M1cTAbKW34jcxPPciazARpijcHj9rxtemt');
 describe('Treasure', () => {
   // Configure the client to use the local cluster.
   const provider = anchor.AnchorProvider.env();
@@ -35,6 +39,7 @@ describe('Treasure', () => {
 
   let gem: PublicKey;
   let trader: PublicKey;
+  let secondTrader: PublicKey;
   let accounts: Record<string, PublicKey>;
   const authority = Keypair.generate();
 
@@ -54,7 +59,7 @@ describe('Treasure', () => {
       payer, // fee payer
       payer.publicKey, // mint authority
       null, // freeze authority (you can use `null` to disable it. when you disable it, you can't turn it on again)
-      DECIMALS
+      DECIMALS / 2
     );
 
     const ata = await createAssociatedTokenAccount(
@@ -193,10 +198,8 @@ describe('Treasure', () => {
 
   describe('Launch', () => {
     describe('By Authority', () => {
-      let trader: PublicKey;
-
       beforeAll(async () => {
-        trader = await createMint(
+        secondTrader = await createMint(
           connection, // conneciton
           authority, // fee payer
           authority.publicKey, // mint authority
@@ -205,50 +208,24 @@ describe('Treasure', () => {
         );
       });
 
-      describe('Collector', () => {
-        it('Should launch a tollkeeper collector', async () => {
-          const { tollkeeper } = accounts;
-          const balance = await connection.getBalance(authority.publicKey);
-          expect(balance).toBeLessThan(TRADER_LAUNCH_COST * LAMPORTS_PER_SOL);
+      it('Should launch a tollkeeper collector', async () => {
+        const { tollkeeper } = accounts;
+        const balance = await connection.getBalance(authority.publicKey);
+        expect(balance).toBeLessThan(TRADER_LAUNCH_COST * LAMPORTS_PER_SOL);
 
-          await program.methods
-            .launchEscrow()
-            .accounts({ supplier: authority.publicKey, trader })
-            .signers([authority])
-            .rpc();
+        await program.methods
+          .launchEscrow()
+          .accounts({ supplier: authority.publicKey, trader: secondTrader })
+          .signers([authority])
+          .rpc();
 
-          const collector = await getAccount(
-            connection,
-            getCollectorPDA(trader)
-          );
-          expect(collector.owner).toEqual(tollkeeper);
-          expect(collector.mint).toEqual(trader);
-          expect(collector.amount.toString()).toEqual('0');
-        });
-      });
-
-      describe('Store', () => {
-        // Chainlink DEVNET feed (SOL/USD)
-        const feed = new PublicKey(
-          '99B2bTijsU6f1GCT73HmdR7HCFFjGMBcPZY6jZ96ynrR'
+        const collector = await getAccount(
+          connection,
+          getCollectorPDA(secondTrader)
         );
-
-        it('Should define a new store for the trader', async () => {
-          const price = toBN(100);
-
-          await program.methods
-            .launchStore({ price })
-            .accounts({ authority: authority.publicKey, trader, feed })
-            .signers([authority])
-            .rpc();
-
-          const pda = getStorePDA(trader, feed);
-          const store = await program.account.store.fetch(pda);
-
-          expect(store.feed).toEqual(feed);
-          expect(store.trader).toEqual(trader);
-          expect(store.price).toEqual(price);
-        });
+        expect(collector.owner).toEqual(tollkeeper);
+        expect(collector.mint).toEqual(secondTrader);
+        expect(collector.amount.toString()).toEqual('0');
       });
     });
 
@@ -282,132 +259,59 @@ describe('Treasure', () => {
         expect(collector.mint).toEqual(trader);
         expect(collector.amount.toString()).toEqual('0');
       });
-
-      describe('Store', () => {
-        // Chainlink DEVNET feed (SOL/USD)
-        const feed = new PublicKey(
-          '99B2bTijsU6f1GCT73HmdR7HCFFjGMBcPZY6jZ96ynrR'
-        );
-
-        it('Should fail to define a new store | Only Treasure Authority allowed', async () => {
-          await expect(
-            program.methods
-              .launchStore({ price: toBN(100) })
-              .accounts({ authority: payer.publicKey, trader, feed })
-              .signers([payer])
-              .rpc()
-          ).rejects.toThrow(/InvalidAuthority/);
-        });
-      });
     });
   });
 
   describe('Deposit', () => {
-    describe('Stronghold', () => {
-      const { payer } = provider.wallet as anchor.Wallet;
-      const sender = Keypair.generate();
-      let reserve: PublicKey;
-      let senderAccount: Account;
+    const { payer } = provider.wallet as anchor.Wallet;
+    const sender = Keypair.generate();
+    let reserve: PublicKey;
+    let senderAccount: Account;
 
-      beforeAll(async () => {
-        const { address } = await getOrCreateAssociatedTokenAccount(
-          connection,
-          payer,
-          gem,
-          sender.publicKey
-        );
+    beforeAll(async () => {
+      const { address } = await getOrCreateAssociatedTokenAccount(
+        connection,
+        payer,
+        gem,
+        sender.publicKey
+      );
 
-        reserve = address;
-        await mintToChecked(
-          connection,
-          payer,
-          gem,
-          reserve,
-          payer,
-          10 * 10 ** DECIMALS,
-          DECIMALS
-        );
-      });
-
-      beforeEach(async () => {
-        senderAccount = await getAccount(connection, reserve);
-      });
-
-      it('Should store gems', async () => {
-        const { stronghold } = accounts;
-
-        const { amount } = senderAccount;
-        const vaultBeforeDeposit = await getAccount(connection, stronghold);
-
-        await program.methods
-          .stockpileGems(new BN(amount))
-          .accounts({
-            ...accounts,
-            supplier: sender.publicKey,
-            reserve,
-          })
-          .signers([sender])
-          .rpc();
-
-        const vaultAccount = await getAccount(connection, stronghold);
-        const senderAfterDeposit = await getAccount(connection, reserve);
-        expect(vaultAccount.amount).toEqual(vaultBeforeDeposit.amount + amount);
-        expect(senderAfterDeposit.amount.toString()).toEqual('0');
-      });
+      reserve = address;
+      await mintToChecked(
+        connection,
+        payer,
+        gem,
+        reserve,
+        payer,
+        10 * 10 ** DECIMALS,
+        DECIMALS
+      );
     });
 
-    describe('Store', () => {
-      const { payer } = provider.wallet as anchor.Wallet;
-      const sender = Keypair.generate();
-      let reserve: PublicKey;
-      let senderAccount: Account;
+    beforeEach(async () => {
+      senderAccount = await getAccount(connection, reserve);
+    });
 
-      beforeAll(async () => {
-        const { address } = await getOrCreateAssociatedTokenAccount(
-          connection,
-          payer,
-          trader,
-          sender.publicKey
-        );
+    it('Should store gems', async () => {
+      const { stronghold } = accounts;
 
-        reserve = address;
-        await mintToChecked(
-          connection,
-          payer,
-          trader,
+      const { amount } = senderAccount;
+      const vaultBeforeDeposit = await getAccount(connection, stronghold);
+
+      await program.methods
+        .stockpileGems(new BN(amount))
+        .accounts({
+          ...accounts,
+          supplier: sender.publicKey,
           reserve,
-          payer,
-          10 * 10 ** DECIMALS,
-          DECIMALS
-        );
-      });
+        })
+        .signers([sender])
+        .rpc();
 
-      beforeEach(async () => {
-        senderAccount = await getAccount(connection, reserve);
-      });
-
-      it('Should fill collector vault with trader', async () => {
-        const collector = getCollectorPDA(trader);
-
-        const { amount } = senderAccount;
-        const vaultBeforeDeposit = await getAccount(connection, collector);
-        expect(amount).toBeGreaterThan(0);
-
-        await program.methods
-          .storeFill(new BN(amount))
-          .accounts({
-            trader,
-            reserve,
-            supplier: sender.publicKey,
-          })
-          .signers([sender])
-          .rpc();
-
-        const vaultAccount = await getAccount(connection, collector);
-        const senderAfterDeposit = await getAccount(connection, reserve);
-        expect(vaultAccount.amount).toEqual(vaultBeforeDeposit.amount + amount);
-        expect(senderAfterDeposit.amount.toString()).toEqual('0');
-      });
+      const vaultAccount = await getAccount(connection, stronghold);
+      const senderAfterDeposit = await getAccount(connection, reserve);
+      expect(vaultAccount.amount).toEqual(vaultBeforeDeposit.amount + amount);
+      expect(senderAfterDeposit.amount.toString()).toEqual('0');
     });
   });
 
@@ -454,6 +358,7 @@ describe('Treasure', () => {
         );
       });
     });
+
     describe('By Non-Authority', () => {
       const receiver = Keypair.generate();
       let reserve: PublicKey;
@@ -486,6 +391,154 @@ describe('Treasure', () => {
             .signers([receiver])
             .rpc()
         ).rejects.toThrow(/InvalidAuthority/);
+      });
+    });
+  });
+
+  describe('Store', () => {
+    describe('Define', () => {
+      describe('By Authority', () => {
+        it('Should define a new store for the trader', async () => {
+          const price = toBN(1, DECIMALS);
+
+          await program.methods
+            .launchStore({ price })
+            .accounts({ authority: authority.publicKey, trader, feed })
+            .signers([authority])
+            .rpc();
+
+          const pda = getStorePDA(trader, feed);
+          const store = await program.account.store.fetch(pda);
+
+          expect(store.feed).toEqual(feed);
+          expect(store.trader).toEqual(trader);
+          expect(store.price).toEqual(price);
+        });
+      });
+
+      describe('By Non-Authority', () => {
+        const payer = Keypair.generate();
+
+        beforeAll(async () => {
+          const tx = await connection.requestAirdrop(
+            payer.publicKey,
+            0.1 * LAMPORTS_PER_SOL
+          );
+          await connection.confirmTransaction(tx);
+        });
+
+        it('Should fail to define a new store | Only Treasure Authority allowed', async () => {
+          await expect(
+            program.methods
+              .launchStore({ price: toBN(100) })
+              .accounts({
+                authority: payer.publicKey,
+                trader: secondTrader,
+                feed,
+              })
+              .signers([payer])
+              .rpc()
+          ).rejects.toThrow(/InvalidAuthority/);
+        });
+      });
+    });
+
+    describe('Stock', () => {
+      const { payer } = provider.wallet as anchor.Wallet;
+      const sender = Keypair.generate();
+      let reserve: PublicKey;
+      let senderAccount: Account;
+
+      beforeAll(async () => {
+        const { address } = await getOrCreateAssociatedTokenAccount(
+          connection,
+          payer,
+          trader,
+          sender.publicKey
+        );
+
+        reserve = address;
+        await mintToChecked(
+          connection,
+          payer,
+          trader,
+          reserve,
+          payer,
+          1000 * 10 ** (DECIMALS / 2),
+          DECIMALS / 2
+        );
+      });
+
+      beforeEach(async () => {
+        senderAccount = await getAccount(connection, reserve);
+      });
+
+      it('Should fill collector vault with trader', async () => {
+        const collector = getCollectorPDA(trader);
+
+        const { amount } = senderAccount;
+        const vaultBeforeDeposit = await getAccount(connection, collector);
+        expect(amount).toBeGreaterThan(0);
+
+        await program.methods
+          .storeFill(new BN(amount))
+          .accounts({
+            trader,
+            reserve,
+            supplier: sender.publicKey,
+          })
+          .signers([sender])
+          .rpc();
+
+        const vaultAccount = await getAccount(connection, collector);
+        const senderAfterDeposit = await getAccount(connection, reserve);
+        expect(vaultAccount.amount).toEqual(vaultBeforeDeposit.amount + amount);
+        expect(senderAfterDeposit.amount.toString()).toEqual('0');
+      });
+    });
+
+    describe('Purchase', () => {
+      const receiver = Keypair.generate();
+      let reserve: PublicKey;
+      const chainlinkProgram = CHAINLINK_STORE_PROGRAM_ID;
+
+      beforeAll(async () => {
+        const tx = await connection.requestAirdrop(
+          receiver.publicKey,
+          10 * LAMPORTS_PER_SOL
+        );
+        await connection.confirmTransaction(tx);
+
+        reserve = await createAssociatedTokenAccount(
+          connection,
+          receiver,
+          trader,
+          receiver.publicKey
+        );
+      });
+
+      it('Should purchase some trader tokens from the store', async () => {
+        const amount = toBigInt(10, DECIMALS / 2);
+        const balanceBeforePurchase = await getAccount(connection, reserve);
+        const collector = await getAccount(connection, getCollectorPDA(trader));
+        expect(collector.amount).toBeGreaterThan(amount);
+
+        await program.methods
+          .storeSale(new BN(amount.toString()))
+          .accounts({
+            trader,
+            feed,
+            receiver: reserve,
+            payer: receiver.publicKey,
+            chainlinkProgram,
+          })
+          .signers([receiver])
+          .rpc();
+
+        const balance = await getAccount(connection, reserve);
+        expect(balance.amount.toString()).toEqual(
+          (balanceBeforePurchase.amount + amount).toString()
+        );
       });
     });
   });

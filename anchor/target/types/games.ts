@@ -1738,6 +1738,132 @@ export type Games = {
       ]
     },
     {
+      "name": "storeSale",
+      "discriminator": [
+        96,
+        132,
+        96,
+        126,
+        57,
+        227,
+        31,
+        116
+      ],
+      "accounts": [
+        {
+          "name": "tollkeeper",
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  84,
+                  79,
+                  76,
+                  76,
+                  75,
+                  69,
+                  69,
+                  80,
+                  69,
+                  82
+                ]
+              }
+            ]
+          }
+        },
+        {
+          "name": "collector",
+          "writable": true,
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  84,
+                  79,
+                  76,
+                  76,
+                  75,
+                  69,
+                  69,
+                  80,
+                  69,
+                  82
+                ]
+              },
+              {
+                "kind": "account",
+                "path": "trader"
+              }
+            ]
+          }
+        },
+        {
+          "name": "receiver",
+          "writable": true
+        },
+        {
+          "name": "feed"
+        },
+        {
+          "name": "chainlinkProgram"
+        },
+        {
+          "name": "trader"
+        },
+        {
+          "name": "store",
+          "writable": true,
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  83,
+                  84,
+                  79,
+                  82,
+                  69
+                ]
+              },
+              {
+                "kind": "account",
+                "path": "trader"
+              },
+              {
+                "kind": "account",
+                "path": "feed"
+              }
+            ]
+          }
+        },
+        {
+          "name": "payer",
+          "writable": true,
+          "signer": true
+        },
+        {
+          "name": "systemProgram",
+          "address": "11111111111111111111111111111111"
+        },
+        {
+          "name": "tokenProgram",
+          "address": "TokenkegQfeZyiNwAJbNbGKPFXCWuBvf9Ss623VQ5DA"
+        },
+        {
+          "name": "rent",
+          "address": "SysvarRent111111111111111111111111111111111"
+        }
+      ],
+      "args": [
+        {
+          "name": "amount",
+          "type": "u64"
+        }
+      ]
+    },
+    {
       "name": "updateGame",
       "discriminator": [
         159,
@@ -1978,33 +2104,8 @@ export type Games = {
   "errors": [
     {
       "code": 6000,
-      "name": "invalidSlots",
-      "msg": "Slots must be between 1 and 10"
-    },
-    {
-      "code": 6001,
-      "name": "invalidDigits",
-      "msg": "Digits must be between 1 and 8"
-    },
-    {
-      "code": 6002,
-      "name": "invalidChoices",
-      "msg": "Choices must be between 2 and max value of digits"
-    },
-    {
-      "code": 6003,
-      "name": "invalidWinnerSingleChoice",
-      "msg": "Winner choice must be between 1 and choices"
-    },
-    {
-      "code": 6004,
-      "name": "invalidWinnerChoice",
-      "msg": "Winner choice must be between 0 and choices"
-    },
-    {
-      "code": 6005,
-      "name": "invalidPickWinner",
-      "msg": "Pick winner is true but winner choice is 0"
+      "name": "invalidAuthority",
+      "msg": "Treasure authority is not the signer"
     }
   ],
   "types": [

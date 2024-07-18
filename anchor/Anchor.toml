@@ -36,6 +36,10 @@ program = "bpf-programs/chainlink_store.so"
 address = "cjg3oHmg9uuPsP8D6g29NWvhySJkdYdAo9D25PRbKXJ"
 program = "bpf-programs/chainlink_aggregator.so"
 
+[[test.validator.account]]
+address = "CH31Xns5z3M1cTAbKW34jcxPPciazARpijcHj9rxtemt"
+filename = "bpf-programs/usd_sol_feed.json"
+
 [test.validator]
 bind_address = "127.0.0.1"
 ledger = ".anchor/test-ledger"
