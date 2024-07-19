@@ -24,11 +24,16 @@ import {
   TRADER_LAUNCH_COST,
   toBN,
   toBigInt,
+  fromBigInt,
 } from '../src/games-exports';
 
 const DECIMALS = 8;
 // Chainlink MAIN-NET feed (SOL/USD)
 const feed = new PublicKey('CH31Xns5z3M1cTAbKW34jcxPPciazARpijcHj9rxtemt');
+
+// This could make the tests fail if loaded account have a HUGE difference in price.
+const RATE = toBigInt(15726570000); // 157.26570000 USD/SOL
+const PRICE = toBigInt(1, 8); // Rate have 8 decimals
 describe('Treasure', () => {
   // Configure the client to use the local cluster.
   const provider = anchor.AnchorProvider.env();
@@ -399,7 +404,7 @@ describe('Treasure', () => {
     describe('Define', () => {
       describe('By Authority', () => {
         it('Should define a new store for the trader', async () => {
-          const price = toBN(1, DECIMALS);
+          const price = toBN(0.5, DECIMALS);
 
           await program.methods
             .launchStore({ price })
@@ -408,6 +413,25 @@ describe('Treasure', () => {
             .rpc();
 
           const pda = getStorePDA(trader, feed);
+          const store = await program.account.store.fetch(pda);
+
+          expect(store.feed).toEqual(feed);
+          expect(store.trader).toEqual(trader);
+          expect(store.price).toEqual(price);
+        });
+
+        it('Should update the store price', async () => {
+          const price = new BN(PRICE.toString()); // 1 USD/TRADER => This will be the last price
+          const pda = getStorePDA(trader, feed);
+          const existingStore = await program.account.store.fetch(pda);
+          expect(existingStore.price).not.toEqual(price);
+
+          await program.methods
+            .launchStore({ price })
+            .accounts({ authority: authority.publicKey, trader, feed })
+            .signers([authority])
+            .rpc();
+
           const store = await program.account.store.fetch(pda);
 
           expect(store.feed).toEqual(feed);
@@ -464,7 +488,7 @@ describe('Treasure', () => {
           trader,
           reserve,
           payer,
-          1000 * 10 ** (DECIMALS / 2),
+          toBigInt(1000000000, DECIMALS / 2),
           DECIMALS / 2
         );
       });
@@ -497,7 +521,7 @@ describe('Treasure', () => {
       });
     });
 
-    describe('Purchase', () => {
+    describe('Sale', () => {
       const receiver = Keypair.generate();
       let reserve: PublicKey;
       const chainlinkProgram = CHAINLINK_STORE_PROGRAM_ID;
@@ -505,7 +529,7 @@ describe('Treasure', () => {
       beforeAll(async () => {
         const tx = await connection.requestAirdrop(
           receiver.publicKey,
-          10 * LAMPORTS_PER_SOL
+          50 * LAMPORTS_PER_SOL
         );
         await connection.confirmTransaction(tx);
 
@@ -539,6 +563,141 @@ describe('Treasure', () => {
         expect(balance.amount.toString()).toEqual(
           (balanceBeforePurchase.amount + amount).toString()
         );
+      });
+
+      it('Should charge the receiver for the purchase', async () => {
+        const balance = await connection.getBalance(receiver.publicKey);
+
+        const gas = 1 / fromBigInt(RATE, 8);
+        const rate = Number(PRICE) / Number(RATE);
+        const available = balance / LAMPORTS_PER_SOL - gas;
+        const amount = toBN(available / rate, DECIMALS / 2);
+
+        const collector = await getAccount(connection, getCollectorPDA(trader));
+        expect(collector.amount).toBeGreaterThan(amount.toNumber());
+
+        await program.methods
+          .storeSale(amount)
+          .accounts({
+            trader,
+            feed,
+            receiver: reserve,
+            payer: receiver.publicKey,
+            chainlinkProgram,
+          })
+          .signers([receiver])
+          .rpc();
+
+        const balanceAfter = await connection.getBalance(receiver.publicKey);
+        expect(balanceAfter / (gas * LAMPORTS_PER_SOL)).toBeCloseTo(1, 0);
+      });
+
+      it('Should fail with not enough balance', async () => {
+        const amount = toBN(10, DECIMALS / 2);
+
+        await expect(
+          program.methods
+            .storeSale(amount)
+            .accounts({
+              trader,
+              feed,
+              receiver: reserve,
+              payer: receiver.publicKey,
+              chainlinkProgram,
+            })
+            .signers([receiver])
+            .rpc()
+        ).rejects.toThrow(/custom program error: 0x1/);
+      });
+    });
+
+    describe('Withdraw', () => {
+      describe('By Non-Authority', () => {
+        const payer = Keypair.generate();
+
+        beforeAll(async () => {
+          const tx = await connection.requestAirdrop(
+            payer.publicKey,
+            0.1 * LAMPORTS_PER_SOL
+          );
+          await connection.confirmTransaction(tx);
+        });
+
+        it('Should fail to withdraw from store | Only Store Authority allowed', async () => {
+          const { trader } = accounts;
+          const store = getStorePDA(trader, feed);
+
+          await expect(
+            program.methods
+              .storeWithdraw(new BN(0))
+              .accounts({ store, authority: payer.publicKey })
+              .signers([payer])
+              .rpc()
+          ).rejects.toThrow(/InvalidAuthority/);
+        });
+      });
+
+      describe('By Authority', () => {
+        it('Should withdraw amount from store balance', async () => {
+          const { trader } = accounts;
+          const store = getStorePDA(trader, feed);
+          const storeBalanceBeforeWithdraw = await connection.getBalance(store);
+          const receiverBalanceBeforeWithdraw = await connection.getBalance(
+            authority.publicKey
+          );
+          const rent = await connection.getMinimumBalanceForRentExemption(88);
+          const amount = Math.floor((storeBalanceBeforeWithdraw - rent) / 2);
+
+          expect(storeBalanceBeforeWithdraw).toBeGreaterThan(rent);
+          expect(amount).toBeGreaterThan(0);
+
+          await program.methods
+            .storeWithdraw(new BN(amount))
+            .accounts({ store, authority: authority.publicKey })
+            .signers([authority])
+            .rpc();
+
+          const storeBalance = await connection.getBalance(store);
+          const receiverBalance = await connection.getBalance(
+            authority.publicKey
+          );
+
+          expect(storeBalance).toEqual(storeBalanceBeforeWithdraw - amount);
+
+          const expectedReceiverBalance =
+            receiverBalanceBeforeWithdraw + amount;
+          expect(expectedReceiverBalance / receiverBalance).toBeCloseTo(1);
+        });
+
+        it('Should withdraw all available balance from store', async () => {
+          const { trader } = accounts;
+          const store = getStorePDA(trader, feed);
+          const storeBalanceBeforeWithdraw = await connection.getBalance(store);
+          const receiverBalanceBeforeWithdraw = await connection.getBalance(
+            authority.publicKey
+          );
+          const rent = await connection.getMinimumBalanceForRentExemption(88);
+
+          expect(storeBalanceBeforeWithdraw).toBeGreaterThan(rent);
+
+          await program.methods
+            .storeWithdraw(new BN(0))
+            .accounts({ store, authority: authority.publicKey })
+            .signers([authority])
+            .rpc();
+
+          const storeBalance = await connection.getBalance(store);
+          const receiverBalance = await connection.getBalance(
+            authority.publicKey
+          );
+
+          const amount = storeBalanceBeforeWithdraw - rent;
+          expect(storeBalance).toEqual(rent);
+
+          const expectedReceiverBalance =
+            receiverBalanceBeforeWithdraw + amount;
+          expect(expectedReceiverBalance / receiverBalance).toBeCloseTo(1);
+        });
       });
     });
   });

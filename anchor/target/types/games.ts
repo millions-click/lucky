@@ -1864,6 +1864,67 @@ export type Games = {
       ]
     },
     {
+      "name": "storeWithdraw",
+      "discriminator": [
+        130,
+        100,
+        51,
+        177,
+        247,
+        26,
+        178,
+        151
+      ],
+      "accounts": [
+        {
+          "name": "store",
+          "writable": true
+        },
+        {
+          "name": "treasure",
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  84,
+                  82,
+                  69,
+                  65,
+                  83,
+                  85,
+                  82,
+                  69
+                ]
+              }
+            ]
+          }
+        },
+        {
+          "name": "authority",
+          "writable": true,
+          "signer": true,
+          "relations": [
+            "treasure"
+          ]
+        },
+        {
+          "name": "systemProgram",
+          "address": "11111111111111111111111111111111"
+        },
+        {
+          "name": "rent",
+          "address": "SysvarRent111111111111111111111111111111111"
+        }
+      ],
+      "args": [
+        {
+          "name": "amount",
+          "type": "u64"
+        }
+      ]
+    },
+    {
       "name": "updateGame",
       "discriminator": [
         159,
@@ -2104,8 +2165,33 @@ export type Games = {
   "errors": [
     {
       "code": 6000,
-      "name": "invalidAuthority",
-      "msg": "Treasure authority is not the signer"
+      "name": "invalidSlots",
+      "msg": "Slots must be between 1 and 10"
+    },
+    {
+      "code": 6001,
+      "name": "invalidDigits",
+      "msg": "Digits must be between 1 and 8"
+    },
+    {
+      "code": 6002,
+      "name": "invalidChoices",
+      "msg": "Choices must be between 2 and max value of digits"
+    },
+    {
+      "code": 6003,
+      "name": "invalidWinnerSingleChoice",
+      "msg": "Winner choice must be between 1 and choices"
+    },
+    {
+      "code": 6004,
+      "name": "invalidWinnerChoice",
+      "msg": "Winner choice must be between 0 and choices"
+    },
+    {
+      "code": 6005,
+      "name": "invalidPickWinner",
+      "msg": "Pick winner is true but winner choice is 0"
     }
   ],
   "types": [
