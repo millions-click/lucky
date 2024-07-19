@@ -1,4 +1,5 @@
 use anchor_lang::prelude::*;
+use anchor_lang::solana_program::native_token::LAMPORTS_PER_SOL;
 
 #[derive(AnchorSerialize, AnchorDeserialize)]
 pub struct StoreSettings {
@@ -16,8 +17,9 @@ pub struct Store {
 
 #[derive(Clone, Copy)]
 pub struct Decimal {
-    pub value: i128,
-    pub decimals: u32,
+    value: i128,
+    decimals: u32,
+
 }
 
 impl Store {
@@ -48,14 +50,21 @@ impl Store {
         let (amount, normalized) = tokens.normalize(Decimal::new(self.price, feed.decimals));
         let (rate, price) = feed.normalize(normalized);
 
+        msg!("LS / USD: {}", price);
+        msg!("LS: {}", amount);
+
         // Calculate the price per token
         let price_per_token = price.value * 10i128.pow(rate.decimals) / rate.value;
 
         // Calculate the total price for the amount of tokens
-        let total_price = price_per_token * amount.value;
+        let total_price = Decimal::new(price_per_token * amount.value, price.decimals);
+
+        let one_sol = Decimal::new(LAMPORTS_PER_SOL as i128, 9);
+        let (cost, _) = Decimal::new(total_price.reduce() as i128, price.decimals).normalize(one_sol);
+        msg!("SOL: {}", cost);
 
         // Return the total price
-        (total_price / 10i128.pow(price.decimals)) as u64
+        cost.value as u64
     }
 }
 
@@ -79,6 +88,8 @@ impl Decimal {
             (self.scale(value.decimals), value.clone())
         }
     }
+
+    fn reduce(&self) -> u64 { (self.value / 10i128.pow(self.decimals)) as u64 }
 }
 
 impl std::fmt::Display for Decimal {

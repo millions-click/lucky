@@ -38,7 +38,11 @@ program = "bpf-programs/chainlink_aggregator.so"
 
 [[test.validator.account]]
 address = "CH31Xns5z3M1cTAbKW34jcxPPciazARpijcHj9rxtemt"
-filename = "bpf-programs/usd_sol_feed.json"
+filename = "bpf-programs/usd_sol_feed_main.json"
+
+[[test.validator.account]]
+address = "99B2bTijsU6f1GCT73HmdR7HCFFjGMBcPZY6jZ96ynrR"
+filename = "bpf-programs/usd_sol_feed_dev.json"
 
 [test.validator]
 bind_address = "127.0.0.1"
