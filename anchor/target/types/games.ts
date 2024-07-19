@@ -2165,33 +2165,13 @@ export type Games = {
   "errors": [
     {
       "code": 6000,
-      "name": "invalidSlots",
-      "msg": "Slots must be between 1 and 10"
+      "name": "gameMismatch",
+      "msg": "Game provided does not match the game mode"
     },
     {
       "code": 6001,
-      "name": "invalidDigits",
-      "msg": "Digits must be between 1 and 8"
-    },
-    {
-      "code": 6002,
-      "name": "invalidChoices",
-      "msg": "Choices must be between 2 and max value of digits"
-    },
-    {
-      "code": 6003,
-      "name": "invalidWinnerSingleChoice",
-      "msg": "Winner choice must be between 1 and choices"
-    },
-    {
-      "code": 6004,
-      "name": "invalidWinnerChoice",
-      "msg": "Winner choice must be between 0 and choices"
-    },
-    {
-      "code": 6005,
-      "name": "invalidPickWinner",
-      "msg": "Pick winner is true but winner choice is 0"
+      "name": "taskMismatch",
+      "msg": "Mode provided does not match the bounty task"
     }
   ],
   "types": [
