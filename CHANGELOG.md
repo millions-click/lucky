@@ -2,6 +2,37 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [0.2.0](///compare/v0.1.11...v0.2.0) (2024-07-19)
+
+
+### ⚠ BREAKING CHANGES
+
+* **anchor:** 👻 Lucky & Store | Programs
+
+### Features
+
+* **anchor:** 👻 Sale | Store 331fbae
+* **anchor:** 👻 Store | Games 17c2724
+* **anchor:** 👻 Store | Games 9b297d8
+* **anchor:** 👻 Store Update 5f48b9d
+* **anchor:** 👻 Withdraw | Store 74cf1f5
+* **scripts:** 👻 Launch & Fill | Store b99b20c
+* **web:** 👻 Bag Button 01ce46e
+* **web:** 👻 Base58 | Copy 0b3d155
+* **web:** 👻 Context | Messages c278f28
+* **web:** 👻 Encryption | Lucky Bags 8186a64
+* **web:** 👻 Selector | Messages f3e2710
+* **web:** 👻 Store dda984c
+* **web:** 👻 Unlock | Bag 226d72c
+
+
+### Bug Fixes
+
+* **anchor:** 👻 SOL Scale | Store Sale baa8afc
+
+
+* **anchor:** 👻 Lucky & Store | Programs 9869f9a
+
 ### [0.1.11](///compare/v0.1.10...v0.1.11) (2024-07-16)
 
 
