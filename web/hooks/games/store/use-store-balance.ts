@@ -3,14 +3,15 @@ import { useConnection } from '@solana/wallet-adapter-react';
 import { useQuery } from '@tanstack/react-query';
 
 // TODO: Read this from somewhere.
-const STORE_SIZE = 48; // 48 bytes
+const STORE_SIZE = 88; // 48 bytes
 
-export const useStoreBalance = (address: PublicKey) => {
+// TODO: Refactor as a generic hook to know any account balance given the size.
+export const useStoreBalance = (address: PublicKey, size = STORE_SIZE) => {
   const { connection } = useConnection();
 
   const minimumBalance = useQuery({
     queryKey: ['store-minimum-balance', { endpoint: connection.rpcEndpoint }],
-    queryFn: () => connection.getMinimumBalanceForRentExemption(STORE_SIZE),
+    queryFn: () => connection.getMinimumBalanceForRentExemption(size),
   });
 
   return useQuery({

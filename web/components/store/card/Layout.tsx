@@ -2,7 +2,6 @@ import { useMemo } from 'react';
 
 import type { BaseProps } from './card.d';
 import { useStoreProgramAccount } from '../store-data-access';
-import { InitVault } from './InitVault';
 
 import { ExplorerLink } from '@/components/cluster/cluster-ui';
 import { Price } from '@/components/shared';
@@ -23,12 +22,10 @@ export function Layout({
 
   return (
     <div className="card card-bordered lg:card-side border-accent border-4 text-neutral-content bg-base-100">
-      {!storeQuery.data || vaultQuery.isPending ? (
+      {!storeQuery.data || !token ? (
         <div className="card-body justify-center items-center">
           <span className="loading loading-spinner loading-lg"></span>
         </div>
-      ) : !token ? (
-        <InitVault storePda={storePda} />
       ) : (
         <>
           <div className="bg-base-300 flex flex-col justify-between lg:w-36 min-h-48 h-full p-2 gap-8">

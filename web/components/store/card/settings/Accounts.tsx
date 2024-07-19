@@ -18,7 +18,7 @@ export function Accounts({ storePda }: BaseProps) {
       <p className="tooltip tooltip-accent" data-tip="Vault">
         <ExplorerLink
           path={`account/${vaultPDA}`}
-          label={ellipsify(vaultPDA.toString())}
+          label={ellipsify(vaultPDA?.toString())}
         />
       </p>
 

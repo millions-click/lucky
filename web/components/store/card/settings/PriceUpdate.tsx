@@ -2,15 +2,17 @@ import { useMemo } from 'react';
 
 import type { BaseProps } from '../card.d';
 import { useStoreProgramAccount } from '../../store-data-access';
-import { DECIMALS } from '@/providers';
+import { useDataFeed } from '@/providers';
+import { fromBN, toBN } from '@luckyland/anchor';
 
 export function PriceUpdate({ storePda }: BaseProps) {
+  const { decimals } = useDataFeed();
   const { update, storeQuery } = useStoreProgramAccount({
     storePda,
   });
   const price = useMemo(() => {
     if (!storeQuery.data?.price) return 0;
-    return storeQuery.data.price.toNumber() / 10 ** DECIMALS;
+    return fromBN(storeQuery.data.price, decimals);
   }, [storeQuery.data?.price]);
 
   return (
@@ -22,7 +24,7 @@ export function PriceUpdate({ storePda }: BaseProps) {
         );
         if (value === price || isNaN(value)) return;
 
-        return update.mutateAsync(value * 10 ** DECIMALS);
+        return update.mutateAsync(toBN(value, decimals));
       }}
       disabled={update.isPending}
     >
