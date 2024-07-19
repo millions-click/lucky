@@ -7,7 +7,7 @@ use crate::constants::{TREASURE_SEED, STORE_SEED, COLLECTOR_SEED};
 use anchor_lang::prelude::*;
 use anchor_spl::token::{Mint, TokenAccount};
 
-pub fn new_vendor(ctx: Context<InitializeStore>, settings: StoreSettings) -> Result<()> {
+pub fn vendor(ctx: Context<InitializeStore>, settings: StoreSettings) -> Result<()> {
     let store = &mut ctx.accounts.store;
 
     store.set_price(settings.price.clone());
@@ -24,7 +24,7 @@ pub struct InitializeStore<'info> {
     pub feed: AccountInfo<'info>,
 
     #[account(
-        init,
+        init_if_needed,
         payer = authority,
         seeds = [STORE_SEED, trader.key().as_ref(), feed.key().as_ref()],
         bump,

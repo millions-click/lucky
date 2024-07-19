@@ -32,7 +32,7 @@ pub mod games {
     }
 
     pub fn launch_store(ctx: Context<InitializeStore>, settings: StoreSettings) -> Result<()> {
-        store::handle::new_vendor(ctx, settings)
+        store::handle::vendor(ctx, settings)
     }
 
     pub fn stockpile_gems(ctx: Context<Stockpile>, amount: u64) -> Result<()> {
