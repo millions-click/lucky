@@ -51,6 +51,10 @@ pub mod games {
         treasure::unlock::acquire_loot(&ctx, amount)
     }
 
+    pub fn store_withdraw(ctx: Context<StoreWithdraw>, amount: u64) -> Result<()> {
+        store::funds::withdraw(&ctx, amount)
+    }
+
     // ------------------------ GAME ------------------------
     pub fn create_game(ctx: Context<InitializeGame>, name: String) -> Result<()> {
         game::init::new_game(&mut ctx.accounts.game, &name)
