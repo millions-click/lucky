@@ -2,13 +2,14 @@ import * as anchor from '@coral-xyz/anchor';
 import { BN } from '@coral-xyz/anchor';
 import { Keypair, LAMPORTS_PER_SOL, PublicKey } from '@solana/web3.js';
 import {
-  Account,
+  type Account,
   createAssociatedTokenAccount,
   createMint,
   getAccount,
   getOrCreateAssociatedTokenAccount,
   mintToChecked,
 } from '@solana/spl-token';
+import { CHAINLINK_STORE_PROGRAM_ID } from '@chainlink/solana-sdk';
 
 import {
   getGamesProgram,
@@ -18,10 +19,21 @@ import {
   getTreasurePDA,
   getStrongholdPDA,
   getCollectorPDA,
+  getStorePDA,
   TREASURE_FORGE_COST,
   TRADER_LAUNCH_COST,
+  toBN,
+  toBigInt,
+  fromBigInt,
 } from '../src/games-exports';
 
+const DECIMALS = 8;
+// Chainlink MAIN-NET feed (SOL/USD)
+const feed = new PublicKey('CH31Xns5z3M1cTAbKW34jcxPPciazARpijcHj9rxtemt');
+
+// This could make the tests fail if loaded account have a HUGE difference in price.
+const RATE = toBigInt(15726570000); // 157.26570000 USD/SOL
+const PRICE = toBigInt(1, 8); // Rate have 8 decimals
 describe('Treasure', () => {
   // Configure the client to use the local cluster.
   const provider = anchor.AnchorProvider.env();
@@ -32,6 +44,7 @@ describe('Treasure', () => {
 
   let gem: PublicKey;
   let trader: PublicKey;
+  let secondTrader: PublicKey;
   let accounts: Record<string, PublicKey>;
   const authority = Keypair.generate();
 
@@ -43,7 +56,7 @@ describe('Treasure', () => {
       payer, // fee payer
       payer.publicKey, // mint authority
       null, // freeze authority (you can use `null` to disable it. when you disable it, you can't turn it on again)
-      8 // decimals
+      DECIMALS
     );
 
     trader = await createMint(
@@ -51,7 +64,7 @@ describe('Treasure', () => {
       payer, // fee payer
       payer.publicKey, // mint authority
       null, // freeze authority (you can use `null` to disable it. when you disable it, you can't turn it on again)
-      8 // decimals
+      DECIMALS / 2
     );
 
     const ata = await createAssociatedTokenAccount(
@@ -77,8 +90,8 @@ describe('Treasure', () => {
       gem, // mint
       ata, // receiver (should be a token account)
       payer, // mint authority
-      1000e8, // amount. if your decimals is 8, you mint 10^8 for 1 token.
-      8 // decimals
+      1000 * 10 ** DECIMALS, // amount. if your decimals is 8, you mint 10^8 for 1 token.
+      DECIMALS
     );
   });
 
@@ -134,7 +147,7 @@ describe('Treasure', () => {
           authority, // fee payer
           authority.publicKey, // mint authority
           null, // freeze authority (you can use `null` to disable it. when you disable it, you can't turn it on again)
-          8 // decimals
+          DECIMALS
         );
       });
 
@@ -190,15 +203,13 @@ describe('Treasure', () => {
 
   describe('Launch', () => {
     describe('By Authority', () => {
-      let trader: PublicKey;
-
       beforeAll(async () => {
-        trader = await createMint(
+        secondTrader = await createMint(
           connection, // conneciton
           authority, // fee payer
           authority.publicKey, // mint authority
           null, // freeze authority (you can use `null` to disable it. when you disable it, you can't turn it on again)
-          8 // decimals
+          DECIMALS
         );
       });
 
@@ -209,13 +220,16 @@ describe('Treasure', () => {
 
         await program.methods
           .launchEscrow()
-          .accounts({ supplier: authority.publicKey, trader })
+          .accounts({ supplier: authority.publicKey, trader: secondTrader })
           .signers([authority])
           .rpc();
 
-        const collector = await getAccount(connection, getCollectorPDA(trader));
+        const collector = await getAccount(
+          connection,
+          getCollectorPDA(secondTrader)
+        );
         expect(collector.owner).toEqual(tollkeeper);
-        expect(collector.mint).toEqual(trader);
+        expect(collector.mint).toEqual(secondTrader);
         expect(collector.amount.toString()).toEqual('0');
       });
     });
@@ -268,7 +282,15 @@ describe('Treasure', () => {
       );
 
       reserve = address;
-      await mintToChecked(connection, payer, gem, reserve, payer, 10e8, 8);
+      await mintToChecked(
+        connection,
+        payer,
+        gem,
+        reserve,
+        payer,
+        10 * 10 ** DECIMALS,
+        DECIMALS
+      );
     });
 
     beforeEach(async () => {
@@ -341,6 +363,7 @@ describe('Treasure', () => {
         );
       });
     });
+
     describe('By Non-Authority', () => {
       const receiver = Keypair.generate();
       let reserve: PublicKey;
@@ -373,6 +396,308 @@ describe('Treasure', () => {
             .signers([receiver])
             .rpc()
         ).rejects.toThrow(/InvalidAuthority/);
+      });
+    });
+  });
+
+  describe('Store', () => {
+    describe('Define', () => {
+      describe('By Authority', () => {
+        it('Should define a new store for the trader', async () => {
+          const price = toBN(0.5, DECIMALS);
+
+          await program.methods
+            .launchStore({ price })
+            .accounts({ authority: authority.publicKey, trader, feed })
+            .signers([authority])
+            .rpc();
+
+          const pda = getStorePDA(trader, feed);
+          const store = await program.account.store.fetch(pda);
+
+          expect(store.feed).toEqual(feed);
+          expect(store.trader).toEqual(trader);
+          expect(store.price).toEqual(price);
+        });
+
+        it('Should update the store price', async () => {
+          const price = new BN(PRICE.toString()); // 1 USD/TRADER => This will be the last price
+          const pda = getStorePDA(trader, feed);
+          const existingStore = await program.account.store.fetch(pda);
+          expect(existingStore.price).not.toEqual(price);
+
+          await program.methods
+            .launchStore({ price })
+            .accounts({ authority: authority.publicKey, trader, feed })
+            .signers([authority])
+            .rpc();
+
+          const store = await program.account.store.fetch(pda);
+
+          expect(store.feed).toEqual(feed);
+          expect(store.trader).toEqual(trader);
+          expect(store.price).toEqual(price);
+        });
+      });
+
+      describe('By Non-Authority', () => {
+        const payer = Keypair.generate();
+
+        beforeAll(async () => {
+          const tx = await connection.requestAirdrop(
+            payer.publicKey,
+            0.1 * LAMPORTS_PER_SOL
+          );
+          await connection.confirmTransaction(tx);
+        });
+
+        it('Should fail to define a new store | Only Treasure Authority allowed', async () => {
+          await expect(
+            program.methods
+              .launchStore({ price: toBN(100) })
+              .accounts({
+                authority: payer.publicKey,
+                trader: secondTrader,
+                feed,
+              })
+              .signers([payer])
+              .rpc()
+          ).rejects.toThrow(/InvalidAuthority/);
+        });
+      });
+    });
+
+    describe('Stock', () => {
+      const { payer } = provider.wallet as anchor.Wallet;
+      const sender = Keypair.generate();
+      let reserve: PublicKey;
+      let senderAccount: Account;
+
+      beforeAll(async () => {
+        const { address } = await getOrCreateAssociatedTokenAccount(
+          connection,
+          payer,
+          trader,
+          sender.publicKey
+        );
+
+        reserve = address;
+        await mintToChecked(
+          connection,
+          payer,
+          trader,
+          reserve,
+          payer,
+          toBigInt(1000000000, DECIMALS / 2),
+          DECIMALS / 2
+        );
+      });
+
+      beforeEach(async () => {
+        senderAccount = await getAccount(connection, reserve);
+      });
+
+      it('Should fill collector vault with trader', async () => {
+        const collector = getCollectorPDA(trader);
+
+        const { amount } = senderAccount;
+        const vaultBeforeDeposit = await getAccount(connection, collector);
+        expect(amount).toBeGreaterThan(0);
+
+        await program.methods
+          .storeFill(new BN(amount))
+          .accounts({
+            trader,
+            reserve,
+            supplier: sender.publicKey,
+          })
+          .signers([sender])
+          .rpc();
+
+        const vaultAccount = await getAccount(connection, collector);
+        const senderAfterDeposit = await getAccount(connection, reserve);
+        expect(vaultAccount.amount).toEqual(vaultBeforeDeposit.amount + amount);
+        expect(senderAfterDeposit.amount.toString()).toEqual('0');
+      });
+    });
+
+    describe('Sale', () => {
+      const receiver = Keypair.generate();
+      let reserve: PublicKey;
+      const chainlinkProgram = CHAINLINK_STORE_PROGRAM_ID;
+
+      beforeAll(async () => {
+        const tx = await connection.requestAirdrop(
+          receiver.publicKey,
+          50 * LAMPORTS_PER_SOL
+        );
+        await connection.confirmTransaction(tx);
+
+        reserve = await createAssociatedTokenAccount(
+          connection,
+          receiver,
+          trader,
+          receiver.publicKey
+        );
+      });
+
+      it('Should purchase some trader tokens from the store', async () => {
+        const amount = toBigInt(10, DECIMALS / 2);
+        const balanceBeforePurchase = await getAccount(connection, reserve);
+        const collector = await getAccount(connection, getCollectorPDA(trader));
+        expect(collector.amount).toBeGreaterThan(amount);
+
+        await program.methods
+          .storeSale(new BN(amount.toString()))
+          .accounts({
+            trader,
+            feed,
+            receiver: reserve,
+            payer: receiver.publicKey,
+            chainlinkProgram,
+          })
+          .signers([receiver])
+          .rpc();
+
+        const balance = await getAccount(connection, reserve);
+        expect(balance.amount.toString()).toEqual(
+          (balanceBeforePurchase.amount + amount).toString()
+        );
+      });
+
+      it('Should charge the receiver for the purchase', async () => {
+        const balance = await connection.getBalance(receiver.publicKey);
+
+        const gas = 1 / fromBigInt(RATE, 8);
+        const rate = Number(PRICE) / Number(RATE);
+        const available = balance / LAMPORTS_PER_SOL - gas;
+        const amount = toBN(available / rate, DECIMALS / 2);
+
+        const collector = await getAccount(connection, getCollectorPDA(trader));
+        expect(collector.amount).toBeGreaterThan(amount.toNumber());
+
+        await program.methods
+          .storeSale(amount)
+          .accounts({
+            trader,
+            feed,
+            receiver: reserve,
+            payer: receiver.publicKey,
+            chainlinkProgram,
+          })
+          .signers([receiver])
+          .rpc();
+
+        const balanceAfter = await connection.getBalance(receiver.publicKey);
+        expect(balanceAfter / (gas * LAMPORTS_PER_SOL)).toBeCloseTo(1, 0);
+      });
+
+      it('Should fail with not enough balance', async () => {
+        const amount = toBN(10, DECIMALS / 2);
+
+        await expect(
+          program.methods
+            .storeSale(amount)
+            .accounts({
+              trader,
+              feed,
+              receiver: reserve,
+              payer: receiver.publicKey,
+              chainlinkProgram,
+            })
+            .signers([receiver])
+            .rpc()
+        ).rejects.toThrow(/custom program error: 0x1/);
+      });
+    });
+
+    describe('Withdraw', () => {
+      describe('By Non-Authority', () => {
+        const payer = Keypair.generate();
+
+        beforeAll(async () => {
+          const tx = await connection.requestAirdrop(
+            payer.publicKey,
+            0.1 * LAMPORTS_PER_SOL
+          );
+          await connection.confirmTransaction(tx);
+        });
+
+        it('Should fail to withdraw from store | Only Store Authority allowed', async () => {
+          const { trader } = accounts;
+          const store = getStorePDA(trader, feed);
+
+          await expect(
+            program.methods
+              .storeWithdraw(new BN(0))
+              .accounts({ store, authority: payer.publicKey })
+              .signers([payer])
+              .rpc()
+          ).rejects.toThrow(/InvalidAuthority/);
+        });
+      });
+
+      describe('By Authority', () => {
+        it('Should withdraw amount from store balance', async () => {
+          const { trader } = accounts;
+          const store = getStorePDA(trader, feed);
+          const storeBalanceBeforeWithdraw = await connection.getBalance(store);
+          const receiverBalanceBeforeWithdraw = await connection.getBalance(
+            authority.publicKey
+          );
+          const rent = await connection.getMinimumBalanceForRentExemption(88);
+          const amount = Math.floor((storeBalanceBeforeWithdraw - rent) / 2);
+
+          expect(storeBalanceBeforeWithdraw).toBeGreaterThan(rent);
+          expect(amount).toBeGreaterThan(0);
+
+          await program.methods
+            .storeWithdraw(new BN(amount))
+            .accounts({ store, authority: authority.publicKey })
+            .signers([authority])
+            .rpc();
+
+          const storeBalance = await connection.getBalance(store);
+          const receiverBalance = await connection.getBalance(
+            authority.publicKey
+          );
+
+          expect(storeBalance).toEqual(storeBalanceBeforeWithdraw - amount);
+
+          const expectedReceiverBalance =
+            receiverBalanceBeforeWithdraw + amount;
+          expect(expectedReceiverBalance / receiverBalance).toBeCloseTo(1);
+        });
+
+        it('Should withdraw all available balance from store', async () => {
+          const { trader } = accounts;
+          const store = getStorePDA(trader, feed);
+          const storeBalanceBeforeWithdraw = await connection.getBalance(store);
+          const receiverBalanceBeforeWithdraw = await connection.getBalance(
+            authority.publicKey
+          );
+          const rent = await connection.getMinimumBalanceForRentExemption(88);
+
+          expect(storeBalanceBeforeWithdraw).toBeGreaterThan(rent);
+
+          await program.methods
+            .storeWithdraw(new BN(0))
+            .accounts({ store, authority: authority.publicKey })
+            .signers([authority])
+            .rpc();
+
+          const storeBalance = await connection.getBalance(store);
+          const receiverBalance = await connection.getBalance(
+            authority.publicKey
+          );
+
+          const amount = storeBalanceBeforeWithdraw - rent;
+          expect(storeBalance).toEqual(rent);
+
+          const expectedReceiverBalance =
+            receiverBalanceBeforeWithdraw + amount;
+          expect(expectedReceiverBalance / receiverBalance).toBeCloseTo(1);
+        });
       });
     });
   });

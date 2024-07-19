@@ -83,10 +83,12 @@ function PasswordInput({
   name,
   visible,
   setVisible,
+  focused,
 }: {
   name: string;
   visible: boolean;
   setVisible: (visible: boolean) => void;
+  focused?: boolean;
 }) {
   return (
     <label className="input input-bordered input-primary flex items-center gap-2">
@@ -94,7 +96,11 @@ function PasswordInput({
       <input
         required
         name={name}
+        autoFocus={focused}
         type={visible ? 'text' : 'password'}
+        autoCapitalize="off"
+        autoCorrect="off"
+        spellCheck="false"
         className="grow"
         placeholder="••••••••"
       />
@@ -135,7 +141,7 @@ export function BagKeyForm({ name, unlock, onConfirm }: FormProps) {
     const confirm = formData.get('confirm') as string;
     const name = formData.get('name') as string;
 
-    if (password !== confirm) {
+    if (!unlock && password !== confirm) {
       alert(t('Common.alert.password.mismatch'));
       return;
     }
@@ -171,19 +177,22 @@ export function BagKeyForm({ name, unlock, onConfirm }: FormProps) {
           name="password"
           visible={visible}
           setVisible={setVisible}
+          focused
         />
       </label>
 
-      <label className="form-control w-full">
-        <div className="label">
-          <span className="label-text">{t('Common.input.confirm')}</span>
-        </div>
-        <PasswordInput
-          name="confirm"
-          visible={visible}
-          setVisible={setVisible}
-        />
-      </label>
+      {!unlock && (
+        <label className="form-control w-full">
+          <div className="label">
+            <span className="label-text">{t('Common.input.confirm')}</span>
+          </div>
+          <PasswordInput
+            name="confirm"
+            visible={visible}
+            setVisible={setVisible}
+          />
+        </label>
+      )}
 
       <div className="divider" />
       <span>{t('BagKey.ttl.title')}</span>

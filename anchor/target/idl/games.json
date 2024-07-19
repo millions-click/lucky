@@ -1014,6 +1014,121 @@
       "args": []
     },
     {
+      "name": "launch_store",
+      "discriminator": [
+        98,
+        90,
+        49,
+        144,
+        191,
+        89,
+        172,
+        234
+      ],
+      "accounts": [
+        {
+          "name": "trader"
+        },
+        {
+          "name": "feed"
+        },
+        {
+          "name": "store",
+          "writable": true,
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  83,
+                  84,
+                  79,
+                  82,
+                  69
+                ]
+              },
+              {
+                "kind": "account",
+                "path": "trader"
+              },
+              {
+                "kind": "account",
+                "path": "feed"
+              }
+            ]
+          }
+        },
+        {
+          "name": "collector",
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  84,
+                  79,
+                  76,
+                  76,
+                  75,
+                  69,
+                  69,
+                  80,
+                  69,
+                  82
+                ]
+              },
+              {
+                "kind": "account",
+                "path": "trader"
+              }
+            ]
+          }
+        },
+        {
+          "name": "treasure",
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  84,
+                  82,
+                  69,
+                  65,
+                  83,
+                  85,
+                  82,
+                  69
+                ]
+              }
+            ]
+          }
+        },
+        {
+          "name": "authority",
+          "writable": true,
+          "signer": true,
+          "relations": [
+            "treasure"
+          ]
+        },
+        {
+          "name": "system_program",
+          "address": "11111111111111111111111111111111"
+        }
+      ],
+      "args": [
+        {
+          "name": "settings",
+          "type": {
+            "defined": {
+              "name": "StoreSettings"
+            }
+          }
+        }
+      ]
+    },
+    {
       "name": "pause_game",
       "discriminator": [
         133,
@@ -1545,6 +1660,265 @@
       ]
     },
     {
+      "name": "store_fill",
+      "discriminator": [
+        243,
+        168,
+        93,
+        10,
+        206,
+        99,
+        57,
+        186
+      ],
+      "accounts": [
+        {
+          "name": "collector",
+          "writable": true,
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  84,
+                  79,
+                  76,
+                  76,
+                  75,
+                  69,
+                  69,
+                  80,
+                  69,
+                  82
+                ]
+              },
+              {
+                "kind": "account",
+                "path": "trader"
+              }
+            ]
+          }
+        },
+        {
+          "name": "reserve",
+          "writable": true
+        },
+        {
+          "name": "trader"
+        },
+        {
+          "name": "supplier",
+          "writable": true,
+          "signer": true
+        },
+        {
+          "name": "system_program",
+          "address": "11111111111111111111111111111111"
+        },
+        {
+          "name": "token_program",
+          "address": "TokenkegQfeZyiNwAJbNbGKPFXCWuBvf9Ss623VQ5DA"
+        },
+        {
+          "name": "rent",
+          "address": "SysvarRent111111111111111111111111111111111"
+        }
+      ],
+      "args": [
+        {
+          "name": "amount",
+          "type": "u64"
+        }
+      ]
+    },
+    {
+      "name": "store_sale",
+      "discriminator": [
+        96,
+        132,
+        96,
+        126,
+        57,
+        227,
+        31,
+        116
+      ],
+      "accounts": [
+        {
+          "name": "tollkeeper",
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  84,
+                  79,
+                  76,
+                  76,
+                  75,
+                  69,
+                  69,
+                  80,
+                  69,
+                  82
+                ]
+              }
+            ]
+          }
+        },
+        {
+          "name": "collector",
+          "writable": true,
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  84,
+                  79,
+                  76,
+                  76,
+                  75,
+                  69,
+                  69,
+                  80,
+                  69,
+                  82
+                ]
+              },
+              {
+                "kind": "account",
+                "path": "trader"
+              }
+            ]
+          }
+        },
+        {
+          "name": "receiver",
+          "writable": true
+        },
+        {
+          "name": "feed"
+        },
+        {
+          "name": "chainlink_program"
+        },
+        {
+          "name": "trader"
+        },
+        {
+          "name": "store",
+          "writable": true,
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  83,
+                  84,
+                  79,
+                  82,
+                  69
+                ]
+              },
+              {
+                "kind": "account",
+                "path": "trader"
+              },
+              {
+                "kind": "account",
+                "path": "feed"
+              }
+            ]
+          }
+        },
+        {
+          "name": "payer",
+          "writable": true,
+          "signer": true
+        },
+        {
+          "name": "system_program",
+          "address": "11111111111111111111111111111111"
+        },
+        {
+          "name": "token_program",
+          "address": "TokenkegQfeZyiNwAJbNbGKPFXCWuBvf9Ss623VQ5DA"
+        },
+        {
+          "name": "rent",
+          "address": "SysvarRent111111111111111111111111111111111"
+        }
+      ],
+      "args": [
+        {
+          "name": "amount",
+          "type": "u64"
+        }
+      ]
+    },
+    {
+      "name": "store_withdraw",
+      "discriminator": [
+        130,
+        100,
+        51,
+        177,
+        247,
+        26,
+        178,
+        151
+      ],
+      "accounts": [
+        {
+          "name": "store",
+          "writable": true
+        },
+        {
+          "name": "treasure",
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  84,
+                  82,
+                  69,
+                  65,
+                  83,
+                  85,
+                  82,
+                  69
+                ]
+              }
+            ]
+          }
+        },
+        {
+          "name": "authority",
+          "writable": true,
+          "signer": true,
+          "relations": [
+            "treasure"
+          ]
+        },
+        {
+          "name": "system_program",
+          "address": "11111111111111111111111111111111"
+        },
+        {
+          "name": "rent",
+          "address": "SysvarRent111111111111111111111111111111111"
+        }
+      ],
+      "args": [
+        {
+          "name": "amount",
+          "type": "u64"
+        }
+      ]
+    },
+    {
       "name": "update_game",
       "discriminator": [
         159,
@@ -1756,6 +2130,19 @@
       ]
     },
     {
+      "name": "Store",
+      "discriminator": [
+        130,
+        48,
+        247,
+        244,
+        182,
+        191,
+        30,
+        26
+      ]
+    },
+    {
       "name": "Treasure",
       "discriminator": [
         98,
@@ -1772,28 +2159,13 @@
   "errors": [
     {
       "code": 6000,
-      "name": "InvalidName",
-      "msg": "Name must be between 3 and 32 characters"
+      "name": "GameMismatch",
+      "msg": "Game provided does not match the game mode"
     },
     {
       "code": 6001,
-      "name": "GameInactive",
-      "msg": "Game is not active"
-    },
-    {
-      "code": 6002,
-      "name": "GameEnded",
-      "msg": "Game is already ended"
-    },
-    {
-      "code": 6003,
-      "name": "GameNotEnded",
-      "msg": "Game is not ended"
-    },
-    {
-      "code": 6004,
-      "name": "Unimplemented",
-      "msg": "Unimplemented"
+      "name": "TaskMismatch",
+      "msg": "Mode provided does not match the bounty task"
     }
   ],
   "types": [
@@ -2089,6 +2461,38 @@
             "type": {
               "vec": "u32"
             }
+          }
+        ]
+      }
+    },
+    {
+      "name": "Store",
+      "type": {
+        "kind": "struct",
+        "fields": [
+          {
+            "name": "trader",
+            "type": "pubkey"
+          },
+          {
+            "name": "feed",
+            "type": "pubkey"
+          },
+          {
+            "name": "price",
+            "type": "i128"
+          }
+        ]
+      }
+    },
+    {
+      "name": "StoreSettings",
+      "type": {
+        "kind": "struct",
+        "fields": [
+          {
+            "name": "price",
+            "type": "i128"
           }
         ]
       }

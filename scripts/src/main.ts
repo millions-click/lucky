@@ -10,6 +10,8 @@ import {
   InitGames,
   InitStronghold,
   LaunchTrader,
+  LaunchStore,
+  FillStock,
   UpsertGameModes,
   PublishBounties,
   FundBounties,
@@ -37,11 +39,18 @@ LoadPortal(connection, cluster)
       })(),
       (async () => {
         const { gem } = await CreateGem(connection, cluster);
-        return InitStronghold(gem, portal, cluster);
+        return InitStronghold(gem, portal);
       })(),
       (async () => {
-        const { trader } = await CreateTrader(connection, cluster);
-        return LaunchTrader(portal, trader, cluster);
+        const { trader, store: reserve } = await CreateTrader(
+          connection,
+          cluster
+        );
+        const { trader: token } = await LaunchTrader(portal, trader);
+        const { store } = await LaunchStore(portal, token);
+        const { collector } = await FillStock(portal, token, reserve);
+
+        return { trader: token, store, collector };
       })(),
     ]);
 

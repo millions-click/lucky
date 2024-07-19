@@ -1,11 +1,7 @@
 import { Connection, PublicKey } from '@solana/web3.js';
 import { getAccount } from '@solana/spl-token';
 
-import {
-  type Portal,
-  type Cluster,
-  confirmAndLogTransaction,
-} from '../../utils';
+import { type Portal, confirmAndLogTransaction } from '../../utils';
 
 import { getToken } from '@utils/token';
 import { getCollectorPDA, getTollkeeperPDA } from '@luckyland/anchor';
@@ -19,9 +15,8 @@ async function getCollector(pda: PublicKey, connection: Connection) {
 }
 
 export async function LaunchTrader(
-  { portal }: Portal,
-  trader: PublicKey,
-  cluster: Cluster
+  { portal, cluster }: Portal,
+  trader: PublicKey
 ) {
   console.log('------------------ Escrow ------------------');
   console.log('Retrieving trader details...');

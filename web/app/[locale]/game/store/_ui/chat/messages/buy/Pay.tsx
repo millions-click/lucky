@@ -9,9 +9,9 @@ import { IconCash } from '@tabler/icons-react';
 import type { Package } from './contants';
 import type { Token } from '@utils/token';
 import { BagButton } from '@/ui/bag';
+import { useStoreSell } from '@/hooks';
 
 import { toBN } from '@luckyland/anchor';
-import { useStoreSell } from '@/hooks';
 
 const className = {
   idle: 'btn-accent',
@@ -31,7 +31,7 @@ export function Pay({
   confirmed: boolean;
   onChange: (confirmed: boolean) => void;
 }) {
-  const { store, sell } = useStoreSell({ mint: token.mint });
+  const { store, sell } = useStoreSell({ trader: token.mint });
   const t = useTranslations('Components.Buy.Pay');
   const { publicKey } = useWallet();
   const [state, setState] = useState<'idle' | 'paying' | 'error' | 'completed'>(
@@ -44,15 +44,10 @@ export function Pay({
 
     try {
       // TODO: Modify the store to initialize the token account if it doesn't exist.
-      const targetAccount = await getAssociatedTokenAddress(
-        token.mint,
-        publicKey
-      );
+      const receiver = await getAssociatedTokenAddress(token.mint, publicKey);
+      const amount = toBN(pkg.amount, token.decimals);
+      await sell.mutateAsync({ amount, receiver });
 
-      await sell.mutateAsync({
-        amount: toBN(pkg.amount, token.decimals),
-        targetAccount,
-      });
       setState('completed');
       onChange(true);
     } catch (error) {

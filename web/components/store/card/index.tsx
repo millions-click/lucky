@@ -20,7 +20,7 @@ export function StoreCard({ storePda }: BaseProps) {
         {tabs.map(({ label, content }, index) => (
           <>
             <a
-              key={`tab_${label}`}
+              key={`tab_${index}`}
               role="tab"
               aria-label={label}
               className={'tab' + (activeTab === index ? ' tab-active' : '')}
@@ -30,7 +30,7 @@ export function StoreCard({ storePda }: BaseProps) {
             </a>
 
             <div
-              key={`content_${label}`}
+              key={`content_${index}`}
               role="tabpanel"
               className="tab-content bg-base-100 border-base-300 rounded-box p-6 space-y-6"
             >
