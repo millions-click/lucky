@@ -85,9 +85,9 @@ export function Sell({ storePda }: BaseProps) {
       </div>
     </label>
   ) : (
-    storeQuery.data?.mint && (
+    storeQuery.data?.trader && (
       <CreateTokenAccount
-        mint={storeQuery.data.mint}
+        mint={storeQuery.data.trader}
         onChange={(success) => success && tokenQuery.refresh()}
       />
     )

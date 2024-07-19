@@ -1,7 +1,6 @@
 import type { BaseProps } from '../card.d';
 
 import { PriceUpdate } from './PriceUpdate';
-import { CloseStore } from './CloseStore';
 import { Accounts } from './Accounts';
 import { Deposit } from './Deposit';
 import { Withdraw } from './Withdraw';
@@ -17,7 +16,6 @@ export function Settings({ storePda }: BaseProps) {
           <Deposit storePda={storePda} />
           <Withdraw storePda={storePda} />
         </div>
-        <CloseStore storePda={storePda} />
       </div>
     </>
   );

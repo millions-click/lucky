@@ -4,11 +4,9 @@ import { PublicKey } from '@solana/web3.js';
 import { useState } from 'react';
 
 import { ellipsify } from '../ui/ui-layout';
-
-import { useStoreProgram } from './store-data-access';
 import { StoreCard } from './card';
 
-import { type TokenAccount, useOwnedTokens } from '@/hooks';
+import { type TokenAccount, useOwnedTokens, useStoreProgram } from '@/hooks';
 import { DECIMALS } from '@/providers';
 
 export function StoreCreate({ owner }: { owner: PublicKey }) {
