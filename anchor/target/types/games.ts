@@ -2165,13 +2165,23 @@ export type Games = {
   "errors": [
     {
       "code": 6000,
-      "name": "gameMismatch",
-      "msg": "Game provided does not match the game mode"
+      "name": "invalidOwner",
+      "msg": "Bounty is not owned by the supplier"
     },
     {
       "code": 6001,
-      "name": "taskMismatch",
-      "msg": "Mode provided does not match the bounty task"
+      "name": "thresholdNotReached",
+      "msg": "Vault amount is above threshold"
+    },
+    {
+      "code": 6002,
+      "name": "invalidGem",
+      "msg": "Invalid gem"
+    },
+    {
+      "code": 6003,
+      "name": "uncollectibleReward",
+      "msg": "Total vault reward is uncollectible"
     }
   ],
   "types": [

@@ -2159,13 +2159,23 @@
   "errors": [
     {
       "code": 6000,
-      "name": "GameMismatch",
-      "msg": "Game provided does not match the game mode"
+      "name": "InvalidOwner",
+      "msg": "Bounty is not owned by the supplier"
     },
     {
       "code": 6001,
-      "name": "TaskMismatch",
-      "msg": "Mode provided does not match the bounty task"
+      "name": "ThresholdNotReached",
+      "msg": "Vault amount is above threshold"
+    },
+    {
+      "code": 6002,
+      "name": "InvalidGem",
+      "msg": "Invalid gem"
+    },
+    {
+      "code": 6003,
+      "name": "UncollectibleReward",
+      "msg": "Total vault reward is uncollectible"
     }
   ],
   "types": [
