@@ -40,7 +40,7 @@ export async function ForgeGems(
   const supplier = payer;
   let reserve = await checkBalance(market, supplier, gem);
   console.log(`------------------------------------------------`);
-  if (amount <= 0 || reserve.amount >= amount * PIECES_PER_GEM) {
+  if (amount <= 0 || reserve.amount > 0) {
     console.log(`No gems to forge.`);
     return { gem, reserve };
   }

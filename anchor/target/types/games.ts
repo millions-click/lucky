@@ -2165,23 +2165,13 @@ export type Games = {
   "errors": [
     {
       "code": 6000,
-      "name": "invalidOwner",
-      "msg": "Bounty is not owned by the supplier"
+      "name": "invalidSeed",
+      "msg": "Invalid seed"
     },
     {
       "code": 6001,
-      "name": "thresholdNotReached",
-      "msg": "Vault amount is above threshold"
-    },
-    {
-      "code": 6002,
-      "name": "invalidGem",
-      "msg": "Invalid gem"
-    },
-    {
-      "code": 6003,
-      "name": "uncollectibleReward",
-      "msg": "Total vault reward is uncollectible"
+      "name": "invalidPlayerChoice",
+      "msg": "Invalid choice"
     }
   ],
   "types": [

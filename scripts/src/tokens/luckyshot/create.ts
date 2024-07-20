@@ -5,7 +5,7 @@ import {
   getAndFillBalance,
   loadOrCreateKeypair,
 } from '../../utils';
-import { NAME, SYMBOL, idPath, ID_NAME, TRADES_FOR_SALE } from './constants';
+import { NAME, SYMBOL, idPath, ID_NAME, TRADES_TO_MINT } from './constants';
 
 import { ForgeTrader } from './manufacturer';
 
@@ -17,5 +17,5 @@ export async function CreateTrader(connection: Connection, cluster: Cluster) {
   console.log('Fetching payer balance...');
   await getAndFillBalance(payer.publicKey, connection, cluster);
 
-  return ForgeTrader(connection, payer, TRADES_FOR_SALE);
+  return ForgeTrader(connection, payer, TRADES_TO_MINT);
 }
