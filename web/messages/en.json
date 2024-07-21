@@ -189,6 +189,17 @@
           "paying": "Processing...",
           "completed": "Completed",
           "error": "Failed"
+        },
+        "Insufficient": {
+          "title": "Insufficient balance",
+          "description": "You don't have enough {token} to complete this purchase.",
+          "store": "Luckyland Store",
+          "top-up": "LuckyBag Top up | {package} | {amount} {token}",
+          "action": {
+            "title": "Scan to top up",
+            "top-up": "Top up",
+            "transfer": "Transfer"
+          }
         }
       },
       "action": {
