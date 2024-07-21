@@ -72,7 +72,6 @@ export function useStoreSell({ trader }: { trader: Token }) {
   const price = useCallback(
     (amount: number) => {
       if (!store) return null;
-      console.log('useStoreSell:price=>answer', answer);
       return computePrice(
         amount,
         fromBN(store.price, decimals),

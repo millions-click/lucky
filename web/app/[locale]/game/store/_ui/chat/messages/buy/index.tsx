@@ -6,7 +6,7 @@ import { IconBuildingStore, IconChevronRight } from '@tabler/icons-react';
 import { type Package, packages } from './contants';
 
 import type { MessageProps } from '@/ui';
-import { Pay } from '@/app/[locale]/game/store/_ui/chat/messages/buy/Pay';
+import { Pay } from './pay';
 import { Token } from '@utils/token';
 
 const token = {
