@@ -5,6 +5,7 @@ import { cookies } from 'next/headers';
 
 import {
   type TurnsSession,
+  MAX_TTL_ATTEMPTS,
   TURNS_AVAILABLE,
   TURNS_COOKIE,
   ATTEMPTS_COOKIE,
@@ -18,7 +19,7 @@ const TTL = 30 * 1000;
  * Exponentially increase the TTL based on the number of attempts
  * */
 function computeTTL(attempt: number): number {
-  return TTL * Math.pow(2, attempt - 1);
+  return TTL * Math.pow(2, Math.min(attempt - 1, MAX_TTL_ATTEMPTS));
 }
 
 async function createTurns(address?: string) {

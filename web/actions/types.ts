@@ -28,6 +28,7 @@ export type LuckyPass = {
 export type LuckyPassSession = LuckyPass & JWTProps;
 
 export const TURNS_AVAILABLE = 2;
+export const MAX_TTL_ATTEMPTS = 5; // MAX 16 MINUTES to refresh the attempts.
 export const TURNS_COOKIE = 'll-turns';
 export const ATTEMPTS_COOKIE = 'll-attempts';
 export const LUCKY_PASS_COOKIE = 'll-pass';
