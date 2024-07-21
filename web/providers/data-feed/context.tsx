@@ -7,7 +7,7 @@ import {
   useEffect,
   useState,
 } from 'react';
-import { PublicKey } from '@solana/web3.js';
+import { Cluster } from '@solana/web3.js';
 import { atomWithStorage } from 'jotai/utils';
 import { atom, useAtomValue, useSetAtom } from 'jotai/index';
 
@@ -17,17 +17,11 @@ import {
   CHAINLINK_AGGREGATOR_PROGRAM_ID,
 } from '@chainlink/solana-sdk';
 
-import {
-  type FeedAddress,
-  type StoredRound,
-  type Feeds,
-  type FeedContext,
-  USD_SOL_FEED_ADDRESS,
-  DECIMALS,
-} from './constants';
+import { type StoredRound, type Feeds, type FeedContext } from './constants';
 
 import { useAnchorProvider } from '@/providers/solana-provider';
 import { useCluster } from '@/components/cluster/cluster-data-access';
+import { getUSDToSOLFeed } from '@constants';
 
 const feedsAtom = atomWithStorage<Feeds>('feeds', {}, undefined, {
   getOnInit: true,
@@ -45,13 +39,13 @@ export function DataFeedProvider({ children }: PropsWithChildren) {
   const setFeeds = useSetAtom(feedsAtom);
 
   const [dataFeed, setDataFeed] = useState<OCR2Feed | null>(null);
-  const [feedAddress, setFeedAddress] = useState<PublicKey>(
-    USD_SOL_FEED_ADDRESS[cluster.network as FeedAddress]
+  const [{ feed, decimals }, setFeedAddress] = useState(
+    getUSDToSOLFeed(cluster.network as Cluster)
   );
   const [tick, setTick] = useState(0);
 
   useEffect(() => {
-    const feed = USD_SOL_FEED_ADDRESS[cluster.network as FeedAddress];
+    const feed = getUSDToSOLFeed(cluster.network as Cluster);
     if (!feed) return;
 
     setDataFeed(null);
@@ -86,21 +80,22 @@ export function DataFeedProvider({ children }: PropsWithChildren) {
         const round = { ...rest, answer: answer.toNumber() } as StoredRound;
         setFeeds((feeds) => ({
           ...feeds,
-          [feedAddress.toString()]: round,
+          [feed.toString()]: round,
         }));
         return dataFeed.removeListener(listener);
       };
-      listener = dataFeed.onRound(feedAddress, setAndRemove);
+      listener = dataFeed.onRound(feed, setAndRemove);
     }, 100);
 
     return () => clearTimeout(timeout);
-  }, [dataFeed, feedAddress, tick]);
+  }, [dataFeed, feed, tick]);
 
   return (
     <DataFeedContext.Provider
       value={{
-        ...feeds[feedAddress.toString()],
-        decimals: DECIMALS,
+        ...feeds[feed.toString()],
+        feed,
+        decimals,
       }}
     >
       {children}
