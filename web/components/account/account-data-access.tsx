@@ -1,7 +1,6 @@
 'use client';
 
 import { useConnection, useWallet } from '@solana/wallet-adapter-react';
-import { TOKEN_2022_PROGRAM_ID, TOKEN_PROGRAM_ID } from '@solana/spl-token';
 import {
   Connection,
   LAMPORTS_PER_SOL,
@@ -13,15 +12,14 @@ import {
 } from '@solana/web3.js';
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import toast from 'react-hot-toast';
+
 import { useTransactionToast } from '../ui/ui-layout';
+import { getBalanceOptions, getTokenAccountsOptions } from '@/queries';
 
 export function useGetBalance({ address }: { address: PublicKey }) {
   const { connection } = useConnection();
 
-  return useQuery({
-    queryKey: ['get-balance', { endpoint: connection.rpcEndpoint, address }],
-    queryFn: () => connection.getBalance(address),
-  });
+  return useQuery(getBalanceOptions(address, connection));
 }
 
 export function useGetSignatures({ address }: { address: PublicKey }) {
@@ -36,23 +34,7 @@ export function useGetSignatures({ address }: { address: PublicKey }) {
 export function useGetTokenAccounts({ address }: { address: PublicKey }) {
   const { connection } = useConnection();
 
-  return useQuery({
-    queryKey: [
-      'get-token-accounts',
-      { endpoint: connection.rpcEndpoint, address },
-    ],
-    queryFn: async () => {
-      const [tokenAccounts, token2022Accounts] = await Promise.all([
-        connection.getParsedTokenAccountsByOwner(address, {
-          programId: TOKEN_PROGRAM_ID,
-        }),
-        connection.getParsedTokenAccountsByOwner(address, {
-          programId: TOKEN_2022_PROGRAM_ID,
-        }),
-      ]);
-      return [...tokenAccounts.value, ...token2022Accounts.value];
-    },
-  });
+  return useQuery(getTokenAccountsOptions(connection, address));
 }
 
 export function useTransferSol({ address }: { address: PublicKey }) {

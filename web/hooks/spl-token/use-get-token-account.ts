@@ -40,6 +40,7 @@ export function useGetTokenAccount({ address }: { address?: PublicKey }) {
         balance: account.amount,
         amount: fromBigInt(account.amount, token.decimals),
         address: address.toString(),
+        publicKey: address,
       };
     },
   });
