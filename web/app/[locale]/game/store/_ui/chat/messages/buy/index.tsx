@@ -1,5 +1,4 @@
 import { useMemo, useState } from 'react';
-import { PublicKey } from '@solana/web3.js';
 import { useTranslations } from 'next-intl';
 import { IconBuildingStore, IconChevronRight } from '@tabler/icons-react';
 
@@ -7,16 +6,11 @@ import { type Package, packages } from './contants';
 
 import type { MessageProps } from '@/ui';
 import { Pay } from './pay';
-import { Token } from '@utils/token';
-
-const token = {
-  name: 'Lucky Shot',
-  symbol: 'LS',
-  decimals: 4,
-  mint: new PublicKey('BwRK1fgRab2WWqqiKhqGGFwFQGHEG3cbLVskKH3NkGMZ'),
-} as Token;
+import { Ammo } from '@/ui/bag';
+import { useTraders } from '@/providers';
 
 export const Buy: MessageProps['Actions'] = ({ onNext }) => {
+  const { trader: token } = useTraders();
   const t = useTranslations('Components.Buy');
   const [active, setActive] = useState<Package | null>(null);
   const [pay, setPay] = useState(false);
@@ -31,7 +25,7 @@ export const Buy: MessageProps['Actions'] = ({ onNext }) => {
     []
   );
 
-  return (
+  return token ? (
     <div className="bg-base-200 my-4 p-4 gap-2.5 rounded-box flex flex-col items-center max-w-sm mx-auto relative">
       <h1 className="text-center">
         {t('title', { token: `$${token.symbol}` })}
@@ -39,6 +33,9 @@ export const Buy: MessageProps['Actions'] = ({ onNext }) => {
       <p className="label-text-alt text-center">
         {t('description', { token: token.name })}
       </p>
+      <div className="absolute top-2 right-2 left-2">
+        <Ammo className="flex justify-between" token={token} />
+      </div>
 
       <ul className="grid grid-cols-2 sm:grid-cols-3 gap-4">
         {options.map((pkg, i) => (
@@ -104,5 +101,7 @@ export const Buy: MessageProps['Actions'] = ({ onNext }) => {
         </dialog>
       )}
     </div>
+  ) : (
+    <span className="loading loading-infinity w-full" />
   );
 };

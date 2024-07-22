@@ -1,16 +1,25 @@
 import { PropsWithChildren } from 'react';
 
+import { ReactQueryProvider } from './react-query-provider';
+import { SolanaProvider } from './solana-provider';
+import { DataFeedProvider } from './data-feed';
+import { PlayerProvider } from './player';
+import { GemsProvider, TradersProvider } from './escrow';
+
 import { ClusterProvider } from '@/components/cluster/cluster-data-access';
-import { SolanaProvider } from '@/providers/solana-provider';
-import { DataFeedProvider } from '@/providers/data-feed';
-import { ReactQueryProvider } from '@/providers/react-query-provider';
 
 export function LuckyBagProvider({ children }: PropsWithChildren) {
   return (
     <ReactQueryProvider>
       <ClusterProvider>
         <SolanaProvider>
-          <DataFeedProvider>{children}</DataFeedProvider>
+          <DataFeedProvider>
+            <GemsProvider>
+              <TradersProvider>
+                <PlayerProvider>{children}</PlayerProvider>
+              </TradersProvider>
+            </GemsProvider>
+          </DataFeedProvider>
         </SolanaProvider>
       </ClusterProvider>
     </ReactQueryProvider>

@@ -1,17 +1,18 @@
 'use client';
 
 import { useMemo, useState } from 'react';
-import { getAssociatedTokenAddress } from '@solana/spl-token';
 import { useTranslations } from 'next-intl';
 import { IconCash } from '@tabler/icons-react';
+import Image from 'next/image';
 
 import type { Package } from '../contants';
+import { InsufficientBalance } from './InsufficientBalance';
 
 import type { Token } from '@utils/token';
-import { usePlayer, useStoreSell } from '@/hooks';
+import { useStoreSell } from '@/hooks';
+import { usePlayer } from '@/providers';
 
 import { toBN } from '@luckyland/anchor';
-import { InsufficientBalance } from './InsufficientBalance';
 
 const className = {
   idle: 'btn-accent',
@@ -29,24 +30,27 @@ type PayProps = {
 
 export function Connected({ pkg, token, confirmed, onChange }: PayProps) {
   const t = useTranslations('Components.Buy.Pay');
-  const { owner, balance } = usePlayer();
+  const { player, balance, getAccount, createTokenAccount } = usePlayer();
   const { store, sell, price } = useStoreSell({ trader: token });
   const [state, setState] = useState<'idle' | 'paying' | 'error' | 'completed'>(
     confirmed ? 'completed' : 'idle'
   );
 
   const cost = useMemo(() => price(pkg.amount), [pkg.amount, price]);
-  const enoughFunds = balance.data && cost && balance.data > cost;
+  const enoughFunds = balance && cost && balance > cost;
+  if (!player) return null;
 
   async function pay() {
-    if (!store || !owner || confirmed) return;
+    if (!store || !player || confirmed) return;
     setState('paying');
 
     try {
-      // TODO: Modify the store to initialize the token account if it doesn't exist.
-      const receiver = await getAssociatedTokenAddress(token.mint, owner);
+      const tokenAccount = getAccount(token.mint);
+      let receiver = tokenAccount?.publicKey;
+      if (!receiver) receiver = (await createTokenAccount(token.mint)).address;
+
       const amount = toBN(pkg.amount, token.decimals);
-      await sell.mutateAsync({ amount, receiver });
+      await sell.mutateAsync({ amount, receiver, owner: player });
 
       setState('completed');
       onChange(true);
@@ -63,10 +67,14 @@ export function Connected({ pkg, token, confirmed, onChange }: PayProps) {
         {t(`${enoughFunds ? '' : 'Insufficient.'}title`)}
       </div>
 
-      <div className="card animate-glow image-full my-8 sm:my-16 card-compact">
-        <figure>
-          {/* TODO: Load image from token metadata */}
-          <img src="/token/trader.svg" alt={token.name} />
+      <div className="card animate-glow image-full my-8 sm:my-16 card-compact bg-primary">
+        <figure className="relative h-52">
+          <Image
+            style={{ objectFit: 'contain' }}
+            src={token.metadata?.image || '/token/lucky.png'}
+            alt={token.name}
+            fill
+          />
         </figure>
         <div className="card-body items-center justify-center">
           <div className="card-title text-primary text-3xl sm:text-4xl capitalize">
@@ -89,19 +97,24 @@ export function Connected({ pkg, token, confirmed, onChange }: PayProps) {
             pkg={pkg}
             token={token}
             cost={cost}
-            balance={balance.data}
-            recipient={owner}
+            balance={balance}
+            recipient={player}
           />
         ) : (
-          <button
-            className={`btn btn-block ${
-              store ? className[state] : 'btn-ghost'
-            }`}
-            onClick={pay}
-          >
-            <IconCash />
-            {t(`action.${state}`)}
-          </button>
+          <>
+            {state === 'paying' && (
+              <span className="loading loading-dots loading-lg" />
+            )}
+            <button
+              className={`btn btn-block ${
+                store ? className[state] : 'btn-ghost'
+              }`}
+              onClick={pay}
+            >
+              <IconCash />
+              {t(`action.${state}`)}
+            </button>
+          </>
         )
       ) : (
         <span className="loading loading-ring loading-lg" />

@@ -1,6 +1,6 @@
 import { useCallback, useMemo } from 'react';
 import { Cluster, PublicKey } from '@solana/web3.js';
-import { useMutation, useQuery } from '@tanstack/react-query';
+import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import { BN } from '@coral-xyz/anchor';
 
 import { useCluster, useStoreProgram, useTransactionToast } from '@/hooks';
@@ -9,6 +9,8 @@ import toast from 'react-hot-toast';
 import { fromBigInt, fromBN, getStorePDA, toBigInt } from '@luckyland/anchor';
 import { Token } from '@utils/token';
 import { useDataFeed } from '@/providers';
+import { getBalanceOptions, getTokenAccountsOptions } from '@/queries';
+import { useConnection } from '@solana/wallet-adapter-react';
 
 const SOL_DECIMALS = 9;
 
@@ -22,7 +24,9 @@ function computePrice(
 }
 
 export function useStoreSell({ trader }: { trader: Token }) {
+  const client = useQueryClient();
   const { feed, decimals, answer } = useDataFeed();
+  const { connection } = useConnection();
   const { cluster } = useCluster();
   const transactionToast = useTransactionToast();
   const { program } = useStoreProgram();
@@ -46,13 +50,15 @@ export function useStoreSell({ trader }: { trader: Token }) {
     mutationFn: async ({
       amount,
       receiver,
+      owner,
     }: {
       amount: BN;
       receiver: PublicKey;
+      owner: PublicKey;
     }) => {
       if (!store) throw new Error('Store not found');
 
-      return program.methods
+      const signature = await program.methods
         .storeSale(amount)
         .accounts({
           feed,
@@ -61,8 +67,21 @@ export function useStoreSell({ trader }: { trader: Token }) {
           receiver,
         })
         .rpc();
+
+      return { tx: signature, owner, receiver };
     },
-    onSuccess: (tx) => transactionToast(tx),
+    onSuccess: ({ tx, owner }) => {
+      transactionToast(tx);
+
+      const keys = [
+        getTokenAccountsOptions(connection, owner).queryKey,
+        getBalanceOptions(owner, connection).queryKey,
+      ];
+
+      return Promise.all(
+        keys.map((queryKey) => client.invalidateQueries({ queryKey }))
+      );
+    },
     onError: (error) => {
       console.log('useStoreSell', error);
       toast.error(error.message);
