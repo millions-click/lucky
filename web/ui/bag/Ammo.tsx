@@ -1,41 +1,95 @@
-import { Token } from '@utils/token';
+import { useMemo } from 'react';
+
+import { Badge } from './Badge';
+
+import type { Token } from '@utils/token';
 import { usePlayer } from '@/providers';
-import { BalanceSol } from '@/components/account/account-ui';
 
-const TX_FEE = 0.00002;
+const formatter = new Intl.NumberFormat('en-US', {
+  notation: 'compact',
+  compactDisplay: 'short',
+  maximumFractionDigits: 1,
+});
 
-function FairiesDust({ className }: { className?: string }) {
-  const { balance, refresh } = usePlayer();
+const CLASSES = {
+  xs: {
+    label: 'text-sm',
+    dust: '',
+  },
+  sm: {
+    label: 'text-base',
+    dust: '',
+  },
+  md: {
+    label: 'text-2xl',
+    dust: '',
+  },
+  lg: {
+    label: 'text-4xl',
+    dust: '',
+  },
+};
+type Size = keyof typeof CLASSES;
+type BadgeProps = {
+  size: Size;
+  glow: boolean;
+};
+
+function FairiesDust({ size, glow }: BadgeProps) {
+  const { balance, roundFee } = usePlayer();
+  const dust = useMemo(
+    () => formatter.format(balance / Number(roundFee)),
+    [balance, roundFee]
+  );
+  const className = CLASSES[size];
 
   return (
-    <div className={`cursor-pointer ${className}`} onClick={refresh}>
-      <BalanceSol balance={balance} />
-    </div>
+    <Badge
+      icon="dust"
+      size={size}
+      glow={glow}
+      className={`text-[#FFE9B0] bottom-0 ${className.dust}`}
+    >
+      <span className={`pl-1 ${className.label}`}>{dust}</span>
+    </Badge>
   );
 }
 
-function LuckyShot({ token, className }: { token: Token; className?: string }) {
+function LuckyShot({ token, size, glow }: BadgeProps & { token: Token }) {
   const { getAccount } = usePlayer();
   const account = getAccount(token.mint);
-  if (!account) return null;
-
-  return <div className={className}>{account.amount}</div>;
-}
-
-type AmmoProps = {
-  token: Token;
-  className?: string;
-  dust?: string;
-  shot?: string;
-};
-export function Ammo({ token, className = '', shot, dust }: AmmoProps) {
-  const { player } = usePlayer();
-  if (!player) return null;
+  const className = CLASSES[size];
 
   return (
-    <div className={' ' + className}>
-      <FairiesDust className={dust} />
-      <LuckyShot token={token} className={shot} />
+    <Badge icon="ammo" size={size} glow={glow}>
+      <span className={`pl-1 ${className.label}`}>
+        {formatter.format(account?.amount || 0)}
+      </span>
+    </Badge>
+  );
+}
+
+type AmmoProps = Partial<BadgeProps> & {
+  token: Token | null;
+  className?: string;
+  dust?: Size;
+  shot?: Size;
+};
+export function Ammo({
+  token,
+  className = '',
+  size = 'sm',
+  glow = true,
+  dust,
+  shot,
+}: AmmoProps) {
+  const { player } = usePlayer();
+  if (!player || !token) return null;
+
+  return (
+    <div className={className}>
+      <FairiesDust size={dust || size} glow={glow} />
+      <LuckyShot token={token} size={shot || size} glow={glow} />
     </div>
   );
 }

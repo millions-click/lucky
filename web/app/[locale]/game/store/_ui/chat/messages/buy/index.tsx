@@ -6,7 +6,6 @@ import { type Package, packages } from './contants';
 
 import type { MessageProps } from '@/ui';
 import { Pay } from './pay';
-import { Ammo } from '@/ui/bag';
 import { useTraders } from '@/providers';
 
 export const Buy: MessageProps['Actions'] = ({ onNext }) => {
@@ -33,9 +32,6 @@ export const Buy: MessageProps['Actions'] = ({ onNext }) => {
       <p className="label-text-alt text-center">
         {t('description', { token: token.name })}
       </p>
-      <div className="absolute top-2 right-2 left-2">
-        <Ammo className="flex justify-between" token={token} />
-      </div>
 
       <ul className="grid grid-cols-2 sm:grid-cols-3 gap-4">
         {options.map((pkg, i) => (
