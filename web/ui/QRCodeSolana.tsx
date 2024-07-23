@@ -1,6 +1,6 @@
 'use client';
 
-import { useEffect, useRef } from 'react';
+import { PropsWithChildren, useEffect, useRef } from 'react';
 import Link from 'next/link';
 import { createQR } from '@solana/pay';
 import { IconTransfer } from '@tabler/icons-react';
@@ -22,13 +22,19 @@ function QR({ url }: { url: URL }) {
   return <figure ref={ref} />;
 }
 
-type QRCodeProps = {
+type QRCodeProps = PropsWithChildren<{
   url: URL | null;
   title?: string;
   action?: string;
   className?: string;
-};
-export function QRCode({ url, title, action, className = '' }: QRCodeProps) {
+}>;
+export function QRCode({
+  url,
+  title,
+  action,
+  className = '',
+  children,
+}: QRCodeProps) {
   return url ? (
     <div className={'space-y-4 ' + className}>
       <h1 className="text-xl text-center">{title}</h1>
@@ -37,6 +43,7 @@ export function QRCode({ url, title, action, className = '' }: QRCodeProps) {
         <IconTransfer />
         {action}
       </Link>
+      {children}
     </div>
   ) : (
     <span className="loading w-full" />

@@ -72,12 +72,16 @@ function Provider({ children }: PropsWithChildren) {
     tokens,
     roundFee,
 
-    refresh: useCallback(async () => {
-      await refresh();
-      return client.invalidateQueries({
-        queryKey: getBalanceOptions(owner, connection).queryKey,
-      });
-    }, [refresh, owner, connection, client]),
+    refresh: useCallback(
+      async (onlyBalance) => {
+        if (!onlyBalance) await refresh();
+
+        return client.invalidateQueries({
+          queryKey: getBalanceOptions(owner, connection).queryKey,
+        });
+      },
+      [refresh, owner, connection, client]
+    ),
 
     getAccount,
     createTokenAccount: create,

@@ -10,7 +10,7 @@ import { IconQrcode } from '@tabler/icons-react';
 
 import type { Package } from '../contants';
 import type { Token } from '@utils/token';
-import { QRCode } from '@/ui';
+import { CopyToClipboard, QRCode } from '@/ui';
 
 import { fromBigInt } from '@luckyland/anchor';
 import { getAvgTxFee, getTokenAccountCreationCost } from '@constants';
@@ -32,6 +32,7 @@ export function InsufficientBalance({
   const t = useTranslations('Components.Buy.Pay.Insufficient');
   const [qr, setQR] = useState(false);
   const [paymentUrl, setPaymentUrl] = useState<URL | null>(null);
+  const [amount, setAmount] = useState<string>('0');
 
   useEffect(() => {
     setPaymentUrl(null);
@@ -54,21 +55,21 @@ export function InsufficientBalance({
 
       // Each tx has a small fee to be processed. We are assuming the user will play ~25% more than the package amount.
       const tx_costs = await getAvgTxFee(pkg.amount * 1.25);
-      const amount = cost
+      const total = cost
         ? cost + tx_costs + account_cost
         : tx_costs + account_cost;
+      const amount = fromBigInt(balance ? total - BigInt(balance) : total, 9);
 
       const url = encodeURL({
         recipient,
-        amount: new BigNumber(
-          fromBigInt(balance ? amount - BigInt(balance) : amount, 9)
-        ),
+        amount: new BigNumber(amount),
         reference,
         label,
         message,
         memo,
       });
 
+      setAmount(amount.toString());
       setPaymentUrl(url);
     }, 1000);
 
@@ -107,7 +108,22 @@ export function InsufficientBalance({
               title={t('action.title')}
               action={t('action.transfer')}
               url={paymentUrl}
-            />
+            >
+              <div className="flex justify-between gap-2">
+                <CopyToClipboard
+                  className="btn btn-sm btn-ghost flex-1"
+                  payload={recipient.toBase58()}
+                >
+                  {t('action.copy.address')}
+                </CopyToClipboard>
+                <CopyToClipboard
+                  className="btn btn-sm btn-ghost flex-1"
+                  payload={amount}
+                >
+                  {t('action.copy.amount')}
+                </CopyToClipboard>
+              </div>
+            </QRCode>
           </div>
         </dialog>
       )}

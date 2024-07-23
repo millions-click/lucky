@@ -1,6 +1,6 @@
 'use client';
 
-import { useMemo, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import { useTranslations } from 'next-intl';
 import { IconCash } from '@tabler/icons-react';
 import Image from 'next/image';
@@ -19,7 +19,7 @@ const className = {
   idle: 'btn-accent',
   paying: 'btn-info',
   error: 'btn-error',
-  completed: 'btn-success',
+  completed: 'btn-ghost btn-sm',
 };
 
 type PayProps = {
@@ -31,7 +31,8 @@ type PayProps = {
 
 export function Connected({ pkg, token, confirmed, onChange }: PayProps) {
   const t = useTranslations('Components.Buy.Pay');
-  const { player, balance, getAccount, createTokenAccount } = usePlayer();
+  const { player, balance, getAccount, createTokenAccount, refresh } =
+    usePlayer();
   const { store, sell, price } = useStoreSell({ trader: token });
   const [state, setState] = useState<'idle' | 'paying' | 'error' | 'completed'>(
     confirmed ? 'completed' : 'idle'
@@ -41,6 +42,12 @@ export function Connected({ pkg, token, confirmed, onChange }: PayProps) {
   const enoughFunds = balance && cost && balance > cost;
   if (!player) return null;
 
+  useEffect(() => {
+    if (enoughFunds) return;
+    const debounced = setTimeout(() => refresh(true), 500);
+    return () => clearTimeout(debounced);
+  }, [cost]);
+
   async function handleCreateTokenAccount(): Promise<PublicKey> {
     const { address } = await createTokenAccount(token.mint);
 
@@ -49,7 +56,11 @@ export function Connected({ pkg, token, confirmed, onChange }: PayProps) {
   }
 
   async function pay() {
-    if (!store || !player || confirmed) return;
+    if (confirmed) {
+      setState('idle');
+      return onChange(false);
+    }
+    if (!store || !player) return;
     setState('paying');
 
     try {
@@ -72,7 +83,15 @@ export function Connected({ pkg, token, confirmed, onChange }: PayProps) {
   return (
     <div className="flex flex-col items-center p-4">
       <div className="text-2xl text-amber-100 sm:text-3xl font-bold max-sm:mt-3">
-        {t(`${enoughFunds ? '' : 'Insufficient.'}title`)}
+        {t(
+          `${
+            state === 'completed'
+              ? 'success.'
+              : enoughFunds
+              ? ''
+              : 'Insufficient.'
+          }title`
+        )}
       </div>
 
       <div className="card animate-glow image-full my-8 sm:my-16 card-compact bg-primary">
@@ -100,7 +119,7 @@ export function Connected({ pkg, token, confirmed, onChange }: PayProps) {
       </div>
 
       {store ? (
-        !enoughFunds ? (
+        !enoughFunds && state !== 'completed' ? (
           <InsufficientBalance
             pkg={pkg}
             token={token}
@@ -112,6 +131,15 @@ export function Connected({ pkg, token, confirmed, onChange }: PayProps) {
           <>
             {state === 'paying' && (
               <span className="loading loading-dots loading-lg" />
+            )}
+            {state === 'completed' && (
+              <span className="label-text-alt text-info sm:px-16 mb-4">
+                {t('success.message', {
+                  token: token.name,
+                  balance: getAccount(token.mint)?.amount || 0,
+                  symbol: token.symbol,
+                })}
+              </span>
             )}
             <button
               className={`btn btn-block ${

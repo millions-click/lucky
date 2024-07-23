@@ -181,12 +181,12 @@
         "disconnected": "Puedes pagar con tu billetera preferida",
         "success": {
           "title": "¡Compra exitosa!",
-          "description": "¡Gracias por tu compra! Tus {name} han sido añadidos a tu LuckyBag. Ahora tienes {balance} {symbol} para reclamar tesoros. ¡Disfruta tu aventura!"
+          "message": "¡Gracias por tu compra! Tus {token} han sido añadidos a tu LuckyBag. Ahora tienes {balance} {symbol} para reclamar tesoros. ¡Disfruta tu aventura!"
         },
         "action": {
           "idle": "Pagar",
           "paying": "Procesando...",
-          "completed": "Completado",
+          "completed": "Comprar mas",
           "error": "Fallido"
         },
         "Insufficient": {
@@ -197,7 +197,11 @@
           "action": {
             "title": "Escanea para recargar",
             "top-up": "Recargar",
-            "transfer": "Transferir"
+            "transfer": "Transferir",
+            "copy": {
+              "address": "Dirección",
+              "amount": "Monto"
+            }
           }
         }
       },

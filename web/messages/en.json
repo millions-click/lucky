@@ -182,12 +182,12 @@
         "disconnected": "You can pay using your favorite wallet.",
         "success": {
           "title": "Purchase successful",
-          "description": "Thank you for your purchase! Your {name} have been added to your LuckyBag. You now have {balance} {symbol} to use in Luckyland. Enjoy your adventure!"
+          "message": "Thank you for your purchase! Your {token} have been added to your LuckyBag. You now have {balance} {symbol} to use in Luckyland. Enjoy your adventure!"
         },
         "action": {
           "idle": "Pay",
           "paying": "Processing...",
-          "completed": "Completed",
+          "completed": "Buy more",
           "error": "Failed"
         },
         "Insufficient": {
@@ -198,7 +198,11 @@
           "action": {
             "title": "Scan to top up",
             "top-up": "Top up",
-            "transfer": "Transfer"
+            "transfer": "Transfer",
+            "copy": {
+              "address": "Address",
+              "amount": "Amount"
+            }
           }
         }
       },

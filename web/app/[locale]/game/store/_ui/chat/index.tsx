@@ -20,7 +20,7 @@ const MESSAGES = {
       actions: ['buy', asLink('/game?socials')],
     }),
   },
-  buy: { Actions: Buy, noNav: true },
+  buy: { backdrop: 'sm:hidden', Actions: Buy, noNav: true },
   confirmPurchase: { Actions: Selector({ actions: ['yes', 'no'] }) },
   purchaseSuccess: {},
 } as ChatMessages;
