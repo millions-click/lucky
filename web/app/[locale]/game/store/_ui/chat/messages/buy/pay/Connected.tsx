@@ -13,6 +13,7 @@ import { useStoreSell } from '@/hooks';
 import { usePlayer } from '@/providers';
 
 import { toBN } from '@luckyland/anchor';
+import { PublicKey } from '@solana/web3.js';
 
 const className = {
   idle: 'btn-accent',
@@ -40,6 +41,13 @@ export function Connected({ pkg, token, confirmed, onChange }: PayProps) {
   const enoughFunds = balance && cost && balance > cost;
   if (!player) return null;
 
+  async function handleCreateTokenAccount(): Promise<PublicKey> {
+    const { address } = await createTokenAccount(token.mint);
+
+    // TODO: Properly manage this delay. Make sure the account is created before returning.
+    return new Promise((resolve) => setTimeout(() => resolve(address), 3000));
+  }
+
   async function pay() {
     if (!store || !player || confirmed) return;
     setState('paying');
@@ -47,7 +55,7 @@ export function Connected({ pkg, token, confirmed, onChange }: PayProps) {
     try {
       const tokenAccount = getAccount(token.mint);
       let receiver = tokenAccount?.publicKey;
-      if (!receiver) receiver = (await createTokenAccount(token.mint)).address;
+      if (!receiver) receiver = await handleCreateTokenAccount();
 
       const amount = toBN(pkg.amount, token.decimals);
       await sell.mutateAsync({ amount, receiver, owner: player });

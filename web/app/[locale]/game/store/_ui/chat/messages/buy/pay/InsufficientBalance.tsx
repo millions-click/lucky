@@ -1,19 +1,19 @@
 'use client';
 
 import { useEffect, useState } from 'react';
-import { Keypair, LAMPORTS_PER_SOL, PublicKey } from '@solana/web3.js';
+import { Keypair, PublicKey } from '@solana/web3.js';
 import { encodeURL } from '@solana/pay';
 import BigNumber from 'bignumber.js';
 
 import { useTranslations } from 'next-intl';
 import { IconQrcode } from '@tabler/icons-react';
 
-import { Package } from '../contants';
+import type { Package } from '../contants';
 import type { Token } from '@utils/token';
 import { QRCode } from '@/ui';
-import { fromBigInt } from '@luckyland/anchor';
 
-const TX_COST = 0.00002 * LAMPORTS_PER_SOL;
+import { fromBigInt } from '@luckyland/anchor';
+import { getAvgTxFee, getTokenAccountCreationCost } from '@constants';
 
 type InsufficientBalanceProps = {
   cost: bigint | null;
@@ -36,7 +36,7 @@ export function InsufficientBalance({
   useEffect(() => {
     setPaymentUrl(null);
 
-    const debounced = setTimeout(() => {
+    const debounced = setTimeout(async () => {
       const reference = new Keypair().publicKey;
       const label = t('store');
       const message = t('top-up', {
@@ -46,8 +46,17 @@ export function InsufficientBalance({
       });
       const memo = `${token.symbol}|${pkg.title}|${pkg.amount}`;
 
-      const tx_costs = BigInt(Math.round(TX_COST * pkg.amount * 1.25));
-      const amount = cost ? cost + tx_costs : tx_costs;
+      // If the account balance is 0 there almost certainly isn't a token account neither. Gem & Trader accounts are required.
+      const account_cost =
+        balance === 0
+          ? (await getTokenAccountCreationCost()) * BigInt(2)
+          : BigInt(0);
+
+      // Each tx has a small fee to be processed. We are assuming the user will play ~25% more than the package amount.
+      const tx_costs = await getAvgTxFee(pkg.amount * 1.25);
+      const amount = cost
+        ? cost + tx_costs + account_cost
+        : tx_costs + account_cost;
 
       const url = encodeURL({
         recipient,

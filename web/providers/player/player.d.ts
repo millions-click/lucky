@@ -8,7 +8,10 @@ export type PlayerContext = Pick<
 > & {
   player: PublicKey | null;
   bagType: BagType;
-  disconnect: () => void;
+
   balance: number;
+  roundFee: bigint;
+
   createTokenAccount: TokensContext['create'];
+  disconnect: () => void;
 };

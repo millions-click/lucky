@@ -14,14 +14,14 @@ import {
   useWallet,
   useConnection,
 } from '@solana/wallet-adapter-react';
-import { PublicKey } from '@solana/web3.js';
+import { type Cluster, PublicKey } from '@solana/web3.js';
 import { useQuery, useQueryClient } from '@tanstack/react-query';
 
 import type { PlayerContext } from './player.d';
 
-import { TokensProvider, useTokens } from '@/providers';
+import { TokensProvider, useCluster, useTokens } from '@/providers';
 import { LuckyWalletAdapter } from '@/adapters';
-import { getBalanceOptions } from '@/queries';
+import { getAvgTxFeeOptions, getBalanceOptions } from '@/queries';
 
 const Context = createContext({
   player: null,
@@ -34,6 +34,7 @@ const Context = createContext({
   },
   disconnect: () => void 0,
   balance: 0,
+  roundFee: BigInt(0),
 } as PlayerContext);
 
 function getBagType(wallet: Wallet | null) {
@@ -43,6 +44,7 @@ function getBagType(wallet: Wallet | null) {
 
 function Provider({ children }: PropsWithChildren) {
   const client = useQueryClient();
+  const { cluster } = useCluster();
   const { connection } = useConnection();
   const { wallet, disconnect } = useWallet();
   const { owner, tokens, getAccount, create, refresh } = useTokens();
@@ -50,6 +52,13 @@ function Provider({ children }: PropsWithChildren) {
 
   const balanceQuery = useQuery(getBalanceOptions(owner, connection));
   const balance = useMemo(() => balanceQuery.data || 0, [balanceQuery.data]);
+  const roundFeeQuery = useQuery(
+    getAvgTxFeeOptions(cluster.network as Cluster)
+  );
+  const roundFee = useMemo(
+    () => roundFeeQuery.data || BigInt(0),
+    [roundFeeQuery.data]
+  );
 
   useEffect(() => {
     setBagType(getBagType(wallet));
@@ -61,6 +70,7 @@ function Provider({ children }: PropsWithChildren) {
 
     balance,
     tokens,
+    roundFee,
 
     refresh: useCallback(async () => {
       await refresh();
