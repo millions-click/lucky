@@ -21,7 +21,7 @@ export function NavLink({
   const isActive = pathname === href;
 
   return (
-    <li className="card bg-base-100 image-full col-span-6 md:col-span-4 shadow-xl overflow-hidden group cursor-pointer transition-transform hover:scale-105">
+    <li className="card bg-base-100 image-full col-span-6 2xl:col-span-4 shadow-xl overflow-hidden group cursor-pointer transition-transform hover:scale-105">
       <figure className="w-full">
         <Image src={image} alt={title} fill={true} />
       </figure>
