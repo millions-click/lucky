@@ -2,6 +2,30 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [0.2.1](///compare/v0.2.0...v0.2.1) (2024-07-23)
+
+
+### Features
+
+* **anchor:** 👻 Mint only when Empty 474b894
+* **web:** 👻 Ammo | Lucky Bag 07ba000
+* **web:** 👻 Fairy Dust Cost | Context 9b65a6c
+* **web:** 👻 Game Header ce9cd43
+* **web:** 👻 GameLayout 0a55d9a
+* **web:** 👻 Gems & Traders | Context b231aaa
+* **web:** 👻 Pay | Store dc22883
+* **web:** 👻 Payment Link | Solana Pay f6594b7
+* **web:** 👻 Player | Context bfb6612
+* **web:** 👻 Store | Hooks 95fa4d1
+* **web:** 👻 Successful Purchase | Store 21a4f3c
+* **web:** 👻 Tokens Context afb78f2
+* **web:** 👻 Trader | Store d45afdf
+
+
+### Bug Fixes
+
+* **web:** 👻 Query Provider 911b1d9
+
 ## [0.2.0](///compare/v0.1.11...v0.2.0) (2024-07-19)
 
 
