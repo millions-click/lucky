@@ -6,6 +6,7 @@ import { Header } from './Header';
 import {
   CountdownProvider,
   LuckyBagProvider,
+  TradersProvider,
   useGameBackground,
 } from '@/providers';
 
@@ -20,19 +21,21 @@ export function GameLayout({ children }: PropsWithChildren) {
 
   return (
     <LuckyBagProvider>
-      <CountdownProvider>
-        <Header />
-        <div
-          className={className}
-          style={{
-            backgroundImage: `url(${bg})`,
-          }}
-        >
-          <div className="hero-content text-neutral-content text-center">
-            {children}
+      <TradersProvider>
+        <CountdownProvider>
+          <Header />
+          <div
+            className={className}
+            style={{
+              backgroundImage: `url(${bg})`,
+            }}
+          >
+            <div className="hero-content text-neutral-content text-center">
+              {children}
+            </div>
           </div>
-        </div>
-      </CountdownProvider>
+        </CountdownProvider>
+      </TradersProvider>
     </LuckyBagProvider>
   );
 }

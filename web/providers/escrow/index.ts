@@ -1,2 +1,2 @@
-export * from './gems';
 export * from './traders';
+export * from './bounties';

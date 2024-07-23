@@ -5,7 +5,6 @@ import '../global.css';
 import {
   ReactQueryProvider,
   ClusterProvider,
-  CryptoProvider,
   LuckyBagsProvider,
   SolanaModalProvider,
   DataFeedProvider,
@@ -37,17 +36,15 @@ export default function Layout({ children }: PropsWithChildren) {
       <body>
         <ReactQueryProvider>
           <ClusterProvider>
-            <CryptoProvider>
-              <LuckyBagsProvider>
-                <SolanaModalProvider>
-                  <DataFeedProvider>
-                    <UiLayout links={links} env={NEXT_PUBLIC_VERCEL_ENV}>
-                      {children}
-                    </UiLayout>
-                  </DataFeedProvider>
-                </SolanaModalProvider>
-              </LuckyBagsProvider>
-            </CryptoProvider>
+            <LuckyBagsProvider>
+              <SolanaModalProvider>
+                <DataFeedProvider>
+                  <UiLayout links={links} env={NEXT_PUBLIC_VERCEL_ENV}>
+                    {children}
+                  </UiLayout>
+                </DataFeedProvider>
+              </SolanaModalProvider>
+            </LuckyBagsProvider>
           </ClusterProvider>
         </ReactQueryProvider>
       </body>

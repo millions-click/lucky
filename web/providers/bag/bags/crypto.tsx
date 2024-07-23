@@ -1,17 +1,11 @@
 'use client';
 
 import { createContext, useContext, useState } from 'react';
-import { Crypto } from '@/utils';
 import { atomWithStorage } from 'jotai/utils';
 import { atom, useAtomValue, useSetAtom } from 'jotai/index';
 
-export type CryptoState = 'unsafe' | 'safe' | 'expired';
-type CryptoContext = {
-  state: CryptoState;
-  crypto: Crypto;
-  updateKey: (key: string, ttl?: number) => void;
-  clearKey: () => void;
-};
+import type { CryptoContext } from './bags.d';
+import { Crypto } from '@/utils';
 
 const keyAtom = atomWithStorage<string | undefined>(
   'lb-key',

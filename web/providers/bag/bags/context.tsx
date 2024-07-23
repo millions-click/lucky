@@ -23,8 +23,8 @@ import type {
   LuckyBagProviderContext,
 } from '@/adapters';
 
-import { useCrypto } from '@/providers/crypto-provider';
 import { decryptBag, encryptBag, getKey } from '@/utils';
+import { CryptoProvider, useCrypto } from './crypto';
 
 const defaultBags = {} as LuckyBags;
 const bagsAtom = atomWithStorage<LuckyBags>('elb', defaultBags, undefined, {
@@ -41,7 +41,7 @@ const Context = createContext({
   state: 'empty',
 } as LuckyBagProviderContext);
 
-export function LuckyBagsProvider({ children }: PropsWithChildren) {
+function Provider({ children }: PropsWithChildren) {
   const { crypto, updateKey, clearKey } = useCrypto();
   const bags = useAtomValue(availableBagsAtom);
   const active = useAtomValue(activeBagAtom);
@@ -233,6 +233,16 @@ export function LuckyBagsProvider({ children }: PropsWithChildren) {
   return <Context.Provider value={value}>{children}</Context.Provider>;
 }
 
+export function LuckyBagsProvider({ children }: PropsWithChildren) {
+  return (
+    <CryptoProvider>
+      <Provider>{children}</Provider>
+    </CryptoProvider>
+  );
+}
+
 export function useLuckyBags() {
   return useContext(Context);
 }
+
+export { useCrypto };
