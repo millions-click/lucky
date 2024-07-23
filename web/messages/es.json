@@ -355,7 +355,24 @@
   },
   "Realms": {
     "title": "Reinos",
-    "messages": [],
+    "messages": {
+      "welcome": {
+        "text": "¡Saludos, viajero afortunado! Soy Emili, tu guía a través de los reinos de Luckyland. Has sido transportado al portal de los reinos.",
+        "advice": "Este es el lugar donde puedes explorar los diferentes reinos de Luckyland."
+      },
+      "intro": {
+        "text": "Como ya sabes, para entrar a un reino necesitas un LuckyPass. Una vez entres en alguno este se activara y tendrás 60 minutos para explorar y reclamar tus tesoros.",
+        "advice": "Podras ir y venir entre los reinos que hayas desbloqueado."
+      },
+      "first": {
+        "text": "Como visitante por primera vez, solo tienes disponible un reino: el Reino de las Monedas. Nuevos reinos se desbloquearán a medida que avances por Luckyland.",
+        "advice": "No te preocupes, siempre tendrás a alguien a tu lado para guiarte.",
+        "select": {
+          "title": "¿Qué te gustaría hacer?",
+          "options": "Entrar al Reino de las Monedas, Volveré más tarde"
+        }
+      }
+    },
     "links": {
       "lobby": "Lobby",
       "coins": "Monedas"

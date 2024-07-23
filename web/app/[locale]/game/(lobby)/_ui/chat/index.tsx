@@ -29,7 +29,7 @@ const MESSAGES = {
   secure: { Actions: Secure },
   gifts: {
     Actions: Selector({
-      actions: ['socials', asLink('game/store?no_gifts')],
+      actions: ['socials', asLink('game/store?from=lobby&action=no-gifts')],
     }),
   },
   store: { palId: 'lucky' },

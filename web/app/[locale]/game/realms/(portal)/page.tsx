@@ -10,7 +10,6 @@ export default function Realms({ params: { locale } }: Params) {
   return (
     <>
       <h1 className="text-white text-4xl">{t('title')}</h1>
-      <a href="coins">{t('links.coins')}</a>
     </>
   );
 }

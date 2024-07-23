@@ -4,7 +4,6 @@ import { useState } from 'react';
 
 import { type ChatMessages, ChatController, Selector } from '@/ui';
 import Link from 'next/link';
-import { Buy } from './messages';
 
 const asLink = (href: string) => ({
   next: '',
@@ -15,16 +14,19 @@ const asLink = (href: string) => ({
 
 const MESSAGES = {
   welcome: { next: 'intro' },
-  intro: {
+  intro: { next: 'first' },
+  first: {
     Actions: Selector({
-      actions: ['buy', asLink('/game?from=store&to=socials')],
+      actions: [
+        asLink('realms/coins?from=realms&action=activate'),
+        asLink('/game?from=realms&to=email'),
+      ],
     }),
   },
-  buy: { backdrop: 'sm:hidden', Actions: Buy, noNav: true },
 } as ChatMessages;
 type MessageKey = keyof typeof MESSAGES;
 
-export function StoreChatController() {
+export function PortalChatController() {
   const [active, setActive] = useState<MessageKey | undefined>('welcome');
 
   return (
@@ -33,10 +35,10 @@ export function StoreChatController() {
       setActive={setActive}
       messages={MESSAGES}
       settings={{
-        backdrop: ' ',
+        backdrop: '',
         typing: 10,
-        namespace: 'Store',
-        palId: 'clover',
+        namespace: 'Realms',
+        palId: 'emili',
       }}
     />
   );

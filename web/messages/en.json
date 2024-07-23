@@ -356,7 +356,24 @@
   },
   "Realms": {
     "title": "Realms",
-    "messages": [],
+    "messages": {
+      "welcome": {
+        "text": "Greetings lucky traveler! I'm Emili, your guide through the realms of Luckyland. You have been transported to the realms portal.",
+        "advice": "This is where you can explore the different realms of Luckyland."
+      },
+      "intro": {
+        "text": "As you already know, to enter a realm you need a LuckyPass. Once you enter a realm, it will be activate and you will have 60 minutes to explore and claim your treasures.",
+        "advice": "You can move between realms you have already unlocked."
+      },
+      "first": {
+        "text": "As a first-time visitor, you have only one realm available. The Coin Realm. New realms will be unlocked as you progress through Luckyland.",
+        "advice": "Don't worry, you will have always someone by your side to guide you.",
+        "select": {
+          "title": "What would you like to do?",
+          "options": "Enter the Coin Realm, I'll be back later"
+        }
+      }
+    },
     "links": {
       "lobby": "Lobby",
       "coins": "Coins"

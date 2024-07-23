@@ -1,10 +1,12 @@
 import { PropsWithChildren } from 'react';
 import { unstable_setRequestLocale } from 'next-intl/server';
 
+import { PortalChatController } from './_ui';
+
 import { Background } from '@/providers';
 import type { Params } from '@/app/[locale]/locale';
 
-const bg = 'realms.webp';
+const bg = 'portal.webp';
 
 export default function Layout({
   children,
@@ -13,9 +15,10 @@ export default function Layout({
   unstable_setRequestLocale(locale);
 
   return (
-    <div className="max-w-md bg-base-300/20 p-8">
-      <Background name={bg} />
-      {children}
-    </div>
+    <>
+      <Background name={bg} className="max-md:bg-left" />
+      <div className="max-w-md bg-base-300/20 p-8">{children}</div>
+      <PortalChatController />
+    </>
   );
 }

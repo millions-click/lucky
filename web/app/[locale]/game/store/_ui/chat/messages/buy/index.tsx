@@ -1,6 +1,7 @@
 import { useMemo, useState } from 'react';
 import { useTranslations } from 'next-intl';
 import { IconBuildingStore, IconChevronRight } from '@tabler/icons-react';
+import Link from 'next/link';
 
 import { type Package, packages } from './contants';
 
@@ -81,13 +82,14 @@ export const Buy: MessageProps['Actions'] = ({ onNext }) => {
             />
             {confirmed && (
               <div className="modal-action">
-                <button
+                <Link
+                  href="realms?from=store&action=buy"
                   className="btn btn-lg btn-ghost text-orange-500 "
                   onClick={() => onNext?.('success')}
                 >
                   {t('action.continue')}
                   <IconChevronRight />
-                </button>
+                </Link>
               </div>
             )}
           </div>
