@@ -1,18 +1,19 @@
 import { type HTMLAttributes, useMemo } from 'react';
+import { useTranslations } from 'next-intl';
 
-import { TokenAccount, useEscrowGems, useTreasureGems } from '@/hooks';
+import { type TokenAccount } from '@/hooks';
 
 import { MoneyBagIcon } from '@/ui/icons';
+import { useBounties, useGems } from '@/providers';
 import { formatAmount } from '@luckyland/anchor';
-import { useTranslations } from 'next-intl';
 
 type Props = {
   onClick: () => void;
 } & Pick<HTMLAttributes<HTMLButtonElement>, 'aria-controls'>;
 
 function useTreasureBalance() {
-  const { mints: treasure } = useTreasureGems();
-  const { gems: bounties } = useEscrowGems();
+  const { getGem } = useGems();
+  const { bounties } = useBounties();
 
   const balances = useMemo(() => {
     const _balances: Record<string, { gem: TokenAccount; amount: number }> = {};
@@ -20,15 +21,16 @@ function useTreasureBalance() {
     bounties.forEach(({ mint, amount }) => {
       if (!mint || !amount) return;
 
+      const gem = getGem(mint);
+      if (!gem) return;
+
       const key = mint.toString();
-      if (key in treasure) {
-        if (key in _balances) _balances[key].amount += amount;
-        else _balances[key] = { amount, gem: treasure[key] };
-      }
+      if (key in _balances) _balances[key].amount += amount;
+      else _balances[key] = { amount, gem };
     });
 
     return _balances;
-  }, [treasure, bounties]);
+  }, [bounties, getGem]);
 
   const total = useMemo(() => {
     return Object.values(balances).reduce((acc, { amount }) => acc + amount, 0);

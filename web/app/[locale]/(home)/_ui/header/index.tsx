@@ -8,6 +8,8 @@ import {
   ReactQueryProvider,
   ClusterProvider,
   SolanaProvider,
+  BountiesProvider,
+  GemsProvider,
 } from '@/providers';
 
 export async function Header() {
@@ -19,10 +21,14 @@ export async function Header() {
         <ReactQueryProvider>
           <ClusterProvider>
             <SolanaProvider>
-              <NextIntlClientProvider messages={messages}>
-                <Nav />
-                <button className="btn btn-square btn-ghost">Log in</button>
-              </NextIntlClientProvider>
+              <GemsProvider>
+                <BountiesProvider>
+                  <NextIntlClientProvider messages={messages}>
+                    <Nav />
+                    <button className="btn btn-square btn-ghost">Log in</button>
+                  </NextIntlClientProvider>
+                </BountiesProvider>
+              </GemsProvider>
             </SolanaProvider>
           </ClusterProvider>
         </ReactQueryProvider>
