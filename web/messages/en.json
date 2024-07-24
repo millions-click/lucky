@@ -210,6 +210,28 @@
         "buy": "Buy {amount} {token}",
         "continue": "Continue"
       }
+    },
+    "Later": {
+      "advice": "But be aware, your LuckyPass will expire in {time}.",
+      "action": {
+        "save": "Save for later"
+      },
+      "Email": {
+        "title": "Send your LuckyPass",
+        "description": "We will send you an email with your LuckyPass.",
+        "input": {
+          "email": {
+            "label": "Email",
+            "placeholder": "Enter your email"
+          }
+        },
+        "action": {
+          "idle": "Send",
+          "sending": "Sending...",
+          "sent": "Sent",
+          "failed": "Failed"
+        }
+      }
     }
   },
   "General": {
@@ -288,6 +310,13 @@
           "options": "Claim treasures, I'll be back later"
         }
       },
+      "later": {
+        "text": "No worries, you can return whenever you want.",
+        "select": {
+          "title": "What would you like to do?",
+          "options": "I changed my mind, Send it to me, I'll save it"
+        }
+      },
       "timer": {
         "text": "This is your countdown timer, it shows how much time your LuckyPass has left. When you activate it, you'll have 60 minutes to explore Luckyland and claim your treasures.",
         "advice": "Don't worry, if you are lucky enough --which it seems you are-- you could get at the end of your journey another LuckyPass."
@@ -323,6 +352,10 @@
           "title": "What would you like to do?",
           "options": "Activate my LuckyPass, I'll be back later"
         }
+      },
+      "see-you": {
+        "text": "See you soon lucky traveler!",
+        "advice": "Remember, you can always come back to Luckyland and claim your treasures."
       }
     },
     "links": {
@@ -393,6 +426,29 @@
     "actions": {
       "enter": "Enter",
       "exit": "Exit"
+    }
+  },
+  "Redeem": {
+    "title": "Redeem your Lucky Pass",
+    "Active": {
+      "title": "Active Lucky Pass",
+      "description": {
+        "available": "You have an active Lucky Pass. You can override it by clicking the button below.",
+        "clear": "You have an active Lucky Pass. You can override it by entering a new code."
+      },
+      "action": {
+        "confirm": "Confirm",
+        "cancel": "Cancel"
+      }
+    },
+    "type": {
+      "available": "Click to redeem your Lucky Pass",
+      "clear": "You can redeem your Lucky Pass here. If you have a Lucky Pass, please enter the code below."
+    },
+    "action": {
+      "idle": "Redeem",
+      "success": "Success",
+      "error": "Error"
     }
   }
 }

@@ -209,6 +209,28 @@
         "buy": "Comprar {amount} {token}",
         "continue": "Continuar"
       }
+    },
+    "Later": {
+      "advice": "Pero ten en cuenta, tu LuckyPass expirará en {time}.",
+      "action": {
+        "save": "Guardar para más tarde"
+      },
+      "Email": {
+        "title": "Enviar tu LuckyPass",
+        "description": "Te enviaremos un correo electrónico con tu LuckyPass.",
+        "input": {
+          "email": {
+            "label": "Correo electrónico",
+            "placeholder": "Ingresa tu correo electrónico"
+          }
+        },
+        "action": {
+          "idle": "Enviar",
+          "sending": "Enviando...",
+          "sent": "Enviado",
+          "failed": "Error al enviar"
+        }
+      }
     }
   },
   "General": {
@@ -287,6 +309,13 @@
           "options": "Reclamar tesoros, Volveré más tarde"
         }
       },
+      "later": {
+        "text": "No te preocupes, podrás regresar a Luckyland en cualquier momento.",
+        "select": {
+          "title": "¿Qué te gustaría hacer?",
+          "options": "Cambie de opinión, Enviamelo, Yo lo guardaré"
+        }
+      },
       "timer": {
         "text": "Este es tu cronómetro, te indica cuánto tiempo le queda a tu pase de la suerte. Una vez activado tendrás 60 minutos para explorar Luckyland y reclamar tus tesoros.",
         "advice": "No te preocupes, si eres suficientemente afortunado -- que parece que si -- al final del tu viaje, podrias obtener otro LuckyPass."
@@ -322,6 +351,10 @@
           "title": "¿Qué te gustaría hacer?",
           "options": "Activar mi LuckyPass, Volveré más tarde"
         }
+      },
+      "see-you": {
+        "text": "¡Nos vemos pronto, viajero afortunado!",
+        "advice": "Recuerda, siempre puedes regresar a Luckyland y reclamar tus tesoros."
       }
     },
     "links": {
@@ -392,6 +425,29 @@
     "actions": {
       "enter": "Entrar",
       "exit": "Salir"
+    }
+  },
+  "Redeem": {
+    "title": "Canjear tu Lucky Pass",
+    "Active": {
+      "title": "Lucky Pass Activo",
+      "description": {
+        "available": "Tienes un Lucky Pass activo. Puedes sobrescribirlo haciendo clic en el botón de abajo.",
+        "clear": "Tienes un Lucky Pass activo. Puedes sobrescribirlo ingresando un nuevo código."
+      },
+      "action": {
+        "confirm": "Confirmar",
+        "cancel": "Cancelar"
+      }
+    },
+    "type": {
+      "available": "Haz clic para canjear tu Lucky Pass",
+      "clear": "Aquí puedes canjear tu Lucky Pass. Si tienes un Lucky Pass, por favor ingresa el código a continuación."
+    },
+    "action": {
+      "idle": "Canjear",
+      "success": "Éxito",
+      "error": "Error"
     }
   }
 }

@@ -6,7 +6,7 @@ import { PortalChatController } from './_ui';
 import { Background } from '@/providers';
 import type { Params } from '@/app/[locale]/locale';
 
-const bg = 'portal.webp';
+const bg = 'realms.webp';
 
 export default function Layout({
   children,
@@ -16,7 +16,7 @@ export default function Layout({
 
   return (
     <>
-      <Background name={bg} className="max-md:bg-left" />
+      <Background name={bg} />
       <div className="max-w-md bg-base-300/20 p-8">{children}</div>
       <PortalChatController />
     </>
