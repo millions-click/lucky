@@ -22,7 +22,9 @@ export type TurnsSession = Turns & JWTProps;
 export type LuckyPass = {
   address?: string;
   seed: Seed;
-  expires: number;
+  ttl: number;
+  activated?: number;
+  code?: string; // Only active for the temporary pass.
 };
 
 export type LuckyPassSession = LuckyPass & JWTProps;
@@ -32,3 +34,4 @@ export const MAX_TTL_ATTEMPTS = 5; // MAX 16 MINUTES to refresh the attempts.
 export const TURNS_COOKIE = 'll-turns';
 export const ATTEMPTS_COOKIE = 'll-attempts';
 export const LUCKY_PASS_COOKIE = 'll-pass';
+export const LUCKY_PASS_TTL = 60 * 60; // 1 hour in seconds.

@@ -4,7 +4,6 @@ import { PropsWithChildren } from 'react';
 
 import { Header } from './Header';
 import {
-  CountdownProvider,
   LuckyBagProvider,
   TradersProvider,
   useGameBackground,
@@ -22,19 +21,17 @@ export function GameLayout({ children }: PropsWithChildren) {
   return (
     <LuckyBagProvider>
       <TradersProvider>
-        <CountdownProvider>
-          <Header />
-          <div
-            className={className}
-            style={{
-              backgroundImage: `url(${bg})`,
-            }}
-          >
-            <div className="hero-content text-neutral-content text-center">
-              {children}
-            </div>
+        <Header />
+        <div
+          className={className}
+          style={{
+            backgroundImage: `url(${bg})`,
+          }}
+        >
+          <div className="hero-content text-neutral-content text-center">
+            {children}
           </div>
-        </CountdownProvider>
+        </div>
       </TradersProvider>
     </LuckyBagProvider>
   );

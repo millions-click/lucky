@@ -18,13 +18,14 @@ const defaultCountDown: Countdown = {
 };
 type State = 'unset' | 'idle' | 'running' | 'paused' | 'finished';
 type CountdownContext = {
+  name?: string;
   state: State;
 
   ttl: number; // In seconds
   expires: number;
   countdown: Countdown;
 
-  setup: (ttl: number, start?: boolean) => void;
+  setup: (ttl: number, start?: boolean, name?: string) => void;
   start: (expires?: number) => void;
   reset: () => void;
   pause: () => void;
@@ -59,6 +60,7 @@ export function CountdownProvider({
   delta = 1000,
   onFinished,
 }: CountdownProviderProps) {
+  const [name, setName] = useState<string>();
   const [state, setState] = useState<State>('unset');
   const [ttl, setTtl] = useState(0);
   const [expires, setExpires] = useState(0);
@@ -83,15 +85,17 @@ export function CountdownProvider({
   }, [state, delta, expires]);
 
   const value = {
+    name,
     state,
 
     ttl,
     expires,
     countdown,
 
-    setup: (ttl: number, start = false) => {
+    setup: (ttl: number, start = false, name?: string) => {
       const expires = Date.now() + ttl * 1000;
 
+      if (name) setName(name);
       setTtl(ttl);
       setExpires(start ? expires : 0);
       setCountdown(getCountdown(expires));

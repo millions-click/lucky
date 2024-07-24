@@ -1,3 +1,4 @@
+export * from './pass';
 export * from './bg-provider';
 export * from './game-pal';
 export * from './messages';

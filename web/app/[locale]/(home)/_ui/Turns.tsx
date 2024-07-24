@@ -2,7 +2,7 @@
 
 import { useTranslations } from 'next-intl';
 
-import { TURNS_AVAILABLE, type TurnsSession } from '@/actions/types';
+import { TURNS_AVAILABLE, type TurnsSession } from '@/actions/types.d';
 import { useConfigurableCountdown } from '@/providers';
 
 export function Turns({

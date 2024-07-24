@@ -9,7 +9,7 @@ import {
   TURNS_AVAILABLE,
   TURNS_COOKIE,
   ATTEMPTS_COOKIE,
-} from './types';
+} from './types.d';
 import { decrypt, encrypt, safeDecrypt } from '@/utils/jwt';
 import { getLuckyPass } from './lucky-pass';
 
