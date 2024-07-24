@@ -7,7 +7,7 @@ import {
   type MessagesSettings,
   useMessagesHandler,
 } from '@/providers';
-import { Messages, type MessageProps, type MessagesProps } from '@/ui';
+import { Messages, type MessageProps, type MessagesProps } from '.';
 
 export type MessageDefinition = Partial<Omit<MessageProps, 'backdrop'>> &
   Pick<MessagesProps, 'backdrop'> & { palId?: GamePalId };

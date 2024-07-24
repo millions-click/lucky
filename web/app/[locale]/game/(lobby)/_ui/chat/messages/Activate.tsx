@@ -1,7 +1,7 @@
 import { useTranslations } from 'next-intl';
 import { IconMinus, IconPlus } from '@tabler/icons-react';
 
-import { MessageProps } from '@/ui';
+import type { MessageProps } from '@/ui/messages';
 import { useLuckyBags } from '@/providers';
 import { ellipsify } from '@/utils';
 

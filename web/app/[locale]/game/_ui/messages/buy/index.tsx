@@ -1,3 +1,5 @@
+'use client';
+
 import { useMemo, useState } from 'react';
 import { useTranslations } from 'next-intl';
 import { IconBuildingStore, IconChevronRight } from '@tabler/icons-react';
@@ -5,7 +7,7 @@ import Link from 'next/link';
 
 import { type Package, packages } from './contants';
 
-import type { MessageProps } from '@/ui';
+import type { MessageProps } from '@/ui/messages';
 import { Pay } from './pay';
 import { useTraders } from '@/providers';
 

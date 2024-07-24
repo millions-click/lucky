@@ -1,5 +1,5 @@
-import { PropsWithChildren, useMemo } from 'react';
-import type { MessageProps } from '@/ui';
+import { type PropsWithChildren, useMemo } from 'react';
+import type { MessageProps } from '@/ui/messages';
 
 type ItemComponentProps = PropsWithChildren<{
   className?: string;

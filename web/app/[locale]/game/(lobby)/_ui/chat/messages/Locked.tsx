@@ -7,7 +7,9 @@ import {
   IconShoppingBagEdit,
 } from '@tabler/icons-react';
 
-import { BagKeyForm, MessageProps } from '@/ui';
+import type { MessageProps } from '@/ui/messages';
+import { BagKeyForm } from '@/ui';
+
 import { useLuckyBags } from '@/providers';
 
 const next = 'gifts';

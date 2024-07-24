@@ -2,16 +2,13 @@
 
 import { useState } from 'react';
 
-import { type ChatMessages, ChatController, Selector } from '@/ui';
-import Link from 'next/link';
-import { Buy } from './messages';
-
-const asLink = (href: string) => ({
-  next: '',
-  Component: Link,
-  props: { href },
-  onClick: () => void 0,
-});
+import {
+  type ChatMessages,
+  ChatController,
+  Selector,
+  asLink,
+  Buy,
+} from '@/ui/messages';
 
 const MESSAGES = {
   welcome: { next: 'intro' },

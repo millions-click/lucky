@@ -1,5 +1,7 @@
+import type { MessageProps } from '@/ui/messages';
+
 import { getCountdown, useCountdown } from '@/providers';
-import { type MessageProps, CountdownBag } from '@/ui';
+import { CountdownBag } from '@/ui';
 import { Nav } from '@/ui/messages/Nav';
 
 const TTL = 60 * 60;

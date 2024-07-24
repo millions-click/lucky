@@ -3,7 +3,7 @@ import { unstable_setRequestLocale } from 'next-intl/server';
 import type { Params } from '../locale';
 import { LockController } from './_ui';
 import { MessagesProvider } from '@/providers';
-import { Messages } from '@/ui';
+import { Messages } from '@/ui/messages';
 
 export default async function Landing({ params: { locale } }: Params) {
   unstable_setRequestLocale(locale);
