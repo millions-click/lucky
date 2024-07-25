@@ -2,7 +2,7 @@ import { useTranslations } from 'next-intl';
 import { IconMinus, IconPlus } from '@tabler/icons-react';
 
 import type { MessageProps } from '@/ui/messages';
-import { useLuckyBags } from '@/providers';
+import { useLuckyBags, useLuckyWallet } from '@/providers';
 import { ellipsify } from '@/utils';
 
 const next = 'gifts';
@@ -10,12 +10,16 @@ const next = 'gifts';
 export const Activate: MessageProps['Actions'] = ({ onNext }) => {
   const t = useTranslations('Components');
   const { active, bags, openBag, deleteBag } = useLuckyBags();
+  const { activate } = useLuckyWallet();
 
   const keys = Object.entries(bags);
-  const activate = (key: string) => {
+  const activateLuckyBag = (key: string) => {
     const bag = openBag(key);
 
-    if (bag) return onNext?.(next);
+    if (bag) {
+      activate();
+      return onNext?.(next);
+    }
     return onNext?.('locked');
   };
 
@@ -29,7 +33,7 @@ export const Activate: MessageProps['Actions'] = ({ onNext }) => {
           <li
             key={key}
             className="card max-sm:card-compact glass group w-24 sm:w-36"
-            onClick={() => activate(key)}
+            onClick={() => activateLuckyBag(key)}
           >
             <div className="card-body items-center cursor-pointer relative">
               {value.name && (

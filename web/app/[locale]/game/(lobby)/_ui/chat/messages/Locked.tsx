@@ -8,9 +8,8 @@ import {
 } from '@tabler/icons-react';
 
 import type { MessageProps } from '@/ui/messages';
+import { useLuckyBags, useLuckyWallet } from '@/providers';
 import { BagKeyForm } from '@/ui';
-
-import { useLuckyBags } from '@/providers';
 
 const next = 'gifts';
 
@@ -18,12 +17,14 @@ type BagStatus = 'locked' | 'unlocked' | 'error';
 export const Locked: MessageProps['Actions'] = ({ onNext }) => {
   const t = useTranslations('Components');
   const { name, state, setBagKey, closeBag } = useLuckyBags();
+  const { activate } = useLuckyWallet();
 
   const [status, setStatus] = useState(state as BagStatus);
   const [open, setOpen] = useState(false);
 
   const setPassword = async (key: string, ttl: number, _name: string) => {
     const valid = setBagKey(key, ttl);
+    if (valid) activate();
 
     setStatus(valid ? 'unlocked' : 'error');
     setOpen(false);

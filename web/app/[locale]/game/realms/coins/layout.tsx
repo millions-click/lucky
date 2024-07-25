@@ -4,7 +4,7 @@ import { unstable_setRequestLocale } from 'next-intl/server';
 import { Background } from '@/providers';
 import type { Params } from '@/app/[locale]/locale';
 
-const bg = 'coins.svg';
+const bg = 'coins.png';
 
 export default function Layout({
   children,

@@ -3,8 +3,9 @@
 import { useState } from 'react';
 import { Activate, Locked, Timer, Generated, Secure, Bag } from './messages';
 
-import type { LuckyPassState, CryptoState } from '@/providers/types.d';
-import { useCrypto, useLuckyBags, useLuckyPass } from '@/providers';
+import type { LuckyPassState, CryptoState, BagType } from '@/providers/types.d';
+import type { LuckyBagState } from '@/adapters';
+import { useCrypto, useLuckyBags, useLuckyPass, usePlayer } from '@/providers';
 import {
   type ChatMessages,
   ChatController,
@@ -12,7 +13,6 @@ import {
   asLink,
   Later,
 } from '@/ui/messages';
-import type { LuckyBagState } from '@/adapters';
 
 const MESSAGES = {
   welcome: { next: 'mood' },
@@ -35,27 +35,25 @@ const MESSAGES = {
 } as ChatMessages;
 type MessageKey = keyof typeof MESSAGES;
 
-// TODO: If the user is using an external wallet, it should go directly to the last message.
 function getActiveMessage(
   pass: LuckyPassState,
   key: CryptoState,
-  bag: LuckyBagState
+  bag: LuckyBagState,
+  bagType: BagType
 ) {
-  switch (pass) {
-    case 'saved':
-      return 'later';
+  if (pass === 'saved') return 'later';
+  if (bagType === 'external') return 'gifts';
+
+  switch (bag) {
+    case 'empty':
+      return 'welcome';
     case 'idle':
-    case 'active':
-      switch (bag) {
-        case 'empty':
-          return 'welcome';
-        case 'idle':
-          return 'activate';
-        case 'locked':
-          return 'locked';
-        case 'unlocked':
-          return key === 'unsafe' ? 'secure' : 'gifts';
-      }
+      return 'activate';
+    case 'locked':
+      return 'locked';
+    case 'unlocked':
+      if (bagType === 'none') return 'activate';
+      return key === 'unsafe' ? 'secure' : 'gifts';
   }
 }
 
@@ -63,10 +61,11 @@ export function LobbyChatController() {
   const { state: key } = useCrypto();
   const { state: bag } = useLuckyBags();
   const { state: pass } = useLuckyPass();
+  const { bagType } = usePlayer();
 
   // TODO: Save the path in the local storage and restore it on reload. Use it to initialize the active message.
   const [active, setActive] = useState<MessageKey | undefined>(
-    getActiveMessage(pass, key, bag)
+    getActiveMessage(pass, key, bag, bagType)
   );
 
   return (

@@ -42,6 +42,7 @@ export function Turns({
           >
             <div className="grid grid-flow-col gap-2 text-center auto-cols-max *:pointer-events-none">
               {Object.entries(countdown)
+                // @ts-expect-error Somehow this is losing the type context. CHECK.
                 .filter(([_, value]) => value > 0)
                 .map(([key, value], i) => (
                   <div
