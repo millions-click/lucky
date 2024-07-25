@@ -79,7 +79,7 @@ export function Message({
   return (
     <div
       className={`chat chat-start lg:chat-end mx-2 sm:mx-4 ${
-        backdrop ? 'max-w-3xl' : 'max-w-xs sm:max-w-md lg:max-w-lg'
+        backdrop ? 'max-w-3xl' : 'max-[400px]:max-w-xs max-w-md lg:max-w-lg'
       }`}
     >
       <div className={`chat-image avatar ${backdrop ? 'self-start mt-6' : ''}`}>

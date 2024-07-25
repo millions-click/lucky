@@ -19,7 +19,7 @@ export function Active({ pass, to }: RedeemProps) {
       <h1 className="text-5xl text-info font-bold">{t('title')}</h1>
 
       <div className="flex items-center justify-center">
-        <CountdownBag countdown={countdown} size="lg" />
+        <CountdownBag {...countdown} size="lg" />
       </div>
       <p className="py-6 text-warning">{t(`description.${type}`)}</p>
 

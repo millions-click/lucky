@@ -231,6 +231,18 @@
           "failed": "Error al enviar"
         }
       }
+    },
+    "RealmEntry": {
+      "title": "Entrada al Reino",
+      "expired": {
+        "title": "LuckyPass expirado",
+        "description": "Necessitas activar un LuckyPass para entrar a este reino."
+      },
+      "action": {
+        "buy": "Obtener LuckyPass",
+        "activating": "Activando lucky pass...",
+        "transporting": "Agarrate fuerte, te transportare ahora..."
+      }
     }
   },
   "General": {
@@ -241,7 +253,6 @@
     }
   },
   "Index": {
-    "title": "¡Hola mundo!",
     "messages": [
       {
         "text": "Parece que tienes suerte hoy. Has encontrado una de las entradas secretas a la tierra de la suerte.",
@@ -388,31 +399,26 @@
   },
   "Realms": {
     "title": "Reinos",
+    "name": {
+      "coin": "Reino de las Monedas",
+      "dice": "Reino de los Dados",
+      "card": "Reino de las Cartas",
+      "slot": "Reino de las Tragamonedas",
+      "roulette": "Reino de la Ruleta"
+    },
     "messages": {
       "welcome": {
         "text": "¡Saludos, viajero afortunado! Soy Emili, tu guía a través de los reinos de Luckyland. Has sido transportado al portal de los reinos.",
         "advice": "Este es el lugar donde puedes explorar los diferentes reinos de Luckyland."
       },
-      "intro": {
-        "text": "Como ya sabes, para entrar a un reino necesitas un LuckyPass. Una vez entres en alguno este se activara y tendrás 60 minutos para explorar y reclamar tus tesoros.",
-        "advice": "Podras ir y venir entre los reinos que hayas desbloqueado."
-      },
       "first": {
-        "text": "Como visitante por primera vez, solo tienes disponible un reino: el Reino de las Monedas. Nuevos reinos se desbloquearán a medida que avances por Luckyland.",
-        "advice": "No te preocupes, siempre tendrás a alguien a tu lado para guiarte.",
-        "select": {
-          "title": "¿Qué te gustaría hacer?",
-          "options": "Entrar al Reino de las Monedas, Volveré más tarde"
-        }
+        "text": "Como visitante por primera vez, solo tienes disponible un reino. Nuevos reinos se desbloquearán a medida que avances por Luckyland.",
+        "advice": "Al entrar a un reino, tu LuckyPass se activará. Podrás ir y venir entre los reinos que hayas desbloqueado."
+      },
+      "expired": {
+        "text": "Asombrosa aventura! Tu LuckyPass ha expirado.",
+        "advice": "Puedes obtener un nuevo LuckyPass en la tienda o esperar por tu siguiente gema de la suerte."
       }
-    },
-    "links": {
-      "lobby": "Lobby",
-      "coins": "Monedas"
-    },
-    "actions": {
-      "enter": "Entrar",
-      "exit": "Salir"
     }
   },
   "Coins": {

@@ -1,7 +1,7 @@
 import { IconAlarm } from '@tabler/icons-react';
 
 import { MoneyBagIcon } from '@/ui/icons';
-import { type Countdown } from '@/providers';
+import type { Countdown, LuckyPassState } from '@/providers/types.d';
 
 const DISPLAY = ['hours', 'minutes', 'seconds'];
 
@@ -26,24 +26,33 @@ const CLASSES = {
   },
 };
 
-type size = keyof typeof CLASSES;
+const STATES: Record<LuckyPassState, { text: string }> = {
+  idle: { text: 'text-gray-500' },
+  active: { text: 'text-white' },
+  saved: { text: 'text-warning' },
+  expired: { text: 'text-error' },
+};
+
+type Size = keyof typeof CLASSES;
 type CountdownProps = {
   countdown: Countdown;
   display?: string[];
-  size?: size;
+  size?: Size;
+  state: LuckyPassState;
 };
 export function CountdownBag({
   countdown,
   display = DISPLAY,
   size = 'md',
+  state,
 }: CountdownProps) {
   const classNames = CLASSES[size];
 
   return (
-    <div className="flex text-white items-end">
+    <div className="flex items-end">
       <MoneyBagIcon className={`${classNames.icon} z-10`} />
       <div
-        className={`bg-base-100 border-orange-500 rounded-box flex items-center ${classNames.clock}`}
+        className={`bg-base-100 border-orange-500 rounded-box flex items-center ${STATES[state].text} ${classNames.clock}`}
       >
         <IconAlarm className={classNames.alarm} />
         <span

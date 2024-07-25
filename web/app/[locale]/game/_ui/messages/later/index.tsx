@@ -17,6 +17,7 @@ export const Later: MessageProps['Actions'] = ({ onNext, ...props }) => {
     save,
     redeem,
   } = useLuckyPass();
+
   const redeemUrl = useMemo(() => {
     if (!code) return;
     return `${getBaseURL()}/redeem?pass=${code}`;
@@ -59,7 +60,7 @@ export const Later: MessageProps['Actions'] = ({ onNext, ...props }) => {
       />
 
       <div className="flex flex-col justify-center items-center gap-8 m-4">
-        <CountdownBag countdown={countdown} />
+        <CountdownBag {...countdown} />
 
         {!code && (
           <button className="btn btn-primary w-full" onClick={save}>

@@ -54,8 +54,9 @@ export async function activateLuckyPass(address: string) {
   if (!pass) return null;
   if (pass.address && pass.address !== address)
     throw new Error('Invalid address');
+  if (pass.activated) return pass;
 
-  const expires = getExpires(pass.ttl);
+  const expires = getExpires(pass.ttl, 1.5);
   return setLuckyPass(
     {
       ...pass,
@@ -84,6 +85,6 @@ export async function redeemLuckyPass(jwt: string) {
   const session = (await decrypt(jwt)) as LuckyPassSession;
   if (!session) return null;
 
-  const expires = getExpires(session.ttl);
+  const expires = getExpires(session.ttl, 1.5);
   return setLuckyPass(session, expires);
 }

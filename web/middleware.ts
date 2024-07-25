@@ -7,6 +7,7 @@ import { getLuckyPass } from '@/actions';
 
 const i18n = createMiddleware({ locales, defaultLocale });
 const localePath = new RegExp(`^/(${locales.join('|')})(.*)`);
+const gamePath = new RegExp(`^/game/realms(/.*)?`);
 
 export async function middleware(req: NextRequest, _event: NextFetchEvent) {
   const { pathname } = req.nextUrl;
@@ -16,15 +17,27 @@ export async function middleware(req: NextRequest, _event: NextFetchEvent) {
   if (match) {
     const path = match[2];
 
-    if (!path) {
-      // Forward to the game if the user has a lucky pass.
-      // const luckyPass = await getLuckyPass();
-      // if (luckyPass) return NextResponse.redirect(new URL('/game', req.url));
-    }
-
     if (path.startsWith('/game')) {
       const luckyPass = await getLuckyPass();
       if (!luckyPass) return NextResponse.redirect(new URL('/', req.url));
+
+      const gameMatch = path.match(gamePath);
+      if (gameMatch) {
+        const realm = gameMatch[1];
+
+        if (realm) {
+          const { ttl, activated } = luckyPass;
+          const state = activated
+            ? Date.now() > activated + ttl * 1000
+              ? 'expired'
+              : 'active'
+            : 'inactive';
+          if (state !== 'active')
+            return NextResponse.redirect(
+              new URL(`/game/realms?from=middleware&action=${state}`, req.url)
+            );
+        }
+      }
     }
   }
 

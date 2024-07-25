@@ -3,12 +3,11 @@
 import { createContext, useContext, useEffect, useState } from 'react';
 import moment from 'moment';
 
-export type Countdown = {
-  days: number;
-  hours: number;
-  minutes: number;
-  seconds: number;
-};
+import type {
+  Countdown,
+  CountdownState,
+  CountdownContext,
+} from '@/providers/types.d';
 
 const defaultCountDown: Countdown = {
   days: 0,
@@ -16,22 +15,7 @@ const defaultCountDown: Countdown = {
   minutes: 0,
   seconds: 0,
 };
-type State = 'unset' | 'idle' | 'running' | 'paused' | 'finished';
-type CountdownContext = {
-  name?: string;
-  state: State;
 
-  ttl: number; // In seconds
-  expires: number;
-  countdown: Countdown;
-
-  setup: (ttl: number, start?: boolean, name?: string) => void;
-  start: (expires?: number) => void;
-  reset: () => void;
-  pause: () => void;
-  resume: () => void;
-  toggle: () => void;
-};
 const Context = createContext({
   state: 'idle',
   countdown: defaultCountDown,
@@ -61,7 +45,7 @@ export function CountdownProvider({
   onFinished,
 }: CountdownProviderProps) {
   const [name, setName] = useState<string>();
-  const [state, setState] = useState<State>('unset');
+  const [state, setState] = useState<CountdownState>('unset');
   const [ttl, setTtl] = useState(0);
   const [expires, setExpires] = useState(0);
   const [countdown, setCountdown] = useState(defaultCountDown);

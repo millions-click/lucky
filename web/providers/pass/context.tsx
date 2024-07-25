@@ -17,23 +17,32 @@ import { activateLuckyPass, saveLuckyPass, redeemLuckyPass } from '@/actions';
 const Context = createContext({} as LuckyPassContext);
 
 function Provider({ children, session }: LuckyPassProviderProps) {
-  const { setup, countdown, start } = useCountdown();
+  const { setup, start, countdown } = useCountdown();
   const [pass, setPass] = useState(session);
   const state = useMemo(() => {
     if (pass.code) return 'saved';
-    if (pass.activated) return 'active';
+    if (pass.activated) {
+      const expires = pass.activated + pass.ttl * 1000;
+      if (expires < Date.now()) return 'expired';
+      return 'active';
+    }
     return 'idle';
   }, [pass]);
 
   useEffect(() => {
-    setup(pass.ttl, false, 'lucky-pass');
-    if (pass.activated) start(pass.activated + pass.ttl * 1000);
+    setup(state === 'expired' ? 0 : pass.ttl, false, 'lucky-pass');
+
+    if (pass.activated)
+      start(state === 'active' ? pass.activated + pass.ttl * 1000 : pass.exp);
   }, [pass]);
 
   const value = {
     state,
     pass,
-    countdown,
+    countdown: {
+      countdown,
+      state,
+    },
 
     save: useCallback(async () => {
       const savedPass = await saveLuckyPass();
@@ -43,6 +52,8 @@ function Provider({ children, session }: LuckyPassProviderProps) {
       return savedPass.code;
     }, []),
     activate: useCallback(async (bag: string) => {
+      if (state !== 'idle') throw new Error('Pass already activated');
+
       const activatedPass = await activateLuckyPass(bag);
       if (!activatedPass) throw new Error('Failed to activate the pass');
       setPass(activatedPass);
@@ -60,7 +71,7 @@ function Provider({ children, session }: LuckyPassProviderProps) {
   return <Context.Provider value={value}>{children}</Context.Provider>;
 }
 
-function closeSession() {}
+const closeSession = () => window?.location.reload();
 
 export function LuckyPassProvider({
   children,
