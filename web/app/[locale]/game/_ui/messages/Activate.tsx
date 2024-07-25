@@ -5,9 +5,7 @@ import type { MessageProps } from '@/ui/messages';
 import { useLuckyBags, useLuckyWallet } from '@/providers';
 import { ellipsify } from '@/utils';
 
-const next = 'gifts';
-
-export const Activate: MessageProps['Actions'] = ({ onNext }) => {
+export const Activate: MessageProps['Actions'] = ({ next = '', onNext }) => {
   const t = useTranslations('Components');
   const { active, bags, openBag, deleteBag } = useLuckyBags();
   const { activate } = useLuckyWallet();

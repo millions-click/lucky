@@ -1,7 +1,7 @@
 'use client';
 
 import { useState } from 'react';
-import { Activate, Locked, Timer, Generated, Secure, Bag } from './messages';
+import { Timer, Generated, Secure, Bag } from './messages';
 
 import type { LuckyPassState, CryptoState, BagType } from '@/providers/types.d';
 import type { LuckyBagState } from '@/adapters';
@@ -9,6 +9,9 @@ import { useCrypto, useLuckyBags, useLuckyPass, usePlayer } from '@/providers';
 import {
   type ChatMessages,
   ChatController,
+  getBagMessage,
+  Activate,
+  Locked,
   Selector,
   asLink,
   Later,
@@ -16,8 +19,8 @@ import {
 
 const MESSAGES = {
   welcome: { next: 'mood' },
-  activate: { Actions: Activate },
-  locked: { Actions: Locked },
+  activate: { next: 'gifts', Actions: Activate, noNav: true },
+  locked: { next: 'gifts', Actions: Locked, noNav: true },
   mood: { Actions: Selector({ actions: ['ready', 'eager', 'calm', 'lucky'] }) },
   lucky: { next: 'pass' },
   pass: { Actions: Selector({ actions: ['timer', 'later'] }) },
@@ -43,16 +46,13 @@ function getActiveMessage(
 ) {
   if (pass === 'saved') return 'later';
   if (bagType === 'external') return 'gifts';
+  const bagMessage = getBagMessage(bag, bagType);
+  if (bagMessage) return bagMessage;
 
   switch (bag) {
     case 'empty':
       return 'welcome';
-    case 'idle':
-      return 'activate';
-    case 'locked':
-      return 'locked';
     case 'unlocked':
-      if (bagType === 'none') return 'activate';
       return key === 'unsafe' ? 'secure' : 'gifts';
   }
 }

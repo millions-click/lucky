@@ -408,6 +408,12 @@
       "roulette": "Roulette Realm"
     },
     "messages": {
+      "activate": {
+        "text": "You need to activate you LuckyBag to continue."
+      },
+      "locked": {
+        "text": "Ups! It seems your LuckyBag is locked"
+      },
       "welcome": {
         "text": "Greetings lucky traveler! I'm Emili, your guide through the realms of Luckyland. You have been transported to the realms portal.",
         "advice": "This is where you can explore the different realms of Luckyland."

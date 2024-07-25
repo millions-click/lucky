@@ -407,6 +407,12 @@
       "roulette": "Reino de la Ruleta"
     },
     "messages": {
+      "activate": {
+        "text": "Necesitas activar tu LuckyBag para continuar."
+      },
+      "locked": {
+        "text": "Ups! Parece que tu LuckyBag esta bloqueada."
+      },
       "welcome": {
         "text": "¡Saludos, viajero afortunado! Soy Emili, tu guía a través de los reinos de Luckyland. Has sido transportado al portal de los reinos.",
         "advice": "Este es el lugar donde puedes explorar los diferentes reinos de Luckyland."
