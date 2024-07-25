@@ -15,6 +15,15 @@ export async function getAvgTxFee(
 }
 
 const ACCOUNT_COST = 0.0025 * LAMPORTS_PER_SOL;
-export async function getTokenAccountCreationCost(): Promise<bigint> {
-  return BigInt(ACCOUNT_COST);
+export async function getTokenAccountCreationCost(
+  accounts = 1
+): Promise<bigint> {
+  return BigInt(Math.round(ACCOUNT_COST * accounts));
+}
+
+const PLAYER_ACCOUNT_COST = 0.0018 * LAMPORTS_PER_SOL;
+export async function getPlayerAccountCreationCost(
+  accounts = 1
+): Promise<bigint> {
+  return BigInt(Math.round(PLAYER_ACCOUNT_COST * accounts));
 }

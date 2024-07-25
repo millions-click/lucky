@@ -13,7 +13,11 @@ import type { Token } from '@utils/token';
 import { CopyToClipboard, QRCode } from '@/ui';
 
 import { fromBigInt } from '@luckyland/anchor';
-import { getAvgTxFee, getTokenAccountCreationCost } from '@constants';
+import {
+  getAvgTxFee,
+  getPlayerAccountCreationCost,
+  getTokenAccountCreationCost,
+} from '@constants';
 
 type InsufficientBalanceProps = {
   cost: bigint | null;
@@ -48,13 +52,15 @@ export function InsufficientBalance({
       const memo = `${token.symbol}|${pkg.title}|${pkg.amount}`;
 
       // If the account balance is 0 there almost certainly isn't a token account neither. Gem & Trader accounts are required.
-      const account_cost =
-        balance === 0
-          ? (await getTokenAccountCreationCost()) * BigInt(2)
-          : BigInt(0);
+      let account_cost =
+        balance === 0 ? await getTokenAccountCreationCost(2) : BigInt(0);
+      // If the player account balance is 0, is quite probable that the player account is also missing. We are assuming the user will play ~5 games.
+      account_cost +=
+        balance === 0 ? await getPlayerAccountCreationCost(5) : BigInt(0);
 
       // Each tx has a small fee to be processed. We are assuming the user will play ~25% more than the package amount.
       const tx_costs = await getAvgTxFee(pkg.amount * 1.25);
+
       const total = cost
         ? cost + tx_costs + account_cost
         : tx_costs + account_cost;
