@@ -2,6 +2,20 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [0.2.2](///compare/v0.2.1...v0.2.2) (2024-07-25)
+
+
+### Features
+
+* **web:** 👻 Contexts Dependency c128645
+* **web:** 👻 Lucky Pass | Context 7fdb5f6
+* **web:** 👻 Lucky Pass | Middleware d878c60
+* **web:** 👻 Portal | Realms b96e4b3
+* **web:** 👻 Realm Entry 60a2347
+* **web:** 👻 Realms | Context 005d3ec
+* **web:** 👻 Redeem d088da4
+* **web:** 👻 Store | Context c362fde
+
 ### [0.2.1](///compare/v0.2.0...v0.2.1) (2024-07-23)
 
 
