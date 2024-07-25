@@ -8,6 +8,7 @@ import type { Package } from '../contants';
 
 import type { Token } from '@utils/token';
 import { BagButton } from '@/ui/bag';
+import { StoreProvider } from '@/providers';
 
 type PayProps = {
   pkg: Package;
@@ -22,7 +23,11 @@ export function Pay(props: PayProps) {
 
   return (
     <div className="flex flex-col justify-center items-center">
-      {publicKey && <Connected {...props} />}
+      {publicKey && (
+        <StoreProvider>
+          <Connected {...props} />
+        </StoreProvider>
+      )}
 
       <div
         className={

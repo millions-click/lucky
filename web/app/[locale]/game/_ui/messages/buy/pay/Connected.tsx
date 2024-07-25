@@ -9,8 +9,7 @@ import type { Package } from '../contants';
 import { InsufficientBalance } from './InsufficientBalance';
 
 import type { Token } from '@utils/token';
-import { useStoreSell } from '@/hooks';
-import { usePlayer } from '@/providers';
+import { usePlayer, useStoreSell } from '@/providers';
 
 import { toBN } from '@luckyland/anchor';
 import { PublicKey } from '@solana/web3.js';
@@ -33,20 +32,21 @@ export function Connected({ pkg, token, confirmed, onChange }: PayProps) {
   const t = useTranslations('Components.Buy.Pay');
   const { player, balance, getAccount, createTokenAccount, refresh } =
     usePlayer();
-  const { store, sell, price } = useStoreSell({ trader: token });
+  const { store, sell, getPrice } = useStoreSell();
   const [state, setState] = useState<'idle' | 'paying' | 'error' | 'completed'>(
     confirmed ? 'completed' : 'idle'
   );
 
-  const cost = useMemo(() => price(pkg.amount), [pkg.amount, price]);
+  const cost = useMemo(() => getPrice(pkg.amount), [pkg.amount, getPrice]);
   const enoughFunds = balance && cost && balance > cost;
-  if (!player) return null;
 
   useEffect(() => {
     if (enoughFunds) return;
     const debounced = setTimeout(() => refresh(true), 500);
     return () => clearTimeout(debounced);
   }, [cost]);
+
+  if (!player) return null;
 
   async function handleCreateTokenAccount(): Promise<PublicKey> {
     const { address } = await createTokenAccount(token.mint);
