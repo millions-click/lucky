@@ -59,7 +59,7 @@ export function useCreateTokenAccount(owner: PublicKey | null) {
       if (signature) transactionToast(signature, 'Token account created');
 
       const keys = [
-        getTokenAccountsOptions(connection, owner).queryKey,
+        getTokenAccountsOptions(owner, connection).queryKey,
         getBalanceOptions(owner, connection).queryKey,
       ];
 

@@ -43,7 +43,7 @@ export function TokensProvider({
 }) {
   const client = useQueryClient();
   const { connection } = useConnection();
-  const accountsQuery = useQuery(getTokenAccountsOptions(connection, owner));
+  const accountsQuery = useQuery(getTokenAccountsOptions(owner, connection));
   const createTokenAccount = useCreateTokenAccount(owner);
 
   const accounts = useMemo(
@@ -106,7 +106,7 @@ export function TokensProvider({
     refresh: useCallback(
       async () =>
         client.invalidateQueries({
-          queryKey: getTokenAccountsOptions(connection, owner).queryKey,
+          queryKey: getTokenAccountsOptions(owner, connection).queryKey,
         }),
       [client, owner, connection]
     ),
