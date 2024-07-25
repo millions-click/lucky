@@ -3,11 +3,7 @@
 import { PropsWithChildren } from 'react';
 
 import { Header } from './Header';
-import {
-  LuckyBagProvider,
-  TradersProvider,
-  useGameBackground,
-} from '@/providers';
+import { useGameBackground, LuckyBagProvider } from '@/providers';
 
 export function GameLayout({ children }: PropsWithChildren) {
   const { bg, className: bgClassName } = useGameBackground();
@@ -20,19 +16,17 @@ export function GameLayout({ children }: PropsWithChildren) {
 
   return (
     <LuckyBagProvider>
-      <TradersProvider>
-        <Header />
-        <div
-          className={className}
-          style={{
-            backgroundImage: `url(${bg})`,
-          }}
-        >
-          <div className="hero-content text-neutral-content text-center">
-            {children}
-          </div>
+      <Header />
+      <div
+        className={className}
+        style={{
+          backgroundImage: `url(${bg})`,
+        }}
+      >
+        <div className="hero-content text-neutral-content text-center">
+          {children}
         </div>
-      </TradersProvider>
+      </div>
     </LuckyBagProvider>
   );
 }

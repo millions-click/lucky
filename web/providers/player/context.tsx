@@ -19,7 +19,14 @@ import { useQuery, useQueryClient } from '@tanstack/react-query';
 
 import type { PlayerContext } from './player.d';
 
-import { TokensProvider, useCluster, useTokens } from '@/providers';
+import {
+  PortalProvider,
+  GemsProvider,
+  TradersProvider,
+  TokensProvider,
+  useCluster,
+  useTokens,
+} from '@/providers';
 import { LuckyWalletAdapter } from '@/adapters';
 import { getAvgTxFeeOptions, getBalanceOptions } from '@/queries';
 
@@ -92,13 +99,25 @@ function Provider({ children }: PropsWithChildren) {
   return <Context.Provider value={value}>{children}</Context.Provider>;
 }
 
-export function PlayerProvider({ children }: PropsWithChildren) {
+function ActivePlayerProvider({ children }: PropsWithChildren) {
   const { publicKey } = useWallet();
 
   return (
     <TokensProvider owner={publicKey}>
       <Provider>{children}</Provider>
     </TokensProvider>
+  );
+}
+
+export function PlayerProvider({ children }: PropsWithChildren) {
+  return (
+    <PortalProvider>
+      <GemsProvider>
+        <TradersProvider>
+          <ActivePlayerProvider>{children}</ActivePlayerProvider>
+        </TradersProvider>
+      </GemsProvider>
+    </PortalProvider>
   );
 }
 
