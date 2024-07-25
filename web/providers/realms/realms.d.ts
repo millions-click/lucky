@@ -1,10 +1,7 @@
-import { Portal } from '@/providers/portal/portal';
+import type { Portal } from '@/providers/types.d';
 
-// TODO: Extract the correct Game Interface to use it as the T=type.
-export type Realm = Awaited<
-  ReturnType<Portal['account']['game']['all']>
->[number];
-
+export type Realms = Awaited<ReturnType<Portal['account']['game']['all']>>;
+export type Realm = Realms[number];
 export type RealmInfo = {
   id: string; // Game->Account->Name
   name: string; // URL path
@@ -13,11 +10,11 @@ export type RealmInfo = {
   next?: string;
 };
 
-export type RealmsContext<T = Realm> = {
+export type RealmsContext = {
   next: RealmInfo;
-  active: T | null;
-  realms: T[];
-  activate: (id: string) => Promise<void>;
+  active: Realm | null;
+  realms: Realms;
+  activate: (id: string) => void;
 };
 
 export const RealmsMap: Record<string, RealmInfo> = {

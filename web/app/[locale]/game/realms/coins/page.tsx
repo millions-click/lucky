@@ -1,11 +1,28 @@
-import { useTranslations } from 'next-intl';
-import { unstable_setRequestLocale } from 'next-intl/server';
+'use client';
 
-import type { Params } from '@/app/[locale]/locale';
+import { useMemo } from 'react';
 
-export default function Coins({ params: { locale } }: Params) {
-  unstable_setRequestLocale(locale);
-  const t = useTranslations('Coins');
+import { Coin, Side } from './_ui';
+import { Gamepad } from '@/ui/realms';
+import { useGame } from '@/providers';
 
-  return <h1 className="text-white text-4xl">{t('title')}</h1>;
+function getOption(lastRound?: number[], choices?: number): Side {
+  if (!lastRound || !choices) return 'heads';
+
+  const [outcome] = lastRound;
+  return outcome % choices === 1 ? 'heads' : 'tails';
+}
+export default function Coins() {
+  const { player, mode } = useGame();
+  const side = useMemo(
+    () => getOption(player?.lastRound, mode?.choices),
+    [player?.lastRound]
+  );
+
+  return (
+    <>
+      <Coin side={side} />
+      <Gamepad />
+    </>
+  );
 }

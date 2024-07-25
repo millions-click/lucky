@@ -32,7 +32,7 @@ export function useStore() {
 
   const getPrice = useCallback(
     (amount: number) => {
-      if (!store) return null;
+      if (!store || !answer) return null;
       return computePrice(
         amount,
         fromBN(store.price, decimals),

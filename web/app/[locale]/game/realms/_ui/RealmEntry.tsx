@@ -15,7 +15,7 @@ export const RealmEntry = ({ params }: RealmEntryProps) => {
   const t = useTranslations('');
   const { player } = usePlayer();
   const { state, activate: activatePass } = useLuckyPass();
-  const { next, activate: activateRealm } = useRealms();
+  const { next } = useRealms();
   const router = useRouter();
 
   const [action, setAction] = useState<'activating' | 'transporting' | 'idle'>(
@@ -33,7 +33,6 @@ export const RealmEntry = ({ params }: RealmEntryProps) => {
 
     const href = `realms/${next.name}${params ? `?${params}` : ''}`;
     router.prefetch(href);
-    await activateRealm(next.id);
 
     setTimeout(
       () => {

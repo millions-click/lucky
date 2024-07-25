@@ -1,21 +1,41 @@
-import { PropsWithChildren } from 'react';
-import { unstable_setRequestLocale } from 'next-intl/server';
+'use client';
 
-import { Background } from '@/providers';
-import type { Params } from '@/app/[locale]/locale';
+import { PropsWithChildren, useEffect, useMemo } from 'react';
 
+import { Background, useRealms } from '@/providers';
+
+const REALM_ID = 'coin';
 const bg = 'coins.png';
 
-export default function Layout({
-  children,
-  params: { locale },
-}: PropsWithChildren<Params>) {
-  unstable_setRequestLocale(locale);
+export default function Layout({ children }: PropsWithChildren) {
+  const { active, activate } = useRealms();
+  const ready = useMemo(
+    () => active?.account.name.toLowerCase() === REALM_ID,
+    [active]
+  );
+
+  useEffect(() => {
+    if (ready) return;
+    activate(REALM_ID);
+  }, [ready]);
 
   return (
-    <div className="max-w-md bg-base-300/20 p-8">
+    <>
       <Background name={bg} />
-      {children}
-    </div>
+      {ready ? (
+        <div className="max-w-md relative flex items-center justify-center">
+          <figure className="pointer-events-none">
+            <img
+              src="/assets/images/realms/coins/island.png"
+              alt="Coins"
+              className="w-full pointer-events-none"
+            />
+          </figure>
+          {children}
+        </div>
+      ) : (
+        <span className="loading loading-dots loading-lg" />
+      )}
+    </>
   );
 }
