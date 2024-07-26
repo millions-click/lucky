@@ -1,5 +1,5 @@
 import type { PropsWithChildren } from 'react';
-import { AmmoIcon, FairyDustIcon, IconSet } from '@/ui/icons';
+import { AmmoIcon, FairyDustIcon, GemIcon, IconSet } from '@/ui/icons';
 
 const CLASSES = {
   xs: {
@@ -23,6 +23,7 @@ const CLASSES = {
 const Icons = {
   dust: FairyDustIcon,
   ammo: AmmoIcon,
+  gem: GemIcon,
 };
 const { Icon } = IconSet(Icons);
 

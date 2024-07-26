@@ -35,6 +35,20 @@ type BadgeProps = {
   glow: boolean;
 };
 
+function Gem({ token, size, glow }: BadgeProps & { token: Token }) {
+  const { getAccount } = usePlayer();
+  const account = getAccount(token.mint);
+  const className = CLASSES[size];
+
+  return (
+    <Badge icon="gem" size={size} glow={glow}>
+      <span className={`pl-1 ${className.label}`}>
+        {formatter.format(account?.amount || 0)}
+      </span>
+    </Badge>
+  );
+}
+
 function FairiesDust({ size, glow }: BadgeProps) {
   const { balance, roundFee } = usePlayer();
   const dust = useMemo(
@@ -69,27 +83,32 @@ function LuckyShot({ token, size, glow }: BadgeProps & { token: Token }) {
   );
 }
 
-type AmmoProps = Partial<BadgeProps> & {
-  token: Token | null;
+type BagProps = Partial<BadgeProps> & {
+  gem: Token | null;
+  trader: Token | null;
   className?: string;
+  vault?: Size;
   dust?: Size;
   shot?: Size;
 };
-export function Ammo({
-  token,
+export function Bag({
+  gem,
+  trader,
   className = '',
   size = 'sm',
   glow = true,
+  vault,
   dust,
   shot,
-}: AmmoProps) {
+}: BagProps) {
   const { player } = usePlayer();
-  if (!player || !token) return null;
+  if (!player || !trader || !gem) return null;
 
   return (
     <div className={className}>
+      <Gem token={gem} size={vault || size} glow={glow} />
       <FairiesDust size={dust || size} glow={glow} />
-      <LuckyShot token={token} size={shot || size} glow={glow} />
+      <LuckyShot token={trader} size={shot || size} glow={glow} />
     </div>
   );
 }

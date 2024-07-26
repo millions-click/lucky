@@ -1,3 +1,4 @@
 export * from './BagDialog';
 export * from './BagButton';
-export * from './Ammo';
+export * from './Bag';
+export * from './Badge';
