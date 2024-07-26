@@ -1,7 +1,13 @@
 import { PublicKey } from '@solana/web3.js';
-import { TokensContext } from '@/providers/tokens/tokens';
+import type { TokensContext } from '@/providers/tokens/tokens';
 
 type BagType = 'lucky-bag' | 'external' | 'none';
+export type CreateTokenAccountResult = {
+  signature: string;
+  mint: PublicKey;
+  address: PublicKey;
+};
+
 export type PlayerContext = Pick<TokensContext, 'tokens' | 'getAccount'> & {
   player: PublicKey | null;
   bagType: BagType;
@@ -10,6 +16,6 @@ export type PlayerContext = Pick<TokensContext, 'tokens' | 'getAccount'> & {
   roundFee: bigint;
   refresh: (onlyBalance?: boolean) => Promise<void>;
 
-  createTokenAccount: TokensContext['create'];
+  createTokenAccount: (mint: PublicKey) => Promise<CreateTokenAccountResult>;
   disconnect: () => void;
 };
