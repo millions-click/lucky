@@ -11,6 +11,7 @@ export type GameContext = {
   player: Player;
   ammo: TokenAccount | null;
   bag: TokenAccount | null;
+  vault: TokenAccount | null;
 
   playRound: (choices: Array<number>) => Promise<string>;
 };

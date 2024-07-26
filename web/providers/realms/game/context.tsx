@@ -13,6 +13,7 @@ import { useMutation, useQuery } from '@tanstack/react-query';
 import type { Realm } from '../realms.d';
 import type { GameContext } from './game.d';
 import {
+  useBounties,
   useGems,
   useLuckyPass,
   usePlayer,
@@ -20,7 +21,7 @@ import {
   useTraders,
 } from '@/providers';
 
-import { toBN } from '@luckyland/anchor';
+import { getBountyVaultPDA, toBN } from '@luckyland/anchor';
 import {
   getBountyOptions,
   getGameModeOptions,
@@ -38,6 +39,7 @@ export function GameProvider({
   const { player, getAccount, createTokenAccount, refresh } = usePlayer();
   const { trader } = useTraders();
   const { gem } = useGems();
+  const { getBounty } = useBounties();
 
   const seed = useMemo(() => toBN(pass.seed.timestamp / 100000), [pass]);
   const ammo = useMemo(() => trader && getAccount(trader.mint), [trader]);
@@ -69,6 +71,12 @@ export function GameProvider({
     () => bountyQuery.data || { bounty: null, pda: null },
     [bountyQuery.data]
   );
+
+  const vaultPda = useMemo(
+    () => bountyPda && getBountyVaultPDA(bountyPda, cluster.network as Cluster),
+    [bountyPda]
+  );
+  const vault = useMemo(() => vaultPda && getBounty(vaultPda), [vaultPda]);
 
   const playerAccountQuery = useQuery(
     getPlayerGameAccountOptions(
@@ -133,6 +141,7 @@ export function GameProvider({
 
     ammo,
     bag,
+    vault,
 
     playRound: playRound.mutateAsync,
   } as GameContext;

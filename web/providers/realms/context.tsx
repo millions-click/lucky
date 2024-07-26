@@ -11,7 +11,7 @@ import {
   RealmsMap,
 } from './realms.d';
 
-import { GameProvider, usePortal } from '@/providers';
+import { BountiesProvider, GameProvider, usePortal } from '@/providers';
 import { getRealmsOptions } from '@/queries';
 
 function findById(realms: Realms, id: string): Realm | null {
@@ -56,7 +56,9 @@ export function RealmsProvider({ children }: { children: React.ReactNode }) {
 
   return (
     <Context.Provider value={value}>
-      <GameProvider realm={active}>{children}</GameProvider>
+      <BountiesProvider>
+        <GameProvider realm={active}>{children}</GameProvider>
+      </BountiesProvider>
     </Context.Provider>
   );
 }
