@@ -52,3 +52,7 @@ CACHEDIR.TAG
 
 .env*
 .vercel
+
+# Auto Generated PWA files
+**/public/sw.js
+**/public/workbox-*.js
