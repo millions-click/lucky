@@ -21,7 +21,7 @@ const MESSAGES = {
   locked: { next: 'first', Actions: Locked, noNav: true },
   welcome: { next: 'first', backdrop: ' ' },
   first: {
-    backdrop: '',
+    backdrop: 'hidden',
     Actions: Selector({
       noTitle: true,
       actions: [

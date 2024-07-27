@@ -51,12 +51,10 @@ export function InsufficientBalance({
       });
       const memo = `${token.symbol}|${pkg.title}|${pkg.amount}`;
 
-      // If the account balance is 0 there almost certainly isn't a token account neither. Gem & Trader accounts are required.
-      let account_cost =
-        balance === 0 ? await getTokenAccountCreationCost(2) : BigInt(0);
-      // If the player account balance is 0, is quite probable that the player account is also missing. We are assuming the user will play ~5 games.
-      account_cost +=
-        balance === 0 ? await getPlayerAccountCreationCost(5) : BigInt(0);
+      // Gem & Trader accounts are required.
+      let account_cost = await getTokenAccountCreationCost(2);
+      // We are assuming the user will play ~5 games.
+      account_cost += await getPlayerAccountCreationCost(5);
 
       // Each tx has a small fee to be processed. We are assuming the user will play ~25% more than the package amount.
       const tx_costs = await getAvgTxFee(pkg.amount * 1.25);
