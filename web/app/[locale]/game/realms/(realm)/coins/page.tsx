@@ -14,11 +14,11 @@ function getOption(lastRound?: number[], choices?: number): Side {
   return outcome % choices === 1 ? 'heads' : 'tails';
 }
 export default function Coins() {
-  const { player, mode } = useGame();
+  const { player, game } = useGame();
   const [choice, setChoice] = useState(NaN);
 
   const side = useMemo(
-    () => getOption(player?.lastRound, mode?.choices),
+    () => getOption(player?.lastRound, game?.choices),
     [player?.lastRound]
   );
 

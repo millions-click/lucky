@@ -10,7 +10,7 @@ const bg = 'coins.png';
 export default function Layout({ children }: PropsWithChildren) {
   const { active, activate } = useRealms();
   const ready = useMemo(
-    () => active?.account.name.toLowerCase() === REALM_ID,
+    () => active?.name.toLowerCase() === REALM_ID,
     [active]
   );
 

@@ -1,11 +1,23 @@
-import type { Portal, TokenAccount } from '@/providers/types.d';
+import type {
+  Bounty,
+  Game,
+  Player,
+  RealmId,
+  TokenAccount,
+} from '@/providers/types.d';
 
-export type Mode = Awaited<ReturnType<Portal['account']['gameMode']['fetch']>>;
-export type Bounty = Awaited<ReturnType<Portal['account']['bounty']['fetch']>>;
-export type Player = Awaited<ReturnType<Portal['account']['player']['fetch']>>;
+export type GameState =
+  | 'idle'
+  | 'loading'
+  | 'newbie'
+  | 'winner'
+  | 'loser'
+  | 'not-enough-ammo';
 
 export type GameContext = {
-  mode: Mode;
+  id?: RealmId;
+  state: GameState;
+  game: Game;
   bounty: Bounty;
 
   player: Player;

@@ -1,16 +1,33 @@
-import type { Portal } from '@/providers/types.d';
+import type { Bounty, GameAccount, GameMode } from '@/providers/types.d';
+import { PublicKey } from '@solana/web3.js';
 
-export type Realms = Awaited<ReturnType<Portal['account']['game']['all']>>;
-export type Realm = Realms[number];
+type PDA = string; // PublicKey;
+
+export type Bounties = Record<PDA, Bounty & { pda: PublicKey }>;
+export type Game = GameMode & {
+  pda: PublicKey;
+  bounties: Bounties;
+  probability: number;
+};
+
+export type Games = Record<PDA, Game>;
+export type Realm = GameAccount & {
+  pda: PublicKey;
+  games: Games;
+};
+
+export type Realms = Record<PDA, Realm>;
+
+type RealmId = Realm['name'];
 export type RealmInfo = {
-  id: string; // Game->Account->Name
+  id: RealmId; // Game->Account->Name
   name: string; // URL path
-  description: string;
   image: string;
   next?: string;
 };
 
 export type RealmsContext = {
+  id?: RealmId;
   next: RealmInfo;
   active: Realm | null;
   realms: Realms;
@@ -21,40 +38,30 @@ export const RealmsMap: Record<string, RealmInfo> = {
   coin: {
     id: 'coin',
     name: 'coins',
-    description:
-      'Coin is the default realm. It is the most common realm and is used for most transactions.',
     image: '/images/realms/coin.png',
     next: 'dice',
   },
   dice: {
     id: 'dice',
     name: 'dices',
-    description:
-      'Dice is the second realm. It is used for gambling and games of chance.',
     image: '/images/realms/dice.png',
     next: 'card',
   },
   card: {
     id: 'card',
     name: 'cards',
-    description:
-      'Card is the third realm. It is used for card games and other games of skill.',
     image: '/images/realms/card.png',
     next: 'slot',
   },
   slot: {
     id: 'slot',
     name: 'slots',
-    description:
-      'Slot is the fourth realm. It is used for slot machines and other games of chance.',
     image: '/images/realms/slot.png',
     next: 'roulette',
   },
   roulette: {
     id: 'roulette',
     name: 'roulette',
-    description:
-      'Roulette is the fifth realm. It is used for roulette and other games of chance.',
     image: '/images/realms/roulette.png',
   },
 };

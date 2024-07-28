@@ -6,12 +6,13 @@ import {
   useContext,
   useEffect,
   useMemo,
+  useState,
 } from 'react';
 import { type Cluster } from '@solana/web3.js';
 import { useMutation, useQuery } from '@tanstack/react-query';
 
 import type { Realm } from '../realms.d';
-import type { GameContext } from './game.d';
+import type { GameContext, GameState } from './game.d';
 import {
   useBounties,
   useGems,
@@ -21,19 +22,17 @@ import {
   useTraders,
 } from '@/providers';
 
-import { getBountyVaultPDA, toBN } from '@luckyland/anchor';
-import {
-  getBountyOptions,
-  getGameModeOptions,
-  getPlayerGameAccountOptions,
-} from '@/queries';
+import { getBountyPDA, getBountyVaultPDA, toBN } from '@luckyland/anchor';
+import { getPlayerGameAccountOptions } from '@/queries';
+import { sortedGames } from '@/models/game';
 
 const Context = createContext({} as GameContext);
 
 export function GameProvider({
   children,
   realm,
-}: PropsWithChildren<{ realm: Realm | null }>) {
+  id,
+}: PropsWithChildren<{ realm: Realm | null; id?: string }>) {
   const { portal, cluster } = usePortal();
   const { pass } = useLuckyPass();
   const { player, getAccount, createTokenAccount, refresh } = usePlayer();
@@ -42,34 +41,33 @@ export function GameProvider({
   const { getBounty } = useBounties();
 
   const seed = useMemo(() => toBN(pass.seed.timestamp / 100000), [pass]);
-  const ammo = useMemo(() => trader && getAccount(trader.mint), [trader]);
+  const ammo = useMemo(
+    () => trader && getAccount(trader.mint),
+    [trader, getAccount]
+  );
   const bag = useMemo(() => gem && getAccount(gem.mint), [gem]);
 
-  const modeQuery = useQuery(
-    getGameModeOptions(
-      realm?.publicKey,
-      '1',
-      portal,
-      cluster.network as Cluster
-    )
-  );
-  const { mode, pda: modePda } = useMemo(
-    () => modeQuery.data || { mode: null, pda: null },
-    [modeQuery.data]
+  const [active, setActive] = useState<string>();
+  const game = useMemo(
+    () => (active && realm?.games ? realm.games[active] : null),
+    [realm?.games, active]
   );
 
-  const bountyQuery = useQuery(
-    getBountyOptions(
-      modePda,
-      gem?.mint,
-      trader?.mint,
-      portal,
-      cluster.network as Cluster
-    )
+  const bountyPda = useMemo(
+    () =>
+      game && trader && gem
+        ? getBountyPDA(
+            game.pda,
+            gem.mint,
+            trader.mint,
+            cluster.network as Cluster
+          )
+        : null,
+    [game, trader, gem]
   );
-  const { bounty, pda: bountyPda } = useMemo(
-    () => bountyQuery.data || { bounty: null, pda: null },
-    [bountyQuery.data]
+  const bounty = useMemo(
+    () => (bountyPda && game ? game.bounties[bountyPda.toString()] : null),
+    [game, bountyPda]
   );
 
   const vaultPda = useMemo(
@@ -81,7 +79,7 @@ export function GameProvider({
   const playerAccountQuery = useQuery(
     getPlayerGameAccountOptions(
       player,
-      modePda,
+      game?.pda,
       portal,
       cluster.network as Cluster
     )
@@ -91,17 +89,32 @@ export function GameProvider({
     [playerAccountQuery.data]
   );
 
+  const state: GameState = useMemo(() => {
+    if (!id) return 'idle';
+    if (!bounty) return 'loading';
+    if (!playerAccount) return 'newbie';
+    if (!ammo || Number(ammo.balance) < bounty.price.toNumber())
+      return 'not-enough-ammo';
+
+    return playerAccount.winner ? 'winner' : 'loser';
+  }, [ammo?.balance, bounty?.price, playerAccount?.winner]);
+
   useEffect(() => {
-    if (!player || !pass.address || player.toString() !== pass.address) {
-      console.log('GameProvider', player?.toString(), pass.address);
-    }
-  }, []);
+    if (active) return;
+    if (!realm) return;
+
+    const games = sortedGames(realm.games);
+    const game = games.shift();
+    if (!game) throw new Error('No games found');
+
+    setActive(game.pda.toString());
+  }, [realm]);
 
   const playRound = useMutation({
     mutationFn: async (choices: Array<number>) => {
       if (!player) throw new Error('Invalid player');
       if (!realm) throw new Error('Invalid game');
-      if (!modePda) throw new Error('Invalid mode');
+      if (!game?.pda) throw new Error('Invalid mode');
       if (!bountyPda) throw new Error('Invalid bounty');
       if (!ammo) throw new Error('Invalid ammo');
 
@@ -125,8 +138,8 @@ export function GameProvider({
           ammo: ammo.publicKey,
           bag: bagKey!,
 
-          game: realm.publicKey,
-          mode: modePda,
+          game: realm.pda,
+          mode: game.pda,
           bounty: bountyPda,
         })
         .rpc();
@@ -135,7 +148,9 @@ export function GameProvider({
   });
 
   const value = {
-    mode,
+    id,
+    state,
+    game,
     bounty,
     player: playerAccount,
 

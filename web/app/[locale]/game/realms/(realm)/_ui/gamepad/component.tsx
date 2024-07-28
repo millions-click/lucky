@@ -6,6 +6,7 @@ import { Draggable } from './Draggable';
 import { Droppable } from './Droppable';
 
 import { useGame } from '@/providers';
+import { IconFingerprint } from '@tabler/icons-react';
 
 function getChoices(choice: number, length: number) {
   return Array.from({ length }, (_, i) => choice);
@@ -23,20 +24,20 @@ export function Gamepad({
   onCompleted,
   onError,
 }: GamepadProps) {
-  const { playRound, mode } = useGame();
+  const { playRound, game } = useGame();
   const choices = useMemo(
-    () => Array.from({ length: mode?.choices || 0 }, (_, i) => i + 1),
-    [mode]
+    () => Array.from({ length: game?.choices || 0 }, (_, i) => i + 1),
+    [game]
   );
 
   useEffect(() => {
     if (Number.isNaN(selected)) return;
-    if (selected <= 0 || selected > mode?.choices) return;
+    if (selected <= 0 || selected > game?.choices) return;
 
     const debounce = setTimeout(async () => {
       try {
         onPlay?.();
-        const choices = getChoices(selected, mode?.choices || 0);
+        const choices = getChoices(selected, game?.choices || 0);
         await playRound(choices);
         onCompleted?.();
       } catch (error) {
@@ -55,14 +56,19 @@ export function Gamepad({
             key={choice}
             choice={choice}
             selected={selected === choice}
-            className="w-16 h-16 border-2 border-red-300 rounded-full"
+            className="w-16 h-16 border-2 border-red-300 rounded-full flex justify-center items-center"
           >
             {choice}
           </Droppable>
         ))}
 
-        <Draggable className="w-16 h-16 rounded-full border-2 border-violet-500 top-2 left-[calc(50%_-_32px)] absolute">
-          PLAY
+        <Draggable className="w-16 h-16 rounded-full border-2 border-violet-500 top-2 left-[calc(50%_-_32px)] absolute flex justify-center items-center group">
+          <span
+            className="tooltip tooltip-secondary group-hover:tooltip-open"
+            data-tip="Arrastrame"
+          >
+            <IconFingerprint size={48} />
+          </span>
         </Draggable>
       </div>
     </div>
