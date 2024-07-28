@@ -1,6 +1,6 @@
 import type { PropsWithChildren } from 'react';
 
-import { Header } from './_ui';
+import { Header, RealmChatController } from './_ui';
 
 export default function Layout({ children }: PropsWithChildren) {
   return (
@@ -9,6 +9,7 @@ export default function Layout({ children }: PropsWithChildren) {
       <div className="hero-content text-neutral-content text-center">
         {children}
       </div>
+      <RealmChatController />
     </>
   );
 }

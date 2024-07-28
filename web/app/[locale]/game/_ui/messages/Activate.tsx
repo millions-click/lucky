@@ -2,13 +2,14 @@ import { useTranslations } from 'next-intl';
 import { IconMinus, IconPlus } from '@tabler/icons-react';
 
 import type { MessageProps } from '@/ui/messages';
-import { useLuckyBags, useLuckyWallet } from '@/providers';
+import { useLuckyBags, useLuckyPass, useLuckyWallet } from '@/providers';
 import { ellipsify } from '@/utils';
 
 export const Activate: MessageProps['Actions'] = ({ next = '', onNext }) => {
   const t = useTranslations('Components');
   const { active, bags, openBag, deleteBag } = useLuckyBags();
   const { activate } = useLuckyWallet();
+  const { state } = useLuckyPass();
 
   const keys = Object.entries(bags);
   const activateLuckyBag = (key: string) => {
@@ -58,7 +59,7 @@ export const Activate: MessageProps['Actions'] = ({ next = '', onNext }) => {
         ))}
       </ul>
 
-      {keys.length < 4 && !active && (
+      {keys.length < 4 && !active && state !== 'active' && (
         <button
           className="btn btn-outline btn-circle btn-info absolute top-2 right-2 btn-sm"
           onClick={() => onNext?.('bag')}
