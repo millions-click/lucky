@@ -8,22 +8,22 @@ import { Turns } from './Turns';
 
 import { CountdownProvider, useMessagesHandler } from '@/providers';
 import { createLuckyPass, getTurns, playATurn } from '@/actions';
-import type { TurnsSession } from '@/actions/types';
+import { Attempt, TurnsSession } from '@/actions/types';
 
 export function LockController() {
   const { show, clear } = useMessagesHandler();
 
   const [session, setSession] = useState<TurnsSession | null>(null);
-  const [attempts, setAttempts] = useState<number | null>(null);
+  const [attempt, setAttempts] = useState<Attempt>({ attempts: 0 });
   const [winner, setWinner] = useState<boolean>(false);
   const [vortexActivated, setVortexActivated] = useState<boolean>(false);
 
   const load = async () => {
-    const { turns, attempts, pass } = await getTurns();
+    const { turns, attempt, pass } = await getTurns();
     setWinner(Boolean(pass));
     setSession(turns);
-    setAttempts(attempts);
-    displayMessage(turns, Boolean(pass), attempts);
+    setAttempts(attempt);
+    displayMessage(turns, Boolean(pass), attempt.attempts);
   };
 
   const displayMessage = (
@@ -56,9 +56,10 @@ export function LockController() {
         vortex={vortexActivated}
         disabled={session?.hold || winner}
         onAttempt={async (match, seed) => {
-          const turns = match
-            ? (await createLuckyPass(seed)).turns
-            : await playATurn();
+          const {
+            turns,
+            attempt: { attempts },
+          } = match ? await createLuckyPass(seed) : await playATurn();
 
           setSession(turns);
           setWinner(match);
@@ -66,7 +67,7 @@ export function LockController() {
         }}
       />
 
-      <Turns attempts={attempts} winner={winner} session={session} />
+      <Turns attempts={attempt.attempts} winner={winner} session={session} />
     </CountdownProvider>
   );
 }

@@ -10,7 +10,7 @@ import {
 import { decrypt, encrypt, safeDecrypt } from '@/utils/jwt';
 
 import { cookies } from 'next/headers';
-import { playATurn } from './turns';
+import { lockAttempts } from './turns';
 
 function getExpires(ttl: number, times = 2, now = Date.now()) {
   return now + ttl * times * 1000;
@@ -40,12 +40,12 @@ export async function createLuckyPass(
   ttl = LUCKY_PASS_TTL
 ) {
   if (Date.now() < seed.timestamp) throw new Error('Invalid seed');
-  const turns = await playATurn();
+  const turns = await lockAttempts(address);
 
   const expires = getExpires(ttl);
   const pass = setLuckyPass({ address, seed, ttl }, expires);
 
-  return { pass, turns };
+  return { pass, ...turns };
 }
 
 export async function activateLuckyPass(address: string) {

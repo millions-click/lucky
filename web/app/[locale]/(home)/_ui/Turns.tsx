@@ -16,7 +16,7 @@ export function Turns({
 }) {
   const t = useTranslations('Index');
   const { countdown } = useConfigurableCountdown({
-    expires: session?.expires,
+    expires: session ? session.exp + 1000 : 0,
     pause: winner,
   });
 
