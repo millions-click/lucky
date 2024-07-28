@@ -3,16 +3,58 @@
 import { type MessageProps, Message } from './Message';
 import { type NavProps } from './Nav';
 
-import { useMessages } from '@/providers';
+import { GamePalId, useGamePal, useMessages } from '@/providers';
+import Image from 'next/image';
+import React, { useMemo } from 'react';
+type MinimizedPalProps = {
+  palId?: GamePalId;
+  minimized?: boolean;
+  onClick?: () => void;
+};
+function MinimizedPal({ palId, minimized, onClick }: MinimizedPalProps) {
+  const { getPal } = useGamePal();
+  if (!minimized || !palId) return null;
+  const pal = useMemo(() => getPal(palId), [palId]);
+
+  return (
+    <div
+      className="fixed bottom-2 right-2 sm:bottom-4 sm:right-4 avatar online"
+      onClick={onClick}
+    >
+      <div className="w-12 sm:w-16 rounded-full">
+        <Image
+          alt={pal.name}
+          src={pal.avatar}
+          width={128}
+          height={128}
+          className="scale-x-[-1]"
+        />
+      </div>
+    </div>
+  );
+}
 
 export type MessagesProps = Omit<NavProps, 'backdrop'> &
-  Pick<MessageProps, 'typing' | 'Actions'> & {
+  Pick<MessageProps, 'typing' | 'Actions'> &
+  MinimizedPalProps & {
     backdrop?: string;
   };
 
-export function Messages({ backdrop, ...settings }: MessagesProps) {
+export function Messages({
+  backdrop,
+  minimized,
+  onClick,
+  ...settings
+}: MessagesProps) {
   const { messages } = useMessages();
-  if (!messages.length) return null;
+  if (!messages.length)
+    return (
+      <MinimizedPal
+        palId={settings.palId}
+        minimized={minimized}
+        onClick={onClick}
+      />
+    );
 
   return (
     <>
