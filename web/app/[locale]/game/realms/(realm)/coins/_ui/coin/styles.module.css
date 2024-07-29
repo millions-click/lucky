@@ -60,17 +60,34 @@
   height: 150px;
   width: 150px;
 
-  pointer-events: none;
-
-  & > * {
+  &, & > * {
     pointer-events: none;
+    user-select: none;
   }
 
-  &[data-spin="true"]:not([data-lyingDown="true"]) {
+  &[data-slots="2"] {
+    &[data-slot="0"] {
+      left: -100px;
+
+      .jump {
+        animation: jump 1.5s infinite;
+      }
+    }
+
+    &[data-slot="1"] {
+      right: -100px;
+
+      .jump {
+        animation: jump 1.6s infinite;
+      }
+    }
+  }
+
+  &[data-spin="true"]:not([data-lyingdown="true"]) {
     animation: spin 1.5s infinite linear;
   }
 
-  &[data-lyingDown="true"] {
+  &[data-lyingdown="true"] {
     &, .jump {
       animation: lyingDown 1.5s both;
     }

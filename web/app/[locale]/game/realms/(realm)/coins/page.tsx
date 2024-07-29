@@ -7,19 +7,28 @@ import { Coin, Side } from './_ui';
 import { Gamepad } from '@/ui/realms';
 import { useGame } from '@/providers';
 
-function getOption(lastRound?: number[], choices?: number): Side {
-  if (!lastRound || !choices) return 'heads';
+function getOption(
+  slot: number,
+  lastRound?: number[],
+  choices?: number
+): Side | null {
+  if (choices === undefined) return null;
+  if (!lastRound) return 'heads';
 
-  const [outcome] = lastRound;
-  return outcome % choices === 1 ? 'heads' : 'tails';
+  return lastRound[slot] % choices === 1 ? 'heads' : 'tails';
 }
 export default function Coins() {
   const { player, game } = useGame();
   const [choice, setChoice] = useState(NaN);
+  const [isDragging, setIsDragging] = useState(false);
+  const [isOver, setIsOver] = useState(false);
 
-  const side = useMemo(
-    () => getOption(player?.lastRound, game?.choices),
-    [player?.lastRound]
+  const sides = useMemo(
+    () =>
+      Array.from({ length: game?.slots ?? 0 }, (_, i) =>
+        getOption(i, player?.lastRound, game?.choices)
+      ).filter(Boolean) as Side[],
+    [player?.lastRound, game?.slots, game?.choices]
   );
 
   function handleDragEnd(event: DragEndEvent) {
@@ -29,15 +38,32 @@ export default function Coins() {
         setChoice(Number(match[1]));
       }
     }
+    setIsDragging(false);
   }
 
   function reset() {
     setChoice(NaN);
+    setIsOver(false);
+    setIsDragging(false);
   }
 
   return (
-    <DndContext onDragEnd={handleDragEnd}>
-      <Coin side={side} playing={!Number.isNaN(choice)} />
+    <DndContext
+      onDragStart={() => setIsDragging(true)}
+      onDragOver={(e) => setIsOver(Boolean(e.over))}
+      onDragEnd={handleDragEnd}
+    >
+      {sides.map((side, i) => (
+        <Coin
+          key={i}
+          side={side}
+          slot={i}
+          slots={game?.slots}
+          isDragging={isDragging}
+          isOver={isOver}
+          playing={!Number.isNaN(choice)}
+        />
+      ))}
       <Gamepad selected={choice} onCompleted={reset} onError={reset} />
     </DndContext>
   );
