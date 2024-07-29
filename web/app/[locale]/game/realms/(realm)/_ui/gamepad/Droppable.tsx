@@ -26,7 +26,7 @@ export function Droppable({
   return (
     <div
       ref={setNodeRef}
-      className={`${className} ${selected ? 'animate-glow' : ''}`}
+      className={`select-none ${className} ${selected ? 'animate-glow' : ''}`}
       style={style}
     >
       {children}

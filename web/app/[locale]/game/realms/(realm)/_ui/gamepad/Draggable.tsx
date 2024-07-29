@@ -15,7 +15,7 @@ export function Draggable({ children, className }: DraggableProps) {
   return (
     <button
       ref={setNodeRef}
-      className={className}
+      className={`select-none ${className}`}
       style={{
         transform: CSS.Translate.toString(transform),
         touchAction: 'manipulation',

@@ -42,7 +42,7 @@ function Gem({ token, size, glow }: BadgeProps & { token: Token }) {
 
   return (
     <Badge icon="gem" size={size} glow={glow}>
-      <span className={`pl-1 ${className.label}`}>
+      <span className={`pl-1 select-none ${className.label}`}>
         {formatter.format(account?.amount || 0)}
       </span>
     </Badge>
@@ -64,7 +64,7 @@ function FairiesDust({ size, glow }: BadgeProps) {
       glow={glow}
       className={`text-[#FFE9B0] bottom-0 ${className.dust}`}
     >
-      <span className={`pl-1 ${className.label}`}>{dust}</span>
+      <span className={`pl-1 select-none ${className.label}`}>{dust}</span>
     </Badge>
   );
 }
@@ -76,7 +76,7 @@ function LuckyShot({ token, size, glow }: BadgeProps & { token: Token }) {
 
   return (
     <Badge icon="ammo" size={size} glow={glow}>
-      <span className={`pl-1 ${className.label}`}>
+      <span className={`pl-1 select-none ${className.label}`}>
         {formatter.format(account?.amount || 0)}
       </span>
     </Badge>

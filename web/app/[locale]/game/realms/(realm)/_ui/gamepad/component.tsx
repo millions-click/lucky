@@ -32,6 +32,7 @@ export function Gamepad({
 
   useEffect(() => {
     if (Number.isNaN(selected)) return;
+    if (!game) return;
     if (selected <= 0 || selected > game?.choices) return;
 
     const debounce = setTimeout(async () => {

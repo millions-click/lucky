@@ -1,8 +1,9 @@
 import type {
-  Bounty,
-  Game,
-  Player,
   RealmId,
+  Realm,
+  Game,
+  Bounty,
+  Player,
   TokenAccount,
 } from '@/providers/types.d';
 
@@ -16,14 +17,16 @@ export type GameState =
 
 export type GameContext = {
   id?: RealmId;
+  realm: Realm | null;
   state: GameState;
-  game: Game;
-  bounty: Bounty;
+  game: Game | null;
+  bounty: Bounty | null;
 
-  player: Player;
+  player: Player | null;
   ammo: TokenAccount | null;
   bag: TokenAccount | null;
   vault: TokenAccount | null;
 
   playRound: (choices: Array<number>) => Promise<string>;
+  setActive: (pda: string) => void;
 };

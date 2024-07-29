@@ -50,7 +50,7 @@ export function ChatController({
   }, [active, show]);
 
   const navHandler = (next: string) => {
-    if (!(next in messages)) return;
+    if (!(next in messages) && next !== '_close') return;
     if (next === '_close') {
       setActive(undefined);
       setPrev(undefined);

@@ -149,6 +149,7 @@ export function GameProvider({
 
   const value = {
     id,
+    realm,
     state,
     game,
     bounty,
@@ -159,6 +160,7 @@ export function GameProvider({
     vault,
 
     playRound: playRound.mutateAsync,
+    setActive,
   } as GameContext;
 
   return <Context.Provider value={value}>{children}</Context.Provider>;

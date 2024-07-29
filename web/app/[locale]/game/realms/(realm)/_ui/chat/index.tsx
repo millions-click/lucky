@@ -18,7 +18,7 @@ import { useGame, useLuckyBags, usePlayer } from '@/providers';
 const MESSAGES = {
   activate: { next: '_close', Actions: Activate, noNav: true, backdrop: ' ' },
   locked: { next: '_close', Actions: Locked, noNav: true, backdrop: ' ' },
-  welcome: { next: 'first', backdrop: ' ' },
+  welcome: { next: '_close', backdrop: ' ' },
   buy: {
     next: '_close',
     backdrop: 'sm:hidden',

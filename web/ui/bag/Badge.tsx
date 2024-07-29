@@ -47,7 +47,7 @@ export function Badge({
 
   return (
     <div
-      className={`flex text-white items-end relative ${
+      className={`flex text-white items-end relative group ${
         onClick ? 'cursor-pointer' : ''
       }`}
       onClick={onClick}
