@@ -5,6 +5,7 @@ import type {
   Bounty,
   Player,
   TokenAccount,
+  RealmInfo,
 } from '@/providers/types.d';
 import { PublicKey } from '@solana/web3.js';
 
@@ -19,6 +20,8 @@ export type GameState =
 export type GameContext = {
   id?: RealmId;
   realm: Realm | null;
+  details?: RealmInfo;
+
   state: GameState;
   game: Game | null;
   bounty: Bounty | null;

@@ -18,11 +18,14 @@ export type Realm = GameAccount & {
 
 export type Realms = Record<PDA, Realm>;
 
+type ChoiceValue = number;
+type Choice = { name: string; image: string };
 type RealmId = Realm['name'];
 export type RealmInfo = {
   id: RealmId; // Game->Account->Name
   name: string; // URL path
   image: string;
+  choices?: Record<ChoiceValue, Choice>;
   next?: string;
 };
 
@@ -38,7 +41,17 @@ export const RealmsMap: Record<string, RealmInfo> = {
   coin: {
     id: 'coin',
     name: 'coins',
-    image: '/images/realms/coin.png',
+    image: '/assets/images/realms/coins/logo.png',
+    choices: {
+      1: {
+        name: 'heads',
+        image: '/assets/images/realms/coins/heads.svg',
+      },
+      2: {
+        name: 'tails',
+        image: '/assets/images/realms/coins/tails.svg',
+      },
+    },
     next: 'dice',
   },
   dice: {

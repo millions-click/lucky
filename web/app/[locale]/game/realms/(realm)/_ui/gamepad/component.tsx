@@ -24,21 +24,28 @@ export function Gamepad({
   onCompleted,
   onError,
 }: GamepadProps) {
-  const { playRound, game } = useGame();
-  const choices = useMemo(
-    () => Array.from({ length: game?.choices || 0 }, (_, i) => i + 1),
-    [game]
-  );
+  const { playRound, game, details } = useGame();
+  const choices = useMemo(() => {
+    if (!game) return [];
+
+    const length = game.winnerChoice === 0 ? 1 : game.choices;
+    const di = game.winnerChoice === 0 ? 0 : 1;
+    return Array.from({ length }, (_, i) => i + di);
+  }, [game]);
 
   useEffect(() => {
-    if (Number.isNaN(selected)) return;
-    if (!game) return;
-    if (selected <= 0 || selected > game?.choices) return;
+    if (
+      Number.isNaN(selected) ||
+      !game ||
+      selected < 0 ||
+      selected > game?.choices
+    )
+      return onError?.();
 
     const debounce = setTimeout(async () => {
       try {
         onPlay?.();
-        const choices = getChoices(selected, game?.choices || 0);
+        const choices = getChoices(selected, game?.slots || 0);
         await playRound(choices);
         onCompleted?.();
       } catch (error) {
@@ -59,7 +66,15 @@ export function Gamepad({
             selected={selected === choice}
             className="w-16 h-16 border-2 border-red-300 rounded-full flex justify-center items-center"
           >
-            {choice}
+            {details?.choices?.[choice] && (
+              <figure className="relative w-full h-full">
+                <Image
+                  src={details.choices[choice].image}
+                  alt={details.choices[choice].name}
+                  fill
+                />
+              </figure>
+            )}
           </Droppable>
         ))}
 

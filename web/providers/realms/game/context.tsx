@@ -11,7 +11,7 @@ import {
 import { type Cluster } from '@solana/web3.js';
 import { useMutation, useQuery } from '@tanstack/react-query';
 
-import type { Realm } from '../realms.d';
+import type { Realm, RealmInfo } from '../realms.d';
 import type { GameContext, GameState } from './game.d';
 import {
   useBounties,
@@ -28,11 +28,17 @@ import { sortedGames } from '@/models/game';
 
 const Context = createContext({} as GameContext);
 
+type GameProviderProps = PropsWithChildren<{
+  id?: string;
+  realm: Realm | null;
+  details?: RealmInfo;
+}>;
 export function GameProvider({
   children,
   realm,
   id,
-}: PropsWithChildren<{ realm: Realm | null; id?: string }>) {
+  details,
+}: GameProviderProps) {
   const { portal, cluster } = usePortal();
   const { pass } = useLuckyPass();
   const { player, getAccount, createTokenAccount, refresh } = usePlayer();
@@ -150,6 +156,8 @@ export function GameProvider({
   const value = {
     id,
     realm,
+    details,
+
     state,
     game,
     bounty,

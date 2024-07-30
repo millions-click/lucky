@@ -71,7 +71,11 @@ export function RealmsProvider({ children }: { children: React.ReactNode }) {
   return (
     <Context.Provider value={value}>
       <BountiesProvider>
-        <GameProvider realm={active} id={realm}>
+        <GameProvider
+          realm={active}
+          id={realm}
+          details={realm ? RealmsMap[realm] : undefined}
+        >
           {children}
         </GameProvider>
       </BountiesProvider>
