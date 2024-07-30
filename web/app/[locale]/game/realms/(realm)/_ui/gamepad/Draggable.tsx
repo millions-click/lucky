@@ -8,17 +8,18 @@ type DraggableProps = PropsWithChildren<{
   className?: string;
 }>;
 export function Draggable({ children, className }: DraggableProps) {
-  const { attributes, listeners, setNodeRef, transform } = useDraggable({
+  const { attributes, listeners, setNodeRef, transform, over } = useDraggable({
     id: 'pointer',
   });
 
   return (
     <button
       ref={setNodeRef}
-      className={`select-none ${className}`}
+      className={className}
+      data-is-over={Boolean(over)}
       style={{
         transform: CSS.Translate.toString(transform),
-        touchAction: 'manipulation',
+        gridArea: 'p',
       }}
       {...listeners}
       {...attributes}

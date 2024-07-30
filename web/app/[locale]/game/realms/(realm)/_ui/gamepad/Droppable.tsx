@@ -17,17 +17,16 @@ export function Droppable({
   const { isOver, setNodeRef, active } = useDroppable({
     id: `choice#${choice}`,
   });
-  const style = {
-    transform: isOver ? 'scale(1.2)' : undefined,
-    transition: 'transform 0.2s',
-    backgroundColor: active ? 'rgba(255, 255, 255, 0.1)' : undefined,
-  };
 
   return (
     <div
       ref={setNodeRef}
-      className={`select-none ${className} ${selected ? 'animate-glow' : ''}`}
-      style={style}
+      style={{ gridArea: `i${choice}` }}
+      className={className}
+      data-area={`i${choice}`}
+      data-is-over={isOver}
+      data-active={Boolean(active)}
+      data-selected={selected}
     >
       {children}
     </div>

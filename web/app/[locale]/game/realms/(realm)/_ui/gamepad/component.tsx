@@ -1,7 +1,9 @@
 'use client';
 
 import { useEffect, useMemo } from 'react';
+import Image from 'next/image';
 
+import styles from './styles.module.css';
 import { Draggable } from './Draggable';
 import { Droppable } from './Droppable';
 
@@ -28,8 +30,8 @@ export function Gamepad({
   const choices = useMemo(() => {
     if (!game) return [];
 
-    const length = game.winnerChoice === 0 ? 1 : game.choices;
-    const di = game.winnerChoice === 0 ? 0 : 1;
+    const length = game.pickWinner ? game.choices : 1;
+    const di = game.pickWinner ? 1 : 0;
     return Array.from({ length }, (_, i) => i + di);
   }, [game]);
 
@@ -57,14 +59,14 @@ export function Gamepad({
   }, [selected]);
 
   return (
-    <div className="fixed top-[80dvh] group rounded-full p-2 w-full max-w-xs border-2 border-amber-100">
-      <div className="flex w-full justify-between px-4 top-0">
+    <div className={`${styles.container} group`} data-choices={choices.length}>
+      <div className={styles.area} data-choices={choices.length}>
         {choices.map((choice) => (
           <Droppable
             key={choice}
             choice={choice}
             selected={selected === choice}
-            className="w-16 h-16 border-2 border-red-300 rounded-full flex justify-center items-center"
+            className={styles.droppable}
           >
             {details?.choices?.[choice] && (
               <figure className="relative w-full h-full">
@@ -78,7 +80,7 @@ export function Gamepad({
           </Droppable>
         ))}
 
-        <Draggable className="w-16 h-16 rounded-full border-2 border-violet-500 top-2 left-[calc(50%_-_32px)] absolute flex justify-center items-center group">
+        <Draggable className={styles.draggable}>
           <span
             className="tooltip tooltip-secondary group-hover:tooltip-open"
             data-tip="Arrastrame"
