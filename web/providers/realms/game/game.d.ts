@@ -6,6 +6,7 @@ import type {
   Player,
   TokenAccount,
 } from '@/providers/types.d';
+import { PublicKey } from '@solana/web3.js';
 
 export type GameState =
   | 'idle'
@@ -22,7 +23,7 @@ export type GameContext = {
   game: Game | null;
   bounty: Bounty | null;
 
-  player: Player | null;
+  player: (Player & { pda: PublicKey }) | null;
   ammo: TokenAccount | null;
   bag: TokenAccount | null;
   vault: TokenAccount | null;

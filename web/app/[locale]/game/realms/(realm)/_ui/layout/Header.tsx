@@ -2,7 +2,7 @@
 
 import { IconCategory } from '@tabler/icons-react';
 
-import { GamePicker } from './GamePicker';
+import { GamePicker } from './picker';
 
 import { useGame } from '@/providers';
 import { Badge } from '@/ui/bag';

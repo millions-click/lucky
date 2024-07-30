@@ -247,8 +247,8 @@
     "GamePicker": {
       "title": "Juegos Disponibles",
       "Card": {
+        "title": "Detalles del juego",
         "game": {
-          "title": "Detalles del juego",
           "slots": "Ranuras",
           "choices": "Opciones",
           "pick": "Tu eliges el ganador",
@@ -262,14 +262,15 @@
           "reward": "Recompensa"
         },
         "stats": {
-          "title": "Estadísticas del juego",
+          "title": "Estadísticas",
           "no-data": "Aún no has jugado este juego.",
           "wins": "Victorias",
           "losses": "Derrotas",
           "rate": "Tasa de éxito",
-          "gem": "Gemas ganadas",
+          "gem": "Tesoros ganadas",
           "ammo": "Disparos usados",
-          "dust": "Rondas Magicas"
+          "dust": "Rondas Magicas",
+          "account": "Cuenta de Jugador"
         }
       }
     }

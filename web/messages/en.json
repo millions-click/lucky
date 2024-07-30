@@ -248,8 +248,8 @@
     "GamePicker": {
       "title": "Available games",
       "Card": {
+        "title": "Game Details",
         "game": {
-          "title": "Game Details",
           "slots": "Slots",
           "choices": "Choices",
           "pick": "You pick winner",
@@ -270,7 +270,8 @@
           "rate": "Success rate",
           "gem": "Earned gems",
           "ammo": "Used shots",
-          "dust": "Fairy Rounds"
+          "dust": "Fairy Rounds",
+          "account": "Player account"
         }
       }
     }

@@ -45,7 +45,7 @@ export function GameProvider({
     () => trader && getAccount(trader.mint),
     [trader, getAccount]
   );
-  const bag = useMemo(() => gem && getAccount(gem.mint), [gem]);
+  const bag = useMemo(() => gem && getAccount(gem.mint), [gem, getAccount]);
 
   const [active, setActive] = useState<string>();
   const game = useMemo(
@@ -84,8 +84,8 @@ export function GameProvider({
       cluster.network as Cluster
     )
   );
-  const { player: playerAccount } = useMemo(
-    () => playerAccountQuery.data || { player: null },
+  const playerAccount = useMemo(
+    () => playerAccountQuery.data,
     [playerAccountQuery.data]
   );
 
