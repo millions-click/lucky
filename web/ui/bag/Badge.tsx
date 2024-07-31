@@ -20,6 +20,13 @@ const CLASSES = {
   },
 };
 
+const GLOW = {
+  none: '',
+  active: 'shadow-glow',
+  lose: 'shadow-glow-subtract',
+  win: 'shadow-glow-add',
+};
+
 const Icons = {
   dust: FairyDustIcon,
   ammo: AmmoIcon,
@@ -27,21 +34,22 @@ const Icons = {
 };
 const { Icon } = IconSet(Icons);
 
-type size = keyof typeof CLASSES;
-type BadgeProps = PropsWithChildren<{
-  size?: size;
+type Size = keyof typeof CLASSES;
+type Glow = keyof typeof GLOW;
+export type BadgeProps = PropsWithChildren<{
+  size?: Size;
+  glow?: Glow;
   icon?: keyof typeof Icons;
   className?: string;
   onClick?: () => void;
-  glow?: boolean;
 }>;
 export function Badge({
   size = 'md',
+  glow = 'active',
   icon,
   className,
   children,
   onClick,
-  glow,
 }: BadgeProps) {
   const classNames = CLASSES[size];
 
@@ -53,9 +61,7 @@ export function Badge({
       onClick={onClick}
     >
       <div
-        className={`bg-base-100 border-orange-500 rounded-box flex items-center ${
-          glow ? 'shadow-glow' : ''
-        } ${classNames.badge}`}
+        className={`bg-base-100 border-orange-500 rounded-box flex items-center ${GLOW[glow]} ${classNames.badge}`}
       >
         {icon && (
           <Icon

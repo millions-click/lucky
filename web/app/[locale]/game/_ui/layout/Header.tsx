@@ -3,7 +3,7 @@ import { CountdownBag } from '@/ui';
 import { Bag } from '@/ui/bag';
 
 export function Header() {
-  const { countdown } = useLuckyPass();
+  const { countdown, winner } = useLuckyPass();
   const { gem } = useGems();
   const { trader } = useTraders();
 
@@ -16,6 +16,7 @@ export function Header() {
           gem={gem}
           trader={trader}
           size="sm"
+          vault={{ glow: winner ? 'win' : undefined }}
         />
       </div>
     </header>

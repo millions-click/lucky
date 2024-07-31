@@ -25,7 +25,7 @@ export function Header() {
         <input id="game-picker" type="checkbox" className="drawer-toggle" />
         <div className="drawer-content flex flex-col items-end justify-end pr-4 pt-11 space-y-4">
           {vault && (
-            <Badge icon="gem" size="md">
+            <Badge icon="gem" size="md" glow={player?.winner ? 'lose' : 'none'}>
               <span className="pointer-events-none select-none">
                 {formatter.format(vault.amount)}
               </span>

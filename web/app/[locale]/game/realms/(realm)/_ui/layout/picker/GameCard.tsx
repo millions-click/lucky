@@ -37,7 +37,7 @@ function Bounty({
   return (
     <>
       <div className="tooltip tooltip-primary" data-tip={t('vault')}>
-        <Badge icon="gem" size="sm" glow={false}>
+        <Badge icon="gem" size="sm" glow="none">
           <span className="text-sm">{formatter.format(game.vault.amount)}</span>
         </Badge>
       </div>
@@ -45,9 +45,9 @@ function Bounty({
       <div className="card-actions justify-end">
         <span
           className="tooltip tooltip-left tooltip-primary"
-          data-tip={t('bounty.price')}
+          data-tip={t('price')}
         >
-          <Badge icon="ammo" size="xs" glow={false}>
+          <Badge icon="ammo" size="xs" glow="none">
             <span className="pl-1 text-sm">
               {formatter.format(fromBN(game.bounty.price, trader.decimals))}
             </span>
@@ -56,9 +56,9 @@ function Bounty({
 
         <span
           className="tooltip tooltip-right tooltip-primary"
-          data-tip={t('bounty.reward')}
+          data-tip={t('reward')}
         >
-          <Badge icon="gem" size="xs" glow={false}>
+          <Badge icon="gem" size="xs" glow="none">
             <span className="pl-1 text-sm">
               {formatter.format(fromBN(game.bounty.reward, gem.decimals))}
             </span>
@@ -120,7 +120,7 @@ function PlayerStats({ player, gem, trader, game }: PlayerStatsProps) {
             <h1 className="text-2xl font-bold text-center">{t('title')}</h1>
             <div className="flex flex-wrap justify-around gap-2">
               <div className="tooltip tooltip-info" data-tip={t('gem')}>
-                <Badge icon="gem" size="xs" glow={false}>
+                <Badge icon="gem" size="xs" glow="none">
                   <span className="pl-1 text-sm">
                     {formatter.format(
                       player.winningCount *
@@ -130,7 +130,7 @@ function PlayerStats({ player, gem, trader, game }: PlayerStatsProps) {
                 </Badge>
               </div>
               <div className="tooltip tooltip-warning" data-tip={t('ammo')}>
-                <Badge icon="ammo" size="xs" glow={false}>
+                <Badge icon="ammo" size="xs" glow="none">
                   <span className="pl-1 text-sm">
                     {formatter.format(
                       player.rounds * fromBN(game.bounty.price, trader.decimals)
@@ -142,7 +142,7 @@ function PlayerStats({ player, gem, trader, game }: PlayerStatsProps) {
                 <Badge
                   icon="dust"
                   size="xs"
-                  glow={false}
+                  glow="none"
                   className="text-[#FFE9B0] bottom-0"
                 >
                   <span className="pl-1 text-sm">

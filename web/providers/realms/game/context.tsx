@@ -40,7 +40,7 @@ export function GameProvider({
   details,
 }: GameProviderProps) {
   const { portal, cluster } = usePortal();
-  const { pass } = useLuckyPass();
+  const { pass, setWinner } = useLuckyPass();
   const { player, getAccount, createTokenAccount, refresh } = usePlayer();
   const { trader } = useTraders();
   const { gem } = useGems();
@@ -80,7 +80,10 @@ export function GameProvider({
     () => bountyPda && getBountyVaultPDA(bountyPda, cluster.network as Cluster),
     [bountyPda]
   );
-  const vault = useMemo(() => vaultPda && getBounty(vaultPda), [vaultPda]);
+  const vault = useMemo(
+    () => vaultPda && getBounty(vaultPda),
+    [vaultPda, getBounty]
+  );
 
   const playerAccountQuery = useQuery(
     getPlayerGameAccountOptions(
@@ -90,10 +93,13 @@ export function GameProvider({
       cluster.network as Cluster
     )
   );
-  const playerAccount = useMemo(
-    () => playerAccountQuery.data,
-    [playerAccountQuery.data]
-  );
+  const playerAccount = useMemo(() => {
+    if (!playerAccountQuery.data) return null;
+
+    const { data } = playerAccountQuery;
+    setWinner(data.winner);
+    return data;
+  }, [playerAccountQuery.data]);
 
   const state: GameState = useMemo(() => {
     if (!id) return 'idle';

@@ -17,6 +17,8 @@ module.exports = {
       },
       boxShadow: {
         glow: '0 0 8px #ffd700, 0 0 12px #ffae00, 0 0 16px #ffd700',
+        'glow-subtract': '0 0 8px #ff0000, 0 0 12px #cc0000, 0 0 16px #ff0000',
+        'glow-add': '0 0 8px #00ff00, 0 0 12px #00cc00, 0 0 16px #00ff00',
       },
       keyframes: {
         glow: {
