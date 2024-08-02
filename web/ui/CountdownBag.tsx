@@ -56,7 +56,7 @@ export function CountdownBag({
       >
         <IconAlarm className={classNames.alarm} />
         <span
-          className={`countdown font-mono pointer-events-none ${classNames.countdown}`}
+          className={`countdown font-mono pointer-events-none select-none ${classNames.countdown}`}
         >
           {display.map((key, i) => (
             <>

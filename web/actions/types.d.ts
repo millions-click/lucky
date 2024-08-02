@@ -13,6 +13,8 @@ export type Attempt = {
   attempts: number;
   claimed?: number;
 };
+export type AttemptSession = Attempt & JWTProps;
+
 export type Turns = Attempt & {
   address?: string;
   hold?: boolean;

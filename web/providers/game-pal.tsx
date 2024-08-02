@@ -70,7 +70,7 @@ type ProviderProps = PropsWithChildren<{ active?: GamePalId }>;
 export function GamePalProvider({ children, active = 'lucky' }: ProviderProps) {
   // TODO: Load pals from server. Store active pal in local storage.
   const pals = useMemo(() => PALS, []);
-  const [pal, setPal] = useState<GamePal>(pals[active]);
+  const [pal, setPal] = useState<GamePal>(() => pals[active]);
 
   const getPal = (id: GamePalId) => pals[id] || pal;
   const value = {
@@ -80,7 +80,7 @@ export function GamePalProvider({ children, active = 'lucky' }: ProviderProps) {
       if (!(id in pals)) throw new Error(`Unknown PAL. Invalid pal id: ${id}`);
       setPal(pals[id]);
     },
-  };
+  } as GamePalContext;
 
   return <Context.Provider value={value}>{children}</Context.Provider>;
 }

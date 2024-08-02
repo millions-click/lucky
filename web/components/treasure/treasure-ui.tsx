@@ -14,7 +14,7 @@ export function TreasureProgram({ player }: { player: PublicKey }) {
   const { getProgramAccount, keeperPDA } = useTreasureProgram();
   const { tokens } = useOwnedTokens(keeperPDA);
   const [token, setToken] = useState<TokenAccount>(
-    tokens[0] || { address: '_label' }
+    () => tokens[0] || { address: '_label' }
   );
 
   useEffect(() => {

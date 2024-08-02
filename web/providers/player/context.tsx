@@ -3,8 +3,6 @@
 import {
   type PropsWithChildren,
   createContext,
-  useState,
-  useEffect,
   useContext,
   useMemo,
   useCallback,
@@ -57,7 +55,9 @@ function useTokensMutations() {
 
 function getBagType(wallet: Wallet | null) {
   if (!wallet) return 'none';
-  return wallet instanceof LuckyWalletAdapter ? 'lucky-bag' : 'external';
+  return wallet.adapter instanceof LuckyWalletAdapter
+    ? 'lucky-bag'
+    : 'external';
 }
 
 function Provider({ children }: PropsWithChildren) {
@@ -66,7 +66,7 @@ function Provider({ children }: PropsWithChildren) {
   const { connection } = useConnection();
   const { wallet, disconnect } = useWallet();
   const { owner, tokens, getAccount, create, refresh } = useTokensMutations();
-  const [bagType, setBagType] = useState(getBagType(wallet));
+  const bagType = useMemo(() => getBagType(wallet), [wallet]);
 
   const balanceQuery = useQuery(getBalanceOptions(owner, connection));
   const balance = useMemo(() => balanceQuery.data || 0, [balanceQuery.data]);
@@ -77,10 +77,6 @@ function Provider({ children }: PropsWithChildren) {
     () => roundFeeQuery.data || BigInt(0),
     [roundFeeQuery.data]
   );
-
-  useEffect(() => {
-    setBagType(getBagType(wallet));
-  }, [wallet]);
 
   const value = {
     bagType,

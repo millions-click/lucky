@@ -22,7 +22,7 @@ function Provider({ children }: { children: React.ReactNode }) {
   const { owner, tokens: gems, refresh, getAccount } = useTokens();
   // TODO: get the selected gem from the local storage.
   //  If null, make the user choose the one it wants to use for treasure hunting.
-  const [gem, setGem] = useState<TokenAccount | null>(gems[0] || null);
+  const [gem, setGem] = useState<TokenAccount | null>(() => gems[0] || null);
 
   useEffect(() => {
     if (gem || !gems.length) return;

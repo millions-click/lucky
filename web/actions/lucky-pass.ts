@@ -40,10 +40,10 @@ export async function createLuckyPass(
   ttl = LUCKY_PASS_TTL
 ) {
   if (Date.now() < seed.timestamp) throw new Error('Invalid seed');
-  const turns = await lockAttempts(address);
+  const turns = await lockAttempts(address, ttl);
 
   const expires = getExpires(ttl);
-  const pass = setLuckyPass({ address, seed, ttl }, expires);
+  const pass = await setLuckyPass({ address, seed, ttl }, expires);
 
   return { pass, ...turns };
 }

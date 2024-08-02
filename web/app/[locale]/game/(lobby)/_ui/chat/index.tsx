@@ -64,7 +64,7 @@ export function LobbyChatController() {
   const { bagType } = usePlayer();
 
   // TODO: Save the path in the local storage and restore it on reload. Use it to initialize the active message.
-  const [active, setActive] = useState<MessageKey | undefined>(
+  const [active, setActive] = useState<MessageKey | undefined>(() =>
     getActiveMessage(pass, key, bag, bagType)
   );
 

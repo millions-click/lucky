@@ -20,8 +20,9 @@ const MESSAGES = {
   locked: { next: '_close', Actions: Locked, noNav: true, backdrop: ' ' },
   welcome: { next: '_close', backdrop: ' ' },
   buy: {
+    className: 'max-sm:z-10',
     next: '_close',
-    backdrop: 'sm:hidden',
+    backdrop: 'sm:hidden max-sm:z-10',
     Actions: Buy,
     noNav: true,
     palId: 'clover',
@@ -54,7 +55,7 @@ export function RealmChatController() {
   const { bagType } = usePlayer();
   const { id, state: game } = useGame();
 
-  const [active, setActive] = useState<MessageKey | undefined>(
+  const [active, setActive] = useState<MessageKey | undefined>(() =>
     getActiveMessage(game, bag, bagType)
   );
 

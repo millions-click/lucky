@@ -62,7 +62,7 @@ export function PortalChatController() {
   const { state: bag } = useLuckyBags();
   const { bagType } = usePlayer();
 
-  const [active, setActive] = useState<MessageKey | undefined>(
+  const [active, setActive] = useState<MessageKey | undefined>(() =>
     getActiveMessage(pass, bag, bagType)
   );
 

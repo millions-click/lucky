@@ -24,7 +24,7 @@ export function Turns({
   if (!session && attempts !== null) return null;
 
   return (
-    <div className="fixed bottom-0 max-lg:left-0 lg:right-0">
+    <div className="fixed bottom-2 max-sm:left-16 max-lg:left-20 lg:right-20">
       {!session ? (
         <span className="loading loading-dots loading-lg text-primary m-4" />
       ) : (

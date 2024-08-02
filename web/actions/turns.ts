@@ -3,12 +3,13 @@
 import { cookies } from 'next/headers';
 
 import {
-  type Attempt,
   type TurnsSession,
+  type AttemptSession,
   MAX_TTL_ATTEMPTS,
   TURNS_AVAILABLE,
   TURNS_COOKIE,
   ATTEMPTS_COOKIE,
+  LUCKY_PASS_TTL,
 } from './types.d';
 import { decrypt, encrypt, safeDecrypt } from '@/utils/jwt';
 import { getLuckyPass } from './lucky-pass';
@@ -38,9 +39,13 @@ async function createTurns(address?: string) {
   return (await decrypt(session)) as TurnsSession;
 }
 
-async function setAttempts(attempts = 1, claim = false): Promise<Attempt> {
+async function setAttempts(
+  attempts = 1,
+  claim = false,
+  ttl = LUCKY_PASS_TTL
+): Promise<AttemptSession> {
   const claimed = claim ? Date.now() : undefined;
-  const expires = (claimed || Date.now()) + 60 * 60 * 3 * 1000;
+  const expires = (claimed || Date.now()) + ttl * 3 * 1000;
 
   const attempt = { attempts, claimed };
   const session = await encrypt(attempt, expires);
@@ -50,14 +55,18 @@ async function setAttempts(attempts = 1, claim = false): Promise<Attempt> {
     sameSite: 'strict',
   });
 
-  return attempt;
+  return (await decrypt(session)) as AttemptSession;
 }
 
-async function getAttempts(newAttempt = false): Promise<Attempt> {
+async function getAttempts(newAttempt = false): Promise<AttemptSession> {
   const session = cookies().get(ATTEMPTS_COOKIE)?.value;
-  if (!session) return newAttempt ? setAttempts() : { attempts: 0 };
+  if (!session)
+    return newAttempt ? setAttempts() : ({ attempts: 0 } as AttemptSession);
 
-  const attempt = (await safeDecrypt(session, ATTEMPTS_COOKIE)) as Attempt;
+  const attempt = (await safeDecrypt(
+    session,
+    ATTEMPTS_COOKIE
+  )) as AttemptSession;
   const { attempts } = attempt;
 
   if (newAttempt) return setAttempts(attempts + 1);
@@ -75,11 +84,11 @@ export async function getTurns() {
 }
 
 export async function playATurn(address?: string) {
-  const { turns: session, attempt } = await getTurns();
-  if (!session) return { turns: await createTurns(address), attempt };
+  const { turns: session, ..._ } = await getTurns();
+  if (!session) return { turns: await createTurns(address), ..._ };
   if (session.hold) {
-    if (session.exp > Date.now()) return { turns: session, attempt };
-    return { turns: await createTurns(address), attempt };
+    if (session.exp > Date.now()) return { turns: session, ..._ };
+    return { turns: await createTurns(address), ..._ };
   }
 
   session.turns -= 1;
@@ -91,16 +100,16 @@ export async function playATurn(address?: string) {
     sameSite: 'strict',
   });
 
-  return { turns: session, attempt };
+  return { turns: session, ..._ };
 }
 
-export async function lockAttempts(address?: string) {
+export async function lockAttempts(address?: string, ttl = LUCKY_PASS_TTL) {
   const {
     turns,
     attempt: { attempts, claimed },
   } = await playATurn(address);
   if (claimed) throw new Error('Already claimed');
 
-  const attempt = await setAttempts(attempts, true);
+  const attempt = await setAttempts(attempts, true, ttl);
   return { turns, attempt };
 }

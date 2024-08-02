@@ -84,8 +84,8 @@ function Provider({ children }: PropsWithChildren) {
     [bags, crypto]
   );
 
-  const [bag, setBag] = useState(active ? getBag(active) : null);
-  const [state, setState] = useState<LuckyBagState>(
+  const [bag, setBag] = useState(() => (active ? getBag(active) : null));
+  const [state, setState] = useState<LuckyBagState>(() =>
     bag
       ? 'unlocked'
       : Object.keys(bags).length
