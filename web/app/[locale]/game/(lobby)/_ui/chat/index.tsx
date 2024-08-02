@@ -10,6 +10,7 @@ import {
   type ChatMessages,
   ChatController,
   getBagMessage,
+  Shortcuts,
   Activate,
   Locked,
   Selector,
@@ -19,6 +20,7 @@ import {
 
 const MESSAGES = {
   welcome: { next: 'mood' },
+  continue: { backdrop: 'hidden', Actions: Shortcuts },
   activate: { next: 'gifts', Actions: Activate, noNav: true },
   locked: { next: 'gifts', Actions: Locked, noNav: true },
   mood: { Actions: Selector({ actions: ['ready', 'eager', 'calm', 'lucky'] }) },
@@ -34,7 +36,8 @@ const MESSAGES = {
       actions: ['socials', asLink('game/store?from=lobby&action=no-gifts')],
     }),
   },
-  'see-you': { next: 'store' },
+  'pass-sale': {},
+  'see-you': {},
 } as ChatMessages;
 type MessageKey = keyof typeof MESSAGES;
 
@@ -53,7 +56,17 @@ function getActiveMessage(
     case 'empty':
       return 'welcome';
     case 'unlocked':
-      return key === 'unsafe' ? 'secure' : 'gifts';
+      if (key === 'unsafe') return 'secure';
+
+      switch (pass) {
+        case 'active':
+          return 'continue';
+        case 'expired':
+          return 'pass-sale';
+        case 'idle':
+        default:
+          return 'gifts';
+      }
   }
 }
 

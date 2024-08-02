@@ -53,15 +53,12 @@ export function InsufficientBalance({
 
       // Gem & Trader accounts are required.
       let account_cost = await getTokenAccountCreationCost(2);
-      // We are assuming the user will play ~5 games.
-      account_cost += await getPlayerAccountCreationCost(5);
+      // We are assuming the user will play a third of the package games on average with a top of 20 games (currently available).
+      account_cost += await getPlayerAccountCreationCost(
+        Math.min(Math.round(pkg.amount / 3), 20)
+      );
 
-      // Each tx has a small fee to be processed. We are assuming the user will play ~25% more than the package amount.
-      const tx_costs = await getAvgTxFee(pkg.amount * 1.25);
-
-      const total = cost
-        ? cost + tx_costs + account_cost
-        : tx_costs + account_cost;
+      const total = cost ? cost + account_cost : account_cost;
       const amount = fromBigInt(balance ? total - BigInt(balance) : total, 9);
 
       const url = encodeURL({

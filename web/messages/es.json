@@ -273,6 +273,16 @@
           "account": "Cuenta de Jugador"
         }
       }
+    },
+    "Shortcuts": {
+      "title": "Atajos",
+      "description": "Aquí puedes encontrar enlaces rápidos a las secciones principales del juego.",
+      "action": {
+        "lobby": "Lobby",
+        "store": "Tienda de Lucky",
+        "realms": "Reinos",
+        "socials": "Redes sociales"
+      }
     }
   },
   "General": {
@@ -311,6 +321,14 @@
       {
         "text": "¡Bienvenido de nuevo afortunado viajero!",
         "advice": "¡Toca el portal y vamos a reclamar algunos tesoros!"
+      },
+      {
+        "text": "¡Hola! Aún no puedes jugar por una nueva Gema de la Suerte.",
+        "advice": "Si tienes un LuckyPass, puedes canjearlo aquí.",
+        "select": {
+          "title": "¿Qué te gustaría hacer?",
+          "options": "Canjear LuckyPass, Explorar"
+        }
       }
     ],
     "turns": {
@@ -396,6 +414,13 @@
       "see-you": {
         "text": "¡Nos vemos pronto, viajero afortunado!",
         "advice": "Recuerda, siempre puedes regresar a Luckyland y reclamar tus tesoros."
+      },
+      "continue": {
+        "text": "¡Uff, justo a tiempo! Puedes continuar tu viaje en Luckyland.",
+        "advice": "¡Sigue adelante y reclama tus tesoros!"
+      },
+      "pass-sale": {
+        "text": "¡Gran viaje! Has completado tu LuckyPass. Puedes obtener uno nuevo en la tienda o esperar por tu próxima gema de la suerte."
       }
     },
     "links": {

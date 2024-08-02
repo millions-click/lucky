@@ -30,14 +30,20 @@ type PayProps = {
 
 export function Connected({ pkg, token, confirmed, onChange }: PayProps) {
   const t = useTranslations('Components.Buy.Pay');
-  const { player, balance, getAccount, createTokenAccount, refresh } =
+  const { player, balance, roundFee, getAccount, createTokenAccount, refresh } =
     usePlayer();
   const { store, sell, getPrice } = useStoreSell();
   const [state, setState] = useState<'idle' | 'paying' | 'error' | 'completed'>(
     confirmed ? 'completed' : 'idle'
   );
 
-  const cost = useMemo(() => getPrice(pkg.amount), [pkg.amount, getPrice]);
+  const cost = useMemo(() => {
+    const price = getPrice(pkg.amount);
+    if (!price) return null;
+
+    const fee = roundFee * BigInt(Math.round(pkg.amount * 1.25));
+    return price + fee;
+  }, [pkg.amount, getPrice]);
   const enoughFunds = balance && cost && balance > cost;
 
   useEffect(() => {
