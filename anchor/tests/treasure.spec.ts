@@ -20,19 +20,20 @@ import {
   getStrongholdPDA,
   getCollectorPDA,
   getStorePDA,
+  getStorePackagePDA,
   TREASURE_FORGE_COST,
   TRADER_LAUNCH_COST,
   toBN,
   toBigInt,
   fromBigInt,
-} from '../src/games-exports';
+} from '../src';
 
 const DECIMALS = 8;
 // Chainlink MAIN-NET feed (SOL/USD)
 const feed = new PublicKey('CH31Xns5z3M1cTAbKW34jcxPPciazARpijcHj9rxtemt');
 
 // This could make the tests fail if loaded account have a HUGE difference in price.
-const RATE = toBigInt(15726570000); // 157.26570000 USD/SOL
+const RATE = toBigInt(15242855160); // 152.42855160 USD/SOL
 const PRICE = toBigInt(1, 8); // Rate have 8 decimals
 describe('Treasure', () => {
   // Configure the client to use the local cluster.
@@ -437,6 +438,31 @@ describe('Treasure', () => {
           expect(store.feed).toEqual(feed);
           expect(store.trader).toEqual(trader);
           expect(store.price).toEqual(price);
+        });
+
+        describe('Init Package', () => {
+          it('Should initialize a new package for the store', async () => {
+            const store = getStorePDA(trader, feed);
+            const price = new BN((PRICE / BigInt(2)).toString()); // 50% of the price
+            const amount = toBN(10, DECIMALS / 2);
+            const sales = 2;
+
+            await program.methods
+              .storePackage(amount.toString(), { price, sales })
+              .accounts({ store, authority: authority.publicKey })
+              .signers([authority])
+              .rpc();
+
+            const packagePda = getStorePackagePDA(store, amount.toString());
+            const _package = await program.account.storePackage.fetch(
+              packagePda
+            );
+
+            expect(_package.amount.toString()).toEqual(amount.toString());
+            expect(_package.price).toEqual(price);
+            expect(_package.max).toEqual(sales);
+            expect(_package.sales).toEqual(0);
+          });
         });
       });
 

@@ -1,6 +1,6 @@
 pub use crate::state::{
     treasure::Treasure,
-    store::{Store, StoreSettings}
+    store::{Store, StoreSettings, StorePackage, StorePackageSettings},
 };
 use crate::errors::TreasureErrorCode;
 use crate::constants::{TREASURE_SEED, STORE_SEED, COLLECTOR_SEED};
@@ -14,6 +14,11 @@ pub fn vendor(ctx: Context<InitializeStore>, settings: StoreSettings) -> Result<
     store.set_trader(ctx.accounts.trader.key());
     store.set_feed(ctx.accounts.feed.key());
 
+    Ok(())
+}
+
+pub fn set_package(ctx: Context<InitializeStorePackage>, amount: u64, settings: StorePackageSettings) -> Result<()> {
+    ctx.accounts.package.init(amount, settings);
     Ok(())
 }
 
@@ -39,6 +44,33 @@ pub struct InitializeStore<'info> {
         bump
     )]
     collector: Account<'info, TokenAccount>,
+
+    #[account(
+        has_one = authority @ TreasureErrorCode::InvalidAuthority,
+        seeds = [TREASURE_SEED],
+        bump,
+    )]
+    treasure: Account<'info, Treasure>,
+
+    #[account(mut)]
+    authority: Signer<'info>,
+    system_program: Program<'info, System>,
+}
+
+#[derive(Accounts)]
+#[instruction(amount: String)]
+pub struct InitializeStorePackage<'info> {
+    #[account(mut)]
+    store: Account<'info, Store>,
+
+    #[account(
+        init,
+        payer = authority,
+        seeds = [STORE_SEED, store.key().as_ref(), amount.as_ref()],
+        bump,
+        space = 8 + StorePackage::INIT_SPACE
+    )]
+    package: Account<'info, StorePackage>,
 
     #[account(
         has_one = authority @ TreasureErrorCode::InvalidAuthority,

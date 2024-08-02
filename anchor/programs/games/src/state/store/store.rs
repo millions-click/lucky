@@ -19,7 +19,6 @@ pub struct Store {
 pub struct Decimal {
     value: i128,
     decimals: u32,
-
 }
 
 impl Store {

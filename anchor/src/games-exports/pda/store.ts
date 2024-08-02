@@ -11,3 +11,18 @@ export function getStorePDA(
     getGamesProgramId(cluster)
   )[0];
 }
+
+export function getStorePackagePDA(
+  store: PublicKey,
+  amount: string,
+  cluster?: Cluster
+) {
+  return PublicKey.findProgramAddressSync(
+    [
+      Buffer.from(STORE_SEED, 'utf8'),
+      store.toBytes(),
+      Buffer.from(amount, 'utf8'),
+    ],
+    getGamesProgramId(cluster)
+  )[0];
+}
