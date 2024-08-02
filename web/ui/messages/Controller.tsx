@@ -19,7 +19,8 @@ type ChatControllerProps = {
   messages: ChatMessages;
   active: MessageKey | undefined;
   setActive: Dispatch<SetStateAction<MessageKey | undefined>>;
-  settings?: MessagesSettings & Pick<MessagesProps, 'backdrop' | 'typing'>;
+  settings?: MessagesSettings &
+    Pick<MessagesProps, 'backdrop' | 'typing' | 'minimized'>;
 };
 export function ChatController({
   messages,
@@ -49,7 +50,14 @@ export function ChatController({
   }, [active, show]);
 
   const navHandler = (next: string) => {
-    if (!(next in messages)) return;
+    if (!(next in messages) && next !== '_close') return;
+    if (next === '_close') {
+      setActive(undefined);
+      setPrev(undefined);
+      setPath([]);
+      clear();
+      return;
+    }
 
     if (next === prev) {
       const _path = path.slice(0, -1);

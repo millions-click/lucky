@@ -1,3 +1,5 @@
+'use client';
+
 import { useState } from 'react';
 import { useTranslations } from 'next-intl';
 import {
@@ -11,10 +13,8 @@ import type { MessageProps } from '@/ui/messages';
 import { useLuckyBags, useLuckyWallet } from '@/providers';
 import { BagKeyForm } from '@/ui';
 
-const next = 'gifts';
-
 type BagStatus = 'locked' | 'unlocked' | 'error';
-export const Locked: MessageProps['Actions'] = ({ onNext }) => {
+export const Locked: MessageProps['Actions'] = ({ next = '', onNext }) => {
   const t = useTranslations('Components');
   const { name, state, setBagKey, closeBag } = useLuckyBags();
   const { activate } = useLuckyWallet();

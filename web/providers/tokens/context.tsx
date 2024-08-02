@@ -1,13 +1,6 @@
 'use client';
 
-import {
-  createContext,
-  useCallback,
-  useContext,
-  useEffect,
-  useMemo,
-  useState,
-} from 'react';
+import { createContext, useCallback, useContext, useMemo } from 'react';
 import { PublicKey } from '@solana/web3.js';
 import {
   useQueries,
@@ -19,7 +12,6 @@ import { useConnection } from '@solana/wallet-adapter-react';
 
 import type { TokensContext, TokenAccount } from './tokens.d';
 import type { Token } from '@utils/token';
-import { useCreateTokenAccount } from './mutations';
 
 import { getTokenAccountsOptions, getTokenOptions } from '@/queries';
 
@@ -28,9 +20,6 @@ const Context = createContext({
   tokens: [],
   mints: {},
   getAccount: (_: PublicKey) => null,
-  create: async (_: PublicKey) => {
-    throw new Error('Outside context provider');
-  },
   refresh: async () => void 0,
 } as TokensContext);
 
@@ -44,7 +33,6 @@ export function TokensProvider({
   const client = useQueryClient();
   const { connection } = useConnection();
   const accountsQuery = useQuery(getTokenAccountsOptions(owner, connection));
-  const createTokenAccount = useCreateTokenAccount(owner);
 
   const accounts = useMemo(
     () => accountsQuery.data || [],
@@ -63,12 +51,14 @@ export function TokensProvider({
             const address = pubkey.toString();
             const decimals = account.data.parsed.info.tokenAmount.decimals;
             const amount = account.data.parsed.info.tokenAmount.uiAmount;
+            const balance = account.data.parsed.info.tokenAmount.amount;
 
             return {
               ...token,
               address,
               decimals,
               amount,
+              balance,
               publicKey: pubkey,
             } as TokenAccount;
           })
@@ -76,23 +66,10 @@ export function TokensProvider({
       [accounts]
     ),
   });
-  const [mints, setMints] = useState<Record<string, TokenAccount>>({});
-
-  useEffect(() => {
-    if (!tokens.length) return setMints({});
-
-    const debounced = setTimeout(
-      () =>
-        setMints(
-          Object.fromEntries(
-            tokens.map((token) => [token.mint.toString(), token])
-          )
-        ),
-      100
-    );
-
-    return () => clearTimeout(debounced);
-  }, [tokens]);
+  const mints = useMemo(
+    () => Object.fromEntries(tokens.map((t) => [t.mint.toString(), t])),
+    [tokens]
+  );
 
   const value = {
     owner,
@@ -102,7 +79,6 @@ export function TokensProvider({
       (mint: PublicKey) => mints[mint.toString()] || null,
       [mints]
     ),
-    create: createTokenAccount.mutateAsync,
     refresh: useCallback(
       async () =>
         client.invalidateQueries({

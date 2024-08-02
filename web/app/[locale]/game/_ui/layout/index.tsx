@@ -17,16 +17,14 @@ export function GameLayout({ children }: PropsWithChildren) {
   return (
     <LuckyBagProvider>
       <Header />
-      <div
+      <main
         className={className}
         style={{
           backgroundImage: `url(${bg})`,
         }}
       >
-        <div className="hero-content text-neutral-content text-center">
-          {children}
-        </div>
-      </div>
+        {children}
+      </main>
     </LuckyBagProvider>
   );
 }

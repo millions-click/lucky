@@ -29,6 +29,7 @@ import {
 } from '@/providers';
 import { LuckyWalletAdapter } from '@/adapters';
 import { getAvgTxFeeOptions, getBalanceOptions } from '@/queries';
+import { useCreateTokenAccount } from './mutations';
 
 const Context = createContext({
   player: null,
@@ -44,6 +45,16 @@ const Context = createContext({
   roundFee: BigInt(0),
 } as PlayerContext);
 
+function useTokensMutations() {
+  const context = useTokens();
+  const createTokenAccount = useCreateTokenAccount(context.owner);
+
+  return {
+    ...context,
+    create: createTokenAccount.mutateAsync,
+  };
+}
+
 function getBagType(wallet: Wallet | null) {
   if (!wallet) return 'none';
   return wallet instanceof LuckyWalletAdapter ? 'lucky-bag' : 'external';
@@ -54,7 +65,7 @@ function Provider({ children }: PropsWithChildren) {
   const { cluster } = useCluster();
   const { connection } = useConnection();
   const { wallet, disconnect } = useWallet();
-  const { owner, tokens, getAccount, create, refresh } = useTokens();
+  const { owner, tokens, getAccount, create, refresh } = useTokensMutations();
   const [bagType, setBagType] = useState(getBagType(wallet));
 
   const balanceQuery = useQuery(getBalanceOptions(owner, connection));

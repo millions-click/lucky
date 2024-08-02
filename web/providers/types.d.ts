@@ -15,3 +15,4 @@ export * from './player/player.d';
 
 export * from './store/store.d';
 export * from './realms/realms.d';
+export * from './realms/game/game.d';

@@ -65,7 +65,7 @@ function BagName({
       </label>
     </label>
   ) : (
-    <div className="bg-primary w-fit self-center rounded-box px-4 text-xl py-2 flex gap-2.5 items-center">
+    <div className="bg-primary w-fit self-center rounded-box px-4 text-xl py-2 flex gap-2.5 items-center text-white">
       {current}
       {!readOnly && (
         <span

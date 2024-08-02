@@ -2,16 +2,26 @@
 
 import { useState } from 'react';
 
-import { type ChatMessages, ChatController, Selector } from '@/ui/messages';
+import {
+  type ChatMessages,
+  ChatController,
+  Selector,
+  getBagMessage,
+  Activate,
+  Locked,
+} from '@/ui/messages';
 import { RealmEntry } from '@/ui/realms';
 
-import type { LuckyPassState } from '@/providers/types.d';
-import { useLuckyPass } from '@/providers';
+import type { BagType, LuckyPassState } from '@/providers/types.d';
+import type { LuckyBagState } from '@/adapters';
+import { useLuckyBags, useLuckyPass, usePlayer } from '@/providers';
 
 const MESSAGES = {
+  activate: { next: 'first', Actions: Activate, noNav: true },
+  locked: { next: 'first', Actions: Locked, noNav: true },
   welcome: { next: 'first', backdrop: ' ' },
   first: {
-    backdrop: '',
+    backdrop: 'hidden',
     Actions: Selector({
       noTitle: true,
       actions: [
@@ -29,7 +39,14 @@ const MESSAGES = {
 } as ChatMessages;
 type MessageKey = keyof typeof MESSAGES;
 
-function getActiveMessage(pass: LuckyPassState) {
+function getActiveMessage(
+  pass: LuckyPassState,
+  bag: LuckyBagState,
+  bagType: BagType
+) {
+  const bagMessage = getBagMessage(bag, bagType);
+  if (bagMessage) return bagMessage;
+
   switch (pass) {
     case 'active':
       return 'first';
@@ -42,8 +59,11 @@ function getActiveMessage(pass: LuckyPassState) {
 
 export function PortalChatController() {
   const { state: pass } = useLuckyPass();
+  const { state: bag } = useLuckyBags();
+  const { bagType } = usePlayer();
+
   const [active, setActive] = useState<MessageKey | undefined>(
-    getActiveMessage(pass)
+    getActiveMessage(pass, bag, bagType)
   );
 
   return (

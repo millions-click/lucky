@@ -11,7 +11,7 @@ import type { MessageProps } from '@/ui/messages';
 import { Pay } from './pay';
 import { useTraders } from '@/providers';
 
-export const Buy: MessageProps['Actions'] = ({ onNext }) => {
+export const Buy: MessageProps['Actions'] = ({ next, onNext }) => {
   const { trader: token } = useTraders();
   const t = useTranslations('Components.Buy');
   const [active, setActive] = useState<Package | null>(null);
@@ -85,9 +85,9 @@ export const Buy: MessageProps['Actions'] = ({ onNext }) => {
             {confirmed && (
               <div className="modal-action">
                 <Link
-                  href="realms?from=store&action=buy"
+                  href={next ? '' : 'realms?from=store&action=buy'}
                   className="btn btn-lg btn-ghost text-orange-500 "
-                  onClick={() => onNext?.('success')}
+                  onClick={() => onNext?.(next || 'success')}
                 >
                   {t('action.continue')}
                   <IconChevronRight />

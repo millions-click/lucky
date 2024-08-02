@@ -9,12 +9,14 @@ export type Seed = {
   timestamp: number;
 };
 
-export type Turns = {
+export type Attempt = {
+  attempts: number;
+  claimed?: number;
+};
+export type Turns = Attempt & {
   address?: string;
   hold?: boolean;
   turns: number;
-  expires: number;
-  attempts: number;
 };
 
 export type TurnsSession = Turns & JWTProps;
