@@ -51,12 +51,14 @@ export function TokensProvider({
             const address = pubkey.toString();
             const decimals = account.data.parsed.info.tokenAmount.decimals;
             const amount = account.data.parsed.info.tokenAmount.uiAmount;
+            const balance = account.data.parsed.info.tokenAmount.amount;
 
             return {
               ...token,
               address,
               decimals,
               amount,
+              balance,
               publicKey: pubkey,
             } as TokenAccount;
           })

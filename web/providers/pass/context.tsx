@@ -18,6 +18,7 @@ const Context = createContext({} as LuckyPassContext);
 
 function Provider({ children, session }: LuckyPassProviderProps) {
   const { setup, start, countdown } = useCountdown();
+  const [winner, setWinner] = useState(false);
   const [pass, setPass] = useState(session);
   const state = useMemo(() => {
     if (pass.code) return 'saved';
@@ -38,6 +39,7 @@ function Provider({ children, session }: LuckyPassProviderProps) {
 
   const value = {
     state,
+    winner,
     pass,
     countdown: {
       countdown,
@@ -66,6 +68,8 @@ function Provider({ children, session }: LuckyPassProviderProps) {
 
       setPass(redeemedPass);
     }, [pass.code]),
+
+    setWinner,
   } as LuckyPassContext;
 
   return <Context.Provider value={value}>{children}</Context.Provider>;

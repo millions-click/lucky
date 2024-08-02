@@ -1,17 +1,36 @@
-import type { Portal, TokenAccount } from '@/providers/types.d';
+import type {
+  RealmId,
+  Realm,
+  Game,
+  Bounty,
+  Player,
+  TokenAccount,
+  RealmInfo,
+} from '@/providers/types.d';
+import { PublicKey } from '@solana/web3.js';
 
-export type Mode = Awaited<ReturnType<Portal['account']['gameMode']['fetch']>>;
-export type Bounty = Awaited<ReturnType<Portal['account']['bounty']['fetch']>>;
-export type Player = Awaited<ReturnType<Portal['account']['player']['fetch']>>;
+export type GameState =
+  | 'idle'
+  | 'loading'
+  | 'newbie'
+  | 'winner'
+  | 'loser'
+  | 'not-enough-ammo';
 
 export type GameContext = {
-  mode: Mode;
-  bounty: Bounty;
+  id?: RealmId;
+  realm: Realm | null;
+  details?: RealmInfo;
 
-  player: Player;
+  state: GameState;
+  game: Game | null;
+  bounty: Bounty | null;
+
+  player: (Player & { pda: PublicKey }) | null;
   ammo: TokenAccount | null;
   bag: TokenAccount | null;
   vault: TokenAccount | null;
 
   playRound: (choices: Array<number>) => Promise<string>;
+  setActive: (pda: string) => void;
 };

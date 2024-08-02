@@ -6,7 +6,7 @@ import { getPlayerPDA } from '@luckyland/anchor';
 
 export function getPlayerGameAccountOptions(
   owner: PublicKey | null,
-  mode: PublicKey | null,
+  mode: PublicKey | null | undefined,
   portal: Portal,
   cluster: Cluster
 ) {
@@ -18,7 +18,7 @@ export function getPlayerGameAccountOptions(
       if (!pda) throw new Error('Player PDA not found');
 
       const player = await portal.account.player.fetch(pda);
-      return { player, pda };
+      return { ...player, pda };
     },
     enabled: Boolean(pda),
   });

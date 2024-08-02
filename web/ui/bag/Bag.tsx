@@ -1,6 +1,6 @@
 import { useMemo } from 'react';
 
-import { Badge } from './Badge';
+import { type BadgeProps, Badge } from './Badge';
 
 import type { Token } from '@utils/token';
 import { usePlayer } from '@/providers';
@@ -11,6 +11,8 @@ const formatter = new Intl.NumberFormat('en-US', {
   maximumFractionDigits: 1,
 });
 
+type Size = NonNullable<BadgeProps['size']>;
+type BaseBadgeProps = Pick<Required<BadgeProps>, 'size' | 'glow'>;
 const CLASSES = {
   xs: {
     label: 'text-sm',
@@ -28,28 +30,23 @@ const CLASSES = {
     label: 'text-4xl',
     dust: '',
   },
-};
-type Size = keyof typeof CLASSES;
-type BadgeProps = {
-  size: Size;
-  glow: boolean;
-};
+} as Record<Size, { label: string; dust: string }>;
 
-function Gem({ token, size, glow }: BadgeProps & { token: Token }) {
+function Gem({ token, size, glow }: BaseBadgeProps & { token: Token }) {
   const { getAccount } = usePlayer();
   const account = getAccount(token.mint);
   const className = CLASSES[size];
 
   return (
     <Badge icon="gem" size={size} glow={glow}>
-      <span className={`pl-1 ${className.label}`}>
+      <span className={`pl-1 select-none ${className.label}`}>
         {formatter.format(account?.amount || 0)}
       </span>
     </Badge>
   );
 }
 
-function FairiesDust({ size, glow }: BadgeProps) {
+function FairiesDust({ size, glow }: BaseBadgeProps) {
   const { balance, roundFee } = usePlayer();
   const dust = useMemo(
     () => formatter.format(balance / Number(roundFee)),
@@ -64,39 +61,39 @@ function FairiesDust({ size, glow }: BadgeProps) {
       glow={glow}
       className={`text-[#FFE9B0] bottom-0 ${className.dust}`}
     >
-      <span className={`pl-1 ${className.label}`}>{dust}</span>
+      <span className={`pl-1 select-none ${className.label}`}>{dust}</span>
     </Badge>
   );
 }
 
-function LuckyShot({ token, size, glow }: BadgeProps & { token: Token }) {
+function LuckyShot({ token, size, glow }: BaseBadgeProps & { token: Token }) {
   const { getAccount } = usePlayer();
   const account = getAccount(token.mint);
   const className = CLASSES[size];
 
   return (
     <Badge icon="ammo" size={size} glow={glow}>
-      <span className={`pl-1 ${className.label}`}>
+      <span className={`pl-1 select-none ${className.label}`}>
         {formatter.format(account?.amount || 0)}
       </span>
     </Badge>
   );
 }
 
-type BagProps = Partial<BadgeProps> & {
+type BagProps = Partial<BaseBadgeProps> & {
   gem: Token | null;
   trader: Token | null;
   className?: string;
-  vault?: Size;
-  dust?: Size;
-  shot?: Size;
+  vault?: Partial<BaseBadgeProps>;
+  dust?: Partial<BaseBadgeProps>;
+  shot?: Partial<BaseBadgeProps>;
 };
 export function Bag({
   gem,
   trader,
   className = '',
   size = 'sm',
-  glow = true,
+  glow = 'active',
   vault,
   dust,
   shot,
@@ -106,9 +103,9 @@ export function Bag({
 
   return (
     <div className={className}>
-      <Gem token={gem} size={vault || size} glow={glow} />
-      <FairiesDust size={dust || size} glow={glow} />
-      <LuckyShot token={trader} size={shot || size} glow={glow} />
+      <Gem token={gem} size={size} glow={glow} {...vault} />
+      <FairiesDust size={size} glow={glow} {...dust} />
+      <LuckyShot token={trader} size={size} glow={glow} {...shot} />
     </div>
   );
 }

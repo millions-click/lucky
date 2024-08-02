@@ -1,0 +1,96 @@
+.container {
+  @apply fixed w-fit;
+  @apply rounded-full;
+  @apply border-2 border-amber-100;
+
+  @apply bottom-14;
+
+  &[data-choices="1"] {
+    @apply w-32 h-32;
+  }
+
+  &[data-choices="2"] {
+    @apply w-full;
+    @apply max-w-xs;
+
+    @screen sm {
+      @apply max-w-sm;
+      @apply bottom-24;
+    }
+  }
+}
+
+.area {
+  @apply grid;
+  @apply w-full;
+  @apply h-full;
+
+  justify-items: center;
+  align-items: center;
+
+  &, & > * {
+    user-select: none;
+    -webkit-user-drag: none;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    -webkit-touch-callout: none;
+    -webkit-tap-highlight-color: transparent;
+  }
+
+  .droppable, .draggable {
+    @apply relative;
+    @apply flex items-center justify-center;
+    @apply rounded-full;
+  }
+
+  .draggable {
+    @apply w-12 h-12;
+    cursor: grab;
+
+    touch-action: manipulation;
+    -ms-touch-action: manipulation;
+
+    &:active {
+      @apply text-primary;
+      cursor: grabbing;
+    }
+    &[data-is-over="true"] {
+      @apply text-success;
+    }
+  }
+
+  .droppable {
+    transition: transform 0.2s ease;
+
+    &[data-active="true"] {
+      background-color: rgba(255, 255, 255, 0.1);
+    }
+
+    &[data-is-over="true"] {
+      transform: scale(1.2);
+    }
+
+    &[data-selected="true"] {
+      @apply animate-glow;
+    }
+  }
+
+  &[data-choices="1"] {
+    grid-template-areas: "p";
+
+    .droppable {
+      @apply absolute;
+      @apply inset-2;
+    }
+  }
+
+  &[data-choices="2"] {
+    @apply py-3;
+    grid-template-areas: "i1 p i2";
+
+    .droppable {
+      @apply w-16 h-16;
+    }
+  }
+}

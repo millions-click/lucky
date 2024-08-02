@@ -12,17 +12,20 @@ import {
 } from './realms.d';
 
 import { BountiesProvider, GameProvider, usePortal } from '@/providers';
-import { getRealmsOptions } from '@/queries';
+import {
+  getBountiesOptions,
+  getGameModesOptions,
+  getRealmsOptions,
+} from '@/queries';
 
 function findById(realms: Realms, id: string): Realm | null {
   return (
-    realms.find(({ account: { name } }) => name.toLowerCase() === id) || null
+    Object.values(realms).find(({ name }) => name.toLowerCase() === id) || null
   );
 }
-function findInfo(realms: Realms, active?: Realm | null) {
-  const id = active
-    ? RealmsMap[active.account.name.toLowerCase()]?.next
-    : 'coin';
+function findInfo(realms: Realms | null, active?: Realm | null) {
+  if (!realms) return;
+  const id = active ? RealmsMap[active.name.toLowerCase()]?.next : 'coin';
   if (!id) return;
 
   const realm = findById(realms, id);
@@ -40,14 +43,25 @@ export function RealmsProvider({ children }: { children: React.ReactNode }) {
   const realmsQuery = useQuery(
     getRealmsOptions(portal, cluster.network as Cluster)
   );
-  const realms = useMemo(() => realmsQuery.data || [], [realmsQuery.data]);
+  const modesQuery = useQuery(
+    getGameModesOptions(realmsQuery.data, portal, cluster.network as Cluster)
+  );
+  const bountiesQuery = useQuery(
+    getBountiesOptions(modesQuery.data, portal, cluster.network as Cluster)
+  );
+
+  const { realms } = useMemo(
+    () => bountiesQuery.data || { realms: null },
+    [bountiesQuery.data]
+  );
   const active = useMemo(
-    () => (realm ? findById(realms, realm) : null),
+    () => (realms && realm ? findById(realms, realm) : null),
     [realm, realms]
   );
   const next = useMemo(() => findInfo(realms, active), [active, realms]);
 
   const value = {
+    id: realm,
     next,
     active,
     realms,
@@ -57,7 +71,13 @@ export function RealmsProvider({ children }: { children: React.ReactNode }) {
   return (
     <Context.Provider value={value}>
       <BountiesProvider>
-        <GameProvider realm={active}>{children}</GameProvider>
+        <GameProvider
+          realm={active}
+          id={realm}
+          details={realm ? RealmsMap[realm] : undefined}
+        >
+          {children}
+        </GameProvider>
       </BountiesProvider>
     </Context.Provider>
   );

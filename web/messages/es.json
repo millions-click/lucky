@@ -243,6 +243,36 @@
         "activating": "Activando lucky pass...",
         "transporting": "Agarrate fuerte, te transportare ahora..."
       }
+    },
+    "GamePicker": {
+      "title": "Juegos Disponibles",
+      "Card": {
+        "title": "Detalles del juego",
+        "game": {
+          "slots": "Ranuras",
+          "choices": "Opciones",
+          "pick": "Tu eliges el ganador",
+          "house": "Casa elige ganador",
+          "winner": "Ganador: {choice}",
+          "any": "Lados iguales"
+        },
+        "bounty": {
+          "vault": "Tesoro",
+          "price": "Precio",
+          "reward": "Recompensa"
+        },
+        "stats": {
+          "title": "Estadísticas",
+          "no-data": "Aún no has jugado este juego.",
+          "wins": "Victorias",
+          "losses": "Derrotas",
+          "rate": "Tasa de éxito",
+          "gem": "Tesoros ganadas",
+          "ammo": "Disparos usados",
+          "dust": "Rondas Magicas",
+          "account": "Cuenta de Jugador"
+        }
+      }
     }
   },
   "General": {
@@ -411,7 +441,7 @@
         "text": "Necesitas activar tu LuckyBag para continuar."
       },
       "locked": {
-        "text": "Ups! Parece que tu LuckyBag esta bloqueada."
+        "text": "¡Ups! Parece que tu LuckyBag esta bloqueada."
       },
       "welcome": {
         "text": "¡Saludos, viajero afortunado! Soy Emili, tu guía a través de los reinos de Luckyland. Has sido transportado al portal de los reinos.",
@@ -424,6 +454,26 @@
       "expired": {
         "text": "Asombrosa aventura! Tu LuckyPass ha expirado.",
         "advice": "Puedes obtener un nuevo LuckyPass en la tienda o esperar por tu siguiente gema de la suerte."
+      }
+    },
+    "coin": {
+      "title": "Reino de las Monedas",
+      "description": "Bienvenido al Reino de las Monedas. Aquí puedes ganar tesoros lanzando monedas.",
+      "messages": {
+        "activate": {
+          "text": "Necesitas activar tu LuckyBag para continuar."
+        },
+        "locked": {
+          "text": "¡Ups! Parece que tu LuckyBag esta bloqueada."
+        },
+        "welcome": {
+          "text": "¡Felicidades!, has entrado al Reino de las Monedas. Aquí puedes lanzar monedas para ganar tesoros.",
+          "advice": "Este es el primero de los muchos reinos que puedes explorar en Luckyland."
+        },
+        "buy": {
+          "text": "Me alegra que estés disfrutando del Reino de las Monedas. Te has quedado sin municiones. Necesitas rellenar tu bolsa para continuar.",
+          "advice": "Por favor, ten en cuenta que este es el reino más caro, y los otros ademas tienen recompensas más grandes."
+        }
       }
     }
   },

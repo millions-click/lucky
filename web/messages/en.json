@@ -244,6 +244,36 @@
         "activating": "Activating LuckyPass...",
         "transporting": "Hold on, I'll transport you now..."
       }
+    },
+    "GamePicker": {
+      "title": "Available games",
+      "Card": {
+        "title": "Game Details",
+        "game": {
+          "slots": "Slots",
+          "choices": "Choices",
+          "pick": "You pick winner",
+          "house": "House pick winner",
+          "winner": "Winner: {choice}",
+          "any": "Equal sides"
+        },
+        "bounty": {
+          "vault": "Treasure",
+          "price": "Price",
+          "reward": "Reward"
+        },
+        "stats": {
+          "title": "Game Stats",
+          "no-data": "You haven't played this game yet.",
+          "wins": "Wins",
+          "losses": "Losses",
+          "rate": "Success rate",
+          "gem": "Earned gems",
+          "ammo": "Used shots",
+          "dust": "Fairy Rounds",
+          "account": "Player account"
+        }
+      }
     }
   },
   "General": {
@@ -425,6 +455,26 @@
       "expired": {
         "text": "Awesome journey! Your LuckyPass has expired.",
         "advice": "You can get a new one in the store or wait for your next lucky gem."
+      }
+    },
+    "coin": {
+      "title": "Coin Realm",
+      "description": "Welcome to the Coin Realm! Here you can earn treasures by flipping coins.",
+      "messages": {
+        "activate": {
+          "text": "You need to activate you LuckyBag to continue."
+        },
+        "locked": {
+          "text": "Ups! It seems your LuckyBag is locked"
+        },
+        "welcome": {
+          "text": "Congratulations! You are now in the Coin Realm. Here you can earn treasures by flipping coins.",
+          "advice": "This is the first of the many realms you can explore in Luckyland."
+        },
+        "buy": {
+          "text": "I'm glad you're enjoying the Coin Realm. You got out of ammo. You need to refill your bag to continue.",
+          "advice": "Please, take into account this is the most expensive realm, and the others also have bigger rewards."
+        }
       }
     }
   },
