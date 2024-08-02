@@ -2,6 +2,29 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [0.2.3](///compare/v0.2.2...v0.2.3) (2024-08-02)
+
+
+### Features
+
+* **web:** 👻 Activate & Unlock ae51a1f
+* **web:** 👻 Attempts Reset 997f272
+* **web:** 👻 Bounties | Context d55b692
+* **web:** 👻 Close & Minimized | Chat Controller 91085e6
+* **web:** 👻 Coin | UX ffa81fc
+* **web:** 👻 Game Picker | Coins 327ae15
+* **web:** 👻 GamePad | Coin Realm c3176d6
+* **web:** 👻 Games Context a671e63
+* **web:** 👻 Gem | Bag df587f1
+* **web:** 👻 Player Account | Game Picker cec1206
+* **web:** 👻 Player Accounts Cost 5adf715
+* **web:** 👻 Realm | Chat Controller e24327f
+* **web:** 👻 Realm | Root Tree 3adfb49
+* **web:** 👻 Realm Details | Context dfe8e10
+* **web:** 👻 Realms model | Context 9316718
+* **web:** 👻 UX/UI | Gamepad 38fca87
+* **web:** 👻 Winner | Realms 0556345
+
 ### [0.2.2](///compare/v0.2.1...v0.2.2) (2024-07-25)
 
 
