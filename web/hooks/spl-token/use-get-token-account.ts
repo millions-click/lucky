@@ -12,7 +12,7 @@ import type { TokenAccount } from './splt-token.d';
  *
  * @param address - the public key of the token account
  * */
-export function useGetTokenAccount({ address }: { address: PublicKey }) {
+export function useGetTokenAccount({ address }: { address?: PublicKey }) {
   const { connection } = useConnection();
 
   return useQuery<TokenAccount | null>({
@@ -21,6 +21,7 @@ export function useGetTokenAccount({ address }: { address: PublicKey }) {
       { endpoint: connection.rpcEndpoint, address },
     ],
     queryFn: async () => {
+      if (!address) return null;
       let account;
 
       try {
@@ -39,6 +40,7 @@ export function useGetTokenAccount({ address }: { address: PublicKey }) {
         balance: account.amount,
         amount: fromBigInt(account.amount, token.decimals),
         address: address.toString(),
+        publicKey: address,
       };
     },
   });

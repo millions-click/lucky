@@ -1,18 +1,20 @@
 'use client';
 
+import { useMemo } from 'react';
 import { useWallet } from '@solana/wallet-adapter-react';
-import { WalletButton } from '@/providers';
+
 import { AppHero, ellipsify } from '../ui/ui-layout';
 import { ExplorerLink } from '../cluster/cluster-ui';
-import { useStoreProgram } from './store-data-access';
 import { StoreCreate, StoreList } from './store-ui';
-import { useMemo } from 'react';
-import { getMintAuthorityPDA } from '@luckyland/anchor';
+
+import { getTollkeeperPDA } from '@luckyland/anchor';
+import { useStoreProgram } from '@/hooks';
+import { WalletButton } from '@/providers';
 
 export default function StoreFeature() {
   const { publicKey } = useWallet();
   const { programId } = useStoreProgram();
-  const ownerPDA = useMemo(() => getMintAuthorityPDA(), []);
+  const ownerPDA = useMemo(() => getTollkeeperPDA(), []);
 
   return publicKey ? (
     <div>

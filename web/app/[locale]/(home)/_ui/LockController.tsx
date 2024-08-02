@@ -6,12 +6,12 @@ import { Portal } from './portal';
 import { LockDoor } from './lock';
 import { Turns } from './Turns';
 
-import { CountdownProvider, useMessages } from '@/providers';
+import { CountdownProvider, useMessagesHandler } from '@/providers';
 import { createLuckyPass, getTurns, playATurn } from '@/actions';
 import type { TurnsSession } from '@/actions/types';
 
 export function LockController() {
-  const { show, clear } = useMessages();
+  const { show, clear } = useMessagesHandler();
 
   const [session, setSession] = useState<TurnsSession | null>(null);
   const [attempts, setAttempts] = useState<number | null>(null);

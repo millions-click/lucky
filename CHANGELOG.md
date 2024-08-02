@@ -2,6 +2,61 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [0.2.1](///compare/v0.2.0...v0.2.1) (2024-07-23)
+
+
+### Features
+
+* **anchor:** 👻 Mint only when Empty 474b894
+* **web:** 👻 Ammo | Lucky Bag 07ba000
+* **web:** 👻 Fairy Dust Cost | Context 9b65a6c
+* **web:** 👻 Game Header ce9cd43
+* **web:** 👻 GameLayout 0a55d9a
+* **web:** 👻 Gems & Traders | Context b231aaa
+* **web:** 👻 Pay | Store dc22883
+* **web:** 👻 Payment Link | Solana Pay f6594b7
+* **web:** 👻 Player | Context bfb6612
+* **web:** 👻 Store | Hooks 95fa4d1
+* **web:** 👻 Successful Purchase | Store 21a4f3c
+* **web:** 👻 Tokens Context afb78f2
+* **web:** 👻 Trader | Store d45afdf
+
+
+### Bug Fixes
+
+* **web:** 👻 Query Provider 911b1d9
+
+## [0.2.0](///compare/v0.1.11...v0.2.0) (2024-07-19)
+
+
+### ⚠ BREAKING CHANGES
+
+* **anchor:** 👻 Lucky & Store | Programs
+
+### Features
+
+* **anchor:** 👻 Sale | Store 331fbae
+* **anchor:** 👻 Store | Games 17c2724
+* **anchor:** 👻 Store | Games 9b297d8
+* **anchor:** 👻 Store Update 5f48b9d
+* **anchor:** 👻 Withdraw | Store 74cf1f5
+* **scripts:** 👻 Launch & Fill | Store b99b20c
+* **web:** 👻 Bag Button 01ce46e
+* **web:** 👻 Base58 | Copy 0b3d155
+* **web:** 👻 Context | Messages c278f28
+* **web:** 👻 Encryption | Lucky Bags 8186a64
+* **web:** 👻 Selector | Messages f3e2710
+* **web:** 👻 Store dda984c
+* **web:** 👻 Unlock | Bag 226d72c
+
+
+### Bug Fixes
+
+* **anchor:** 👻 SOL Scale | Store Sale baa8afc
+
+
+* **anchor:** 👻 Lucky & Store | Programs 9869f9a
+
 ### [0.1.11](///compare/v0.1.10...v0.1.11) (2024-07-16)
 
 

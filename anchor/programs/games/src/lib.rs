@@ -31,12 +31,28 @@ pub mod games {
         escrow::launch::pay_definition(&ctx)
     }
 
+    pub fn launch_store(ctx: Context<InitializeStore>, settings: StoreSettings) -> Result<()> {
+        store::handle::vendor(ctx, settings)
+    }
+
     pub fn stockpile_gems(ctx: Context<Stockpile>, amount: u64) -> Result<()> {
         treasure::stockpile::receive(&ctx, amount)
     }
 
+    pub fn store_fill(ctx: Context<StoreStockFill>, amount: u64) -> Result<()> {
+        store::stock::fill(&ctx, amount)
+    }
+
+    pub fn store_sale(ctx: Context<StoreSale>, amount: u64) -> Result<()> {
+        store::sale::trader(&ctx, amount)
+    }
+
     pub fn retrieve_gems(ctx: Context<UnlockStronghold>, amount: u64) -> Result<()> {
         treasure::unlock::acquire_loot(&ctx, amount)
+    }
+
+    pub fn store_withdraw(ctx: Context<StoreWithdraw>, amount: u64) -> Result<()> {
+        store::funds::withdraw(&ctx, amount)
     }
 
     // ------------------------ GAME ------------------------

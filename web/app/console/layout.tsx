@@ -5,7 +5,6 @@ import '../global.css';
 import {
   ReactQueryProvider,
   ClusterProvider,
-  CryptoProvider,
   LuckyBagsProvider,
   SolanaModalProvider,
   DataFeedProvider,
@@ -25,7 +24,6 @@ const links: { label: string; path: string; program?: boolean }[] = [
   { label: 'Account', path: '/account' },
   { label: 'Treasury', path: '/treasure', program: true },
   { label: 'Games', path: '/games', program: true },
-  { label: 'Lucky', path: '/lucky', program: true },
   { label: 'Store', path: '/store', program: true },
 ].map((link) => ({ ...link, path: `/console${link.path}` }));
 
@@ -38,17 +36,15 @@ export default function Layout({ children }: PropsWithChildren) {
       <body>
         <ReactQueryProvider>
           <ClusterProvider>
-            <CryptoProvider>
-              <LuckyBagsProvider>
-                <SolanaModalProvider>
-                  <DataFeedProvider>
-                    <UiLayout links={links} env={NEXT_PUBLIC_VERCEL_ENV}>
-                      {children}
-                    </UiLayout>
-                  </DataFeedProvider>
-                </SolanaModalProvider>
-              </LuckyBagsProvider>
-            </CryptoProvider>
+            <LuckyBagsProvider>
+              <SolanaModalProvider>
+                <DataFeedProvider>
+                  <UiLayout links={links} env={NEXT_PUBLIC_VERCEL_ENV}>
+                    {children}
+                  </UiLayout>
+                </DataFeedProvider>
+              </SolanaModalProvider>
+            </LuckyBagsProvider>
           </ClusterProvider>
         </ReactQueryProvider>
       </body>

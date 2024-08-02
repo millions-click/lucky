@@ -1,21 +1,21 @@
 'use client';
 
-import { Activate, Locked, Timer, Generated, Secure, Bag } from './messages';
-import { Selector } from './Selector';
+import { useState } from 'react';
+import Link from 'next/link';
 
-import {
-  type CryptoState,
-  useCrypto,
-  useLuckyBags,
-  useMessages,
-} from '@/providers';
-import { useEffect, useState } from 'react';
-import { Messages, type MessageProps } from '@/ui';
+import { Activate, Locked, Timer, Generated, Secure, Bag } from './messages';
+
+import { type CryptoState, useCrypto, useLuckyBags } from '@/providers';
+import { type ChatMessages, ChatController, Selector } from '@/ui';
 import type { LuckyBagState } from '@/adapters';
 
-type MessageDef = Partial<Omit<MessageProps, 'backdrop'>> & {
-  backdrop?: string;
-};
+const asLink = (href: string) => ({
+  next: '',
+  Component: Link,
+  props: { href },
+  onClick: () => void 0,
+});
+
 const MESSAGES = {
   welcome: { next: 'mood' },
   activate: { Actions: Activate },
@@ -27,8 +27,13 @@ const MESSAGES = {
   bag: { Actions: Bag },
   generated: { Actions: Generated },
   secure: { Actions: Secure },
-  gifts: {},
-} as Record<string, MessageDef>;
+  gifts: {
+    Actions: Selector({
+      actions: ['socials', asLink('game/store?no_gifts')],
+    }),
+  },
+  store: { palId: 'lucky' },
+} as ChatMessages;
 type MessageKey = keyof typeof MESSAGES;
 
 // TODO: If the user is using an external wallet, it should go directly to the last message.
@@ -45,54 +50,26 @@ function getActiveMessage(key: CryptoState, bag: LuckyBagState) {
   }
 }
 
-export function ChatController() {
-  const { show } = useMessages({ namespace: 'Lobby', palId: 'jessie' });
+export function LobbyChatController() {
   const { state: key } = useCrypto();
   const { state: bag } = useLuckyBags();
 
   // TODO: Save the path in the local storage and restore it on reload. Use it to initialize the active message.
-  const [path, setPath] = useState<MessageKey[]>([]);
   const [active, setActive] = useState<MessageKey | undefined>(
     getActiveMessage(key, bag)
   );
-  const [prev, setPrev] = useState<MessageKey | undefined>(
-    path.length ? path[path.length - 1] : undefined
-  );
-  const [message, setMessage] = useState<MessageDef>({});
-
-  useEffect(() => {
-    if (!active) return;
-
-    const message = MESSAGES[active];
-    if (message) {
-      show(active);
-      setMessage(message);
-    }
-  }, [active, show]);
-
-  const onNext = (next: string) => {
-    if (!(next in MESSAGES)) return;
-
-    if (next === prev) {
-      const _path = path.slice(0, -1);
-      setPrev(_path[_path.length - 1]);
-      setPath(_path);
-    } else {
-      if (!active) throw new Error('This should not happen');
-      setPrev(active);
-      setPath((current) => [...current, active]);
-    }
-
-    setActive(next);
-  };
 
   return (
-    <Messages
-      typing={10}
-      backdrop=" "
-      onNext={onNext}
-      previous={prev}
-      {...message}
+    <ChatController
+      active={active}
+      setActive={setActive}
+      messages={MESSAGES}
+      settings={{
+        backdrop: ' ',
+        typing: 10,
+        namespace: 'Lobby',
+        palId: 'jessie',
+      }}
     />
   );
 }

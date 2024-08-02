@@ -4,8 +4,7 @@ import { Options, actions } from './actions';
 
 import { type MessageProps } from '@/ui';
 import { useTranslations } from 'next-intl';
-import { LuckyBagProvider, useCrypto } from '@/providers';
-import { BagButton } from '@/ui/bag';
+import { useCrypto } from '@/providers';
 
 type ActionKey = keyof typeof actions;
 const next = {
@@ -34,41 +33,38 @@ export const Bag: MessageProps['Actions'] = ({ onNext, message, ...props }) => {
         {...props}
         onNext={(action) => setActive(action as ActionKey)}
       />
-      <LuckyBagProvider>
-        <BagButton className="absolute top-0 right-0" />
-        {Action && (
-          <dialog className="modal modal-bottom sm:modal-middle modal-open">
-            <div className="modal-box">
-              <Action onChange={setConfirmed} />
-              {confirmed && (
-                <div className="modal-action">
-                  <button
-                    className="btn btn-lg btn-ghost text-orange-500 "
-                    onClick={() => {
-                      onNext?.(
-                        state === 'unsafe' && active === 'import'
-                          ? 'secure'
-                          : next[active]
-                      );
-                    }}
-                  >
-                    {t(
-                      active === 'generate'
-                        ? 'Common.action.save'
-                        : active === 'import' && state === 'unsafe'
-                        ? 'Common.action.secure'
-                        : 'Common.action.activate'
-                    )}
-                  </button>
-                </div>
-              )}
-            </div>
-            <form method="dialog" className="modal-backdrop">
-              <button onClick={() => setActive(undefined)}>Close</button>
-            </form>
-          </dialog>
-        )}
-      </LuckyBagProvider>
+      {Action && (
+        <dialog className="modal modal-bottom sm:modal-middle modal-open">
+          <div className="modal-box">
+            <Action onChange={setConfirmed} />
+            {confirmed && (
+              <div className="modal-action">
+                <button
+                  className="btn btn-lg btn-ghost text-orange-500 "
+                  onClick={() => {
+                    onNext?.(
+                      state === 'unsafe' && active === 'import'
+                        ? 'secure'
+                        : next[active]
+                    );
+                  }}
+                >
+                  {t(
+                    active === 'generate'
+                      ? 'Common.action.save'
+                      : active === 'import' && state === 'unsafe'
+                      ? 'Common.action.secure'
+                      : 'Common.action.activate'
+                  )}
+                </button>
+              </div>
+            )}
+          </div>
+          <form method="dialog" className="modal-backdrop">
+            <button onClick={() => setActive(undefined)}>Close</button>
+          </form>
+        </dialog>
+      )}
     </div>
   );
 };

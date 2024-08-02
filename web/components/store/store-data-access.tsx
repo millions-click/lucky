@@ -3,16 +3,10 @@
 import { useMemo } from 'react';
 import { Cluster, PublicKey } from '@solana/web3.js';
 import { BN } from '@coral-xyz/anchor';
-import { useConnection, useWallet } from '@solana/wallet-adapter-react';
 import { useMutation, useQuery } from '@tanstack/react-query';
 import toast from 'react-hot-toast';
 
-import {
-  getStorePDA,
-  getStoreProgram,
-  getStoreProgramId,
-  getStoreVaultPDA,
-} from '@luckyland/anchor';
+import { getCollectorPDA } from '@luckyland/anchor';
 
 import { useCluster } from '../cluster/cluster-data-access';
 import { useTransactionToast } from '../ui/ui-layout';
@@ -21,59 +15,11 @@ import {
   useOwnedToken,
   usePlayer,
   useStoreBalance,
+  useStoreProgram,
 } from '@/hooks';
 import { getAssociatedTokenAddress } from '@solana/spl-token';
-import { useAnchorProvider } from '@/providers';
-
-export function useStoreProgram() {
-  const { connection } = useConnection();
-  const { cluster } = useCluster();
-  const transactionToast = useTransactionToast();
-  const provider = useAnchorProvider();
-  const programId = useMemo(
-    () => getStoreProgramId(cluster.network as Cluster),
-    [cluster]
-  );
-  const program = getStoreProgram(provider);
-
-  const stores = useQuery({
-    queryKey: ['store', 'all', { cluster }],
-    queryFn: () => program.account.store.all(),
-  });
-
-  const getProgramAccount = useQuery({
-    queryKey: ['get-program-account', { cluster }],
-    queryFn: () => connection.getParsedAccountInfo(programId),
-  });
-
-  const initialize = useMutation({
-    mutationKey: ['store', 'initialize', { cluster }],
-    mutationFn: ({
-      tokenMint,
-      price,
-    }: {
-      tokenMint: PublicKey;
-      price: bigint;
-    }) =>
-      program.methods
-        .initialize(new BN(price.toString()))
-        .accounts({ tokenMint })
-        .rpc(),
-    onSuccess: (signature) => {
-      transactionToast(signature);
-      return stores.refetch();
-    },
-    onError: () => toast.error('Failed to initialize account'),
-  });
-
-  return {
-    program,
-    programId,
-    stores,
-    getProgramAccount,
-    initialize,
-  };
-}
+import { useDataFeed } from '@/providers';
+import { CHAINLINK_STORE_PROGRAM_ID } from '@chainlink/solana-sdk';
 
 export function useStoreProgramAccount({
   storePda,
@@ -82,61 +28,49 @@ export function useStoreProgramAccount({
   storePda: PublicKey;
   callback?: () => void;
 }) {
+  const { feed } = useDataFeed();
   const { owner } = usePlayer();
   const { cluster } = useCluster();
   const transactionToast = useTransactionToast();
-  const { program, stores } = useStoreProgram();
-  const vaultPDA = useMemo(
-    () => getStoreVaultPDA(storePda, cluster.network as Cluster),
-    [storePda, cluster]
-  );
+  const { program, authority } = useStoreProgram();
 
   // ------------------- queries ----------------------
-  const vaultQuery = useGetTokenAccount({ address: vaultPDA });
-
-  const tokenQuery = useOwnedToken(owner, vaultQuery.data?.mint);
-
   const storeQuery = useQuery({
     queryKey: ['store', 'fetch', { cluster, storePda }],
     queryFn: () => program.account.store.fetch(storePda),
   });
 
+  const vaultPDA = useMemo(
+    () =>
+      storeQuery.data &&
+      getCollectorPDA(storeQuery.data.trader, cluster.network as Cluster),
+    [storeQuery.data, cluster]
+  );
+
+  const vaultQuery = useGetTokenAccount({ address: vaultPDA });
+
+  const tokenQuery = useOwnedToken(owner, vaultQuery.data?.mint);
+
   const balanceQuery = useStoreBalance(storePda);
 
   // ------------------- computed ---------------------
-  const isOwner = useMemo(() => {
-    if (!storeQuery.data?.mint || !owner) return false;
-    return storePda.equals(getStorePDA(owner, storeQuery.data.mint));
-  }, [owner, storeQuery.data?.mint, storePda]);
+  const isOwner = useMemo(
+    () => authority.data?.equals(owner),
+    [owner, authority.data]
+  );
 
   // ------------------- mutations -------------------
-  const initVault = useMutation({
-    mutationKey: ['store', 'initVault', { cluster, storePda }],
-    mutationFn: () => {
-      if (!storeQuery.data?.mint) throw new Error('Store not initialized');
-
-      const tokenMint = storeQuery.data.mint;
-      return program.methods.initializeVault().accounts({ tokenMint }).rpc();
-    },
-    onSuccess: (tx) => {
-      transactionToast(tx);
-      return vaultQuery.refetch().then(() => callback?.());
-    },
-  });
-
   const deposit = useMutation({
     mutationKey: ['store', 'deposit', { cluster, storePda }],
     mutationFn: async (amount: bigint) => {
       if (!vaultQuery.data) throw new Error('Vault not initialized');
 
-      const targetAccount = await getAssociatedTokenAddress(
-        vaultQuery.data.mint,
-        owner
-      );
+      const trader = vaultQuery.data.mint;
+      const reserve = await getAssociatedTokenAddress(trader, owner);
 
       return program.methods
-        .deposit(new BN(amount.toString()))
-        .accounts({ store: storePda, targetAccount })
+        .storeFill(new BN(amount.toString()))
+        .accounts({ reserve, trader })
         .rpc();
     },
     onSuccess: (signature) => {
@@ -151,13 +85,13 @@ export function useStoreProgramAccount({
 
   const update = useMutation({
     mutationKey: ['store', 'set', { cluster, storePda }],
-    mutationFn: (value: number) => {
-      if (!storeQuery.data?.mint) throw new Error('Store not initialized');
+    mutationFn: (price: BN) => {
+      if (!storeQuery.data?.trader) throw new Error('Store not initialized');
 
-      const tokenMint = storeQuery.data.mint;
+      const trader = storeQuery.data.trader;
       return program.methods
-        .update(new BN(value))
-        .accounts({ tokenMint })
+        .launchStore({ price })
+        .accounts({ feed, trader })
         .rpc();
     },
     onSuccess: (tx) => {
@@ -172,14 +106,17 @@ export function useStoreProgramAccount({
     mutationFn: async (amount: bigint) => {
       if (!vaultQuery.data) throw new Error('Vault not initialized');
 
-      const targetAccount = await getAssociatedTokenAddress(
-        vaultQuery.data.mint,
-        owner
-      );
+      const trader = vaultQuery.data.mint;
+      const receiver = await getAssociatedTokenAddress(trader, owner);
 
       return program.methods
-        .sell(new BN(amount.toString()))
-        .accounts({ store: storePda, targetAccount })
+        .storeSale(new BN(amount.toString()))
+        .accounts({
+          feed,
+          chainlinkProgram: CHAINLINK_STORE_PROGRAM_ID,
+          trader,
+          receiver,
+        })
         .rpc();
     },
     onSuccess: (tx) => {
@@ -195,34 +132,16 @@ export function useStoreProgramAccount({
 
   const withdraw = useMutation({
     mutationKey: ['store', 'withdraw', { cluster, storePda }],
-    mutationFn: async (amount: bigint) => {
-      if (!storeQuery.data?.mint) throw new Error('Store not initialized');
-
-      const tokenMint = storeQuery.data.mint;
+    mutationFn: async (amount: BN) => {
       return program.methods
-        .withdraw(new BN(amount.toString()))
-        .accounts({ tokenMint })
+        .storeWithdraw(amount)
+        .accounts({ store: storePda })
         .rpc();
     },
     onSuccess: (tx) => {
       callback?.();
       transactionToast(tx);
       return balanceQuery.refetch().then(() => callback?.());
-    },
-  });
-
-  const close = useMutation({
-    mutationKey: ['store', 'close', { cluster, storePda }],
-    mutationFn: () => {
-      if (!storeQuery.data?.mint) throw new Error('Store not initialized');
-
-      const tokenMint = storeQuery.data.mint;
-      return program.methods.close().accounts({ tokenMint }).rpc();
-    },
-    onSuccess: (tx) => {
-      callback?.();
-      transactionToast(tx);
-      return stores.refetch().then(() => callback?.());
     },
   });
 
@@ -237,11 +156,9 @@ export function useStoreProgramAccount({
     token: tokenQuery.token,
     isOwner,
 
-    initVault,
     deposit,
     update,
     sell,
     withdraw,
-    close,
   };
 }

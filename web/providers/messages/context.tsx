@@ -11,10 +11,11 @@ import {
 } from 'react';
 import { useTranslations } from 'next-intl';
 
-import type {
+import {
   Message,
   Messages,
   MessagesContext,
+  MessagesContextHandler,
   MessagesSettings,
 } from './messages.d';
 import { type GamePalId, useGamePal } from '../game-pal';
@@ -36,16 +37,22 @@ function valueOrDefault(
   }
 }
 
-export function useMessages(settings: MessagesSettings = {}): MessagesContext {
+export function useMessages(): MessagesContext {
+  return useContext(Context);
+}
+
+export function useMessagesHandler(
+  settings: MessagesSettings = {}
+): MessagesContextHandler {
   const { palId, ttl } = settings;
-  const context = useContext(Context);
+  const context = useMessages();
   const { namespace, setMessages } = context;
 
   const t = useTranslations(settings.namespace || namespace);
   const { getPal } = useGamePal();
   const pal = useMemo(() => getPal(palId as GamePalId), [palId]);
 
-  const show: MessagesContext['show'] = useCallback(
+  const show: MessagesContextHandler['show'] = useCallback(
     (id, values, replace = true) => {
       const path = `messages.${id}`;
       const message: Message = {
@@ -66,12 +73,7 @@ export function useMessages(settings: MessagesSettings = {}): MessagesContext {
         ];
       });
     },
-    [t, ttl]
-  );
-
-  const last = useMemo(
-    () => context.messages[context.messages.length - 1],
-    [context.messages]
+    [t, ttl, pal]
   );
 
   useEffect(() => {
@@ -88,7 +90,7 @@ export function useMessages(settings: MessagesSettings = {}): MessagesContext {
     return () => clearInterval(interval);
   }, [ttl]);
 
-  return { ...context, show, last };
+  return { ...context, show };
 }
 
 export function Provider({

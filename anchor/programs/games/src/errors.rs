@@ -7,6 +7,12 @@ pub enum TreasureErrorCode {
 }
 
 #[error_code]
+pub enum StoreErrorCode {
+    #[msg("Not enough balance to withdraw")]
+    InsufficientBalance,
+}
+
+#[error_code]
 pub enum GameErrorCode {
     #[msg("Name must be between 3 and 32 characters")]
     InvalidName,

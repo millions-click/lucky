@@ -317,9 +317,17 @@ export function AccountTransactions({ address }: { address: PublicKey }) {
   );
 }
 
-export function BalanceSol({ balance }: { balance: number }) {
+export function BalanceSol({
+  balance,
+  className,
+}: {
+  balance?: number;
+  className?: string;
+}) {
   return (
-    <span>{Math.round((balance / LAMPORTS_PER_SOL) * 100000) / 100000}</span>
+    <span className={className}>
+      {balance ? Math.round((balance / LAMPORTS_PER_SOL) * 100000) / 100000 : 0}
+    </span>
   );
 }
 

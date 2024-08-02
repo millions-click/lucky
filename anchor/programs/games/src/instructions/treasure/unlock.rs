@@ -1,5 +1,5 @@
 pub use crate::state::treasure::Treasure;
-pub use crate::errors::TreasureErrorCode;
+use crate::errors::TreasureErrorCode;
 use crate::constants::{KEEPER_SEED, VAULT_SEED, TREASURE_SEED};
 use anchor_lang::prelude::*;
 use anchor_spl::token::{Mint, Token, TokenAccount, Transfer};

@@ -16,22 +16,21 @@ module.exports = {
         // xs: '428px',
       },
       boxShadow: {
-        // glow: '0 0 10px #0f0, 0 0 20px #0f0, 0 0 30px #0f0, 0 0 40px #0f0',
-        glow: '0 0 20px 10px #00f, 0 0 30px 15px #00f, 0 0 40px 20px #00f, 0 0 50px 25px #00f',
+        glow: '0 0 8px #ffd700, 0 0 12px #ffae00, 0 0 16px #ffd700',
       },
       keyframes: {
         glow: {
           '0%': {
             boxShadow:
-              '0 0 5px #0f0, 0 0 10px #0f0, 0 0 15px #0f0, 0 0 20px #0f0',
+              '0 0 5px #ffd700, 0 0 10px #ffae00, 0 0 15px #ffae00, 0 0 20px #ffd700',
           },
           '50%': {
             boxShadow:
-              '0 0 20px #0f0, 0 0 30px #0f0, 0 0 40px #0f0, 0 0 50px #0f0',
+              '0 0 20px #ffd700, 0 0 30px #ffae00, 0 0 40px #ffae00, 0 0 50px #ffd700',
           },
           '100%': {
             boxShadow:
-              '0 0 5px #0f0, 0 0 10px #0f0, 0 0 15px #0f0, 0 0 20px #0f0',
+              '0 0 5px #ffd700, 0 0 10px #ffae00, 0 0 15px #ffae00, 0 0 20px #ffd700',
           },
         },
         scale: {

@@ -23,7 +23,7 @@ export function toBN(value?: number, decimals = 0) {
   return new BN(toBigInt(value, decimals).toString());
 }
 
-export function fromBigInt(value?: bigint, decimals = 0) {
+export function fromBigInt(value?: bigint | null, decimals = 0) {
   if (!value) return 0;
   if (decimals < 0) throw new Error('Decimals must be a positive number');
 

@@ -2,7 +2,7 @@ import { Download } from './Download';
 import { Copy } from './Copy';
 import { Upload } from './Upload';
 
-import { Selector } from '../../Selector';
+import { Selector } from '@/ui';
 
 export const actions = {
   download: Download,

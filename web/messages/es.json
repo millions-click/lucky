@@ -146,6 +146,69 @@
           "placeholder": "Escribe un nombre para tu LuckyBag"
         }
       }
+    },
+    "Buy": {
+      "title": "Comprar {token}",
+      "description": "¡Obtén tus {token} y reclama tesoros!",
+      "package": {
+        "pouch": {
+          "title": "Puñado",
+          "description": "Paquete inicial"
+        },
+        "bag": {
+          "title": "Bolsa",
+          "description": "Paquete comun"
+        },
+        "sack": {
+          "title": "Saco",
+          "description": "Paquete raro"
+        },
+        "chest": {
+          "title": "Cofre",
+          "description": "Paquete epico"
+        },
+        "vault": {
+          "title": "Bóveda",
+          "description": "Paquete mitico"
+        },
+        "treasure": {
+          "title": "Tesoro",
+          "description": "Paquete divino"
+        }
+      },
+      "Pay": {
+        "title": "Confirma tu compra",
+        "disconnected": "Puedes pagar con tu billetera preferida",
+        "success": {
+          "title": "¡Compra exitosa!",
+          "message": "¡Gracias por tu compra! Tus {token} han sido añadidos a tu LuckyBag. Ahora tienes {balance} {symbol} para reclamar tesoros. ¡Disfruta tu aventura!"
+        },
+        "action": {
+          "idle": "Pagar",
+          "paying": "Procesando...",
+          "completed": "Comprar mas",
+          "error": "Fallido"
+        },
+        "Insufficient": {
+          "title": "Fondos insuficientes",
+          "description": "No tienes sufiencientes {token} para completar esta compra.",
+          "store": "Tienda de Luckyland",
+          "top-up": "Recarga de LuckyBag | {package} | {amount} {token}",
+          "action": {
+            "title": "Escanea para recargar",
+            "top-up": "Recargar",
+            "transfer": "Transferir",
+            "copy": {
+              "address": "Dirección",
+              "amount": "Monto"
+            }
+          }
+        }
+      },
+      "action": {
+        "buy": "Comprar {amount} {token}",
+        "continue": "Continuar"
+      }
     }
   },
   "General": {
@@ -245,11 +308,11 @@
         "advice": "Esta contraseña será requerida para iniciar sesión unicamente en este dispositivo"
       },
       "gifts": {
-        "text": "¡Felicidades! Has activado exitosamente tu LuckyBag.",
-        "advice": "Podrás recibir algunos regalos de bienvenida.",
+        "text": "¡Felicidades! Ahora que tienes tu LuckyBag lista para recibir tesoros, y tu estas listo para la diversión. Comecemos con nuestro viaje.",
+        "advice": "Como regalo de bienvenida, puedes reclamar algunos tiros de suerte gratis. Quisieras reclamarlos?",
         "select": {
-          "title": "¿Qué te gustaría hacer?",
-          "options": "Reclamar regalos, Volveré más tarde"
+          "title": "Que te gustaria hacer?",
+          "options": "¡Si! Que tengo que hacer?, Comprare mis tiros de suerte"
         }
       },
       "claim": {
@@ -267,6 +330,27 @@
     "actions": {
       "enter": "Entrar",
       "exit": "Salir"
+    }
+  },
+  "Store": {
+    "title": "Tienda",
+    "description": "¡Consigue tus Lucky Shots y reclama tus tesoros!",
+    "messages": {
+      "welcome": {
+        "text": "¡Saludos, viajero afortunado! Mi nombre es Clover, y estoy aquí para ayudarte. Has sido transportado a la LuckyStore.",
+        "advice": "Este es el lugar donde puedes comprar $LS (Lucky Shots) y reclamar tus regalos."
+      },
+      "intro": {
+        "text": "Veo que tienes una entrada especial a Luckyland. Antes de comenzar a explorar, necesitarás algunos $LS para reclamar tus tesoros.",
+        "select": {
+          "title": "Elige tu acción",
+          "options": "Comprar algunos $LS, Obtener algunos $LS gratis"
+        }
+      },
+      "buy": {
+        "text": "¡Buena elección! Aquí están los paquetes de $LS disponibles para la compra.",
+        "advice": "Selecciona el paquete que mejor se adapte a tus necesidades."
+      }
     }
   },
   "Realms": {

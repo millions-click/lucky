@@ -1,13 +1,14 @@
 import { useState } from 'react';
-import { IconMoneybag } from '@tabler/icons-react';
 import { LAMPORTS_PER_SOL } from '@solana/web3.js';
+import { useWallet } from '@solana/wallet-adapter-react';
+import { IconMoneybag } from '@tabler/icons-react';
 
 import type { BaseProps } from '../card.d';
 import { useStoreProgramAccount } from '../../store-data-access';
 
+import { toBN } from '@luckyland/anchor';
 import { BalanceSol } from '@/components/account/account-ui';
 import { useGetBalance } from '@/components/account/account-data-access';
-import { useWallet } from '@solana/wallet-adapter-react';
 
 export function Withdraw({ storePda }: BaseProps) {
   const { publicKey } = useWallet();
@@ -47,12 +48,8 @@ export function Withdraw({ storePda }: BaseProps) {
         />
         <div className="tooltip tooltip-info" data-tip="Withdraw">
           <IconMoneybag
-            className={`icon rounded-full ${
-              amount ? 'cursor-pointer hover:text-primary' : 'text-neutral'
-            }`}
-            onClick={() =>
-              amount && withdraw.mutate(BigInt(amount * LAMPORTS_PER_SOL))
-            }
+            className="icon rounded-full cursor-pointer hover:text-primary"
+            onClick={() => withdraw.mutateAsync(toBN(amount, 9))}
           />
         </div>
       </label>
