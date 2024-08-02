@@ -2,7 +2,7 @@ import { useState } from 'react';
 
 import { Options, actions } from './actions';
 
-import { type MessageProps } from '@/ui';
+import type { MessageProps } from '@/ui/messages';
 import { useTranslations } from 'next-intl';
 import { useCrypto } from '@/providers';
 

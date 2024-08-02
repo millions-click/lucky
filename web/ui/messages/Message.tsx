@@ -13,10 +13,29 @@ export type MessageProps = NavProps & {
   Actions?: React.FC<NavProps & { message: Message }>;
 };
 
+export function AdviceMessage({
+  advice,
+  backdrop,
+}: {
+  advice: string;
+  backdrop?: boolean;
+}) {
+  if (!advice) return null;
+
+  return (
+    <div
+      className={`bg-accent text-xs sm:text-sm font-sans px-4 py-2 mt-4 rounded-box text-accent-content ${
+        backdrop ? 'font-bold' : ''
+      }`}
+    >
+      {advice}
+    </div>
+  );
+}
+
 export function Message({
   message,
   noNav,
-  backdrop,
   typing,
   Actions,
   ...nav
@@ -24,6 +43,7 @@ export function Message({
   const [text, setText] = useState('');
   const [advice, setAdvice] = useState('');
   const [finished, setFinished] = useState(0);
+  const { backdrop } = nav;
 
   useEffect(() => {
     if (!typing) {
@@ -59,7 +79,7 @@ export function Message({
   return (
     <div
       className={`chat chat-start lg:chat-end mx-2 sm:mx-4 ${
-        backdrop ? 'max-w-3xl' : 'max-w-xs sm:max-w-md lg:max-w-lg'
+        backdrop ? 'max-w-3xl' : 'max-[400px]:max-w-xs max-w-md lg:max-w-lg'
       }`}
     >
       <div className={`chat-image avatar ${backdrop ? 'self-start mt-6' : ''}`}>
@@ -81,15 +101,7 @@ export function Message({
         ].join(' ')}
       >
         {text}
-        {advice && (
-          <div
-            className={`bg-accent text-xs sm:text-sm font-sans px-4 py-2 mt-4 rounded-box text-accent-content ${
-              backdrop ? 'font-bold' : ''
-            }`}
-          >
-            {advice}
-          </div>
-        )}
+        <AdviceMessage advice={advice} backdrop={backdrop} />
         {Boolean(finished) && (
           <div className={finished === 1 ? 'animate-scale-up' : ''}>
             {Actions && <Actions {...nav} message={message} />}

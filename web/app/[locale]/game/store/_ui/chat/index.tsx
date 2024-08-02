@@ -2,27 +2,22 @@
 
 import { useState } from 'react';
 
-import { type ChatMessages, ChatController, Selector } from '@/ui';
-import Link from 'next/link';
-import { Buy } from './messages';
-
-const asLink = (href: string) => ({
-  next: '',
-  Component: Link,
-  props: { href },
-  onClick: () => void 0,
-});
+import {
+  type ChatMessages,
+  ChatController,
+  Selector,
+  asLink,
+  Buy,
+} from '@/ui/messages';
 
 const MESSAGES = {
   welcome: { next: 'intro' },
   intro: {
     Actions: Selector({
-      actions: ['buy', asLink('/game?socials')],
+      actions: ['buy', asLink('/game?from=store&to=socials')],
     }),
   },
   buy: { backdrop: 'sm:hidden', Actions: Buy, noNav: true },
-  confirmPurchase: { Actions: Selector({ actions: ['yes', 'no'] }) },
-  purchaseSuccess: {},
 } as ChatMessages;
 type MessageKey = keyof typeof MESSAGES;
 

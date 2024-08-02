@@ -1,9 +1,9 @@
 import { useState } from 'react';
+import { useTranslations } from 'next-intl';
 
 import { Options, actions } from './actions';
 
-import type { MessageProps } from '@/ui';
-import { useTranslations } from 'next-intl';
+import type { MessageProps } from '@/ui/messages';
 import { useCrypto, useLuckyBags } from '@/providers';
 
 const next = 'gifts';

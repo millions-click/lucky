@@ -34,7 +34,7 @@ export function useGetSignatures({ address }: { address: PublicKey }) {
 export function useGetTokenAccounts({ address }: { address: PublicKey }) {
   const { connection } = useConnection();
 
-  return useQuery(getTokenAccountsOptions(connection, address));
+  return useQuery(getTokenAccountsOptions(address, connection));
 }
 
 export function useTransferSol({ address }: { address: PublicKey }) {

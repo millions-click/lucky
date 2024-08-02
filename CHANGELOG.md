@@ -2,6 +2,51 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [0.2.4](///compare/v0.2.3...v0.2.4) (2024-08-02)
+
+
+### Features
+
+* **web:** 👻 Shortcuts | Lobby 3840aee
+* **web:** 👻 Turns | Actions f919474
+
+### [0.2.3](///compare/v0.2.2...v0.2.3) (2024-08-02)
+
+
+### Features
+
+* **web:** 👻 Activate & Unlock ae51a1f
+* **web:** 👻 Attempts Reset 997f272
+* **web:** 👻 Bounties | Context d55b692
+* **web:** 👻 Close & Minimized | Chat Controller 91085e6
+* **web:** 👻 Coin | UX ffa81fc
+* **web:** 👻 Game Picker | Coins 327ae15
+* **web:** 👻 GamePad | Coin Realm c3176d6
+* **web:** 👻 Games Context a671e63
+* **web:** 👻 Gem | Bag df587f1
+* **web:** 👻 Player Account | Game Picker cec1206
+* **web:** 👻 Player Accounts Cost 5adf715
+* **web:** 👻 Realm | Chat Controller e24327f
+* **web:** 👻 Realm | Root Tree 3adfb49
+* **web:** 👻 Realm Details | Context dfe8e10
+* **web:** 👻 Realms model | Context 9316718
+* **web:** 👻 UX/UI | Gamepad 38fca87
+* **web:** 👻 Winner | Realms 0556345
+
+### [0.2.2](///compare/v0.2.1...v0.2.2) (2024-07-25)
+
+
+### Features
+
+* **web:** 👻 Contexts Dependency c128645
+* **web:** 👻 Lucky Pass | Context 7fdb5f6
+* **web:** 👻 Lucky Pass | Middleware d878c60
+* **web:** 👻 Portal | Realms b96e4b3
+* **web:** 👻 Realm Entry 60a2347
+* **web:** 👻 Realms | Context 005d3ec
+* **web:** 👻 Redeem d088da4
+* **web:** 👻 Store | Context c362fde
+
 ### [0.2.1](///compare/v0.2.0...v0.2.1) (2024-07-23)
 
 

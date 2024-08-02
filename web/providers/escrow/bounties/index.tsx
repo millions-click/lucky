@@ -1,6 +1,6 @@
 'use client';
 
-import { createContext, useContext, useMemo } from 'react';
+import { createContext, useCallback, useContext, useMemo } from 'react';
 import { type Cluster } from '@solana/web3.js';
 
 import type { BountiesContext } from './bounties.d';
@@ -12,13 +12,17 @@ import { TokensProvider, useTokens } from '@/providers';
 const Context = createContext({} as BountiesContext);
 
 function Provider({ children }: { children: React.ReactNode }) {
-  const { owner, tokens: bounties, refresh, getAccount } = useTokens();
+  const { owner, tokens: bounties, refresh } = useTokens();
+  const vaults = useMemo(
+    () => Object.fromEntries(bounties.map((b) => [b.address, b])),
+    [bounties]
+  );
 
   const value = {
     owner,
 
     bounties,
-    getBounty: getAccount,
+    getBounty: useCallback((pda) => vaults[pda.toString()] || null, [vaults]),
 
     refresh,
   } as BountiesContext;

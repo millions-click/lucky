@@ -22,7 +22,9 @@ function Provider({ children }: { children: React.ReactNode }) {
   const { owner, tokens: traders, refresh, getAccount } = useTokens();
   // TODO: get the selected trader from the local storage.
   //  If null, make the user choose the one it wants to use for treasure hunting.
-  const [trader, setTrader] = useState<TokenAccount | null>(traders[0] || null);
+  const [trader, setTrader] = useState<TokenAccount | null>(
+    () => traders[0] || null
+  );
 
   useEffect(() => {
     if (trader || !traders.length) return;

@@ -2,7 +2,7 @@
 
 import { useTranslations } from 'next-intl';
 
-import { TURNS_AVAILABLE, type TurnsSession } from '@/actions/types';
+import { TURNS_AVAILABLE, type TurnsSession } from '@/actions/types.d';
 import { useConfigurableCountdown } from '@/providers';
 
 export function Turns({
@@ -16,7 +16,7 @@ export function Turns({
 }) {
   const t = useTranslations('Index');
   const { countdown } = useConfigurableCountdown({
-    expires: session?.expires,
+    expires: session ? session.exp + 300 : 0,
     pause: winner,
   });
 
@@ -24,7 +24,7 @@ export function Turns({
   if (!session && attempts !== null) return null;
 
   return (
-    <div className="fixed bottom-0 max-lg:left-0 lg:right-0">
+    <div className="fixed bottom-2 max-sm:left-16 max-lg:left-20 lg:right-20">
       {!session ? (
         <span className="loading loading-dots loading-lg text-primary m-4" />
       ) : (
@@ -42,6 +42,7 @@ export function Turns({
           >
             <div className="grid grid-flow-col gap-2 text-center auto-cols-max *:pointer-events-none">
               {Object.entries(countdown)
+                // @ts-expect-error Somehow this is losing the type context. CHECK.
                 .filter(([_, value]) => value > 0)
                 .map(([key, value], i) => (
                   <div

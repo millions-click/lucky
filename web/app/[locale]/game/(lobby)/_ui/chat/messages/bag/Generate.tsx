@@ -1,9 +1,8 @@
 import { useEffect, useMemo, useState } from 'react';
-import { useWallet } from '@solana/wallet-adapter-react';
 import { useTranslations } from 'next-intl';
-
-import { LuckyWalletAdapter } from '@/adapters';
 import { IconSquareRoundedCheckFilled } from '@tabler/icons-react';
+
+import { useLuckyWallet } from '@/providers';
 
 export function Generate({
   onChange,
@@ -11,7 +10,7 @@ export function Generate({
   onChange: (confirmed: boolean) => void;
 }) {
   const t = useTranslations('Components.Bag.Generate');
-  const { wallet, wallets, select } = useWallet();
+  const { wallet, activate } = useLuckyWallet();
   const loading = useMemo(() => !Boolean(wallet), [wallet]);
   const [confirmed, setConfirmed] = useState(!loading);
 
@@ -19,22 +18,16 @@ export function Generate({
     if (!loading) return onChange(true);
 
     const debounced = setTimeout(() => {
-      if (wallets.length) {
-        const luckyWallet = wallets.find(
-          ({ adapter }) => adapter instanceof LuckyWalletAdapter
-        );
+      const luckyWallet = activate();
 
-        if (luckyWallet) select(luckyWallet.adapter.name);
-
-        setTimeout(() => {
-          const confirmed = Boolean(luckyWallet);
-          setConfirmed(confirmed);
-        }, 500);
-      }
+      setTimeout(() => {
+        const confirmed = Boolean(luckyWallet);
+        setConfirmed(confirmed);
+      }, 500);
     }, 1000);
 
     return () => clearTimeout(debounced);
-  }, [wallets]);
+  }, [activate]);
 
   return (
     <>

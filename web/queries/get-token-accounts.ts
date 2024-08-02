@@ -4,8 +4,8 @@ import { queryOptions } from '@tanstack/react-query';
 import { TOKEN_2022_PROGRAM_ID, TOKEN_PROGRAM_ID } from '@solana/spl-token';
 
 export function getTokenAccountsOptions(
-  connection: Connection,
-  address: PublicKey | null
+  address: PublicKey | null,
+  connection: Connection
 ) {
   return queryOptions({
     queryKey: [

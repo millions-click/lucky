@@ -209,6 +209,80 @@
         "buy": "Comprar {amount} {token}",
         "continue": "Continuar"
       }
+    },
+    "Later": {
+      "advice": "Pero ten en cuenta, tu LuckyPass expirará en {time}.",
+      "action": {
+        "save": "Guardar para más tarde"
+      },
+      "Email": {
+        "title": "Enviar tu LuckyPass",
+        "description": "Te enviaremos un correo electrónico con tu LuckyPass.",
+        "input": {
+          "email": {
+            "label": "Correo electrónico",
+            "placeholder": "Ingresa tu correo electrónico"
+          }
+        },
+        "action": {
+          "idle": "Enviar",
+          "sending": "Enviando...",
+          "sent": "Enviado",
+          "failed": "Error al enviar"
+        }
+      }
+    },
+    "RealmEntry": {
+      "title": "Entrada al Reino",
+      "expired": {
+        "title": "LuckyPass expirado",
+        "description": "Necessitas activar un LuckyPass para entrar a este reino."
+      },
+      "action": {
+        "buy": "Obtener LuckyPass",
+        "activating": "Activando lucky pass...",
+        "transporting": "Agarrate fuerte, te transportare ahora..."
+      }
+    },
+    "GamePicker": {
+      "title": "Juegos Disponibles",
+      "Card": {
+        "title": "Detalles del juego",
+        "game": {
+          "slots": "Ranuras",
+          "choices": "Opciones",
+          "pick": "Tu eliges el ganador",
+          "house": "Casa elige ganador",
+          "winner": "Ganador: {choice}",
+          "any": "Lados iguales"
+        },
+        "bounty": {
+          "vault": "Tesoro",
+          "price": "Precio",
+          "reward": "Recompensa"
+        },
+        "stats": {
+          "title": "Estadísticas",
+          "no-data": "Aún no has jugado este juego.",
+          "wins": "Victorias",
+          "losses": "Derrotas",
+          "rate": "Tasa de éxito",
+          "gem": "Tesoros ganadas",
+          "ammo": "Disparos usados",
+          "dust": "Rondas Magicas",
+          "account": "Cuenta de Jugador"
+        }
+      }
+    },
+    "Shortcuts": {
+      "title": "Atajos",
+      "description": "Aquí puedes encontrar enlaces rápidos a las secciones principales del juego.",
+      "action": {
+        "lobby": "Lobby",
+        "store": "Tienda de Lucky",
+        "realms": "Reinos",
+        "socials": "Redes sociales"
+      }
     }
   },
   "General": {
@@ -219,7 +293,6 @@
     }
   },
   "Index": {
-    "title": "¡Hola mundo!",
     "messages": [
       {
         "text": "Parece que tienes suerte hoy. Has encontrado una de las entradas secretas a la tierra de la suerte.",
@@ -248,6 +321,14 @@
       {
         "text": "¡Bienvenido de nuevo afortunado viajero!",
         "advice": "¡Toca el portal y vamos a reclamar algunos tesoros!"
+      },
+      {
+        "text": "¡Hola! Aún no puedes jugar por una nueva Gema de la Suerte.",
+        "advice": "Si tienes un LuckyPass, puedes canjearlo aquí.",
+        "select": {
+          "title": "¿Qué te gustaría hacer?",
+          "options": "Canjear LuckyPass, Explorar"
+        }
       }
     ],
     "turns": {
@@ -287,6 +368,13 @@
           "options": "Reclamar tesoros, Volveré más tarde"
         }
       },
+      "later": {
+        "text": "No te preocupes, podrás regresar a Luckyland en cualquier momento.",
+        "select": {
+          "title": "¿Qué te gustaría hacer?",
+          "options": "Cambie de opinión, Enviamelo, Yo lo guardaré"
+        }
+      },
       "timer": {
         "text": "Este es tu cronómetro, te indica cuánto tiempo le queda a tu pase de la suerte. Una vez activado tendrás 60 minutos para explorar Luckyland y reclamar tus tesoros.",
         "advice": "No te preocupes, si eres suficientemente afortunado -- que parece que si -- al final del tu viaje, podrias obtener otro LuckyPass."
@@ -322,6 +410,17 @@
           "title": "¿Qué te gustaría hacer?",
           "options": "Activar mi LuckyPass, Volveré más tarde"
         }
+      },
+      "see-you": {
+        "text": "¡Nos vemos pronto, viajero afortunado!",
+        "advice": "Recuerda, siempre puedes regresar a Luckyland y reclamar tus tesoros."
+      },
+      "continue": {
+        "text": "¡Uff, justo a tiempo! Puedes continuar tu viaje en Luckyland.",
+        "advice": "¡Sigue adelante y reclama tus tesoros!"
+      },
+      "pass-sale": {
+        "text": "¡Gran viaje! Has completado tu LuckyPass. Puedes obtener uno nuevo en la tienda o esperar por tu próxima gema de la suerte."
       }
     },
     "links": {
@@ -355,14 +454,52 @@
   },
   "Realms": {
     "title": "Reinos",
-    "messages": [],
-    "links": {
-      "lobby": "Lobby",
-      "coins": "Monedas"
+    "name": {
+      "coin": "Reino de las Monedas",
+      "dice": "Reino de los Dados",
+      "card": "Reino de las Cartas",
+      "slot": "Reino de las Tragamonedas",
+      "roulette": "Reino de la Ruleta"
     },
-    "actions": {
-      "enter": "Entrar",
-      "exit": "Salir"
+    "messages": {
+      "activate": {
+        "text": "Necesitas activar tu LuckyBag para continuar."
+      },
+      "locked": {
+        "text": "¡Ups! Parece que tu LuckyBag esta bloqueada."
+      },
+      "welcome": {
+        "text": "¡Saludos, viajero afortunado! Soy Emili, tu guía a través de los reinos de Luckyland. Has sido transportado al portal de los reinos.",
+        "advice": "Este es el lugar donde puedes explorar los diferentes reinos de Luckyland."
+      },
+      "first": {
+        "text": "Como visitante por primera vez, solo tienes disponible un reino. Nuevos reinos se desbloquearán a medida que avances por Luckyland.",
+        "advice": "Al entrar a un reino, tu LuckyPass se activará. Podrás ir y venir entre los reinos que hayas desbloqueado."
+      },
+      "expired": {
+        "text": "Asombrosa aventura! Tu LuckyPass ha expirado.",
+        "advice": "Puedes obtener un nuevo LuckyPass en la tienda o esperar por tu siguiente gema de la suerte."
+      }
+    },
+    "coin": {
+      "title": "Reino de las Monedas",
+      "description": "Bienvenido al Reino de las Monedas. Aquí puedes ganar tesoros lanzando monedas.",
+      "messages": {
+        "activate": {
+          "text": "Necesitas activar tu LuckyBag para continuar."
+        },
+        "locked": {
+          "text": "¡Ups! Parece que tu LuckyBag esta bloqueada."
+        },
+        "welcome": {
+          "text": "¡Felicidades!, has entrado al Reino de las Monedas. Aquí puedes lanzar monedas para ganar tesoros.",
+          "advice": "Este es el primero de los muchos reinos que puedes explorar en Luckyland."
+        },
+        "buy": {
+          "text": "Me alegra que estés disfrutando del Reino de las Monedas. Te has quedado sin municiones. Necesitas rellenar tu bolsa para continuar.",
+          "advice": "Por favor, ten en cuenta que este es el reino más caro, y los otros ademas tienen recompensas más grandes."
+        }
+      }
     }
   },
   "Coins": {
@@ -375,6 +512,29 @@
     "actions": {
       "enter": "Entrar",
       "exit": "Salir"
+    }
+  },
+  "Redeem": {
+    "title": "Canjear tu Lucky Pass",
+    "Active": {
+      "title": "Lucky Pass Activo",
+      "description": {
+        "available": "Tienes un Lucky Pass activo. Puedes sobrescribirlo haciendo clic en el botón de abajo.",
+        "clear": "Tienes un Lucky Pass activo. Puedes sobrescribirlo ingresando un nuevo código."
+      },
+      "action": {
+        "confirm": "Confirmar",
+        "cancel": "Cancelar"
+      }
+    },
+    "type": {
+      "available": "Haz clic para canjear tu Lucky Pass",
+      "clear": "Aquí puedes canjear tu Lucky Pass. Si tienes un Lucky Pass, por favor ingresa el código a continuación."
+    },
+    "action": {
+      "idle": "Canjear",
+      "success": "Éxito",
+      "error": "Error"
     }
   }
 }

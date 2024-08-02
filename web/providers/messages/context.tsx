@@ -103,7 +103,10 @@ export function Provider({
     namespace,
     messages,
     setMessages,
-    clear: () => setMessages([]),
+    clear: useCallback(() => {
+      if (!messages.length) return;
+      setMessages([]);
+    }, [messages.length]),
   } as MessagesContext;
 
   return <Context.Provider value={value}>{children}</Context.Provider>;

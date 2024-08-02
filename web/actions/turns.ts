@@ -1,15 +1,16 @@
 'use server';
 
-import { NextRequest, NextResponse } from 'next/server';
 import { cookies } from 'next/headers';
 
 import {
   type TurnsSession,
+  type AttemptSession,
   MAX_TTL_ATTEMPTS,
   TURNS_AVAILABLE,
   TURNS_COOKIE,
   ATTEMPTS_COOKIE,
-} from './types';
+  LUCKY_PASS_TTL,
+} from './types.d';
 import { decrypt, encrypt, safeDecrypt } from '@/utils/jwt';
 import { getLuckyPass } from './lucky-pass';
 
@@ -23,11 +24,11 @@ function computeTTL(attempt: number): number {
 }
 
 async function createTurns(address?: string) {
-  const attempts = await getAttempts(true);
+  const { attempts } = await getAttempts(true);
   const user = { address, turns: TURNS_AVAILABLE };
 
   const expires = Date.now() + computeTTL(attempts);
-  const session = await encrypt({ ...user, expires, attempts }, expires);
+  const session = await encrypt({ ...user, attempts }, expires);
 
   cookies().set(TURNS_COOKIE, session, {
     expires,
@@ -38,76 +39,77 @@ async function createTurns(address?: string) {
   return (await decrypt(session)) as TurnsSession;
 }
 
-async function setAttempts(attempts = 1) {
-  const oneMothInFuture = new Date();
-  oneMothInFuture.setMonth(oneMothInFuture.getMonth() + 1);
+async function setAttempts(
+  attempts = 1,
+  claim = false,
+  ttl = LUCKY_PASS_TTL
+): Promise<AttemptSession> {
+  const claimed = claim ? Date.now() : undefined;
+  const expires = (claimed || Date.now()) + ttl * 3 * 1000;
 
-  const session = await encrypt({ attempts }, oneMothInFuture);
+  const attempt = { attempts, claimed };
+  const session = await encrypt(attempt, expires);
   cookies().set(ATTEMPTS_COOKIE, session, {
-    expires: oneMothInFuture,
+    expires,
     httpOnly: true,
     sameSite: 'strict',
   });
 
-  return attempts;
+  return (await decrypt(session)) as AttemptSession;
 }
 
-async function getAttempts(newAttempt = false): Promise<number> {
+async function getAttempts(newAttempt = false): Promise<AttemptSession> {
   const session = cookies().get(ATTEMPTS_COOKIE)?.value;
-  if (!session) return newAttempt ? setAttempts() : 0;
+  if (!session)
+    return newAttempt ? setAttempts() : ({ attempts: 0 } as AttemptSession);
 
-  const attempts =
-    Number((await safeDecrypt(session, ATTEMPTS_COOKIE))?.attempts) || 0;
+  const attempt = (await safeDecrypt(
+    session,
+    ATTEMPTS_COOKIE
+  )) as AttemptSession;
+  const { attempts } = attempt;
+
   if (newAttempt) return setAttempts(attempts + 1);
-  return attempts;
+  return attempt;
 }
 
 export async function getTurns() {
-  const attempts = await getAttempts();
+  const attempt = await getAttempts();
   const pass = await getLuckyPass();
   const session = cookies().get(TURNS_COOKIE)?.value;
-  if (!session) return { attempts, turns: null, pass };
+  if (!session) return { attempt, turns: null, pass };
 
   const turns = (await safeDecrypt(session, TURNS_COOKIE)) as TurnsSession;
-  return { turns, attempts, pass };
+  return { turns, attempt, pass };
 }
 
 export async function playATurn(address?: string) {
-  const { turns: session } = await getTurns();
-  if (!session) return createTurns(address);
+  const { turns: session, ..._ } = await getTurns();
+  if (!session) return { turns: await createTurns(address), ..._ };
   if (session.hold) {
-    if (session.expires > Date.now()) return session;
-    return createTurns(address);
+    if (session.exp > Date.now()) return { turns: session, ..._ };
+    return { turns: await createTurns(address), ..._ };
   }
 
   session.turns -= 1;
   session.hold = session.turns <= 0;
 
-  cookies().set(TURNS_COOKIE, await encrypt(session, session.expires), {
-    expires: session.expires,
+  cookies().set(TURNS_COOKIE, await encrypt(session, session.exp), {
+    expires: session.exp,
     httpOnly: true,
     sameSite: 'strict',
   });
 
-  return session;
+  return { turns: session, ..._ };
 }
 
-export async function updateSession(request: NextRequest) {
-  const attempts = request.cookies.get(ATTEMPTS_COOKIE)?.value;
-  if (!attempts) return;
+export async function lockAttempts(address?: string, ttl = LUCKY_PASS_TTL) {
+  const {
+    turns,
+    attempt: { attempts, claimed },
+  } = await playATurn(address);
+  if (claimed) throw new Error('Already claimed');
 
-  // Refresh the attempts so it doesn't expire
-  const res = NextResponse.next();
-  const oneMothInFuture = new Date();
-  oneMothInFuture.setMonth(oneMothInFuture.getMonth() + 1);
-
-  res.cookies.set({
-    name: TURNS_COOKIE,
-    value: attempts,
-    httpOnly: true,
-    expires: oneMothInFuture,
-    sameSite: 'strict',
-  });
-
-  return res;
+  const attempt = await setAttempts(attempts, true, ttl);
+  return { turns, attempt };
 }

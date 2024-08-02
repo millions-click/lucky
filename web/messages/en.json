@@ -210,6 +210,80 @@
         "buy": "Buy {amount} {token}",
         "continue": "Continue"
       }
+    },
+    "Later": {
+      "advice": "But be aware, your LuckyPass will expire in {time}.",
+      "action": {
+        "save": "Save for later"
+      },
+      "Email": {
+        "title": "Send your LuckyPass",
+        "description": "We will send you an email with your LuckyPass.",
+        "input": {
+          "email": {
+            "label": "Email",
+            "placeholder": "Enter your email"
+          }
+        },
+        "action": {
+          "idle": "Send",
+          "sending": "Sending...",
+          "sent": "Sent",
+          "failed": "Failed"
+        }
+      }
+    },
+    "RealmEntry": {
+      "title": "Realm Entry",
+      "expired": {
+        "title": "LuckyPass expired",
+        "description": "You need to activate a new LuckyPass to enter this realm."
+      },
+      "action": {
+        "buy": "Get a LuckyPass",
+        "activating": "Activating LuckyPass...",
+        "transporting": "Hold on, I'll transport you now..."
+      }
+    },
+    "GamePicker": {
+      "title": "Available games",
+      "Card": {
+        "title": "Game Details",
+        "game": {
+          "slots": "Slots",
+          "choices": "Choices",
+          "pick": "You pick winner",
+          "house": "House pick winner",
+          "winner": "Winner: {choice}",
+          "any": "Equal sides"
+        },
+        "bounty": {
+          "vault": "Treasure",
+          "price": "Price",
+          "reward": "Reward"
+        },
+        "stats": {
+          "title": "Game Stats",
+          "no-data": "You haven't played this game yet.",
+          "wins": "Wins",
+          "losses": "Losses",
+          "rate": "Success rate",
+          "gem": "Earned gems",
+          "ammo": "Used shots",
+          "dust": "Fairy Rounds",
+          "account": "Player account"
+        }
+      }
+    },
+    "Shortcuts": {
+      "title": "Shortcuts",
+      "description": "Here you can find quick links to the main sections of the game.",
+      "action": {
+        "lobby": "Lobby",
+        "store": "Lucky Store",
+        "realms": "Realms",
+        "socials": "Socials"
+      }
     }
   },
   "General": {
@@ -220,7 +294,6 @@
     }
   },
   "Index": {
-    "title": "Hello world!",
     "messages": [
       {
         "text": "Looks like you're lucky today. You've found one of the secret entrances to Luckyland.",
@@ -249,6 +322,14 @@
       {
         "text": "Welcome back lucky traveler!",
         "advice": "Touch the portal and let's earn some treasures!"
+      },
+      {
+        "text": "Hello there, you are not allowed to play for a new Lucky Gem yet.",
+        "advice": "If you have a LuckyPass, you can redeem it here.",
+        "select": {
+          "title": "What would you like to do?",
+          "options": "Redeem LuckyPass, Explore"
+        }
       }
     ],
     "turns": {
@@ -288,6 +369,13 @@
           "options": "Claim treasures, I'll be back later"
         }
       },
+      "later": {
+        "text": "No worries, you can return whenever you want.",
+        "select": {
+          "title": "What would you like to do?",
+          "options": "I changed my mind, Send it to me, I'll save it"
+        }
+      },
       "timer": {
         "text": "This is your countdown timer, it shows how much time your LuckyPass has left. When you activate it, you'll have 60 minutes to explore Luckyland and claim your treasures.",
         "advice": "Don't worry, if you are lucky enough --which it seems you are-- you could get at the end of your journey another LuckyPass."
@@ -323,6 +411,17 @@
           "title": "What would you like to do?",
           "options": "Activate my LuckyPass, I'll be back later"
         }
+      },
+      "see-you": {
+        "text": "See you soon lucky traveler!",
+        "advice": "Remember, you can always come back to Luckyland and claim your treasures."
+      },
+      "continue": {
+        "text": "Uff, just in time! You can continue your journey in Luckyland.",
+        "advice": "Move forward and claim your treasures!"
+      },
+      "pass-sale": {
+        "text": "Great Journey! You have completed your LuckyPass. You can get a new one in the store or wait for your next lucky gem."
       }
     },
     "links": {
@@ -356,14 +455,52 @@
   },
   "Realms": {
     "title": "Realms",
-    "messages": [],
-    "links": {
-      "lobby": "Lobby",
-      "coins": "Coins"
+    "name": {
+      "coin": "Coin Realm",
+      "dice": "Dice Realm",
+      "card": "Card Realm",
+      "slot": "Slot Realm",
+      "roulette": "Roulette Realm"
     },
-    "actions": {
-      "enter": "Enter",
-      "exit": "Exit"
+    "messages": {
+      "activate": {
+        "text": "You need to activate you LuckyBag to continue."
+      },
+      "locked": {
+        "text": "Ups! It seems your LuckyBag is locked"
+      },
+      "welcome": {
+        "text": "Greetings lucky traveler! I'm Emili, your guide through the realms of Luckyland. You have been transported to the realms portal.",
+        "advice": "This is where you can explore the different realms of Luckyland."
+      },
+      "first": {
+        "text": "As a first-time visitor, you have only one realm available. New realms will be unlocked as you progress through Luckyland.",
+        "advice": "By entering a realm, your lucky pass will be activated. You can move between realms you have already unlocked."
+      },
+      "expired": {
+        "text": "Awesome journey! Your LuckyPass has expired.",
+        "advice": "You can get a new one in the store or wait for your next lucky gem."
+      }
+    },
+    "coin": {
+      "title": "Coin Realm",
+      "description": "Welcome to the Coin Realm! Here you can earn treasures by flipping coins.",
+      "messages": {
+        "activate": {
+          "text": "You need to activate you LuckyBag to continue."
+        },
+        "locked": {
+          "text": "Ups! It seems your LuckyBag is locked"
+        },
+        "welcome": {
+          "text": "Congratulations! You are now in the Coin Realm. Here you can earn treasures by flipping coins.",
+          "advice": "This is the first of the many realms you can explore in Luckyland."
+        },
+        "buy": {
+          "text": "I'm glad you're enjoying the Coin Realm. You got out of ammo. You need to refill your bag to continue.",
+          "advice": "Please, take into account this is the most expensive realm, and the others also have bigger rewards."
+        }
+      }
     }
   },
   "Coins": {
@@ -376,6 +513,29 @@
     "actions": {
       "enter": "Enter",
       "exit": "Exit"
+    }
+  },
+  "Redeem": {
+    "title": "Redeem your Lucky Pass",
+    "Active": {
+      "title": "Active Lucky Pass",
+      "description": {
+        "available": "You have an active Lucky Pass. You can override it by clicking the button below.",
+        "clear": "You have an active Lucky Pass. You can override it by entering a new code."
+      },
+      "action": {
+        "confirm": "Confirm",
+        "cancel": "Cancel"
+      }
+    },
+    "type": {
+      "available": "Click to redeem your Lucky Pass",
+      "clear": "You can redeem your Lucky Pass here. If you have a Lucky Pass, please enter the code below."
+    },
+    "action": {
+      "idle": "Redeem",
+      "success": "Success",
+      "error": "Error"
     }
   }
 }

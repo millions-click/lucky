@@ -1,7 +1,8 @@
 import { useState } from 'react';
 import { useTranslations } from 'next-intl';
 
-import { BagKeyForm, MessageProps } from '@/ui';
+import type { MessageProps } from '@/ui/messages';
+import { BagKeyForm } from '@/ui';
 import { useLuckyBags } from '@/providers';
 
 const next = 'gifts';

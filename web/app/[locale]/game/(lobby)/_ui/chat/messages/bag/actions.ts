@@ -2,7 +2,7 @@ import { Generate } from './Generate';
 import { Import } from './Import';
 import { Connect } from './Connect';
 
-import { Selector } from '@/ui';
+import { Selector } from '@/ui/messages';
 
 const ACTIONS = [
   {
