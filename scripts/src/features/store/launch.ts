@@ -3,8 +3,9 @@ import { type Portal, confirmAndLogTransaction } from '../../utils';
 import type { Token } from '@utils/token';
 import { getStorePDA, toBN } from '@luckyland/anchor';
 import { getUSDToSOLFeed } from '@constants';
+import { loadRegularPrice } from './loader';
 
-const PRICE = 1; // The price of the token in USD. Chainlink feed is used to get the price of SOL in USD.
+const PRICE = loadRegularPrice(); // The price of the token in USD. Chainlink feed is used to get the price of SOL in USD.
 
 export async function LaunchStore({ portal, cluster }: Portal, trader: Token) {
   console.log('------------------ Store ------------------');
