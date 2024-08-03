@@ -3,6 +3,7 @@ use crate::constants::{COLLECTOR_SEED, STORE_SEED};
 use crate::instructions::sale::utils::*;
 use anchor_lang::prelude::*;
 use anchor_spl::token::{Mint, Token, TokenAccount};
+use crate::instructions::StorePackage;
 
 pub fn trader(ctx: &Context<StoreSale>, amount: u64) -> Result<()> {
     let sale = Sale {
@@ -26,6 +27,7 @@ pub fn trader(ctx: &Context<StoreSale>, amount: u64) -> Result<()> {
 }
 
 #[derive(Accounts)]
+#[instruction(amount: String)]
 pub struct StoreSale<'info> {
     /// CHECK: This is the collector keeper, Needs to sign for transfer.
     #[account(
@@ -59,6 +61,13 @@ pub struct StoreSale<'info> {
         bump,
     )]
     store: Account<'info, Store>,
+
+    #[account(
+        mut,
+        seeds = [STORE_SEED, store.key().as_ref(), amount.as_ref()],
+        bump,
+    )]
+    package: Account<'info, StorePackage>,
 
     #[account(mut)]
     payer: Signer<'info>,

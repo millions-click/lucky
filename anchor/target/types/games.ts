@@ -1930,6 +1930,32 @@ export type Games = {
           }
         },
         {
+          "name": "package",
+          "writable": true,
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  83,
+                  84,
+                  79,
+                  82,
+                  69
+                ]
+              },
+              {
+                "kind": "account",
+                "path": "store"
+              },
+              {
+                "kind": "arg",
+                "path": "amount"
+              }
+            ]
+          }
+        },
+        {
           "name": "payer",
           "writable": true,
           "signer": true
@@ -1950,7 +1976,7 @@ export type Games = {
       "args": [
         {
           "name": "amount",
-          "type": "u64"
+          "type": "string"
         }
       ]
     },
@@ -2269,33 +2295,23 @@ export type Games = {
   "errors": [
     {
       "code": 6000,
-      "name": "invalidSlots",
-      "msg": "Slots must be between 1 and 10"
+      "name": "invalidOwner",
+      "msg": "Bounty is not owned by the supplier"
     },
     {
       "code": 6001,
-      "name": "invalidDigits",
-      "msg": "Digits must be between 1 and 8"
+      "name": "thresholdNotReached",
+      "msg": "Vault amount is above threshold"
     },
     {
       "code": 6002,
-      "name": "invalidChoices",
-      "msg": "Choices must be between 2 and max value of digits"
+      "name": "invalidGem",
+      "msg": "Invalid gem"
     },
     {
       "code": 6003,
-      "name": "invalidWinnerSingleChoice",
-      "msg": "Winner choice must be between 1 and choices"
-    },
-    {
-      "code": 6004,
-      "name": "invalidWinnerChoice",
-      "msg": "Winner choice must be between 0 and choices"
-    },
-    {
-      "code": 6005,
-      "name": "invalidPickWinner",
-      "msg": "Pick winner is true but winner choice is 0"
+      "name": "uncollectibleReward",
+      "msg": "Total vault reward is uncollectible"
     }
   ],
   "types": [

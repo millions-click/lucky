@@ -48,7 +48,8 @@ pub mod games {
         store::stock::fill(&ctx, amount)
     }
 
-    pub fn store_sale(ctx: Context<StoreSale>, amount: u64) -> Result<()> {
+    pub fn store_sale(ctx: Context<StoreSale>, amount: String) -> Result<()> {
+        let amount = amount.parse::<u64>().unwrap();
         store::sale::trader(&ctx, amount)
     }
 

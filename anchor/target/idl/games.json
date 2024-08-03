@@ -1924,6 +1924,32 @@
           }
         },
         {
+          "name": "package",
+          "writable": true,
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  83,
+                  84,
+                  79,
+                  82,
+                  69
+                ]
+              },
+              {
+                "kind": "account",
+                "path": "store"
+              },
+              {
+                "kind": "arg",
+                "path": "amount"
+              }
+            ]
+          }
+        },
+        {
           "name": "payer",
           "writable": true,
           "signer": true
@@ -1944,7 +1970,7 @@
       "args": [
         {
           "name": "amount",
-          "type": "u64"
+          "type": "string"
         }
       ]
     },
@@ -2263,33 +2289,23 @@
   "errors": [
     {
       "code": 6000,
-      "name": "InvalidSlots",
-      "msg": "Slots must be between 1 and 10"
+      "name": "InvalidOwner",
+      "msg": "Bounty is not owned by the supplier"
     },
     {
       "code": 6001,
-      "name": "InvalidDigits",
-      "msg": "Digits must be between 1 and 8"
+      "name": "ThresholdNotReached",
+      "msg": "Vault amount is above threshold"
     },
     {
       "code": 6002,
-      "name": "InvalidChoices",
-      "msg": "Choices must be between 2 and max value of digits"
+      "name": "InvalidGem",
+      "msg": "Invalid gem"
     },
     {
       "code": 6003,
-      "name": "InvalidWinnerSingleChoice",
-      "msg": "Winner choice must be between 1 and choices"
-    },
-    {
-      "code": 6004,
-      "name": "InvalidWinnerChoice",
-      "msg": "Winner choice must be between 0 and choices"
-    },
-    {
-      "code": 6005,
-      "name": "InvalidPickWinner",
-      "msg": "Pick winner is true but winner choice is 0"
+      "name": "UncollectibleReward",
+      "msg": "Total vault reward is uncollectible"
     }
   ],
   "types": [
