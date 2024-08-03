@@ -32,7 +32,7 @@ export function useStoreSell() {
       const { feed, trader } = store;
 
       const signature = await portal.methods
-        .storeSale(amount)
+        .storeSale(amount.toString())
         .accounts({
           feed,
           trader,
