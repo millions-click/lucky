@@ -44,9 +44,10 @@ impl Store {
         self.price = price;
     }
 
-    pub fn get_price(&self, feed: Decimal, tokens: Decimal) -> u64 {
+    pub fn get_cost(&self, tokens: Decimal, pkg_price: i128, feed: Decimal) -> u64 {
         // scale the token amount to the same decimals as the rate if needed.
-        let (amount, normalized) = tokens.normalize(Decimal::new(self.price, feed.decimals));
+        let _price = if pkg_price > 0 { pkg_price } else { self.price };
+        let (amount, normalized) = tokens.normalize(Decimal::new(_price, feed.decimals));
         let (rate, price) = feed.normalize(normalized);
 
         msg!("LS / USD: {}", price);

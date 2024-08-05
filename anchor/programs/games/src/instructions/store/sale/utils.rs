@@ -1,4 +1,4 @@
-use crate::state::store::{Decimal, Store};
+use crate::state::store::{Store, StorePackage};
 use crate::constants::{COLLECTOR_SEED};
 use crate::utils::feeds::get_feed;
 use anchor_lang::prelude::*;
@@ -11,6 +11,7 @@ pub struct Sale<'info> {
     pub collector: Account<'info, TokenAccount>,
     pub trader: Account<'info, Mint>,
     pub store: Account<'info, Store>,
+    pub package: Account<'info, StorePackage>,
 
     pub payer: Signer<'info>,
     pub receiver: Account<'info, TokenAccount>,
@@ -22,14 +23,14 @@ pub struct Sale<'info> {
     pub token_program: Program<'info, Token>,
 }
 
-impl Sale<'_>  {
-    pub fn charge(&self, amount: u64) -> Result<()> {
+impl Sale<'_> {
+    pub fn charge(&mut self) -> Result<()> {
         let feed = get_feed(
             self.chainlink_program.to_account_info(),
             self.feed.to_account_info(),
         )?;
-        let tokens = Decimal::new(amount as i128, u32::from(self.trader.decimals));
-        let price = self.store.get_price(feed, tokens);
+        let tokens = self.package.get_amount(self.trader.decimals);
+        let price = self.store.get_cost(tokens, self.package.get_price(), feed);
 
         let cpi_context = CpiContext::new(
             self.system_program.to_account_info(),
@@ -44,7 +45,7 @@ impl Sale<'_>  {
         Ok(())
     }
 
-    pub fn transfer(&self, amount: u64) -> Result<()> {
+    pub fn transfer(&self) -> Result<()> {
         let transfer_instruction = Transfer {
             from: self.collector.to_account_info(),
             to: self.receiver.to_account_info(),
@@ -61,7 +62,7 @@ impl Sale<'_>  {
             signer,
         );
 
-        anchor_spl::token::transfer(cpi_ctx, amount)?;
+        anchor_spl::token::transfer(cpi_ctx, self.package.raw_amount())?;
 
         Ok(())
     }

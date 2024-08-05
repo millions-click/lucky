@@ -5,13 +5,14 @@ use anchor_lang::prelude::*;
 use anchor_spl::token::{Mint, Token, TokenAccount};
 use crate::instructions::StorePackage;
 
-pub fn trader(ctx: &Context<StoreSale>, amount: u64) -> Result<()> {
-    let sale = Sale {
+pub fn trader(ctx: Context<StoreSale>) -> Result<()> {
+    let mut sale = Sale {
         tollkeeper: ctx.accounts.tollkeeper.clone(),
         bump: ctx.bumps.tollkeeper,
         collector: ctx.accounts.collector.clone(),
         trader: ctx.accounts.trader.clone(),
         store: ctx.accounts.store.clone(),
+        package: ctx.accounts.package.clone(),
         payer: ctx.accounts.payer.clone(),
         receiver: ctx.accounts.receiver.clone(),
         feed: ctx.accounts.feed.clone(),
@@ -20,8 +21,9 @@ pub fn trader(ctx: &Context<StoreSale>, amount: u64) -> Result<()> {
         token_program: ctx.accounts.token_program.clone(),
     };
 
-    sale.charge(amount)?;
-    sale.transfer(amount)?;
+    sale.charge()?;
+    sale.transfer()?;
+    ctx.accounts.package.increment_sales();
 
     Ok(())
 }

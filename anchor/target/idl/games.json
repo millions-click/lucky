@@ -1969,7 +1969,7 @@
       ],
       "args": [
         {
-          "name": "amount",
+          "name": "_amount",
           "type": "string"
         }
       ]
@@ -2289,23 +2289,33 @@
   "errors": [
     {
       "code": 6000,
-      "name": "InvalidOwner",
-      "msg": "Bounty is not owned by the supplier"
+      "name": "InvalidSlots",
+      "msg": "Slots must be between 1 and 10"
     },
     {
       "code": 6001,
-      "name": "ThresholdNotReached",
-      "msg": "Vault amount is above threshold"
+      "name": "InvalidDigits",
+      "msg": "Digits must be between 1 and 8"
     },
     {
       "code": 6002,
-      "name": "InvalidGem",
-      "msg": "Invalid gem"
+      "name": "InvalidChoices",
+      "msg": "Choices must be between 2 and max value of digits"
     },
     {
       "code": 6003,
-      "name": "UncollectibleReward",
-      "msg": "Total vault reward is uncollectible"
+      "name": "InvalidWinnerSingleChoice",
+      "msg": "Winner choice must be between 1 and choices"
+    },
+    {
+      "code": 6004,
+      "name": "InvalidWinnerChoice",
+      "msg": "Winner choice must be between 0 and choices"
+    },
+    {
+      "code": 6005,
+      "name": "InvalidPickWinner",
+      "msg": "Pick winner is true but winner choice is 0"
     }
   ],
   "types": [

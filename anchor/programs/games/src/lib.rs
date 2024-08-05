@@ -48,9 +48,8 @@ pub mod games {
         store::stock::fill(&ctx, amount)
     }
 
-    pub fn store_sale(ctx: Context<StoreSale>, amount: String) -> Result<()> {
-        let amount = amount.parse::<u64>().unwrap();
-        store::sale::trader(&ctx, amount)
+    pub fn store_sale(ctx: Context<StoreSale>, _amount: String) -> Result<()> {
+        store::sale::trader(ctx)
     }
 
     pub fn retrieve_gems(ctx: Context<UnlockStronghold>, amount: u64) -> Result<()> {

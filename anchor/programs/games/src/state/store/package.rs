@@ -1,6 +1,5 @@
-use crate::state::store::{Store};
+use crate::state::store::{Decimal};
 use anchor_lang::prelude::*;
-
 
 #[derive(AnchorSerialize, AnchorDeserialize)]
 pub struct StorePackageSettings {
@@ -37,10 +36,20 @@ impl StorePackage {
         self.max = settings.sales;
     }
 
-    pub fn get_price(&mut self, store: Store) -> i128 {
-        self.sales += 1;
+    pub fn get_amount(&self, decimals: u8) -> Decimal {
+        Decimal::new(self.amount as i128, u32::from(decimals))
+    }
 
-        if self.sales >= self.max { return store.price }
-        return self.price
+    pub fn raw_amount(&self) -> u64 {
+        self.amount
+    }
+
+    pub fn get_price(&self) -> i128 {
+        if self.sales >= self.max { return 0 }
+        return self.price;
+    }
+
+    pub fn increment_sales(&mut self) {
+        self.sales += 1
     }
 }
