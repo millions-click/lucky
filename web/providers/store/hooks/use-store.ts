@@ -5,6 +5,7 @@ import { useQuery } from '@tanstack/react-query';
 import { useDataFeed, usePortal, useTraders } from '@/providers';
 import { fromBigInt, fromBN, toBigInt } from '@luckyland/anchor';
 import { getStoreOptions } from '@/queries';
+import type { StorePackage } from '@/providers/portal/portal';
 
 const SOL_DECIMALS = 9;
 
@@ -31,11 +32,12 @@ export function useStore() {
   );
 
   const getPrice = useCallback(
-    (amount: number) => {
-      if (!store || !answer) return null;
+    (pkg: StorePackage) => {
+      if (!store || !answer || !trader) return null;
+
       return computePrice(
-        amount,
-        fromBN(store.price, decimals),
+        fromBN(pkg.amount, trader.decimals),
+        fromBN(pkg.max - pkg.sales > 0 ? pkg.price : store.price, decimals),
         fromBigInt(BigInt(answer), decimals)
       );
     },
