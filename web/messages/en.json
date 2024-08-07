@@ -537,5 +537,61 @@
       "success": "Success",
       "error": "Error"
     }
+  },
+  "Roadmap": {
+    "title": "Roadmap",
+    "steps": [
+      {
+        "title": "Pre Sale",
+        "slug": "presale",
+        "tags": "solana, web3, luck, lucky, casino, gamble",
+        "description": "Get your LuckyBag and secure it with a password."
+      },
+      {
+        "title": "Launch",
+        "slug": "launch",
+        "tags": "solana, web3, luck, lucky, casino, gamble",
+        "description": "Activate your LuckyPass to enter the realms of Luckyland."
+      },
+      {
+        "title": "Expansion",
+        "slug": "expansion",
+        "tags": "solana, web3, luck, lucky, casino, gamble",
+        "description": "Explore the different realms and claim your treasures."
+      },
+      {
+        "title": "Odds Bending",
+        "slug": "odds",
+        "tags": "solana, web3, luck, lucky, casino, gamble",
+        "description": "Get your Lucky Shots and claim your treasures."
+      },
+      {
+        "title": "Airdrops",
+        "slug": "airdrops",
+        "tags": "solana, web3, luck, lucky, casino, gamble",
+        "description": "Get your Lucky Shots and claim your treasures."
+      },
+      {
+        "title": "Multiplayer",
+        "slug": "multiplayer",
+        "tags": "solana, web3, luck, lucky, casino, gamble",
+        "description": "Get your Lucky Shots and claim your treasures."
+      },
+      {
+        "title": "Realms",
+        "slug": "realms",
+        "tags": "solana, web3, luck, lucky, casino, gamble",
+        "description": "Get your Lucky Shots and claim your treasures."
+      }
+    ],
+    "details": {
+      "presale": { "title": "Pre Sale" },
+      "launch": { "title": "Launch" },
+      "expansion": { "title": "Expansion" },
+      "odds": { "title": "Odds Bending" },
+      "airdrops": { "title": "Airdrops" },
+      "multiplayer": { "title": "Multiplayer" },
+      "realms": { "title": "Realms" }
+    }
   }
 }

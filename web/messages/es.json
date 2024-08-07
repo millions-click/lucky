@@ -536,5 +536,61 @@
       "success": "Éxito",
       "error": "Error"
     }
+  },
+  "Roadmap": {
+    "title": "Hoja de Ruta",
+    "steps": [
+      {
+        "title": "Preventa",
+        "slug": "preventa",
+        "tags": "solana, web3, suerte, afortunado, casino, apuesta",
+        "description": "Obtén tu LuckyBag y protégelo con una contraseña."
+      },
+      {
+        "title": "Lanzamiento",
+        "slug": "lanzamiento",
+        "tags": "solana, web3, suerte, afortunado, casino, apuesta",
+        "description": "Activa tu LuckyPass para entrar en los reinos de Luckyland."
+      },
+      {
+        "title": "Expansión",
+        "slug": "expansion",
+        "tags": "solana, web3, suerte, afortunado, casino, apuesta",
+        "description": "Explora los diferentes reinos y reclama tus tesoros."
+      },
+      {
+        "title": "Manipulación de Probabilidades",
+        "slug": "probabilidades",
+        "tags": "solana, web3, suerte, afortunado, casino, apuesta",
+        "description": "Obtén tus Lucky Shots y reclama tus tesoros."
+      },
+      {
+        "title": "Airdrops",
+        "slug": "airdrops",
+        "tags": "solana, web3, suerte, afortunado, casino, apuesta",
+        "description": "Obtén tus Lucky Shots y reclama tus tesoros."
+      },
+      {
+        "title": "Multijugador",
+        "slug": "multijugador",
+        "tags": "solana, web3, suerte, afortunado, casino, apuesta",
+        "description": "Obtén tus Lucky Shots y reclama tus tesoros."
+      },
+      {
+        "title": "Reinos",
+        "slug": "reinos",
+        "tags": "solana, web3, suerte, afortunado, casino, apuesta",
+        "description": "Obtén tus Lucky Shots y reclama tus tesoros."
+      }
+    ],
+    "details": {
+      "preventa": { "title": "Preventa" },
+      "lanzamiento": { "title": "Lanzamiento" },
+      "expansion": { "title": "Expansión" },
+      "probabilidades": { "title": "Manipulación de Probabilidades" },
+      "airdrops": { "title": "Airdrops" },
+      "multijugador": { "title": "Multijugador" },
+      "reinos": { "title": "Reinos" }
+    }
   }
 }
