@@ -3,9 +3,14 @@ import { type Cluster } from '@solana/web3.js';
 import { useQuery } from '@tanstack/react-query';
 
 import { useDataFeed, usePortal, useTraders } from '@/providers';
-import { fromBigInt, fromBN, toBigInt } from '@luckyland/anchor';
-import { getStoreOptions } from '@/queries';
-import type { StorePackage } from '@/providers/portal/portal';
+import {
+  fromBigInt,
+  fromBN,
+  getStorePackagePDA,
+  toBigInt,
+} from '@luckyland/anchor';
+import { getStoreOptions, getStorePackagesOptions } from '@/queries';
+import type { StorePackage } from '@/providers/types.d';
 
 const SOL_DECIMALS = 9;
 
@@ -31,15 +36,40 @@ export function useStore() {
     [storeQuery.data]
   );
 
+  const packagesQuery = useQuery(
+    getStorePackagesOptions(pda, portal, cluster.network as Cluster)
+  );
+  const packages = useMemo(
+    () => packagesQuery.data || [],
+    [packagesQuery.data]
+  );
+
+  const getPackage = useCallback(
+    (amount: number) => {
+      if (!trader || !pda || !packages.length) return null;
+
+      const pkgPDA = getStorePackagePDA(
+        pda,
+        toBigInt(amount, trader?.decimals).toString(),
+        cluster.network as Cluster
+      );
+
+      return packages.find(({ publicKey }) => publicKey.equals(pkgPDA));
+    },
+    [packages]
+  );
+
   const getPrice = useCallback(
-    (pkg: StorePackage) => {
+    (pkg: StorePackage, scaled?: boolean) => {
       if (!store || !answer || !trader) return null;
 
-      return computePrice(
+      const price = computePrice(
         fromBN(pkg.amount, trader.decimals),
         fromBN(pkg.max - pkg.sales > 0 ? pkg.price : store.price, decimals),
         fromBigInt(BigInt(answer), decimals)
       );
+
+      return scaled ? fromBigInt(price, SOL_DECIMALS) : price;
     },
     [store, answer]
   );
@@ -54,7 +84,9 @@ export function useStore() {
 
     feed,
     trader,
+    packages,
 
     getPrice,
+    getPackage,
   };
 }

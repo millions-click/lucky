@@ -1,8 +1,9 @@
 'use client';
 
+import { useCallback } from 'react';
 import { type Cluster, PublicKey } from '@solana/web3.js';
 import { useConnection } from '@solana/wallet-adapter-react';
-import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
+import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { CHAINLINK_STORE_PROGRAM_ID } from '@chainlink/solana-sdk';
 import { BN } from '@coral-xyz/anchor';
 import toast from 'react-hot-toast';
@@ -13,23 +14,13 @@ import {
   getStorePackagesOptions,
   getTokenAccountsOptions,
 } from '@/queries';
-import { useCallback, useMemo } from 'react';
-import { getStorePackagePDA, toBigInt } from '@luckyland/anchor';
 
 export function useStoreSell() {
   const { cluster } = useCluster();
   const { connection } = useConnection();
-  const { portal, store, pda, trader, getPrice } = useStore();
+  const { portal, store, pda, getPrice, getPackage } = useStore();
 
   const client = useQueryClient();
-
-  const packagesQuery = useQuery(
-    getStorePackagesOptions(pda, portal, cluster.network as Cluster)
-  );
-  const packages = useMemo(
-    () => packagesQuery.data || [],
-    [packagesQuery.data]
-  );
 
   const sell = useMutation({
     mutationKey: ['store', 'sell', { cluster, store: pda }],
@@ -75,25 +66,9 @@ export function useStoreSell() {
     },
   });
 
-  const getPackage = useCallback(
-    (amount: number) => {
-      if (!trader || !pda || !packages.length) return null;
-
-      const pkgPDA = getStorePackagePDA(
-        pda,
-        toBigInt(amount, trader?.decimals).toString(),
-        cluster.network as Cluster
-      );
-
-      return packages.find(({ publicKey }) => publicKey.equals(pkgPDA));
-    },
-    [packages]
-  );
-
   return {
     pda,
     store,
-    packages,
 
     sell,
     getPrice: useCallback(

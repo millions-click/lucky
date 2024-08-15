@@ -3,10 +3,13 @@ export type Package = {
   title: string;
   description: string;
   amount: number;
+  price: number;
+  discount: number;
+  available: number;
 };
 
 // ['10', '30', '50', '200', '1000', '5000']
-export const packages = [
+export const PACKAGES = [
   {
     name: 'pouch',
     amount: 10,
