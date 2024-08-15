@@ -35,6 +35,11 @@ pub mod games {
         store::handle::vendor(ctx, settings)
     }
 
+    pub fn store_package(ctx: Context<InitializeStorePackage>, amount: String, settings: StorePackageSettings) -> Result<()> {
+        let amount = amount.parse::<u64>().unwrap();
+        store::handle::set_package(ctx, amount, settings)
+    }
+
     pub fn stockpile_gems(ctx: Context<Stockpile>, amount: u64) -> Result<()> {
         treasure::stockpile::receive(&ctx, amount)
     }
@@ -43,8 +48,8 @@ pub mod games {
         store::stock::fill(&ctx, amount)
     }
 
-    pub fn store_sale(ctx: Context<StoreSale>, amount: u64) -> Result<()> {
-        store::sale::trader(&ctx, amount)
+    pub fn store_sale(ctx: Context<StoreSale>, _amount: String) -> Result<()> {
+        store::sale::trader(ctx)
     }
 
     pub fn retrieve_gems(ctx: Context<UnlockStronghold>, amount: u64) -> Result<()> {

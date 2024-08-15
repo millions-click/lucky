@@ -1738,6 +1738,97 @@ export type Games = {
       ]
     },
     {
+      "name": "storePackage",
+      "discriminator": [
+        111,
+        110,
+        5,
+        70,
+        30,
+        22,
+        120,
+        11
+      ],
+      "accounts": [
+        {
+          "name": "store",
+          "writable": true
+        },
+        {
+          "name": "package",
+          "writable": true,
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  83,
+                  84,
+                  79,
+                  82,
+                  69
+                ]
+              },
+              {
+                "kind": "account",
+                "path": "store"
+              },
+              {
+                "kind": "arg",
+                "path": "amount"
+              }
+            ]
+          }
+        },
+        {
+          "name": "treasure",
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  84,
+                  82,
+                  69,
+                  65,
+                  83,
+                  85,
+                  82,
+                  69
+                ]
+              }
+            ]
+          }
+        },
+        {
+          "name": "authority",
+          "writable": true,
+          "signer": true,
+          "relations": [
+            "treasure"
+          ]
+        },
+        {
+          "name": "systemProgram",
+          "address": "11111111111111111111111111111111"
+        }
+      ],
+      "args": [
+        {
+          "name": "amount",
+          "type": "string"
+        },
+        {
+          "name": "settings",
+          "type": {
+            "defined": {
+              "name": "storePackageSettings"
+            }
+          }
+        }
+      ]
+    },
+    {
       "name": "storeSale",
       "discriminator": [
         96,
@@ -1839,6 +1930,32 @@ export type Games = {
           }
         },
         {
+          "name": "package",
+          "writable": true,
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  83,
+                  84,
+                  79,
+                  82,
+                  69
+                ]
+              },
+              {
+                "kind": "account",
+                "path": "store"
+              },
+              {
+                "kind": "arg",
+                "path": "amount"
+              }
+            ]
+          }
+        },
+        {
           "name": "payer",
           "writable": true,
           "signer": true
@@ -1859,7 +1976,7 @@ export type Games = {
       "args": [
         {
           "name": "amount",
-          "type": "u64"
+          "type": "string"
         }
       ]
     },
@@ -2149,6 +2266,19 @@ export type Games = {
       ]
     },
     {
+      "name": "storePackage",
+      "discriminator": [
+        197,
+        43,
+        47,
+        75,
+        115,
+        107,
+        207,
+        11
+      ]
+    },
+    {
       "name": "treasure",
       "discriminator": [
         98,
@@ -2165,13 +2295,33 @@ export type Games = {
   "errors": [
     {
       "code": 6000,
-      "name": "invalidSeed",
-      "msg": "Invalid seed"
+      "name": "invalidSlots",
+      "msg": "Slots must be between 1 and 10"
     },
     {
       "code": 6001,
-      "name": "invalidPlayerChoice",
-      "msg": "Invalid choice"
+      "name": "invalidDigits",
+      "msg": "Digits must be between 1 and 8"
+    },
+    {
+      "code": 6002,
+      "name": "invalidChoices",
+      "msg": "Choices must be between 2 and max value of digits"
+    },
+    {
+      "code": 6003,
+      "name": "invalidWinnerSingleChoice",
+      "msg": "Winner choice must be between 1 and choices"
+    },
+    {
+      "code": 6004,
+      "name": "invalidWinnerChoice",
+      "msg": "Winner choice must be between 0 and choices"
+    },
+    {
+      "code": 6005,
+      "name": "invalidPickWinner",
+      "msg": "Pick winner is true but winner choice is 0"
     }
   ],
   "types": [
@@ -2487,6 +2637,46 @@ export type Games = {
           {
             "name": "price",
             "type": "i128"
+          }
+        ]
+      }
+    },
+    {
+      "name": "storePackage",
+      "type": {
+        "kind": "struct",
+        "fields": [
+          {
+            "name": "price",
+            "type": "i128"
+          },
+          {
+            "name": "amount",
+            "type": "u64"
+          },
+          {
+            "name": "sales",
+            "type": "u32"
+          },
+          {
+            "name": "max",
+            "type": "u32"
+          }
+        ]
+      }
+    },
+    {
+      "name": "storePackageSettings",
+      "type": {
+        "kind": "struct",
+        "fields": [
+          {
+            "name": "price",
+            "type": "i128"
+          },
+          {
+            "name": "sales",
+            "type": "u32"
           }
         ]
       }

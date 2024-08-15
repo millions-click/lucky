@@ -38,7 +38,7 @@ export function Connected({ pkg, token, confirmed, onChange }: PayProps) {
   );
 
   const cost = useMemo(() => {
-    const price = getPrice(pkg.amount);
+    const price = getPrice(pkg.amount) as bigint;
     if (!price) return null;
 
     const fee = roundFee * BigInt(Math.round(pkg.amount * 1.25));
@@ -121,6 +121,13 @@ export function Connected({ pkg, token, confirmed, onChange }: PayProps) {
               {pkg.amount} ${token.symbol}
             </span>
           </div>
+          {pkg.discount > 0 && (
+            <div className="absolute -top-2 -right-4 flex flex-col rotate-12">
+              <span className="badge bg-red-500 text-white badge-lg">
+                -{pkg.discount}%
+              </span>
+            </div>
+          )}
         </div>
       </div>
 

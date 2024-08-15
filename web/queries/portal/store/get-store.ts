@@ -2,7 +2,7 @@ import { queryOptions } from '@tanstack/react-query';
 import { type Cluster, PublicKey } from '@solana/web3.js';
 
 import { getStorePDA } from '@luckyland/anchor';
-import { Portal } from '@/providers/types.d';
+import type { Portal } from '@/providers/types.d';
 
 export function getStoreOptions(
   portal: Portal,

@@ -16,6 +16,7 @@ import {
   PublishBounties,
   FundBounties,
 } from './features';
+import { LoadStorePackages } from './features/store/packages';
 
 const { CLUSTER } = process.env;
 if (!CLUSTER) throw new Error('CLUSTER is required');
@@ -48,9 +49,10 @@ LoadPortal(connection, cluster)
         );
         const { trader: token } = await LaunchTrader(portal, trader);
         const { store } = await LaunchStore(portal, token);
+        const packages = await LoadStorePackages(portal, token);
         const { collector } = await FillStock(portal, token, reserve);
 
-        return { trader: token, store, collector };
+        return { trader: token, store, collector, packages };
       })(),
     ]);
 
