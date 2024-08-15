@@ -2,6 +2,19 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [0.2.5](///compare/v0.2.4...v0.2.5) (2024-08-15)
+
+
+### Features
+
+* **anchor:** 👻 Package | Store 7b6aa98
+* **anchor:** 👻 Package Sale | Store 8eb70e8
+* **anchor:** 👻 Promo Package | Store 9d93dd2
+* **scripts:** 👻 Packages | Store 52199cd
+* **web:** 👻 Discounts | Store a7c663e
+* **web:** 👻 Packages | Store ae44a36
+* **web:** 👻 Promo Package | Store 84e65bc
+
 ### [0.2.4](///compare/v0.2.3...v0.2.4) (2024-08-02)
 
 
