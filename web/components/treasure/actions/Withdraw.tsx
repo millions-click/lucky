@@ -19,6 +19,7 @@ export function Withdraw({
     callback: () => refresh().then(onCompleted),
   });
   const [amount, setAmount] = useState(0);
+  const [isTokenAccount, setIsTokenAccount] = useState(false);
   const image = token?.metadata?.image || './favicon.ico';
 
   return (
@@ -53,18 +54,31 @@ export function Withdraw({
             </div>
 
             {target && (
-              <div className="form-control">
-                <label className="label">
-                  <span className="label-text">Receiver</span>
-                </label>
-                <input
-                  type="text"
-                  placeholder="Public Address"
-                  className="input input-bordered input-primary"
-                  value={target}
-                  onChange={(e) => setTarget(e.target.value)}
-                />
-              </div>
+              <>
+                <div className="form-control">
+                  <label className="label">
+                    <span className="label-text">Receiver</span>
+                  </label>
+                  <input
+                    type="text"
+                    placeholder="Public Address"
+                    className="input input-bordered input-primary"
+                    value={target}
+                    onChange={(e) => setTarget(e.target.value)}
+                  />
+                </div>
+                <div className="form-control">
+                  <label className="label cursor-pointer">
+                    <span className="label-text">Token Account</span>
+                    <input
+                      type="checkbox"
+                      className="toggle"
+                      checked={isTokenAccount}
+                      onChange={() => setIsTokenAccount(!isTokenAccount)}
+                    />
+                  </label>
+                </div>
+              </>
             )}
           </form>
 
@@ -76,6 +90,7 @@ export function Withdraw({
                   mint: token.mint,
                   amount: BigInt(amount * 10 ** token.decimals),
                   sender: target ? new PublicKey(target) : player,
+                  isReserve: isTokenAccount,
                 })
               }
             >
