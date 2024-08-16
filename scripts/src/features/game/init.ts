@@ -11,16 +11,17 @@ export type Games = Array<
     modes: Modes;
   }
 >;
+type IGame = ReturnType<typeof loadGames>[number]['game'];
 
 export async function InitGames(portal: Portal): Promise<Games> {
   console.log('------------------ Games ------------------');
   console.log('Initializing games...');
 
   const games = await Promise.all(
-    loadGames().map(async ({ seeds: { secret }, game: { name }, modes }) => {
-      console.log(`Game: ${name}`);
-      const game = await initGame(name, secret, portal);
-      return { ...game, modes: Object.values(modes) };
+    loadGames().map(async ({ seeds: { secret }, game, modes }) => {
+      console.log(`Game: ${game.name}`);
+      const _game = await initGame(game, secret, portal);
+      return { ..._game, modes: Object.values(modes) };
     })
   );
 
@@ -28,10 +29,11 @@ export async function InitGames(portal: Portal): Promise<Games> {
   return games;
 }
 
-async function initGame(name: string, secret: string | PublicKey, _: Portal) {
+async function initGame(_game: IGame, secret: string | PublicKey, _: Portal) {
   if (typeof secret === 'string')
-    return initGame(name, new PublicKey(secret), _);
+    return initGame(_game, new PublicKey(secret), _);
 
+  const { name, state } = _game;
   const { portal, authority, cluster } = _;
   const owner = authority.publicKey;
   const pda = getGamePDA(owner, secret, cluster.asCluster());
@@ -61,9 +63,15 @@ async function initGame(name: string, secret: string | PublicKey, _: Portal) {
   await confirmAndLogTransaction(txHash, portal.provider.connection, cluster);
   game = await portal.account.game.fetch(pda);
   log('Game created.');
-  log('Activating game...');
-  await portal.methods.activateGame().accounts({ secret }).rpc(confirmOptions);
-  log('Game activated.');
+
+  if ('active' in state) {
+    log('Activating game...');
+    await portal.methods
+      .activateGame()
+      .accounts({ secret })
+      .rpc(confirmOptions);
+    log('Game activated.');
+  }
 
   return { pda, secret, ...game };
 }

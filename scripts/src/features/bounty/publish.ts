@@ -1,9 +1,9 @@
 import { BN } from '@coral-xyz/anchor';
 
-import { confirmAndLogTransaction, Portal } from '../../utils';
-import { Modes } from '../game-mode';
+import { type Portal, confirmAndLogTransaction } from '../../utils';
+import type { Modes } from '../game-mode';
 
-import { Token } from '@utils/token';
+import type { Token } from '@utils/token';
 import { getBountyPDA } from '@luckyland/anchor';
 
 type BountyInput = {

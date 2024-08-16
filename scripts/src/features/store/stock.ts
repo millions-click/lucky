@@ -3,7 +3,7 @@ import { BN } from '@coral-xyz/anchor';
 
 import { confirmAndLogTransaction, Portal } from '../../utils';
 import type { Token } from '@utils/token';
-import { getCollectorPDA } from '@luckyland/anchor';
+import { getCollectorPDA, toBigInt } from '@luckyland/anchor';
 import { TRADES_FOR_MARKETING } from '../../tokens/luckyshot/constants';
 
 export async function FillStock(
@@ -19,11 +19,15 @@ export async function FillStock(
     console.log('Stock already filled.');
     return { collector, trader };
   }
+  const marketing_reserve = toBigInt(
+    Number(TRADES_FOR_MARKETING),
+    trader.decimals
+  );
 
-  if (reserve.amount <= TRADES_FOR_MARKETING)
+  if (reserve.amount <= marketing_reserve)
     throw new Error('Insufficient reserve to fill stock');
 
-  const amount = reserve.amount - TRADES_FOR_MARKETING;
+  const amount = reserve.amount - marketing_reserve;
   console.log(`Transferring ${trader.name} reserve to vendor stock...`);
   console.log(`Reserve: ${reserve.address}`);
   console.log(`Amount to transfer: ${amount}`);
