@@ -34,7 +34,7 @@ const DECIMALS = 8;
 const feed = new PublicKey('CH31Xns5z3M1cTAbKW34jcxPPciazARpijcHj9rxtemt');
 
 // This could make the tests fail if loaded account have a HUGE difference in price.
-const RATE = toBigInt(152.4285516, 8); // 152.42855160 USD/SOL
+const RATE = toBigInt(144.68785, 8); // 144.68785000 USD/SOL
 const PRICE = toBigInt(1, 8); // Rate have 8 decimals
 describe('Treasure', () => {
   // Configure the client to use the local cluster.
