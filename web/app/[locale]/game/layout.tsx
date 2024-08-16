@@ -5,8 +5,12 @@ import { unstable_setRequestLocale } from 'next-intl/server';
 import type { Params } from '../locale';
 import { GameLayout } from './_ui';
 
-import { BgProvider, MessagesProvider } from '@/providers';
-import { LuckyPassProvider } from '@/providers/pass/context';
+import {
+  LuckyPassProvider,
+  BgProvider,
+  MessagesProvider,
+  WinnersProvider,
+} from '@/providers';
 import { getLuckyPass } from '@/actions';
 
 export default async function Layout({
@@ -21,7 +25,18 @@ export default async function Layout({
     <LuckyPassProvider session={session}>
       <BgProvider>
         <GameLayout>
-          <MessagesProvider>{children}</MessagesProvider>
+          <MessagesProvider>
+            <WinnersProvider
+              containerStyle={{
+                top: 46,
+                left: 16,
+                bottom: 24,
+                right: 16,
+              }}
+            >
+              {children}
+            </WinnersProvider>
+          </MessagesProvider>
         </GameLayout>
       </BgProvider>
     </LuckyPassProvider>
