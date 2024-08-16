@@ -2,6 +2,17 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [0.2.6](///compare/v0.2.5...v0.2.6) (2024-08-16)
+
+
+### Features
+
+* **anchor:** 👻 Event CPI | IDL 1b6bc5b
+* **anchor:** 👻 Events | Leaderboard efdf165
+* **scripts:** 👻 Tokens cbc0c7b
+* **web:** 👻 Events | Winners 7080e8c
+* **web:** 👻 Treasure Withdraw | Console a65dc0b
+
 ### [0.2.5](///compare/v0.2.4...v0.2.5) (2024-08-15)
 
 
