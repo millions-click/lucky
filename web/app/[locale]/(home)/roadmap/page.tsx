@@ -3,7 +3,12 @@ import Link from 'next/link';
 import Image from 'next/image';
 
 import type { Params } from '../../locale';
-import { Nav, Details } from './_ui';
+import { Nav, Details, type States } from './_ui';
+
+const { NEXT_PUBLIC_PHASES_DATES = '', NEXT_PUBLIC_COMPLETED_PHASES = 0 } =
+  process.env;
+const dates = NEXT_PUBLIC_PHASES_DATES.split(',');
+const activePhase = Number(NEXT_PUBLIC_COMPLETED_PHASES);
 
 export default async function Roadmap({ params: { locale } }: Params) {
   unstable_setRequestLocale(locale);
@@ -43,13 +48,26 @@ export default async function Roadmap({ params: { locale } }: Params) {
                       />
                     </figure>
                     <Link
-                      href={`?details=${slug}`}
-                      className="btn bg-amber-900/80 absolute bottom-8 shadow-xl group-hover:animate-glow group-hover:scale-125"
+                      href={`?details=${slug}&state=${
+                        activePhase > i
+                          ? 'completed'
+                          : activePhase === i
+                          ? 'active'
+                          : activePhase + 1 === i
+                          ? 'blocked'
+                          : 'upcoming'
+                      }&date=${dates[i] ?? ''}`}
+                      className={`btn absolute bottom-8 shadow-xl group-hover:animate-glow group-hover:scale-125 ${
+                        activePhase > i
+                          ? 'btn-accent'
+                          : activePhase === i
+                          ? 'btn-primary'
+                          : activePhase + 1 === i
+                          ? 'btn-neutral'
+                          : 'bg-amber-900/80'
+                      }`}
                     >
-                      <h2>
-                        <span className="mr-2">{i + 1}</span>
-                        {title}
-                      </h2>
+                      <h2>{title}</h2>
                     </Link>
                     <p className="sr-only">{description}</p>
                     <ul className="sr-only">
@@ -68,7 +86,15 @@ export default async function Roadmap({ params: { locale } }: Params) {
       </div>
 
       <Nav steps={steps.length} />
-      {typeof t['details'] !== 'string' && <Details details={t['details']} />}
+      {typeof t['details'] !== 'string' && (
+        <Details
+          goals={t['goals'] as string}
+          milestones={t['milestones'] as string}
+          details={t['details']}
+          states={t['state'] as States}
+          dates={t['date'] as States}
+        />
+      )}
     </>
   );
 }

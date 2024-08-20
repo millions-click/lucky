@@ -539,58 +539,326 @@
   },
   "Roadmap": {
     "title": "Hoja de Ruta",
+    "goals": "Objetivo",
+    "milestones": "Hitos",
+    "state": {
+      "completed": "Completado",
+      "active": "En progreso",
+      "blocked": "Bloqueado",
+      "upcoming": "Próximamente"
+    },
+    "date": {
+      "completed": "Completado el",
+      "active": "En progreso desde",
+      "blocked": "Bloqueado hasta"
+    },
     "steps": [
       {
-        "title": "Preventa",
+        "title": "Fase 1: Preventa",
         "slug": "preventa",
         "tags": "solana, web3, suerte, afortunado, casino, apuesta",
         "description": "Obtén tu LuckyBag y protégelo con una contraseña."
       },
       {
-        "title": "Lanzamiento",
+        "title": "Fase 2: Lanzamiento",
         "slug": "lanzamiento",
         "tags": "solana, web3, suerte, afortunado, casino, apuesta",
         "description": "Activa tu LuckyPass para entrar en los reinos de Luckyland."
       },
       {
-        "title": "Expansión",
+        "title": "Fase 3: Expansión",
         "slug": "expansion",
         "tags": "solana, web3, suerte, afortunado, casino, apuesta",
         "description": "Explora los diferentes reinos y reclama tus tesoros."
       },
       {
-        "title": "Manipulación de Probabilidades",
+        "title": "Fase 4: Manipulación de Probabilidades",
         "slug": "probabilidades",
         "tags": "solana, web3, suerte, afortunado, casino, apuesta",
         "description": "Obtén tus Lucky Shots y reclama tus tesoros."
       },
       {
-        "title": "Airdrops",
+        "title": "Fase 5: Airdrops",
         "slug": "airdrops",
         "tags": "solana, web3, suerte, afortunado, casino, apuesta",
         "description": "Obtén tus Lucky Shots y reclama tus tesoros."
       },
       {
-        "title": "Multijugador",
+        "title": "Fase 6: Juegos Multijugador",
         "slug": "multijugador",
         "tags": "solana, web3, suerte, afortunado, casino, apuesta",
         "description": "Obtén tus Lucky Shots y reclama tus tesoros."
       },
       {
-        "title": "Reinos",
+        "title": "Fase 7: Reinos",
         "slug": "reinos",
         "tags": "solana, web3, suerte, afortunado, casino, apuesta",
         "description": "Obtén tus Lucky Shots y reclama tus tesoros."
       }
     ],
     "details": {
-      "preventa": { "title": "Preventa" },
-      "lanzamiento": { "title": "Lanzamiento" },
-      "expansion": { "title": "Expansión" },
-      "probabilidades": { "title": "Manipulación de Probabilidades" },
-      "airdrops": { "title": "Airdrops" },
-      "multijugador": { "title": "Multijugador" },
-      "reinos": { "title": "Reinos" }
+      "preventa": {
+        "title": "Fase 1: Preventa",
+        "goals": [
+          "Desarrollar y lanzar el producto mínimo viable (MVP).",
+          "Construir una comunidad de inversores y usuarios comprometidos desde el inicio.",
+          "Recaudar fondos iniciales para el despliegue del proyecto."
+        ],
+        "milestones": [
+          {
+            "title": "Lanzamiento del MVP (Producto Mínimo Viable)",
+            "tasks": [
+              "Desarrollar y lanzar una versión básica de la plataforma en DevNet para demostrar las capacidades del equipo y la visión del proyecto.",
+              "Mostrar funcionalidades clave que permiten a los usuarios entender el potencial del proyecto."
+            ]
+          },
+          {
+            "title": "Inicio de la Preventa",
+            "tasks": [
+              "Ofrecer el 17.5% del supply total de LUCK para la venta anticipada.",
+              "Incentivar la participación en la preventa mediante descuentos y beneficios exclusivos para los primeros inversores."
+            ]
+          },
+          {
+            "title": "Construcción de la Comunidad",
+            "tasks": [
+              "Iniciar la creación de una comunidad en torno a LuckyLand, utilizando plataformas sociales, foros y campañas de marketing.",
+              "Fomentar la participación de los inversores en la definición y mejora del proyecto a través de una DAO (Organización Autónoma Descentralizada).",
+              "Organizar eventos y actividades para fomentar la participación y el compromiso de la comunidad."
+            ]
+          },
+          {
+            "title": "Finalización de la Preventa",
+            "tasks": [
+              "Completar la preventa cuando se haya vendido el 17.5% del supply de LUCK o haya pasado un tiempo determinado.",
+              "Preparar el despliegue del proyecto en MainNet y establecer el pool de liquidez en exchanges descentralizados."
+            ]
+          }
+        ]
+      },
+      "lanzamiento": {
+        "title": "Fase 2: Lanzamiento",
+        "goals": [
+          "Iniciar la operación completa de la plataforma con la participación de la comunidad.",
+          "Abrir los primeros reinos y juegos para que los usuarios puedan empezar a ganar tesoros.",
+          "Activar el token principal `LUCK` en los DEX.",
+          "Lanzar el token de gobernanza (LUCKY).",
+          "Distribuir airdrops y recompensas iniciales.",
+          "Hacer campañas de promoción y marketing para atraer nuevos usuarios."
+        ],
+        "milestones": [
+          {
+            "title": "Despliegue en MainNet",
+            "tasks": [
+              "Migrar la plataforma desde DevNet a MainNet.",
+              "Configurar pools de liquidez en exchanges descentralizados y centralizados.",
+              "Desplegar el token de gobernanza y el activar el contrato de los airdrops."
+            ]
+          },
+          {
+            "title": "Lanzamiento del Primer Reino",
+            "tasks": [
+              "Iniciar con el Reino de las Monedas, y los primeros juegos disponible en LuckyLand.",
+              "Distribuir el primer airdrop de 42.5% del supply total de LUCK a través de los juegos.",
+              "Incentivar la participación de aproximadamente 2,000 usuarios mediante el regalo de 64,000 LUCKYSHOT como promoción inicial."
+            ]
+          },
+          {
+            "title": "Promociones y Descuentos",
+            "tasks": [
+              "Ofrecer paquetes promocionales con descuentos en LUCKYSHOT para los primeros usuarios que participen en la plataforma.",
+              "Monitorear y ajustar las promociones en función de la demanda y la participación."
+            ]
+          },
+          {
+            "title": "Apertura del Segundo Reino",
+            "tasks": [
+              "Introducir el Reino de los Dados, con nuevas recompensas y desafíos.",
+              "Incentivar la recolección de tesoros mediante la participación activa de la comunidad."
+            ]
+          },
+          {
+            "title": "Expansión Continua",
+            "tasks": [
+              "Repetir el ciclo de apertura y cierre de reinos, abriendo el Reino de las Cartas y finalmente el Reino de las Máquinas Tragamonedas.",
+              "Asegurar que cada reino tenga tesoros más valiosos y desafíos más complejos que el anterior."
+            ]
+          }
+        ]
+      },
+      "expansion": {
+        "title": "Fase 3: Expansión",
+        "goals": [
+          "Introducir nuevas funcionalidades y juegos para mantener el interés y la participación de la comunidad.",
+          "Expandir la plataforma más allá de los juegos iniciales."
+        ],
+        "milestones": [
+          {
+            "title": "Desarrollo de Nuevos Juegos",
+            "tasks": [
+              "Desarrollar y lanzar nuevos juegos como la ruleta, póker, y otros desafíos.",
+              "Integrar estos juegos en la plataforma, ofreciendo nuevas formas de ganar LUCK."
+            ]
+          },
+          {
+            "title": "Eventos Especiales",
+            "tasks": [
+              "Organizar eventos especiales y torneos para fomentar la participación y la competencia entre los usuarios.",
+              "Ofrecer premios exclusivos y recompensas adicionales para los ganadores de los eventos."
+            ]
+          },
+          {
+            "title": "Programa de Referidos",
+            "tasks": [
+              "Lanzar un programa de referidos para incentivar a los usuarios a invitar a sus amigos y familiares a unirse a LuckyLand.",
+              "Recompensar a los usuarios que refieran a nuevos jugadores con LUCKYSHOT y otros premios."
+            ]
+          },
+          {
+            "title": "Ampliación de la Plataforma",
+            "tasks": [
+              "Abrir la plataforma a la comunidad para que participe en la creación de nuevos reinos y juegos.",
+              "Facilitar la participación mediante la DAO, permitiendo a los usuarios proponer y votar sobre las nuevas funcionalidades."
+            ]
+          },
+          {
+            "title": "Integración de la DAO",
+            "tasks": [
+              "Activar el token de gobernanza, que permitirá a los usuarios influir en las decisiones clave del proyecto.",
+              "Utilizar este token como una herramienta para expandir la comunidad y aumentar la visibilidad de LuckyLand."
+            ]
+          }
+        ]
+      },
+      "probabilidades": {
+        "title": "Fase 4: Manipulación de Probabilidades",
+        "goals": [
+          "Integrar NFTs dentro de la plataforma, permitiendo a los usuarios personalizar su experiencia de juego.",
+          "Introducir mecánicas de juego que permitan a los jugadores aumentar sus posibilidades de ganar."
+        ],
+        "milestones": [
+          {
+            "title": "Lanzamiento de los NFTs",
+            "tasks": [
+              "Permitir a los usuarios mintear sus Compañeros de la Suerte, NFTs únicos con habilidades especiales.",
+              "Garantizar la singularidad de cada NFT mediante un proceso de generación basado en la dirección de la billetera del usuario."
+            ]
+          },
+          {
+            "title": "Integración de los NFTs en los Juegos",
+            "tasks": [
+              "Implementar las habilidades de los NFTs en los juegos, permitiendo a los usuarios mejorar sus probabilidades de éxito.",
+              "Ampliar la funcionalidad de los NFTs para que puedan ser utilizados en diferentes tipos de juegos."
+            ]
+          },
+          {
+            "title": "Mercado de NFTs",
+            "tasks": [
+              "Crear un mercado cerrado donde los usuarios puedan intercambiar sus NFTs.",
+              "Asegurar que solo los usuarios comprometidos con la comunidad puedan acceder a este mercado."
+            ]
+          },
+          {
+            "title": "Eventos Especiales",
+            "tasks": [
+              "Organizar eventos especiales y torneos que requieran la participación activa de los jugadores.",
+              "Ofrecer premios exclusivos y recompensas adicionales para los ganadores de los eventos.",
+              "Integrar los NFTs en estos eventos, permitiendo a los jugadores utilizar sus habilidades especiales para aumentar sus posibilidades de ganar."
+            ]
+          }
+        ]
+      },
+      "airdrops": {
+        "title": "Fase 5: Airdrops",
+        "goals": [
+          "Permitir que otros proyectos de criptomonedas utilicen la plataforma para realizar airdrops de manera controlada.",
+          "Incentivar la participación de la comunidad a través de recompensas y premios especiales.",
+          "Activar campañas de marketing y promoción para promover la reciente integración de LuckyLand con otros proyectos."
+        ],
+        "milestones": [
+          {
+            "title": "Apertura de la Plataforma para Airdrops",
+            "tasks": [
+              "Permitir que otros proyectos utilicen la infraestructura de LuckyLand para realizar airdrops.",
+              "Establecer reglas y estándares para asegurar la calidad y valor de los tokens distribuidos."
+            ]
+          },
+          {
+            "title": "Evaluación y Selección de Proyectos",
+            "tasks": [
+              "Implementar un proceso de evaluación para seleccionar los proyectos que puedan realizar airdrops en LuckyLand.",
+              "Fomentar la transparencia y la calidad en la distribución de estos tokens."
+            ]
+          },
+          {
+            "title": "Expansión del Ecosistema",
+            "tasks": [
+              "Utilizar los airdrops de otros proyectos para atraer nuevas comunidades a LuckyLand.",
+              "Ampliar la base de usuarios y aumentar la visibilidad del proyecto.\n"
+            ]
+          }
+        ]
+      },
+      "multijugador": {
+        "title": "Fase 6: Juegos Multijugador",
+        "goals": [
+          "Expandir la oferta de juegos en LuckyLand para incluir modalidades multijugador.",
+          "Fomentar la interacción y la competencia entre los jugadores, creando una comunidad activa y comprometida."
+        ],
+        "milestones": [
+          {
+            "title": "Desarrollo de Juegos Multijugador",
+            "tasks": [
+              "Introducir juegos multijugador como póker, ludo, y otros donde los usuarios puedan competir entre sí.",
+              "Asegurar que estos juegos sean completamente auditables y justos."
+            ]
+          },
+          {
+            "title": "Integración de Apuestas y Recompensas",
+            "tasks": [
+              "Permitir a los usuarios realizar apuestas en juegos multijugador utilizando LUCK y LUCKYSHOT.",
+              "Distribuir recompensas de manera justa y transparente, basadas en el rendimiento de los jugadores."
+            ]
+          },
+          {
+            "title": "Creación de Ligas y Torneos",
+            "tasks": [
+              "Organizar ligas y torneos que incentiven la competencia y mantengan el interés de la comunidad.",
+              "Ofrecer recompensas especiales para los ganadores de estos eventos."
+            ]
+          }
+        ]
+      },
+      "reinos": {
+        "title": "Fase 7: Reinos",
+        "goals": [
+          "Expandir LuckyLand creando nuevos reinos y permitiendo a otros proyectos construir sobre la plataforma.",
+          "Crear una experiencia de juego diversa y emocionante para los usuarios.",
+          "Fomentar la exploración y la participación activa en la plataforma."
+        ],
+        "milestones": [
+          {
+            "title": "Desarrollo de Nuevos Reinos",
+            "tasks": [
+              "Crear y lanzar nuevos reinos dentro de LuckyLand, cada uno con su propia temática y desafíos únicos.",
+              "Asegurar que cada reino ofrezca nuevas oportunidades para ganar LUCK y participar en la plataforma."
+            ]
+          },
+          {
+            "title": "Integración de Proyectos Externos",
+            "tasks": [
+              "Permitir que otros proyectos utilicen el núcleo de LuckyLand para construir sus propios juegos y reinos.",
+              "Facilitar la interoperabilidad entre LuckyLand y otras plataformas."
+            ]
+          },
+          {
+            "title": "Expansión Continua",
+            "tasks": [
+              "Mantener la expansión de LuckyLand con nuevos reinos y funcionalidades, asegurando que la plataforma se mantenga relevante y atractiva para los usuarios."
+            ]
+          }
+        ]
+      }
     }
   }
 }
