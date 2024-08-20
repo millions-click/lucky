@@ -49,4 +49,11 @@ impl Bounty {
 
         Ok(bounty)
     }
+
+    pub fn claim_reward(&mut self) -> u64 {
+        self.winners += 1;
+        self.total_claimed += self.reward;
+
+        self.reward.clone()
+    }
 }

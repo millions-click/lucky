@@ -6,10 +6,10 @@ const {
   symbol: SYMBOL,
   decimals: DECIMALS,
   PIECES_PER_TOKEN: PIECES_PER_GEM,
-} = getTokenDefinition('L');
+} = getTokenDefinition('LUCK');
 
 export { NAME, SYMBOL, DECIMALS, PIECES_PER_GEM };
-export const GEMS_TO_STOCKPILE = BigInt(300000000);
+export const GEMS_TO_STOCKPILE = BigInt(425000000);
 const IDS_BASE_PATH = '~/.config/solana/luckyland';
 
 export enum ID_NAME {

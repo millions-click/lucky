@@ -1,8 +1,8 @@
 export const TOKENS = Object.fromEntries(
   [
     {
-      name: 'LuckyLand',
-      symbol: 'L',
+      name: 'Lucky Land',
+      symbol: 'LUCK',
       decimals: 9,
       image: 'gem.svg',
     },
@@ -11,6 +11,12 @@ export const TOKENS = Object.fromEntries(
       symbol: 'LS',
       decimals: 4,
       image: 'trader.svg',
+    },
+    {
+      name: 'Lucky',
+      symbol: 'LUCKY',
+      decimals: 6,
+      image: 'lucky.png',
     },
   ].map((token) => [
     token.symbol,

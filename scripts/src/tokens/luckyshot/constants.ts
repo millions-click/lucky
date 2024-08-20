@@ -10,7 +10,7 @@ const {
 
 export { NAME, SYMBOL, DECIMALS, PIECES_PER_TOKEN };
 export const TRADES_TO_MINT = BigInt(1000000000);
-export const TRADES_FOR_MARKETING = BigInt(60000);
+export const TRADES_FOR_MARKETING = BigInt(64000);
 export const TRADES_FOR_SALE = TRADES_TO_MINT - TRADES_FOR_MARKETING;
 const IDS_BASE_PATH = '~/.config/solana/luckyland';
 

@@ -34,10 +34,12 @@ export function ExplorerWrapper({
   children,
   path,
   className,
+  onClick,
 }: {
   children: ReactNode;
   path: string;
   className?: string;
+  onClick?: () => void;
 }) {
   const { getExplorerUrl } = useCluster();
   return (
@@ -46,6 +48,7 @@ export function ExplorerWrapper({
       target="_blank"
       rel="noopener noreferrer"
       className={className ? className : `link font-mono`}
+      onClick={onClick}
     >
       {children}
     </a>

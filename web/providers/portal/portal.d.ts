@@ -19,3 +19,6 @@ export type GameAccount = Awaited<
   ReturnType<Portal['account']['game']['fetch']>
 >;
 export type Player = Awaited<ReturnType<Portal['account']['player']['fetch']>>;
+export type StorePackage = Awaited<
+  ReturnType<Portal['account']['storePackage']['fetch']>
+>;

@@ -1,6 +1,7 @@
 'use client';
 
-import { PublicKey } from '@solana/web3.js';
+import { useCallback } from 'react';
+import { type Cluster, PublicKey } from '@solana/web3.js';
 import { useConnection } from '@solana/wallet-adapter-react';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { CHAINLINK_STORE_PROGRAM_ID } from '@chainlink/solana-sdk';
@@ -8,12 +9,16 @@ import { BN } from '@coral-xyz/anchor';
 import toast from 'react-hot-toast';
 
 import { useCluster, useStore } from '@/providers';
-import { getBalanceOptions, getTokenAccountsOptions } from '@/queries';
+import {
+  getBalanceOptions,
+  getStorePackagesOptions,
+  getTokenAccountsOptions,
+} from '@/queries';
 
 export function useStoreSell() {
   const { cluster } = useCluster();
   const { connection } = useConnection();
-  const { portal, store, pda, getPrice } = useStore();
+  const { portal, store, pda, getPrice, getPackage } = useStore();
 
   const client = useQueryClient();
 
@@ -32,7 +37,7 @@ export function useStoreSell() {
       const { feed, trader } = store;
 
       const signature = await portal.methods
-        .storeSale(amount)
+        .storeSale(amount.toString())
         .accounts({
           feed,
           trader,
@@ -47,6 +52,8 @@ export function useStoreSell() {
       const keys = [
         getTokenAccountsOptions(owner, connection).queryKey,
         getBalanceOptions(owner, connection).queryKey,
+        getStorePackagesOptions(pda, portal, cluster.network as Cluster)
+          .queryKey,
       ];
 
       return Promise.all(
@@ -60,9 +67,18 @@ export function useStoreSell() {
   });
 
   return {
+    pda,
     store,
 
     sell,
-    getPrice,
+    getPrice: useCallback(
+      (amount: number) => {
+        const pkg = getPackage(amount);
+        if (!pkg) return null;
+        return getPrice(pkg.account);
+      },
+      [getPackage, getPrice]
+    ),
+    getPackage,
   };
 }
