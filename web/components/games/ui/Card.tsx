@@ -37,6 +37,7 @@ export function GameCard({
   return active && add && isOwner ? (
     <SettingsForm
       title={`Add New Mode`}
+      className="mx-auto md:col-span-12"
       subtitle={name}
       onSubmit={async (settings) => {
         await createGameMode(settings);

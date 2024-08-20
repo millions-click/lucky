@@ -12,6 +12,7 @@ export * from './store';
 export * from './pass';
 export * from './bag';
 export * from './player';
+export * from './winners';
 
 export * from './portal';
 export * from './realms';

@@ -3,8 +3,8 @@ use crate::constants::{ESCROW_SEED};
 use anchor_lang::prelude::*;
 use anchor_spl::token::{Transfer};
 
-pub fn reward(ctx: &Context<Play>) -> Result<()> {
-    let amount = ctx.accounts.bounty.reward.clone();
+pub fn reward(ctx: Context<Play>) -> Result<()> {
+    let amount = ctx.accounts.bounty.claim_reward();
 
     let transfer_instruction = Transfer {
         from: ctx.accounts.vault.to_account_info(),
@@ -24,5 +24,25 @@ pub fn reward(ctx: &Context<Play>) -> Result<()> {
 
     anchor_spl::token::transfer(cpi_ctx, amount)?;
 
+    let event = WinnerEvent {
+        player: ctx.accounts.owner.key().clone(),
+        realm: ctx.accounts.game.key().clone(),
+        game: ctx.accounts.mode.key().clone(),
+        gem: ctx.accounts.bounty.gem.key().clone(),
+        amount,
+    };
+
+    emit!(event); // To subscribe and display winners in real-time
+    emit_cpi!(event); // To create a reliable record of winners. Leaderboard.
+
     Ok(())
+}
+
+#[event]
+pub struct WinnerEvent {
+    player: Pubkey,
+    realm: Pubkey,
+    game: Pubkey,
+    gem: Pubkey,
+    amount: u64,
 }

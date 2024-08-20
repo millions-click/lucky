@@ -110,7 +110,7 @@ export function useStoreProgramAccount({
       const receiver = await getAssociatedTokenAddress(trader, owner);
 
       return program.methods
-        .storeSale(new BN(amount.toString()))
+        .storeSale(amount.toString())
         .accounts({
           feed,
           chainlinkProgram: CHAINLINK_STORE_PROGRAM_ID,

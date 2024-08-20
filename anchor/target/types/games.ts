@@ -1354,6 +1354,39 @@ export type Games = {
         {
           "name": "rent",
           "address": "SysvarRent111111111111111111111111111111111"
+        },
+        {
+          "name": "eventAuthority",
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  95,
+                  95,
+                  101,
+                  118,
+                  101,
+                  110,
+                  116,
+                  95,
+                  97,
+                  117,
+                  116,
+                  104,
+                  111,
+                  114,
+                  105,
+                  116,
+                  121
+                ]
+              }
+            ]
+          }
+        },
+        {
+          "name": "program",
+          "address": "HCZ5KdroZ7BQrmkZq1a72t2FVVQuxqVjkR4ZmAvi8CTr"
         }
       ],
       "args": [
@@ -1738,6 +1771,97 @@ export type Games = {
       ]
     },
     {
+      "name": "storePackage",
+      "discriminator": [
+        111,
+        110,
+        5,
+        70,
+        30,
+        22,
+        120,
+        11
+      ],
+      "accounts": [
+        {
+          "name": "store",
+          "writable": true
+        },
+        {
+          "name": "package",
+          "writable": true,
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  83,
+                  84,
+                  79,
+                  82,
+                  69
+                ]
+              },
+              {
+                "kind": "account",
+                "path": "store"
+              },
+              {
+                "kind": "arg",
+                "path": "amount"
+              }
+            ]
+          }
+        },
+        {
+          "name": "treasure",
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  84,
+                  82,
+                  69,
+                  65,
+                  83,
+                  85,
+                  82,
+                  69
+                ]
+              }
+            ]
+          }
+        },
+        {
+          "name": "authority",
+          "writable": true,
+          "signer": true,
+          "relations": [
+            "treasure"
+          ]
+        },
+        {
+          "name": "systemProgram",
+          "address": "11111111111111111111111111111111"
+        }
+      ],
+      "args": [
+        {
+          "name": "amount",
+          "type": "string"
+        },
+        {
+          "name": "settings",
+          "type": {
+            "defined": {
+              "name": "storePackageSettings"
+            }
+          }
+        }
+      ]
+    },
+    {
       "name": "storeSale",
       "discriminator": [
         96,
@@ -1839,6 +1963,32 @@ export type Games = {
           }
         },
         {
+          "name": "package",
+          "writable": true,
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  83,
+                  84,
+                  79,
+                  82,
+                  69
+                ]
+              },
+              {
+                "kind": "account",
+                "path": "store"
+              },
+              {
+                "kind": "arg",
+                "path": "amount"
+              }
+            ]
+          }
+        },
+        {
           "name": "payer",
           "writable": true,
           "signer": true
@@ -1859,7 +2009,7 @@ export type Games = {
       "args": [
         {
           "name": "amount",
-          "type": "u64"
+          "type": "string"
         }
       ]
     },
@@ -2149,6 +2299,19 @@ export type Games = {
       ]
     },
     {
+      "name": "storePackage",
+      "discriminator": [
+        197,
+        43,
+        47,
+        75,
+        115,
+        107,
+        207,
+        11
+      ]
+    },
+    {
       "name": "treasure",
       "discriminator": [
         98,
@@ -2162,16 +2325,41 @@ export type Games = {
       ]
     }
   ],
+  "events": [
+    {
+      "name": "winnerEvent",
+      "discriminator": [
+        80,
+        230,
+        123,
+        48,
+        43,
+        207,
+        255,
+        183
+      ]
+    }
+  ],
   "errors": [
     {
       "code": 6000,
-      "name": "invalidSeed",
-      "msg": "Invalid seed"
+      "name": "invalidOwner",
+      "msg": "Bounty is not owned by the supplier"
     },
     {
       "code": 6001,
-      "name": "invalidPlayerChoice",
-      "msg": "Invalid choice"
+      "name": "thresholdNotReached",
+      "msg": "Vault amount is above threshold"
+    },
+    {
+      "code": 6002,
+      "name": "invalidGem",
+      "msg": "Invalid gem"
+    },
+    {
+      "code": 6003,
+      "name": "uncollectibleReward",
+      "msg": "Total vault reward is uncollectible"
     }
   ],
   "types": [
@@ -2492,6 +2680,46 @@ export type Games = {
       }
     },
     {
+      "name": "storePackage",
+      "type": {
+        "kind": "struct",
+        "fields": [
+          {
+            "name": "price",
+            "type": "i128"
+          },
+          {
+            "name": "amount",
+            "type": "u64"
+          },
+          {
+            "name": "sales",
+            "type": "u32"
+          },
+          {
+            "name": "max",
+            "type": "u32"
+          }
+        ]
+      }
+    },
+    {
+      "name": "storePackageSettings",
+      "type": {
+        "kind": "struct",
+        "fields": [
+          {
+            "name": "price",
+            "type": "i128"
+          },
+          {
+            "name": "sales",
+            "type": "u32"
+          }
+        ]
+      }
+    },
+    {
       "name": "storeSettings",
       "type": {
         "kind": "struct",
@@ -2511,6 +2739,34 @@ export type Games = {
           {
             "name": "authority",
             "type": "pubkey"
+          }
+        ]
+      }
+    },
+    {
+      "name": "winnerEvent",
+      "type": {
+        "kind": "struct",
+        "fields": [
+          {
+            "name": "player",
+            "type": "pubkey"
+          },
+          {
+            "name": "realm",
+            "type": "pubkey"
+          },
+          {
+            "name": "game",
+            "type": "pubkey"
+          },
+          {
+            "name": "gem",
+            "type": "pubkey"
+          },
+          {
+            "name": "amount",
+            "type": "u64"
           }
         ]
       }

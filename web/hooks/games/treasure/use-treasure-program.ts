@@ -74,12 +74,16 @@ export function useTreasureProgram({
       mint,
       amount,
       sender,
+      isReserve,
     }: {
       mint: PublicKey;
       amount: bigint;
       sender: PublicKey;
+      isReserve?: boolean;
     }) => {
-      const reserve = await getAssociatedTokenAddress(mint, sender);
+      const reserve = isReserve
+        ? sender
+        : await getAssociatedTokenAddress(mint, sender);
 
       return program.methods
         .retrieveGems(new BN(amount.toString()))
