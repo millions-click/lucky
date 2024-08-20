@@ -12,6 +12,7 @@ export * from './escrow/bounties/bounties.d';
 export * from './escrow/traders/traders.d';
 
 export * from './player/player.d';
+export * from './winners/winners.d';
 
 export * from './store/store.d';
 export * from './realms/realms.d';

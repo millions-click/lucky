@@ -130,7 +130,7 @@ pub mod games {
     pub fn play_round(ctx: Context<Play>, round: Round) -> Result<()> {
         escrow::accept::payment(&ctx)?;
         let winner = player::game::play(&mut ctx.accounts.player, &ctx.accounts.game, &ctx.accounts.mode, round)?;
-        if winner { escrow::redeem::reward(&ctx)?; }
+        if winner { escrow::redeem::reward(ctx)?; }
 
         Ok(())
     }

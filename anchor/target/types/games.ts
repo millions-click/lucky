@@ -1354,6 +1354,39 @@ export type Games = {
         {
           "name": "rent",
           "address": "SysvarRent111111111111111111111111111111111"
+        },
+        {
+          "name": "eventAuthority",
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  95,
+                  95,
+                  101,
+                  118,
+                  101,
+                  110,
+                  116,
+                  95,
+                  97,
+                  117,
+                  116,
+                  104,
+                  111,
+                  114,
+                  105,
+                  116,
+                  121
+                ]
+              }
+            ]
+          }
+        },
+        {
+          "name": "program",
+          "address": "HCZ5KdroZ7BQrmkZq1a72t2FVVQuxqVjkR4ZmAvi8CTr"
         }
       ],
       "args": [
@@ -2292,36 +2325,41 @@ export type Games = {
       ]
     }
   ],
+  "events": [
+    {
+      "name": "winnerEvent",
+      "discriminator": [
+        80,
+        230,
+        123,
+        48,
+        43,
+        207,
+        255,
+        183
+      ]
+    }
+  ],
   "errors": [
     {
       "code": 6000,
-      "name": "invalidSlots",
-      "msg": "Slots must be between 1 and 10"
+      "name": "invalidOwner",
+      "msg": "Bounty is not owned by the supplier"
     },
     {
       "code": 6001,
-      "name": "invalidDigits",
-      "msg": "Digits must be between 1 and 8"
+      "name": "thresholdNotReached",
+      "msg": "Vault amount is above threshold"
     },
     {
       "code": 6002,
-      "name": "invalidChoices",
-      "msg": "Choices must be between 2 and max value of digits"
+      "name": "invalidGem",
+      "msg": "Invalid gem"
     },
     {
       "code": 6003,
-      "name": "invalidWinnerSingleChoice",
-      "msg": "Winner choice must be between 1 and choices"
-    },
-    {
-      "code": 6004,
-      "name": "invalidWinnerChoice",
-      "msg": "Winner choice must be between 0 and choices"
-    },
-    {
-      "code": 6005,
-      "name": "invalidPickWinner",
-      "msg": "Pick winner is true but winner choice is 0"
+      "name": "uncollectibleReward",
+      "msg": "Total vault reward is uncollectible"
     }
   ],
   "types": [
@@ -2701,6 +2739,34 @@ export type Games = {
           {
             "name": "authority",
             "type": "pubkey"
+          }
+        ]
+      }
+    },
+    {
+      "name": "winnerEvent",
+      "type": {
+        "kind": "struct",
+        "fields": [
+          {
+            "name": "player",
+            "type": "pubkey"
+          },
+          {
+            "name": "realm",
+            "type": "pubkey"
+          },
+          {
+            "name": "game",
+            "type": "pubkey"
+          },
+          {
+            "name": "gem",
+            "type": "pubkey"
+          },
+          {
+            "name": "amount",
+            "type": "u64"
           }
         ]
       }

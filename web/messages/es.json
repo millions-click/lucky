@@ -283,6 +283,11 @@
         "realms": "Reinos",
         "socials": "Redes sociales"
       }
+    },
+    "Leaderboard": {
+      "Notification": {
+        "new-winner": "🎉 ¡Ganador! {player}"
+      }
     }
   },
   "General": {

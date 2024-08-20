@@ -16,6 +16,7 @@ pub fn play(player: &mut Player, game: &Game, mode: &GameMode, round: Round) -> 
     player.play(game, mode, round)
 }
 
+#[event_cpi]
 #[derive(Accounts)]
 pub struct Play<'info> {
     #[account(mut)]

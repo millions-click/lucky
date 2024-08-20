@@ -1,6 +1,6 @@
 {
   "name": "@luckyland/source",
-  "version": "0.2.4",
+  "version": "0.2.6",
   "license": "MIT",
   "scripts": {
     "anchor": "nx run anchor:anchor",

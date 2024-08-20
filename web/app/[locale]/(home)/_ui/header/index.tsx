@@ -5,11 +5,9 @@ import { NextIntlClientProvider } from 'next-intl';
 import { Nav } from './nav';
 
 import {
-  ReactQueryProvider,
-  ClusterProvider,
-  SolanaProvider,
-  BountiesProvider,
+  WinnersWithPortalProvider,
   GemsProvider,
+  BountiesProvider,
 } from '@/providers';
 
 export async function Header() {
@@ -18,20 +16,16 @@ export async function Header() {
   return (
     <header className="fixed flex justify-between left-0 top-0 right-0 px-4 lg:px-8 py-4 z-10">
       <Suspense>
-        <ReactQueryProvider>
-          <ClusterProvider>
-            <SolanaProvider>
-              <GemsProvider>
-                <BountiesProvider>
-                  <NextIntlClientProvider messages={messages}>
-                    <Nav />
-                    <button className="btn btn-square btn-ghost">Log in</button>
-                  </NextIntlClientProvider>
-                </BountiesProvider>
-              </GemsProvider>
-            </SolanaProvider>
-          </ClusterProvider>
-        </ReactQueryProvider>
+        <NextIntlClientProvider messages={messages}>
+          <WinnersWithPortalProvider>
+            <GemsProvider>
+              <BountiesProvider>
+                <Nav />
+                <button className="btn btn-square btn-ghost">Log in</button>
+              </BountiesProvider>
+            </GemsProvider>
+          </WinnersWithPortalProvider>
+        </NextIntlClientProvider>
       </Suspense>
     </header>
   );
