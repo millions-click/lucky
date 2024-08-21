@@ -5,8 +5,8 @@ import { UserQuestion } from './UserQuestion';
 
 export function Assistant() {
   return (
-    <MessagesProvider namespace="Assistant">
-      <div className="p-2 rounded-box flex flex-col overflow-hidden max-h-[60vh]">
+    <MessagesProvider namespace="Components.Assistant">
+      <div className="flex flex-col max-h-[60vh] p-2">
         <AssistantMessages />
         <UserQuestion />
       </div>

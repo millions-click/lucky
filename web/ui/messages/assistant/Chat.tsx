@@ -1,7 +1,8 @@
 'use client';
 
-import { Message, useAssistant } from '@/providers';
 import { useEffect, useRef, useState } from 'react';
+import { Message, useAssistant } from '@/providers';
+import { useTranslations } from 'next-intl';
 
 type MessageProps = { message: Message };
 function Question({ message: { text } }: MessageProps) {
@@ -12,7 +13,7 @@ function Question({ message: { text } }: MessageProps) {
   );
 }
 
-function Answers({ message }: MessageProps) {
+function Answer({ message }: MessageProps) {
   const [text, setText] = useState('');
 
   useEffect(() => {
@@ -40,7 +41,8 @@ function Answers({ message }: MessageProps) {
 }
 
 export function AssistantMessages() {
-  const { messages, loading } = useAssistant();
+  const { messages, loading, namespace } = useAssistant();
+  const t = useTranslations(namespace);
   const chatEndRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
@@ -49,13 +51,14 @@ export function AssistantMessages() {
   }, [messages, loading]);
 
   return (
-    <div className="flex-1 overflow-auto pb-4">
+    <div className="flex-1 overflow-auto pb-2 mb-1">
+      <Answer message={{ text: t('hello') } as Message} />
       {messages.map((message) => (
         <div key={message.id}>
           {message.type === 'question' ? (
             <Question message={message} />
           ) : (
-            <Answers message={message} />
+            <Answer message={message} />
           )}
         </div>
       ))}

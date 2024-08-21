@@ -24,7 +24,9 @@
         "secure": "Asegurar",
 
         "lock": "Bloquear",
-        "unlock": "Desbloquear"
+        "unlock": "Desbloquear",
+
+        "ask": "Preguntar"
       },
       "alert": {
         "password": {
@@ -34,7 +36,8 @@
       },
       "input": {
         "password": "Contraseña",
-        "confirm": "Confirmar contraseña"
+        "confirm": "Confirmar contraseña",
+        "question": "Escribe tu respuesta"
       },
       "links": {
         "lobby": "Lobby",
@@ -288,6 +291,9 @@
       "Notification": {
         "new-winner": "🎉 ¡Ganador! {player}"
       }
+    },
+    "Assistant": {
+      "hello": "Puedo responder tus preguntas sobre Luckyland. ¿En qué puedo ayudarte?"
     }
   },
   "General": {
@@ -864,6 +870,19 @@
           }
         ]
       }
+    }
+  },
+  "Tokenomics": {
+    "messages": {
+      "welcome": {
+        "text": "¡Saludos, viajero afortunado! Mi nombre es Lucky, y estoy aquí para ayudarte. Estas en la sección de Tokenomics de Luckyland.",
+        "advice": "Aquí puedes encontrar información sobre la economia de nuestro mundo y cómo se utiliza para mejorar el tuyo.",
+        "select": {
+          "title": "¿Qué te gustaría hacer?",
+          "options": "Ver el suministro, Ver la distribución, Ver el uso, FAQ (Preguntas frecuentes), Quiero preguntar"
+        }
+      },
+      "assistant": { "text": "" }
     }
   }
 }
