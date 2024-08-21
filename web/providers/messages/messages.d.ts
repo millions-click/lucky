@@ -14,6 +14,7 @@ export type Message = {
   expire?: number;
   select?: string;
   options?: Array<string>;
+  type?: 'question' | 'answer';
 };
 
 export type Messages = Array<Message>;
@@ -23,10 +24,17 @@ export type MessagesContext = {
   messages: Messages;
   setMessages: Dispatch<SetStateAction<Messages>>;
   clear: () => void;
+
+  loading: boolean;
+  setLoading: Dispatch<SetStateAction<boolean>>;
 };
 
 export type MessagesContextHandler = MessagesContext & {
   show: (id: MessageId, values?: TranslationValues, replace?: boolean) => void;
+};
+
+export type MessagesContextAssistant = MessagesContext & {
+  ask: (text: string) => Promise<void>;
 };
 
 export type MessagesSettings = {
