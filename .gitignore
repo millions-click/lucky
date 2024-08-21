@@ -51,4 +51,5 @@ test-ledger
 CACHEDIR.TAG
 
 .env*
+!.env.example
 .vercel
