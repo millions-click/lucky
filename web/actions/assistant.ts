@@ -8,7 +8,8 @@ import type { Message } from '@/providers';
 
 const openai = new OpenAI();
 
-const { UPSTASH_API_KEY, UPSTASH_API_URL } = process.env;
+const { UPSTASH_API_KEY, UPSTASH_API_URL, OPENAI_ASSISTANT_MAX_TOKENS } =
+  process.env;
 const redis = new Redis({ url: UPSTASH_API_URL, token: UPSTASH_API_KEY });
 
 const { OPENAI_ASSISTANT_ID = '' } = process.env;
@@ -37,7 +38,9 @@ export async function askAssistant(
 
   let run = await openai.beta.threads.runs.createAndPoll(thread, {
     assistant_id: OPENAI_ASSISTANT_ID,
-    max_completion_tokens: 300,
+    max_completion_tokens: OPENAI_ASSISTANT_MAX_TOKENS
+      ? Number(OPENAI_ASSISTANT_MAX_TOKENS)
+      : undefined,
     additional_instructions: INSTRUCTIONS[scope],
   });
 
