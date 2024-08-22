@@ -1,11 +1,15 @@
 'use server';
 
 import OpenAI from 'openai';
+import { Redis } from '@upstash/redis';
 import { Threads } from 'openai/resources/beta';
 
 import type { Message } from '@/providers';
 
 const openai = new OpenAI();
+
+const { UPSTASH_API_KEY, UPSTASH_API_URL } = process.env;
+const redis = new Redis({ url: UPSTASH_API_URL, token: UPSTASH_API_KEY });
 
 const { OPENAI_ASSISTANT_ID = '' } = process.env;
 if (!OPENAI_ASSISTANT_ID) throw new Error('Missing OPENAI_ASSISTANT_ID');
@@ -23,6 +27,9 @@ export async function askAssistant(
   thread: string,
   scope: AssistantScope
 ): Promise<Message> {
+  const threadData = await redis.get(thread);
+  if (!threadData) await redis.set(thread, { id: thread, scope });
+
   const message = await openai.beta.threads.messages.create(thread, {
     role: 'user',
     content,
@@ -58,6 +65,7 @@ export async function askAssistant(
 export async function createThread(): Promise<string> {
   const thread = await openai.beta.threads.create();
 
+  await redis.set(thread.id, thread);
   return thread.id;
 }
 
