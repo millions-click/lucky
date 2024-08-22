@@ -293,7 +293,8 @@
       }
     },
     "Assistant": {
-      "hello": "Puedo responder tus preguntas sobre Luckyland. ¿En qué puedo ayudarte?"
+      "hello": "Puedo responder tus preguntas sobre Luckyland. ¿En qué puedo ayudarte?",
+      "error": "Lo siento, algo salió mal. Por favor, inténtalo de nuevo más tarde."
     }
   },
   "General": {

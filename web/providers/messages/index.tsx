@@ -24,4 +24,3 @@ export async function MessagesProvider({
 }
 
 export { useMessages, useMessagesHandler, MessagesSettings, Message };
-export * from './assistant';

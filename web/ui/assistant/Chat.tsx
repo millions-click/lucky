@@ -1,8 +1,7 @@
 'use client';
 
-import { useEffect, useRef, useState } from 'react';
+import { useCallback, useEffect, useRef, useState } from 'react';
 import { Message, useAssistant } from '@/providers';
-import { useTranslations } from 'next-intl';
 
 type MessageProps = { message: Message };
 function Question({ message: { text } }: MessageProps) {
@@ -17,6 +16,7 @@ function Answer({ message }: MessageProps) {
   const [text, setText] = useState('');
 
   useEffect(() => {
+    if (message.loaded) return setText(message.text);
     setText('');
 
     const interval = setInterval(() => {
@@ -41,18 +41,18 @@ function Answer({ message }: MessageProps) {
 }
 
 export function AssistantMessages() {
-  const { messages, loading, namespace } = useAssistant();
-  const t = useTranslations(namespace);
+  const { messages, loading } = useAssistant();
   const chatEndRef = useRef<HTMLDivElement>(null);
 
-  useEffect(() => {
+  const scrollDown = useCallback(() => {
     if (chatEndRef.current)
       chatEndRef.current.scrollIntoView({ behavior: 'smooth' });
-  }, [messages, loading]);
+  }, [chatEndRef]);
+
+  useEffect(() => scrollDown, [messages, loading]);
 
   return (
     <div className="flex-1 overflow-auto pb-2 mb-1">
-      <Answer message={{ text: t('hello') } as Message} />
       {messages.map((message) => (
         <div key={message.id}>
           {message.type === 'question' ? (

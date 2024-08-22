@@ -2,13 +2,13 @@
 
 import { useState } from 'react';
 import { useTranslations } from 'next-intl';
-import { IconSend } from '@tabler/icons-react';
+import { IconRefresh, IconSend } from '@tabler/icons-react';
 
 import { useAssistant } from '@/providers';
 
 export function UserQuestion() {
   const t = useTranslations('Components.Common');
-  const { ask, loading } = useAssistant();
+  const { ask, loading, error, retry } = useAssistant();
   const [text, setText] = useState('');
 
   return (
@@ -21,22 +21,23 @@ export function UserQuestion() {
         await ask(text);
         setText('');
       }}
+      onReset={retry}
     >
       <textarea
         name="q"
         className="textarea textarea-info w-full"
-        disabled={loading}
+        disabled={loading || error}
         value={text}
         onChange={(e) => setText(e.target.value)}
         placeholder={t('input.question')}
       />
       <button
-        type="submit"
-        className="btn btn-primary btn-sm"
+        type={error ? 'reset' : 'submit'}
+        className={`btn btn-sm ${error ? 'btn-error' : 'btn-primary'}`}
         disabled={loading}
       >
-        {t('action.ask')}
-        <IconSend />
+        {t(`action.${error ? 'retry' : 'ask'}`)}
+        {error ? <IconRefresh /> : <IconSend />}
       </button>
     </form>
   );

@@ -1,5 +1,6 @@
 export * from './countdown/countdown.d';
 export * from './messages/messages.d';
+export * from './assistant/assistant.d';
 
 export * from './tokens/tokens.d';
 

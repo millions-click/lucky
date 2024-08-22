@@ -1,12 +1,8 @@
 'use client';
 import { useState } from 'react';
 
-import {
-  type ChatMessages,
-  Selector,
-  Assistant,
-  ChatController,
-} from '@/ui/messages';
+import { type ChatMessages, Selector, ChatController } from '@/ui/messages';
+import { Assistant } from '@/ui';
 
 const MESSAGES = {
   welcome: {
@@ -24,7 +20,7 @@ const MESSAGES = {
       ],
     }),
   },
-  assistant: { Actions: Assistant },
+  assistant: { Actions: () => <Assistant scope="tokenomics" /> },
 } as ChatMessages;
 
 export function TokenomicsChat() {

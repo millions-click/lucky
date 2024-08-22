@@ -4,6 +4,5 @@ export * from './Controller';
 
 export * from './Selector';
 export * from './utils';
-export * from './assistant';
 
 export * from '@/app/[locale]/game/_ui/messages';
