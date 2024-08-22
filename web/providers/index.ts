@@ -1,5 +1,6 @@
 export * from './game-pal';
 export * from './messages';
+export * from './assistant';
 export * from './countdown';
 export * from './bg-provider';
 

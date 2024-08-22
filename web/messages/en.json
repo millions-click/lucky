@@ -294,7 +294,8 @@
       }
     },
     "Assistant": {
-      "hello": "I can answer your questions about Luckyland. How can I help you?"
+      "hello": "I can answer your questions about Luckyland. How can I help you?",
+      "error": "I'm sorry, something went wrong. Please try again later."
     }
   },
   "General": {
