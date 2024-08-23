@@ -1,6 +1,8 @@
 'use client';
 
 import { useCallback, useEffect, useRef, useState } from 'react';
+import Markdown from 'markdown-to-jsx';
+
 import { Message, useAssistant } from '@/providers';
 
 type MessageProps = { message: Message };
@@ -35,7 +37,9 @@ function Answer({ message }: MessageProps) {
 
   return (
     <div className="chat chat-start">
-      <div className="chat-bubble chat-bubble-accent">{text}</div>
+      <div className="chat-bubble chat-bubble-accent">
+        <Markdown options={{ wrapper: 'article' }}>{text}</Markdown>
+      </div>
     </div>
   );
 }

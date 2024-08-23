@@ -294,7 +294,7 @@
       }
     },
     "Assistant": {
-      "hello": "I can answer your questions about Luckyland. How can I help you?",
+      "hello": "I’m glad you’re here! Let’s explore the world of LuckyLand together. What questions or topics would you like to dive into?",
       "error": "I'm sorry, something went wrong. Please try again later."
     }
   },
