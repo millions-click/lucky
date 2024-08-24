@@ -15,7 +15,12 @@ declare_id!("9K1vk2VqZPW8g58Tq3N2VeMTXk4Ww9XsRqxSitLeT118");
 pub mod presale {
     use super::*;
 
+    pub fn init(_ctx: Context<Initialize>) -> Result<()> { Ok(())}
     pub fn init_sale(ctx: Context<InitializeSale>, settings: Settings) -> Result<()> {
         sale::handle::create(ctx, settings)
+    }
+
+    pub fn purchase(ctx: Context<StagePurchase>, amount: u64) -> Result<()> {
+        sale::stage::purchase(ctx, amount)
     }
 }

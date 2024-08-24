@@ -50,3 +50,14 @@ export function getSaleKeeperPDA(cluster?: Cluster) {
     getPresaleProgramId(cluster)
   )[0];
 }
+
+export function getBuyerVaultPDA(
+  token: PublicKey,
+  buyer: PublicKey,
+  cluster?: Cluster
+) {
+  return PublicKey.findProgramAddressSync(
+    [Buffer.from(VAULT_SEED, 'utf8'), token.toBytes(), buyer.toBytes()],
+    getPresaleProgramId(cluster)
+  )[0];
+}

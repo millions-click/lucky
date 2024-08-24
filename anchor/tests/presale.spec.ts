@@ -1,12 +1,14 @@
 import * as anchor from '@coral-xyz/anchor';
-import { PublicKey } from '@solana/web3.js';
+import { Keypair, LAMPORTS_PER_SOL, PublicKey } from '@solana/web3.js';
 import {
+  type Account,
   createAssociatedTokenAccount,
   createMint,
   getAccount,
   getAssociatedTokenAddress,
   mintToChecked,
 } from '@solana/spl-token';
+import { BN } from '@coral-xyz/anchor';
 
 import {
   getPresaleProgram,
@@ -14,7 +16,6 @@ import {
   getSalePDA,
   getSaleVaultPDA,
 } from '../src/presale-exports';
-import { BN } from '@coral-xyz/anchor';
 
 const DECIMALS = 8;
 describe('presale', () => {
@@ -24,6 +25,7 @@ describe('presale', () => {
 
   anchor.setProvider(provider);
   const program = getPresaleProgram(provider);
+  type Portal = typeof program;
 
   const { payer } = provider.wallet as anchor.Wallet;
   let token: PublicKey;
@@ -55,44 +57,100 @@ describe('presale', () => {
     );
   });
 
-  it('Initialize Presale', async () => {
-    const reserve = await getAssociatedTokenAddress(token, payer.publicKey);
-    const settings = {
-      prices: [100, 200, 300].map((x) => new BN(x)),
-      amounts: [10, 20, 30].map((x) => new BN(x)),
-      start: new BN(Date.now() / 1000),
-      end: new BN(Date.now() / 1000 + 86400),
-      min: new BN(1),
-      max: new BN(100),
-    };
+  describe('Initialize Presale', () => {
+    it('should init the main program accounts', async () => {
+      await program.methods.init().rpc();
 
-    await program.methods
-      .initSale(settings)
-      .accounts({
-        token,
-        reserve,
-      })
-      .rpc();
+      const keeper = getSaleKeeperPDA();
+      const balance = await provider.connection.getBalance(keeper);
+      expect(balance).toBeGreaterThan(0);
+    });
 
-    const salePDA = getSalePDA(token);
-    const vaultPDA = getSaleVaultPDA(token);
-    const keeper = getSaleKeeperPDA();
-    const sale = await program.account.sale.fetch(salePDA);
-    const vault = await getAccount(connection, vaultPDA);
+    it('should properly initialize a new sale', async () => {
+      const reserve = await getAssociatedTokenAddress(token, payer.publicKey);
+      const settings = {
+        prices: [100, 200, 300].map((x) => new BN(x)),
+        amounts: [10, 20, 30].map((x) => new BN(x)),
+        start: new BN(0),
+        end: new BN(Date.now() / 1000 + 86400),
+        min: new BN(1),
+        max: new BN(100),
+      };
 
-    expect(sale.token).toEqual(token);
-    expect(sale.start).toEqual(settings.start);
-    expect(sale.end).toEqual(settings.end);
-    expect(sale.min.toString()).toEqual(settings.min.toString());
-    expect(sale.max.toString()).toEqual(settings.max.toString());
-    expect(sale.prices.toString()).toEqual(settings.prices.toString());
-    expect(sale.amounts.toString()).toEqual(settings.amounts.toString());
+      await program.methods
+        .initSale(settings)
+        .accounts({
+          token,
+          reserve,
+        })
+        .rpc();
 
-    expect(vault.owner).toEqual(keeper);
-    expect(vault.amount.toString()).toEqual(
-      settings.amounts.reduce((a, b) => a.add(b), new BN(0)).toString()
-    );
+      const salePDA = getSalePDA(token);
+      const vaultPDA = getSaleVaultPDA(token);
+      const keeper = getSaleKeeperPDA();
+      const sale = await program.account.sale.fetch(salePDA);
+      const vault = await getAccount(connection, vaultPDA);
+
+      expect(sale.token).toEqual(token);
+      expect(sale.start).not.toEqual(settings.start);
+      expect(sale.end).toEqual(settings.end);
+      expect(sale.min.toString()).toEqual(settings.min.toString());
+      expect(sale.max.toString()).toEqual(settings.max.toString());
+      expect(sale.prices.toString()).toEqual(settings.prices.toString());
+      expect(sale.amounts.toString()).toEqual(settings.amounts.toString());
+      expect(sale.sold.toString()).toEqual('0');
+
+      expect(vault.owner).toEqual(keeper);
+      expect(vault.amount.toString()).toEqual(
+        settings.amounts.reduce((a, b) => a.add(b), new BN(0)).toString()
+      );
+    });
+    // TODO: Create all the settings validations tests.
   });
 
-  // TODO: Create all the settings validations tests.
+  describe('Buy Tokens', () => {
+    let salePDA: PublicKey;
+    let vaultPDA: PublicKey;
+
+    const buyer = Keypair.generate();
+    let vault: Account;
+    let sale: Awaited<ReturnType<Portal['account']['sale']['fetch']>>;
+
+    beforeAll(async () => {
+      await provider.connection.requestAirdrop(
+        buyer.publicKey,
+        LAMPORTS_PER_SOL
+      );
+
+      salePDA = getSalePDA(token);
+      vaultPDA = getSaleVaultPDA(token);
+    });
+
+    beforeEach(async () => {
+      vault = await getAccount(provider.connection, vaultPDA);
+      sale = await program.account.sale.fetch(salePDA);
+    });
+
+    it('should buy some tokens', async () => {
+      const amount = new BN(10);
+      const balanceBefore = await provider.connection.getBalance(salePDA);
+
+      expect(sale.amounts[0].toNumber()).toBeGreaterThanOrEqual(
+        amount.toNumber()
+      );
+      expect(Number(vault.amount)).toBeGreaterThanOrEqual(amount.toNumber());
+
+      await program.methods.purchase(amount).accounts({ token }).rpc();
+
+      const saleAfter = await program.account.sale.fetch(salePDA);
+      const balanceAfter = await provider.connection.getBalance(salePDA);
+      const vaultAfter = await getAccount(provider.connection, vaultPDA);
+
+      expect(saleAfter.sold.toNumber()).toBe(sale.sold.add(amount).toNumber());
+      expect(Number(vaultAfter.amount)).toBe(
+        Number(vault.amount) - amount.toNumber()
+      );
+      expect(balanceAfter).toBeGreaterThan(balanceBefore);
+    });
+  });
 });
