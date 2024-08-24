@@ -2,10 +2,12 @@
 
 [features]
 resolution = true
+seeds = false
 skip-lint = false
 
 [programs.localnet]
 games = "HCZ5KdroZ7BQrmkZq1a72t2FVVQuxqVjkR4ZmAvi8CTr"
+presale = "9K1vk2VqZPW8g58Tq3N2VeMTXk4Ww9XsRqxSitLeT118"
 
 [registry]
 url = "https://api.apr.dev"
