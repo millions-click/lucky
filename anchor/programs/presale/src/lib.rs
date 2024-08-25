@@ -9,7 +9,7 @@ pub mod instructions;
 
 use instructions::*;
 
-declare_id!("9K1vk2VqZPW8g58Tq3N2VeMTXk4Ww9XsRqxSitLeT118");
+declare_id!("uXyqdxGC3btcfYEUt8j4Z7g65jKdxiGKiYjjB5eLand");
 
 #[program]
 pub mod presale {

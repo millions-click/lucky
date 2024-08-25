@@ -5,7 +5,7 @@
  * IDL can be found at `target/idl/presale.json`.
  */
 export type Presale = {
-  "address": "9K1vk2VqZPW8g58Tq3N2VeMTXk4Ww9XsRqxSitLeT118",
+  "address": "uXyqdxGC3btcfYEUt8j4Z7g65jKdxiGKiYjjB5eLand",
   "metadata": {
     "name": "presale",
     "version": "0.1.0",
