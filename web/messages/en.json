@@ -909,7 +909,7 @@
         "advice": "The Presale will only be available for a limited time, so make sure to join before it's too late.",
         "select": {
           "title": "What would you like to do?",
-          "options": "Understand the Presale, Check Tokenomics, Check Roadmap, I want to ask"
+          "options": "Go to Presale, Check Tokenomics, Check Roadmap, I want to ask"
         }
       },
       "assistant": { "text": "" }

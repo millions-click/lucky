@@ -18,6 +18,7 @@ import {
   SolanaModalProvider,
   GemsProvider,
   LuckyBagsProvider,
+  ActivePlayerProvider,
 } from '@/providers';
 import { getPresaleProgram, getPresaleProgramId } from '@luckyland/anchor';
 
@@ -50,7 +51,9 @@ export function SaleProvider({ children }: PropsWithChildren) {
         <ClusterProvider>
           <SolanaModalProvider>
             <Portal>
-              <GemsProvider>{children}</GemsProvider>
+              <GemsProvider>
+                <ActivePlayerProvider>{children}</ActivePlayerProvider>
+              </GemsProvider>
             </Portal>
           </SolanaModalProvider>
         </ClusterProvider>

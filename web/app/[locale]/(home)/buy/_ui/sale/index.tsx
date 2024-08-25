@@ -1,27 +1,28 @@
 'use client';
 
-import { useMemo } from 'react';
-import { Cluster, PublicKey } from '@solana/web3.js';
+import { useMemo, useState } from 'react';
+import { Cluster, LAMPORTS_PER_SOL, PublicKey } from '@solana/web3.js';
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
+import { IconCalculator } from '@tabler/icons-react';
+import { ProgressBar } from 'react-progressbar-fancy';
+import { useTranslations } from 'next-intl';
+import { useWallet } from '@solana/wallet-adapter-react';
 
 import type { Sale } from '@/providers/types.d';
-import { useSale, WalletButton } from '@/providers';
+import { usePlayer, useSale } from '@/providers';
 import {
   getBalanceOptions,
   getPresaleOptions,
-  getStorePackagesOptions,
   getTokenAccountsOptions,
   getTokenOptions,
 } from '@/queries';
 import { fromBN, toBN } from '@luckyland/anchor';
 import { Token } from '@utils/token';
-import { ProgressBar } from 'react-progressbar-fancy';
-import { ExplorerLink } from '@/components/cluster/cluster-ui';
 import { ellipsify } from '@/utils';
-import { useTranslations } from 'next-intl';
-import { useWallet } from '@solana/wallet-adapter-react';
-import { BagButton, BagDialog } from '@/ui/bag';
+import { BagButton } from '@/ui/bag';
+import { ExplorerLink } from '@/components/cluster/cluster-ui';
 import { useTransactionToast } from '@/components/ui/ui-layout';
+import { BalanceSol } from '@/components/account/account-ui';
 
 const { NEXT_PUBLIC_CA = 'LuckU1gf8CgKKbm7oxHyEn8dAo7kku5Z2ZCSt9x6wQQ' } =
   process.env;
@@ -48,7 +49,7 @@ function PresaleNotOpened({ start, name }: { start: number; name: string }) {
 }
 
 function usePurchase(token: Token) {
-  const { publicKey } = useWallet();
+  const { player } = usePlayer();
   const { cluster, sale } = useSale();
   const transactionToast = useTransactionToast();
   const client = useQueryClient();
@@ -66,8 +67,8 @@ function usePurchase(token: Token) {
     onSuccess: (tx) => {
       transactionToast(tx);
       const keys = [
-        getTokenAccountsOptions(publicKey, sale.provider.connection).queryKey,
-        getBalanceOptions(publicKey, sale.provider.connection).queryKey,
+        getTokenAccountsOptions(player, sale.provider.connection).queryKey,
+        getBalanceOptions(player, sale.provider.connection).queryKey,
         getPresaleOptions(sale, cluster.network as Cluster, token.mint)
           .queryKey,
       ];
@@ -86,8 +87,10 @@ function Presale({
   presale: { presale: Sale; pda: PublicKey };
   token: Token;
 }) {
+  const { balance } = usePlayer();
   const t = useTranslations('Presale');
   const purchase = usePurchase(token);
+  const [amount, setAmount] = useState<number>();
 
   const remaining = useMemo(() => {
     if (!presale.sold) return 0;
@@ -163,6 +166,13 @@ function Presale({
     };
   }, [presale, token, available]);
 
+  const setPurchasableAmount = () => {
+    if (!balance) return;
+    const amount = balance / LAMPORTS_PER_SOL / price;
+    const rounded = Math.floor(amount / min) * min;
+    setAmount(Math.min(rounded, max));
+  };
+
   return (
     <div className="flex flex-col items-center justify-center gap-6 w-full pt-6 pb-8">
       <h2 className="card-title justify-center text-3xl cursor-pointer">
@@ -206,17 +216,30 @@ function Presale({
             <label className="form-control w-full max-w-xs">
               <div className="label">
                 <span className="label-text">Amount of {token.symbol}</span>
-                <span className="label-text-alt">Price: {price}</span>
+                <button
+                  type="button"
+                  className="label-text-alt text-info"
+                  onClick={setPurchasableAmount}
+                >
+                  Balance: <BalanceSol balance={balance} />
+                </button>
               </div>
-              <input
-                type="number"
-                name="amount"
-                min={min}
-                step={min}
-                max={max ? max : undefined}
-                placeholder={`How much ${token.symbol} do you want?`}
-                className="input input-bordered w-full max-w-xs"
-              />
+              <label className="input input-bordered w-full max-w-xs flex items-center gap-2">
+                <input
+                  type="number"
+                  name="amount"
+                  value={amount}
+                  onChange={(e) => setAmount(Number(e.target.value))}
+                  min={min}
+                  step={min}
+                  max={max ? max : undefined}
+                  placeholder={`How much ${token.symbol} do you want?`}
+                  className="grow"
+                />
+                <button type="button" onClick={setPurchasableAmount}>
+                  <IconCalculator />
+                </button>
+              </label>
               <div className="label">
                 <span className="label-text-alt">
                   Min: {formatter.format(min)}
@@ -229,7 +252,11 @@ function Presale({
               </div>
             </label>
 
-            <button type="submit" className="btn btn-primary">
+            <button
+              type="submit"
+              className="btn btn-primary"
+              disabled={!amount || amount < min || amount > max}
+            >
               Buy
             </button>
           </form>
@@ -248,7 +275,7 @@ function Presale({
 }
 
 export function Sale() {
-  const { publicKey } = useWallet();
+  const { player } = usePlayer();
   const { sale, cluster } = useSale();
   const gemQuery = useQuery(getTokenOptions(gem, sale.provider.connection));
 
@@ -259,7 +286,7 @@ export function Sale() {
   return presale.data && gemQuery.data ? (
     <>
       <BagButton className="absolute bottom-2 right-2 max-sm:btn-sm btn-secondary" />
-      {publicKey && <Presale presale={presale.data} token={gemQuery.data} />}
+      {player && <Presale presale={presale.data} token={gemQuery.data} />}
     </>
   ) : (
     <span className="loading loading-ring w-full" />
