@@ -892,6 +892,12 @@
       "title": "Preventa Activa",
       "description": "La preventa de Luckyland está activa. Aprovecha esta oportunidad para obtener LUCK a un precio especial."
     },
+    "input": {
+      "amount": {
+        "label": "Cantidad de {symbol}",
+        "placeholder": "Cuanta {symbol} quieres?"
+      }
+    },
     "stage": "Fase {stage}",
     "state": {
       "planned": "Planificada",

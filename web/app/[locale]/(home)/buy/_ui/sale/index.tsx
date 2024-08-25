@@ -215,13 +215,15 @@ function Presale({
           >
             <label className="form-control w-full max-w-xs">
               <div className="label">
-                <span className="label-text">Amount of {token.symbol}</span>
+                <span className="label-text">
+                  {t('input.amount.label', { symbol: token.symbol })}
+                </span>
                 <button
                   type="button"
                   className="label-text-alt text-info"
                   onClick={setPurchasableAmount}
                 >
-                  Balance: <BalanceSol balance={balance} />
+                  Balance: <BalanceSol balance={balance} /> sol
                 </button>
               </div>
               <label className="input input-bordered w-full max-w-xs flex items-center gap-2">
@@ -233,7 +235,9 @@ function Presale({
                   min={min}
                   step={min}
                   max={max ? max : undefined}
-                  placeholder={`How much ${token.symbol} do you want?`}
+                  placeholder={t('input.amount.placeholder', {
+                    symbol: token.symbol,
+                  })}
                   className="grow"
                 />
                 <button type="button" onClick={setPurchasableAmount}>

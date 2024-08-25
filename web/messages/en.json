@@ -894,6 +894,12 @@
       "title": "Active Presale",
       "description": "The Luckyland presale is active. Take advantage of this opportunity to get LUCK at a special price."
     },
+    "input": {
+      "amount": {
+        "label": "Amount of {symbol}",
+        "placeholder": "How much {symbol} do you want?"
+      }
+    },
     "state": {
       "planned": "Planned",
       "open": "Open",
