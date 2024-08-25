@@ -1,12 +1,12 @@
-pub use crate::state::sale::{Sale, Settings};
+pub use crate::state::sale::{Sale, Settings, Decimal};
 use crate::constants::{SALE_SEED, VAULT_SEED, KEEPER_SEED};
 use anchor_lang::prelude::*;
 use anchor_lang::system_program;
 use anchor_spl::token::{Mint, Token, TokenAccount, Transfer};
 
-pub fn purchase(ctx: Context<StagePurchase>, amount:u64) -> Result<()> {
+pub fn purchase(ctx: Context<StagePurchase>, amount: u64) -> Result<()> {
     ctx.accounts.sale.sold += amount;
-    let price = ctx.accounts.sale.get_price(amount)?;
+    let price = ctx.accounts.sale.get_price(Decimal::new(amount, u32::from(ctx.accounts.token.decimals)))?;
 
     // Charge the buyer
     let cpi_context = CpiContext::new(

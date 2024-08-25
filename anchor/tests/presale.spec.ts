@@ -15,7 +15,8 @@ import {
   getSaleKeeperPDA,
   getSalePDA,
   getSaleVaultPDA,
-} from '../src/presale-exports';
+  toBN,
+} from '../src';
 
 const DECIMALS = 8;
 describe('presale', () => {
@@ -69,12 +70,12 @@ describe('presale', () => {
     it('should properly initialize a new sale', async () => {
       const reserve = await getAssociatedTokenAddress(token, payer.publicKey);
       const settings = {
-        prices: [100, 200, 300].map((x) => new BN(x)),
-        amounts: [10, 20, 30].map((x) => new BN(x)),
+        prices: [0.001, 0.002, 0.003].map((x) => toBN(x, 9)),
+        amounts: [10, 20, 30].map((x) => toBN(x, DECIMALS)),
         start: new BN(0),
         end: new BN(Date.now() / 1000 + 86400),
-        min: new BN(1),
-        max: new BN(100),
+        min: toBN(1, DECIMALS),
+        max: toBN(100, DECIMALS),
       };
 
       await program.methods
@@ -91,6 +92,7 @@ describe('presale', () => {
       const sale = await program.account.sale.fetch(salePDA);
       const vault = await getAccount(connection, vaultPDA);
 
+      expect(sale.owner).toEqual(payer.publicKey);
       expect(sale.token).toEqual(token);
       expect(sale.start).not.toEqual(settings.start);
       expect(sale.end).toEqual(settings.end);
@@ -132,7 +134,7 @@ describe('presale', () => {
     });
 
     it('should buy some tokens', async () => {
-      const amount = new BN(10);
+      const amount = toBN(10, DECIMALS);
       const balanceBefore = await provider.connection.getBalance(salePDA);
 
       expect(sale.amounts[0].toNumber()).toBeGreaterThanOrEqual(

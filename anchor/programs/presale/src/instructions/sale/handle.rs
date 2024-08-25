@@ -19,7 +19,7 @@ pub fn create(ctx: Context<InitializeSale>, settings: Settings) -> Result<()> {
 
     anchor_spl::token::transfer(cpi_ctx, amount)?;
 
-    ctx.accounts.sale.init(ctx.accounts.token.key(), settings)?;
+    ctx.accounts.sale.init(ctx.accounts.authority.key(), ctx.accounts.token.key(), settings)?;
     Ok(())
 }
 

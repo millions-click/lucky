@@ -16,7 +16,7 @@ export function getPresaleProgram(provider: AnchorProvider) {
 }
 
 // This is a helper function to get the program ID for the Presale program depending on the cluster.
-export function getPresaleProgramId(cluster: Cluster) {
+export function getPresaleProgramId(cluster?: Cluster) {
   switch (cluster) {
     case 'devnet':
     case 'testnet':

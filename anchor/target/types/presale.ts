@@ -407,6 +407,10 @@ export type Presale = {
         "kind": "struct",
         "fields": [
           {
+            "name": "owner",
+            "type": "pubkey"
+          },
+          {
             "name": "token",
             "type": "pubkey"
           },

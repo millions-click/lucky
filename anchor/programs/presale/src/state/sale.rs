@@ -17,6 +17,7 @@ pub struct Settings {
 #[account]
 #[derive(InitSpace)]
 pub struct Sale {
+    pub owner: Pubkey,
     pub token: Pubkey,
 
     #[max_len(MAX_STAGES as usize)]
@@ -36,7 +37,7 @@ pub struct Sale {
 
 
 impl Sale {
-    pub fn init(&mut self, token: Pubkey, settings: Settings) -> Result<()> {
+    pub fn init(&mut self, owner: Pubkey, token: Pubkey, settings: Settings) -> Result<()> {
         if settings.prices.len() != settings.amounts.len() {
             return Err(SaleErrorCode::SettingsLengthMismatch.into());
         }
@@ -71,6 +72,7 @@ impl Sale {
             return Err(SaleErrorCode::DatesTooClose.into());
         }
 
+        self.owner = owner;
         self.token = token;
         self.prices = settings.prices;
         self.amounts = settings.amounts;
@@ -96,22 +98,22 @@ impl Sale {
         }
     }
 
-    pub fn get_price(&self, amount: u64) -> Result<u64> {
+    pub fn get_price(&self, amount: Decimal) -> Result<u64> {
         self.is_open()?;
 
-        if amount < self.min {
+        if amount.value < self.min {
             return Err(SaleErrorCode::MinAmountNotMet.into());
         }
 
-        if self.max > 0 && amount > self.max {
+        if self.max > 0 && amount.value > self.max {
             return Err(SaleErrorCode::MaxAmountExceeded.into());
         }
 
         let stage = self.get_stage()?;
-        if amount > self.amounts[stage] {
+        if amount.value > self.amounts[stage] {
             Err(SaleErrorCode::InsufficientAmount.into())
         } else {
-            Ok(self.prices[stage] * amount)
+            Ok(self.prices[stage] * amount.reduce())
         }
     }
 
@@ -120,7 +122,7 @@ impl Sale {
         let stages = self.amounts.len();
 
         for i in 0..stages {
-            if available < self.amounts[i] {
+            if available <= self.amounts[i] {
                 return Ok(i);
             }
             available -= self.amounts[i];
@@ -128,4 +130,19 @@ impl Sale {
 
         Err(SaleErrorCode::AllStagesCompleted.into())
     }
+}
+
+
+#[derive(Clone, Copy)]
+pub struct Decimal {
+    value: u64,
+    decimals: u32,
+}
+
+impl Decimal {
+    pub fn new(value: u64, decimals: u32) -> Self {
+        Decimal { value, decimals }
+    }
+
+    fn reduce(&self) -> u64 { (self.value / 10u64.pow(self.decimals)) as u64 }
 }
