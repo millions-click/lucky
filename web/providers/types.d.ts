@@ -8,6 +8,7 @@ export * from './pass/pass.d';
 export * from './bag/bags/bags.d';
 
 export * from './portal/portal.d';
+export * from './sale/sale.d';
 export * from './treasure/gems/gems.d';
 export * from './escrow/bounties/bounties.d';
 export * from './escrow/traders/traders.d';

@@ -886,5 +886,29 @@
       },
       "assistant": { "text": "" }
     }
+  },
+  "Presale": {
+    "title": "Presale",
+    "stage": "Stage {stage}",
+    "state": {
+      "planned": "Planned",
+      "open": "Open",
+      "closed": "Closed"
+    },
+    "Planned": {
+      "title": "The presale has not started yet",
+      "description": "The {name} Presale will start on {date}."
+    },
+    "messages": {
+      "welcome": {
+        "text": "Wonderful to see you here! My name is Lucky, and I'm here to guide you through the Presale section of Luckyland.",
+        "advice": "The Presale will only be available for a limited time, so make sure to join before it's too late.",
+        "select": {
+          "title": "What would you like to do?",
+          "options": "Understand the Presale, Check Tokenomics, Check Roadmap, I want to ask"
+        }
+      },
+      "assistant": { "text": "" }
+    }
   }
 }

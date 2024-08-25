@@ -9,6 +9,7 @@ export * from './tokens';
 export * from './treasure';
 export * from './escrow';
 export * from './store';
+export * from './sale';
 
 export * from './pass';
 export * from './bag';

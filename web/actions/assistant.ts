@@ -15,12 +15,13 @@ const redis = new Redis({ url: UPSTASH_API_URL, token: UPSTASH_API_KEY });
 const { OPENAI_ASSISTANT_ID = '' } = process.env;
 if (!OPENAI_ASSISTANT_ID) throw new Error('Missing OPENAI_ASSISTANT_ID');
 
-export type AssistantScope = 'tokenomics' | 'roadmap' | 'glossary';
+export type AssistantScope = 'tokenomics' | 'roadmap' | 'glossary' | 'presale';
 
 const INSTRUCTIONS: Record<AssistantScope, string> = {
   tokenomics: 'Please address the user in the context of tokenomics.',
   roadmap: 'Please address the user in the context of the roadmap.',
   glossary: 'Please address the user in the context of the glossary.',
+  presale: 'Please address the user in the context of the presale.',
 };
 
 export async function askAssistant(

@@ -885,5 +885,29 @@
       },
       "assistant": { "text": "" }
     }
+  },
+  "Presale": {
+    "title": "Preventa",
+    "stage": "Fase {stage}",
+    "state": {
+      "planned": "Planificada",
+      "open": "En Progreso",
+      "closed": "Cerrada"
+    },
+    "Planned": {
+      "title": "La preventa aun no ha comenzado",
+      "description": "La Preventa de {name} comenzara el {date}."
+    },
+    "messages": {
+      "welcome": {
+        "text": "Maravilloso verte aquí! Mi nombre es Lucky, y estoy aquí para guiarte a través de la sección de Preventa de Luckyland.",
+        "advice": "La Preventa solo estará disponible por un tiempo limitado, así que asegúrate de unirte antes de que sea demasiado tarde.",
+        "select": {
+          "title": "¿Qué te gustaría hacer?",
+          "options": "Ir a la Preventa, Ver la economía del projecto, Ver la planificacion, Quiero preguntar"
+        }
+      },
+      "assistant": { "text": "" }
+    }
   }
 }
