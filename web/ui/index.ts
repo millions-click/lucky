@@ -1,4 +1,5 @@
 export * from './Logo';
+export * from './ActivePresale';
 export * from './assistant';
 
 export * from './CountdownBag';

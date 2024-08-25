@@ -890,6 +890,10 @@
   "Presale": {
     "title": "Presale",
     "stage": "Stage {stage}",
+    "Active": {
+      "title": "Active Presale",
+      "description": "The Luckyland presale is active. Take advantage of this opportunity to get LUCK at a special price."
+    },
     "state": {
       "planned": "Planned",
       "open": "Open",

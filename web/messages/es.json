@@ -888,6 +888,10 @@
   },
   "Presale": {
     "title": "Preventa",
+    "Active": {
+      "title": "Preventa Activa",
+      "description": "La preventa de Luckyland está activa. Aprovecha esta oportunidad para obtener LUCK a un precio especial."
+    },
     "stage": "Fase {stage}",
     "state": {
       "planned": "Planificada",
@@ -900,7 +904,7 @@
     },
     "messages": {
       "welcome": {
-        "text": "Maravilloso verte aquí! Mi nombre es Lucky, y estoy aquí para guiarte a través de la sección de Preventa de Luckyland.",
+        "text": "Maravilloso verte aquí! Mi nombre es Lucky, y voy a guiarte a través de la sección de Preventa de Luckyland.",
         "advice": "La Preventa solo estará disponible por un tiempo limitado, así que asegúrate de unirte antes de que sea demasiado tarde.",
         "select": {
           "title": "¿Qué te gustaría hacer?",
