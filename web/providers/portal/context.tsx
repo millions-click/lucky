@@ -13,6 +13,7 @@ import {
   SolanaProvider,
 } from '@/providers';
 import { getGamesProgram, getGamesProgramId } from '@luckyland/anchor';
+import { useQuery } from '@tanstack/react-query';
 
 const Context = createContext({} as PortalContext);
 
@@ -24,10 +25,23 @@ function Portal({ children }: PropsWithChildren) {
     () => getGamesProgramId(cluster.network as Cluster),
     [cluster]
   );
+
+  const getProgramAccount = useQuery({
+    queryKey: ['get-program-account', { cluster }],
+    queryFn: () => provider.connection.getParsedAccountInfo(portalId),
+  });
+  const state = useMemo(() => {
+    if (getProgramAccount.isLoading) return 'loading';
+    if (getProgramAccount.isError) return 'error';
+    if (getProgramAccount.data) return 'success';
+    return 'idle';
+  }, [getProgramAccount]);
+
   const portal = useMemo(() => getGamesProgram(provider), [provider]);
 
   const value = {
     cluster,
+    state,
 
     portalId,
     portal,

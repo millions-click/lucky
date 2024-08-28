@@ -4,8 +4,10 @@ import { getGamesProgram } from '@luckyland/anchor';
 import type { Cluster } from '@/providers';
 
 export type Portal = ReturnType<typeof getGamesProgram>;
+export type PortalProgramState = 'idle' | 'loading' | 'success' | 'error';
 export type PortalContext = {
   cluster: Cluster;
+  state: PortalProgramState;
 
   portalId: PublicKey;
   portal: Portal;
