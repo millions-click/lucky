@@ -20,10 +20,17 @@ export enum ClusterNetwork {
   Custom = 'custom',
 }
 
+const { NEXT_PUBLIC_API_KEY = '' } = process.env;
+
 // By default, we don't configure the mainnet-beta cluster
 // The endpoint provided by clusterApiUrl('mainnet-beta') does not allow access from the browser due to CORS restrictions
 // To use the mainnet-beta cluster, provide a custom endpoint
 export const defaultClusters: Cluster[] = [
+  {
+    name: 'mainnet-beta',
+    endpoint: `https://solana-mainnet.g.alchemy.com/v2/${NEXT_PUBLIC_API_KEY}`,
+    network: ClusterNetwork.Mainnet,
+  },
   {
     name: 'devnet',
     endpoint: clusterApiUrl('devnet'),

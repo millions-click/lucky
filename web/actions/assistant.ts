@@ -24,6 +24,8 @@ const INSTRUCTIONS: Record<AssistantScope, string> = {
   presale: 'Please address the user in the context of the presale.',
 };
 
+// TODO: Stream result to front so we can see the conversation in real-time and prevent incomplete responses from being thrown.\
+//     #ai-stream
 export async function askAssistant(
   content: string,
   thread: string,
