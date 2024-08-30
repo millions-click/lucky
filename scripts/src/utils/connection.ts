@@ -5,6 +5,7 @@ import {
   Keypair,
 } from '@solana/web3.js';
 import { AnchorProvider, Wallet } from '@coral-xyz/anchor';
+import * as process from 'node:process';
 
 export interface Cluster {
   name: string;
@@ -12,6 +13,7 @@ export interface Cluster {
   network?: ClusterNetwork;
   active?: boolean;
   asCluster: () => Web3Cluster;
+  headers?: Record<string, string>;
 }
 
 export enum ClusterNetwork {
@@ -20,6 +22,14 @@ export enum ClusterNetwork {
   Devnet = 'devnet',
   local = 'local',
 }
+
+const {
+  QUICKNODE_RPC_URL,
+  QUICKNODE_API_KEY,
+  QUICKNODE_REFERER,
+  QUICKNODE_DEVNET_RPC_URL,
+  QUICKNODE_DEVNET_API_KEY,
+} = process.env;
 
 export const CLUSTERS = Object.fromEntries(
   [
@@ -42,6 +52,22 @@ export const CLUSTERS = Object.fromEntries(
       endpoint: clusterApiUrl(ClusterNetwork.Mainnet),
       network: ClusterNetwork.Mainnet,
     },
+    {
+      name: 'lucky',
+      endpoint: `${QUICKNODE_RPC_URL}/${QUICKNODE_API_KEY}`,
+      network: ClusterNetwork.Mainnet,
+      headers: {
+        Referer: QUICKNODE_REFERER,
+      },
+    },
+    {
+      name: 'lucky-dev',
+      endpoint: `${QUICKNODE_DEVNET_RPC_URL}/${QUICKNODE_DEVNET_API_KEY}`,
+      network: ClusterNetwork.Devnet,
+      headers: {
+        Referer: QUICKNODE_REFERER,
+      },
+    },
   ].map((cluster) => [
     cluster.name,
     {
@@ -52,7 +78,13 @@ export const CLUSTERS = Object.fromEntries(
 ) as Record<ClusterNetwork, Cluster>;
 
 export function createConnection(cluster: Cluster) {
-  return new Connection(cluster.endpoint);
+  return new Connection(cluster.endpoint, {
+    httpHeaders: {
+      accept: 'application/json',
+      'content-type': 'application/json',
+      ...cluster.headers,
+    },
+  });
 }
 
 export function createProvider(connection: Connection, keypair: Keypair) {
