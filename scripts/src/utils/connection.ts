@@ -26,7 +26,6 @@ export enum ClusterNetwork {
 const {
   QUICKNODE_RPC_URL,
   QUICKNODE_API_KEY,
-  QUICKNODE_REFERER,
   QUICKNODE_DEVNET_RPC_URL,
   QUICKNODE_DEVNET_API_KEY,
 } = process.env;
@@ -56,17 +55,11 @@ export const CLUSTERS = Object.fromEntries(
       name: 'lucky',
       endpoint: `${QUICKNODE_RPC_URL}/${QUICKNODE_API_KEY}`,
       network: ClusterNetwork.Mainnet,
-      headers: {
-        Referer: QUICKNODE_REFERER,
-      },
     },
     {
       name: 'lucky-dev',
       endpoint: `${QUICKNODE_DEVNET_RPC_URL}/${QUICKNODE_DEVNET_API_KEY}`,
       network: ClusterNetwork.Devnet,
-      headers: {
-        Referer: QUICKNODE_REFERER,
-      },
     },
   ].map((cluster) => [
     cluster.name,
@@ -78,13 +71,7 @@ export const CLUSTERS = Object.fromEntries(
 ) as Record<ClusterNetwork, Cluster>;
 
 export function createConnection(cluster: Cluster) {
-  return new Connection(cluster.endpoint, {
-    httpHeaders: {
-      accept: 'application/json',
-      'content-type': 'application/json',
-      ...cluster.headers,
-    },
-  });
+  return new Connection(cluster.endpoint);
 }
 
 export function createProvider(connection: Connection, keypair: Keypair) {
