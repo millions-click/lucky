@@ -4,7 +4,7 @@ import OpenAI from 'openai';
 import { Redis } from '@upstash/redis';
 import { Threads } from 'openai/resources/beta';
 
-import type { Message } from '@/providers';
+import type { AssistantScope, Message } from '@/actions/types.d';
 
 const openai = new OpenAI();
 
@@ -15,9 +15,8 @@ const redis = new Redis({ url: UPSTASH_API_URL, token: UPSTASH_API_KEY });
 const { OPENAI_ASSISTANT_ID = '' } = process.env;
 if (!OPENAI_ASSISTANT_ID) throw new Error('Missing OPENAI_ASSISTANT_ID');
 
-export type AssistantScope = 'tokenomics' | 'roadmap' | 'glossary' | 'presale';
-
 const INSTRUCTIONS: Record<AssistantScope, string> = {
+  global: 'Please address the user any context of the project.',
   tokenomics: 'Please address the user in the context of tokenomics.',
   roadmap: 'Please address the user in the context of the roadmap.',
   glossary: 'Please address the user in the context of the glossary.',

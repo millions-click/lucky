@@ -888,6 +888,15 @@
   },
   "Presale": {
     "title": "Preventa",
+    "Stage": {
+      "badge": "Fase {stage}",
+      "progress": "Progreso",
+      "available": "${symbol} Disponible: {amount}",
+      "MaxReached": {
+        "title": "¡Felicidades! Tu bolsa esta llena de $LUCK por esta etapa. ¡Vuelve pronto!",
+        "advice": "La capacidad de tu billetera sera extendida para las próximas etapas."
+      }
+    },
     "Active": {
       "title": "Preventa Activa",
       "description": "La preventa de Luckyland está activa. Aprovecha esta oportunidad para obtener LUCK a un precio especial."
@@ -898,7 +907,6 @@
         "placeholder": "Cuanta {symbol} quieres?"
       }
     },
-    "stage": "Fase {stage}",
     "state": {
       "planned": "Planificada",
       "open": "En Progreso",

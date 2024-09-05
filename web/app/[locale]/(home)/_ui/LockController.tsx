@@ -12,7 +12,7 @@ import type {
   TurnsSession,
   AttemptSession,
   LuckyPassSession,
-} from '@/actions/types';
+} from '@/actions/types.d';
 import { CountdownProvider } from '@/providers';
 import { createLuckyPass, getTurns, playATurn } from '@/actions';
 

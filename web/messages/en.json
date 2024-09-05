@@ -889,7 +889,15 @@
   },
   "Presale": {
     "title": "Presale",
-    "stage": "Stage {stage}",
+    "Stage": {
+      "badge": "Stage {stage}",
+      "progress": "Progress",
+      "available": "Available ${symbol}: {amount}",
+      "MaxReached": {
+        "title": "Congratulations! Your bag is full of $LUCK for this stage. Come back soon!",
+        "advice": "Your wallet will be extended for the next stages."
+      }
+    },
     "Active": {
       "title": "Active Presale",
       "description": "The Luckyland presale is active. Take advantage of this opportunity to get LUCK at a special price."

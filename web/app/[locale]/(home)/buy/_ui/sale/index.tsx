@@ -1,12 +1,11 @@
 'use client';
 
 import { useMemo, useState } from 'react';
-import { Cluster, LAMPORTS_PER_SOL, PublicKey } from '@solana/web3.js';
+import { type Cluster, LAMPORTS_PER_SOL, PublicKey } from '@solana/web3.js';
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import { IconCalculator } from '@tabler/icons-react';
 import { ProgressBar } from 'react-progressbar-fancy';
 import { useTranslations } from 'next-intl';
-import { useWallet } from '@solana/wallet-adapter-react';
 
 import type { Sale } from '@/providers/types.d';
 import { usePlayer, useSale } from '@/providers';
@@ -17,12 +16,13 @@ import {
   getTokenOptions,
 } from '@/queries';
 import { fromBN, toBN } from '@luckyland/anchor';
-import { Token } from '@utils/token';
+import type { Token } from '@utils/token';
 import { ellipsify } from '@/utils';
 import { BagButton } from '@/ui/bag';
 import { ExplorerLink } from '@/components/cluster/cluster-ui';
 import { useTransactionToast } from '@/components/ui/ui-layout';
 import { BalanceSol } from '@/components/account/account-ui';
+import { loadLuckSale, registerLuckSale } from '@/actions';
 
 const { NEXT_PUBLIC_CA = 'LuckU1gf8CgKKbm7oxHyEn8dAo7kku5Z2ZCSt9x6wQQ' } =
   process.env;
@@ -48,24 +48,49 @@ function PresaleNotOpened({ start, name }: { start: number; name: string }) {
   );
 }
 
-function usePurchase(token: Token) {
+function usePurchase(token: Token, stageId: number) {
   const { player } = usePlayer();
   const { cluster, sale } = useSale();
   const transactionToast = useTransactionToast();
   const client = useQueryClient();
 
-  return useMutation({
-    mutationKey: ['presale', 'purchase', { cluster, token: token.mint }],
-    mutationFn: (value: number): Promise<string> => {
-      if (value < 0) throw new Error('Invalid value');
+  const sessionQuery = useQuery({
+    queryKey: ['presale', 'session', { token: token.mint, player }],
+    queryFn: () => {
+      if (!player) throw new Error('Invalid player');
+      return loadLuckSale(player.toString(), cluster.name);
+    },
+    enabled: Boolean(player),
+  });
 
-      return sale.methods
+  const stage = useMemo(() => {
+    if (!sessionQuery.data?.stages.length) return null;
+    return sessionQuery.data.stages.find((stage) => stage.id === stageId);
+  }, [sessionQuery.data]);
+
+  const purchase = useMutation({
+    mutationKey: ['presale', 'purchase', { cluster, token: token.mint }],
+    mutationFn: async (value: number) => {
+      if (value < 0) throw new Error('Invalid value');
+      if (!sessionQuery.data) throw new Error('Invalid session');
+      if (stage && stage.available < value)
+        throw new Error('Max limit exceeded');
+
+      const signature = await sale.methods
         .purchase(toBN(value, token.decimals))
         .accounts({ token: token.mint })
         .rpc();
+
+      return {
+        stage: stageId,
+        signature,
+        amount: value,
+        timestamp: Date.now(),
+      };
     },
-    onSuccess: (tx) => {
-      transactionToast(tx);
+    onSuccess: (newSale) => {
+      transactionToast(newSale.signature);
+
       const keys = [
         getTokenAccountsOptions(player, sale.provider.connection).queryKey,
         getBalanceOptions(player, sale.provider.connection).queryKey,
@@ -73,11 +98,29 @@ function usePurchase(token: Token) {
           .queryKey,
       ];
 
-      return Promise.all(
-        keys.map((queryKey) => client.invalidateQueries({ queryKey }))
-      );
+      if (!player) throw new Error('Invalid player'); // This should never happen.
+      return Promise.all([
+        registerLuckSale(player.toString(), cluster.name, newSale),
+        ...keys.map((queryKey) => client.invalidateQueries({ queryKey })),
+        sessionQuery.refetch(),
+      ]);
     },
   });
+
+  return { session: sessionQuery, stage, purchase };
+}
+
+function MaxStageReached() {
+  const t = useTranslations('Presale.Stage.MaxReached');
+
+  return (
+    <div className="p-8 rounded-box bg-yellow-600 text-black shadow-xl mb-4 max-w-sm space-y-2 text-center">
+      <h1 className="">{t('title')}</h1>
+      <p className="bg-secondary text-green-400 font-bold p-4 rounded-lg">
+        {t('advice')}
+      </p>
+    </div>
+  );
 }
 
 function Presale({
@@ -89,7 +132,6 @@ function Presale({
 }) {
   const { balance } = usePlayer();
   const t = useTranslations('Presale');
-  const purchase = usePurchase(token);
   const [amount, setAmount] = useState<number>();
 
   const remaining = useMemo(() => {
@@ -99,7 +141,7 @@ function Presale({
     return fromBN(total.sub(sold), token.decimals);
   }, [presale.sold, token.decimals]);
 
-  const { start, end, active } = useMemo(() => {
+  const { start, active } = useMemo(() => {
     if (!presale) return { start: 0, end: 0, active: false };
     const now = Date.now();
     const start = fromBN(presale.start) * 1000;
@@ -113,11 +155,11 @@ function Presale({
     };
   }, [presale.start]);
 
-  const { stage, available, state, stageTotal, price } = useMemo(() => {
+  const { stageId, available, state, stageTotal, price } = useMemo(() => {
     if (!start)
       return {
         state: 'loading',
-        stage: 0,
+        stageId: 0,
         available: 0,
         stageTotal: 0,
         price: 0,
@@ -127,7 +169,7 @@ function Presale({
     if (!presale || BigInt(presale.sold.toString()) === BigInt(0))
       return {
         state: active ? 'open' : 'planned',
-        stage: 1,
+        stageId: 1,
         available: stageTotal,
         stageTotal,
         price: fromBN(presale.prices[0], 9),
@@ -140,7 +182,7 @@ function Presale({
       if (total.lt(amounts[i]))
         return {
           state: 'open',
-          stage: i + 1,
+          stageId: i + 1,
           available: fromBN(amounts[i].sub(total), token.decimals),
           stageTotal: fromBN(amounts[i], token.decimals),
           price: fromBN(presale.prices[i], 9),
@@ -150,27 +192,41 @@ function Presale({
 
     return {
       state: 'closed',
-      stage: amounts.length + 1,
+      stageId: amounts.length + 1,
       available: 0,
       stageTotal: 0,
       price: 0,
     };
   }, [presale, token.decimals, start]);
+  const { stage, purchase } = usePurchase(token, stageId);
 
-  const { min, max } = useMemo(() => {
-    if (!presale || !token) return { min: 1, max: available };
+  const { min, max, tokens, maxPerStage } = useMemo(() => {
+    if (!presale || !token)
+      return { min: 1, max: available, tokens: NaN, maxPerStage: 1 };
+    const maxPerStage = fromBN(presale.max, token.decimals);
 
     return {
       min: fromBN(presale.min, token.decimals),
-      max: Math.min(fromBN(presale.max, token.decimals), available),
+      max: Math.min(
+        maxPerStage,
+        stage ? Math.min(stage.available, available) : available
+      ),
+      maxPerStage,
+      tokens: maxPerStage - (stage?.available ?? maxPerStage),
     };
-  }, [presale, token, available]);
+  }, [presale, token, available, stage?.available]);
 
   const setPurchasableAmount = () => {
     if (!balance) return;
-    const amount = balance / LAMPORTS_PER_SOL / price;
+    const amount =
+      (balance - 0.01 * LAMPORTS_PER_SOL) / LAMPORTS_PER_SOL / price;
     const rounded = Math.floor(amount / min) * min;
     setAmount(Math.min(rounded, max));
+  };
+
+  const setRoundedAmount = (amount: number) => {
+    const rounded = Math.floor(amount / min) * min;
+    setAmount(rounded);
   };
 
   return (
@@ -184,86 +240,110 @@ function Presale({
           {t(`state.${state}`)}
         </span>
         <span className="badge badge-info badge-lg capitalize">
-          {t('stage', { stage })}
+          {t('Stage.badge', { stage: stageId })}
         </span>
       </div>
 
       {state === 'open' ? (
         <>
           <div className="flex flex-col items-center gap-2 w-full max-w-md">
-            <span className="badge badge-success">
+            <span className="badge badge-success mb-2">
               {formatter.format(available)} {token.symbol}
             </span>
 
-            <ProgressBar score={(1 - available / stageTotal) * 100} hideText />
+            <span className="w-full tooltip" data-tip={t('Stage.progress')}>
+              <ProgressBar
+                score={(1 - available / stageTotal) * 100}
+                hideText
+              />
+            </span>
+
+            <span
+              className="w-full tooltip"
+              data-tip={t('Stage.available', {
+                amount: formatter.format(stage?.available ?? maxPerStage),
+                symbol: token.symbol,
+              })}
+            >
+              <ProgressBar
+                score={(tokens / maxPerStage) * 100}
+                hideText
+                progressColor="green"
+              />
+            </span>
           </div>
 
-          <form
-            className="flex flex-col w-full max-w-md items-center justify-center"
-            action={async (formData) => {
-              const amount = Number(formData.get('amount'));
-              if (amount < min || (max > 0 && amount > max)) {
-                alert('Invalid amount');
-                return;
-              }
-              try {
-                await purchase.mutateAsync(amount);
-              } catch (e) {
-                console.error(e);
-              }
-            }}
-          >
-            <label className="form-control w-full max-w-xs">
-              <div className="label">
-                <span className="label-text">
-                  {t('input.amount.label', { symbol: token.symbol })}
-                </span>
-                <button
-                  type="button"
-                  className="label-text-alt text-info"
-                  onClick={setPurchasableAmount}
-                >
-                  Balance: <BalanceSol balance={balance} /> sol
-                </button>
-              </div>
-              <label className="input input-bordered w-full max-w-xs flex items-center gap-2">
-                <input
-                  type="number"
-                  name="amount"
-                  value={amount}
-                  onChange={(e) => setAmount(Number(e.target.value))}
-                  min={min}
-                  step={min}
-                  max={max ? max : undefined}
-                  placeholder={t('input.amount.placeholder', {
-                    symbol: token.symbol,
-                  })}
-                  className="grow"
-                />
-                <button type="button" onClick={setPurchasableAmount}>
-                  <IconCalculator />
-                </button>
-              </label>
-              <div className="label">
-                <span className="label-text-alt">
-                  Min: {formatter.format(min)}
-                </span>
-                {max > 0 && (
-                  <span className="label-text-alt">
-                    Max: {formatter.format(max)}
-                  </span>
-                )}
-              </div>
-            </label>
-
-            <button
-              type="submit"
-              className="btn btn-primary"
-              disabled={!amount || amount < min || amount > max}
+          {max < min ? (
+            <MaxStageReached />
+          ) : (
+            <form
+              className="flex flex-col w-full max-w-md items-center justify-center"
+              action={async (formData) => {
+                const amount = Number(formData.get('amount'));
+                if (amount < min || (max > 0 && amount > max)) {
+                  alert('Invalid amount');
+                  return;
+                }
+                try {
+                  await purchase.mutateAsync(amount);
+                } catch (e) {
+                  console.error(e);
+                }
+              }}
             >
-              Buy
-            </button>
-          </form>
+              <label className="form-control w-full max-w-xs">
+                <div className="label">
+                  <span className="label-text">
+                    {t('input.amount.label', { symbol: token.symbol })}
+                  </span>
+                  <button
+                    type="button"
+                    className="label-text-alt text-info"
+                    onClick={setPurchasableAmount}
+                  >
+                    Balance: <BalanceSol balance={balance} /> sol
+                  </button>
+                </div>
+                <label className="input input-bordered w-full max-w-xs flex items-center gap-2">
+                  <input
+                    type="number"
+                    name="amount"
+                    value={amount}
+                    onChange={(e) => setAmount(Number(e.target.value))}
+                    min={min}
+                    step={min}
+                    max={max ? max : undefined}
+                    onBlur={(e) => setRoundedAmount(Number(e.target.value))}
+                    placeholder={t('input.amount.placeholder', {
+                      symbol: token.symbol,
+                    })}
+                    className="grow"
+                  />
+                  <button type="button" onClick={setPurchasableAmount}>
+                    <IconCalculator />
+                  </button>
+                </label>
+                <div className="label">
+                  <span className="label-text-alt">
+                    Min: {formatter.format(min)}
+                  </span>
+                  {max > 0 && (
+                    <span className="label-text-alt">
+                      Max: {formatter.format(max)}
+                    </span>
+                  )}
+                </div>
+              </label>
+
+              <button
+                type="submit"
+                className="btn btn-primary"
+                disabled={!amount || amount < min || amount > max}
+              >
+                Buy
+              </button>
+            </form>
+          )}
         </>
       ) : (
         <PresaleNotOpened start={start} name={token.name} />

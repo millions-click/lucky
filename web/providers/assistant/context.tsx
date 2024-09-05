@@ -11,16 +11,11 @@ import {
 import { atomWithStorage } from 'jotai/utils';
 import { atom, useAtomValue, useSetAtom } from 'jotai/index';
 
-import type { AssistantContext, Message } from './assistant.d';
+import type { AssistantContext, Message, AssistantScope } from './assistant.d';
 import { Provider as MessagesProvider } from '../messages/context';
 
 import { useMessages } from '@/providers';
-import {
-  type AssistantScope,
-  createThread,
-  askAssistant,
-  loadThread,
-} from '@/actions/assistant';
+import { createThread, askAssistant, loadThread } from '@/actions/assistant';
 import { useTranslations } from 'next-intl';
 
 const threadAtom = atomWithStorage<string | undefined>(
