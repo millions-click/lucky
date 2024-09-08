@@ -297,6 +297,11 @@
       "error": "Lo siento, algo salió mal. Por favor, inténtalo de nuevo más tarde."
     }
   },
+  "UnderConstruction": {
+    "title": "Página en Construcción",
+    "description": "¡Estamos trabajando en ello! Vuelve pronto para ver las actualizaciones.",
+    "back": "Regresar al Portal"
+  },
   "General": {
     "bounty": {
       "title": "Recompensa",

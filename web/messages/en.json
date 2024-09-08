@@ -298,6 +298,11 @@
       "error": "I'm sorry, something went wrong. Please try again later."
     }
   },
+  "UnderConstruction": {
+    "title": "Under Construction",
+    "description": "This section is under construction. Please come back later.",
+    "back": "Back to Portal"
+  },
   "General": {
     "bounty": {
       "title": "Bounty",

@@ -24,7 +24,7 @@ export function NavLink({
       href={href}
       aria-label={title}
       className={[
-        'card bg-base-100 image-full col-span-6 2xl:col-span-4 overflow-hidden group cursor-pointer transition-transform',
+        'card bg-base-100 image-full col-span-6 2xl:col-span-4 overflow-hidden group cursor-pointer transition-transform max-sm:card-compact',
         isActive ? 'shadow-glow-add' : 'shadow-xl hover:scale-105',
       ].join(' ')}
     >
@@ -32,7 +32,7 @@ export function NavLink({
         <Image src={image} alt={title} fill={true} />
       </figure>
       <div
-        className={`card-body justify-center items-center ${
+        className={`card-body sm:justify-center sm:items-center ${
           isActive ? '' : 'md:invisible group-hover:visible'
         }`}
       >
