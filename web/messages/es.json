@@ -285,6 +285,53 @@
         "store": "Tienda de Lucky",
         "realms": "Reinos",
         "socials": "Redes sociales"
+      },
+      "pages": {
+        "roadmap": {
+          "title": "Hoja de Ruta",
+          "label": "Revisa la hoja de ruta del proyecto",
+          "content": "La hoja de ruta es una representación visual de los objetivos y hitos de nuestro proyecto. Te ayuda a entender el progreso del proyecto y los planes futuros."
+        },
+        "leaderboard": {
+          "title": "Tabla de clasificación",
+          "label": "Revisa los mejores jugadores",
+          "content": "La tabla de clasificación muestra los mejores jugadores del proyecto. Es un lugar para más premios y diversión."
+        },
+        "buy": {
+          "title": "Comprar",
+          "label": "Obtén tus LUCK",
+          "content": "La sección de Comprar permite a los usuarios comprar tokens LUCK. Te ayuda a comenzar con el proyecto y unirte a la comunidad."
+        },
+        "tokenomics": {
+          "title": "Economía de Token",
+          "label": "Aprende sobre la economía de tokens del proyecto",
+          "content": "La economía de tokens es el estudio de la economía de tokens del proyecto. Incluye la distribución del token, los casos de uso y la oferta. Comprender la economía de tokens puede ayudarte a tomar decisiones informadas sobre el proyecto."
+        },
+        "about": {
+          "title": "Nosotros",
+          "label": "Aprende más sobre el proyecto",
+          "content": "La sección Nosotros proporciona información sobre el proyecto, el equipo y su visión. Te ayuda a entender el propósito y los objetivos del proyecto."
+        },
+        "whitepaper": {
+          "title": "Libro Blanco",
+          "label": "Leer el libro blanco del proyecto",
+          "content": "La sección del Libro Blanco proporciona información detallada sobre el proyecto, su tecnología y su economía de tokens. Te ayuda a entender las características y beneficios del proyecto."
+        },
+        "faq": {
+          "title": "Preguntas Frecuentes",
+          "label": "Revisa las preguntas Frecuentes",
+          "content": "La sección de Preguntas Frecuentes proporciona respuestas a preguntas comunes sobre el proyecto. Te ayuda a entender las características, beneficios y cómo usarlos."
+        },
+        "feedback": {
+          "title": "Comentarios",
+          "label": "Enviar comentarios",
+          "content": "La sección de Comentarios te permite compartir tus pensamientos y sugerencias sobre el proyecto. Nos ayuda a mejorar el proyecto y satisfacer tus necesidades."
+        },
+        "login": {
+          "title": "Acceso",
+          "label": "Accede a tu cuenta",
+          "content": "La sección de Acceso permite a los usuarios acceder a su cuenta y usar el proyecto. Te ayuda a administrar tu cuenta y participar en el proyecto."
+        }
       }
     },
     "Leaderboard": {

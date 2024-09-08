@@ -286,6 +286,53 @@
         "store": "Lucky Store",
         "realms": "Realms",
         "socials": "Socials"
+      },
+      "pages": {
+        "roadmap": {
+          "title": "Roadmap",
+          "label": "Check the project's roadmap",
+          "content": "The roadmap is a visual representation of our project's goals and milestones. It helps you understand the project's progress and future plans."
+        },
+        "leaderboard": {
+          "title": "Leaderboard",
+          "label": "Check the top players",
+          "content": "The leaderboard shows the top players in the project. Its a place for more prizes and fun."
+        },
+        "buy": {
+          "title": "Buy",
+          "label": "Get your LUCK",
+          "content": "The Buy section allows users to purchase LUCK tokens. It helps you get started with the project and join the community."
+        },
+        "tokenomics": {
+          "title": "Tokenomics",
+          "label": "Learn about the project's tokenomics",
+          "content": "Tokenomics is the study of the project's token economy. It includes the token's distribution, use cases, and supply. Understanding tokenomics can help you make informed decisions about the project."
+        },
+        "about": {
+          "title": "About",
+          "label": "Learn more about the project",
+          "content": "The About section provides information about the project, its team, and its vision. It helps you understand the project's purpose and goals."
+        },
+        "whitepaper": {
+          "title": "Whitepaper",
+          "label": "Read the project's whitepaper",
+          "content": "The Whitepaper section provides detailed information about the project, its technology, and its tokenomics. It helps you understand the project's features and benefits."
+        },
+        "faq": {
+          "title": "FAQ",
+          "label": "Frequently Asked Questions",
+          "content": "The FAQ section provides answers to common questions about the project. It helps you understand the project's features, benefits, and how to use them."
+        },
+        "feedback": {
+          "title": "Feedback",
+          "label": "Send feedback",
+          "content": "The Feedback section allows you to share your thoughts and suggestions about the project. It helps us improve the project and meet your needs."
+        },
+        "login": {
+          "title": "Login",
+          "label": "Access your account",
+          "content": "The Login section allows users to access their account and use the project. It helps you manage your account and participate in the project."
+        }
       }
     },
     "Leaderboard": {

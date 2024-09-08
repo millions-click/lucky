@@ -1,8 +1,13 @@
 import { useTranslations } from 'next-intl';
 import Link from 'next/link';
+import { unstable_setRequestLocale } from 'next-intl/server';
+
 import { IconArrowLeft } from '@tabler/icons-react';
 
-export function UnderConstruction() {
+import type { Params } from '@/app/[locale]/locale';
+
+export function UnderConstruction({ params: { locale } }: Params) {
+  unstable_setRequestLocale(locale);
   const t = useTranslations('UnderConstruction');
 
   const bg = "bg-[url('/assets/images/bg/under_construction.png')]";
