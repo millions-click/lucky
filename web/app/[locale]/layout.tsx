@@ -1,6 +1,7 @@
 import { PropsWithChildren } from 'react';
 import type { Viewport } from 'next';
 import { Analytics } from '@vercel/analytics/next';
+import { SpeedInsights } from '@vercel/speed-insights/next';
 import { getTranslations, unstable_setRequestLocale } from 'next-intl/server';
 
 import '../global.css';
@@ -62,6 +63,7 @@ export default async function LocaleLayout({
       <body>
         {children}
         <Analytics />
+        <SpeedInsights />
       </body>
     </html>
   );

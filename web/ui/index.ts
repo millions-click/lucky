@@ -1,4 +1,5 @@
 export * from './Logo';
+export * from './AvailableTreasures';
 export * from './ActivePresale';
 export * from './assistant';
 
