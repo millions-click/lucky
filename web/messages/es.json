@@ -300,7 +300,7 @@
   "General": {
     "bounty": {
       "title": "Recompensa",
-      "tooltip": "Tesoros disponibles en Luckyland",
+      "tooltip": "Tesoros disponibles",
       "description": "¡Gana tesoros venciendo las probabilidades!"
     }
   },

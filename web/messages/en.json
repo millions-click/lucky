@@ -301,7 +301,7 @@
   "General": {
     "bounty": {
       "title": "Bounty",
-      "tooltip": "Available treasures in Luckyland",
+      "tooltip": "Available treasures",
       "description": "Earn treasures beating the odds!"
     }
   },

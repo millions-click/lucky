@@ -4,9 +4,9 @@ import { useMemo } from 'react';
 
 import type { TokenAccount } from '@/hooks';
 import { useBounties, useGems } from '@/providers';
-import { MoneyBagIcon } from '@/ui/icons';
 import { formatAmount } from '@luckyland/anchor';
 import { useTranslations } from 'next-intl';
+import { Badge } from '@/ui/bag';
 
 function useTreasureBalance() {
   const { getGem } = useGems();
@@ -42,19 +42,18 @@ export function AvailableTreasures() {
 
   return (
     <div
-      className="tooltip tooltip-bottom tooltip-primary"
+      className="tooltip tooltip-left tooltip-primary"
       data-tip={t('tooltip')}
     >
-      <div className="btn btn-ghost btn-sm px-0 rounded-full">
-        <MoneyBagIcon className="z-10 h-8 w-8 self-center" aria-hidden />
-        <span className="div bg-neutral text-white border-2 border-primary animate-glow rounded-xl px-2 py-1 ml-[-16px]">
+      <Badge icon="gem" size={'sm'}>
+        <span className="w-full">
           {total ? (
             '$ ' + formatAmount(total)
           ) : (
             <span className="loading loading-ring loading-xs" />
           )}
         </span>{' '}
-      </div>
+      </Badge>
     </div>
   );
 }
