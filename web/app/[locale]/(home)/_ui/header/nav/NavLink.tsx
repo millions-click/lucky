@@ -9,7 +9,6 @@ export function NavLink({
   title,
   image,
   content,
-  children,
 }: {
   href: string;
   title: string;
@@ -21,25 +20,25 @@ export function NavLink({
   const isActive = pathname === href;
 
   return (
-    <li className="card bg-base-100 image-full col-span-6 2xl:col-span-4 shadow-xl overflow-hidden group cursor-pointer transition-transform hover:scale-105">
+    <Link
+      href={href}
+      aria-label={title}
+      className={[
+        'card bg-base-100 image-full col-span-6 2xl:col-span-4 overflow-hidden group cursor-pointer transition-transform',
+        isActive ? 'shadow-glow-add' : 'shadow-xl hover:scale-105',
+      ].join(' ')}
+    >
       <figure className="w-full">
         <Image src={image} alt={title} fill={true} />
       </figure>
-      <div className="card-body md:invisible group-hover:visible">
+      <div
+        className={`card-body justify-center items-center ${
+          isActive ? '' : 'md:invisible group-hover:visible'
+        }`}
+      >
         <h2 className="card-title md:text-4xl tracking-tight">{title}</h2>
-        <p className="whitespace-pre-wrap max-md:text-xs">{content}</p>
-        <div className="card-actions justify-end">
-          <Link
-            href={href}
-            className={[
-              isActive ? 'btn-primary font-bold' : 'font-light',
-              'btn max-md:w-full md:btn-wide',
-            ].join(' ')}
-          >
-            <div className="md:mx-4 lg:mx-6">{children}</div>
-          </Link>
-        </div>
+        <span className="whitespace-pre-wrap max-md:text-xs">{content}</span>
       </div>
-    </li>
+    </Link>
   );
 }

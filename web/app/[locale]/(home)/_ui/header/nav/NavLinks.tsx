@@ -60,11 +60,11 @@ const items = [
   },
 ] as Array<LinkItem>;
 
-export const NavLinks = async () => {
+export const NavLinks = ({ locale }: { locale: string }) => {
   return (
     <>
-      {items.map((item, i) => (
-        <NavLink key={i} {...item}>
+      {items.map(({ href, ...item }, i) => (
+        <NavLink key={i} {...item} href={`/${locale}${href}`}>
           {item.label}
         </NavLink>
       ))}

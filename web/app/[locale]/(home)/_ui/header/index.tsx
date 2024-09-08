@@ -11,7 +11,7 @@ import {
   BountiesProvider,
 } from '@/providers';
 
-export async function Header() {
+export async function Header({ locale }: { locale: string }) {
   const messages = await getMessages();
 
   return (
@@ -21,7 +21,7 @@ export async function Header() {
           <WinnersWithPortalProvider>
             <GemsProvider>
               <BountiesProvider>
-                <Nav />
+                <Nav locale={locale} />
                 <AvailableTreasures />
               </BountiesProvider>
             </GemsProvider>
