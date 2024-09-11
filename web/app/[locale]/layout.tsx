@@ -2,6 +2,7 @@ import { PropsWithChildren } from 'react';
 import type { Viewport } from 'next';
 import { Analytics } from '@vercel/analytics/next';
 import { SpeedInsights } from '@vercel/speed-insights/next';
+import { GoogleAnalytics } from '@next/third-parties/google';
 import { getTranslations, unstable_setRequestLocale } from 'next-intl/server';
 
 import '../global.css';
@@ -64,6 +65,7 @@ export default async function LocaleLayout({
         {children}
         <Analytics />
         <SpeedInsights />
+        {process.env.GA_ID && <GoogleAnalytics gaId={process.env.GA_ID} />}
       </body>
     </html>
   );
