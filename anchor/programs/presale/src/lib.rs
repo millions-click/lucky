@@ -23,4 +23,8 @@ pub mod presale {
     pub fn purchase(ctx: Context<StagePurchase>, amount: u64) -> Result<()> {
         sale::stage::purchase(ctx, amount)
     }
+
+    pub fn withdraw(ctx: Context<SaleWithdraw>, amount: u64) -> Result<()> {
+        sale::funds::withdraw(&ctx, amount)
+    }
 }

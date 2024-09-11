@@ -316,6 +316,67 @@ export type Presale = {
           "type": "u64"
         }
       ]
+    },
+    {
+      "name": "withdraw",
+      "discriminator": [
+        183,
+        18,
+        70,
+        156,
+        148,
+        109,
+        161,
+        34
+      ],
+      "accounts": [
+        {
+          "name": "sale",
+          "writable": true,
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  83,
+                  65,
+                  76,
+                  69
+                ]
+              },
+              {
+                "kind": "account",
+                "path": "token"
+              }
+            ]
+          }
+        },
+        {
+          "name": "owner",
+          "writable": true,
+          "signer": true,
+          "relations": [
+            "sale"
+          ]
+        },
+        {
+          "name": "token"
+        },
+        {
+          "name": "systemProgram",
+          "address": "11111111111111111111111111111111"
+        },
+        {
+          "name": "rent",
+          "address": "SysvarRent111111111111111111111111111111111"
+        }
+      ],
+      "args": [
+        {
+          "name": "amount",
+          "type": "u64"
+        }
+      ]
     }
   ],
   "accounts": [
@@ -356,48 +417,58 @@ export type Presale = {
     },
     {
       "code": 6004,
+      "name": "insufficientBalance",
+      "msg": "Insufficient balance."
+    },
+    {
+      "code": 6005,
       "name": "minAmountNotMet",
       "msg": "Minimum amount not met."
     },
     {
-      "code": 6005,
+      "code": 6006,
       "name": "maxAmountExceeded",
       "msg": "Maximum amount exceeded."
     },
     {
-      "code": 6006,
+      "code": 6007,
       "name": "settingsLengthMismatch",
       "msg": "Prices and amounts must be the same length."
     },
     {
-      "code": 6007,
+      "code": 6008,
       "name": "pricesEmpty",
       "msg": "Prices must not be empty."
     },
     {
-      "code": 6008,
+      "code": 6009,
       "name": "amountsOutOfRange",
       "msg": "Amounts out of range."
     },
     {
-      "code": 6009,
+      "code": 6010,
       "name": "minAmountZero",
       "msg": "Min amount must be greater than 0."
     },
     {
-      "code": 6010,
+      "code": 6011,
       "name": "minAmountGreaterThanMax",
       "msg": "Min amount must be less than max amount."
     },
     {
-      "code": 6011,
+      "code": 6012,
       "name": "invalidDate",
       "msg": "Invalid date."
     },
     {
-      "code": 6012,
+      "code": 6013,
       "name": "datesTooClose",
       "msg": "Dates are too close."
+    },
+    {
+      "code": 6014,
+      "name": "invalidAuthority",
+      "msg": "Invalid authority."
     }
   ],
   "types": [

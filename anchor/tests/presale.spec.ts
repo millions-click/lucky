@@ -155,4 +155,28 @@ describe('presale', () => {
       expect(balanceAfter).toBeGreaterThan(balanceBefore);
     });
   });
+
+  describe('Withdraw', () => {
+    it('Should withdraw all available balance from the sale', async () => {
+      const sale = getSalePDA(token);
+      const saleBalanceBeforeWithdraw = await connection.getBalance(sale);
+      const receiverBalanceBeforeWithdraw = await connection.getBalance(
+        payer.publicKey
+      );
+      const rent = await connection.getMinimumBalanceForRentExemption(312);
+
+      expect(saleBalanceBeforeWithdraw).toBeGreaterThan(rent);
+
+      await program.methods.withdraw(new BN(0)).accounts({ token }).rpc();
+
+      const saleBalance = await connection.getBalance(sale);
+      const receiverBalance = await connection.getBalance(payer.publicKey);
+
+      const amount = saleBalanceBeforeWithdraw - rent;
+      expect(saleBalance).toEqual(rent);
+
+      const expectedReceiverBalance = receiverBalanceBeforeWithdraw + amount;
+      expect(expectedReceiverBalance / receiverBalance).toBeCloseTo(1);
+    });
+  });
 });
