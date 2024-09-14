@@ -122,10 +122,28 @@ export function usePresaleProgramAccount({ account }: { account: PublicKey }) {
     },
   });
 
+  const withdraw = useMutation({
+    mutationKey: ['presale', 'withdraw', { cluster, account }],
+    mutationFn: (lamports: bigint): Promise<string> => {
+      if (lamports < 0) throw new Error('Invalid value');
+      if (!tokenQuery.data) throw new Error('Token not found');
+
+      return program.methods
+        .withdraw(new BN(lamports.toString()))
+        .accounts({ token: tokenQuery.data.mint })
+        .rpc();
+    },
+    onSuccess: (tx) => {
+      transactionToast(tx);
+      return accountQuery.refetch();
+    },
+  });
+
   return {
     accountQuery,
     tokenQuery,
     closeMutation,
     purchase,
+    withdraw,
   };
 }

@@ -285,6 +285,53 @@
         "store": "Tienda de Lucky",
         "realms": "Reinos",
         "socials": "Redes sociales"
+      },
+      "pages": {
+        "roadmap": {
+          "title": "Hoja de Ruta",
+          "label": "Revisa la hoja de ruta del proyecto",
+          "content": "La hoja de ruta es una representación visual de los objetivos y hitos de nuestro proyecto. Te ayuda a entender el progreso del proyecto y los planes futuros."
+        },
+        "leaderboard": {
+          "title": "Tabla de clasificación",
+          "label": "Revisa los mejores jugadores",
+          "content": "La tabla de clasificación muestra los mejores jugadores del proyecto. Es un lugar para más premios y diversión."
+        },
+        "buy": {
+          "title": "Comprar",
+          "label": "Obtén tus LUCK",
+          "content": "La sección de Comprar permite a los usuarios comprar tokens LUCK. Te ayuda a comenzar con el proyecto y unirte a la comunidad."
+        },
+        "tokenomics": {
+          "title": "Economía de Token",
+          "label": "Aprende sobre la economía de tokens del proyecto",
+          "content": "La economía de tokens es el estudio de la economía de tokens del proyecto. Incluye la distribución del token, los casos de uso y la oferta. Comprender la economía de tokens puede ayudarte a tomar decisiones informadas sobre el proyecto."
+        },
+        "about": {
+          "title": "Nosotros",
+          "label": "Aprende más sobre el proyecto",
+          "content": "La sección Nosotros proporciona información sobre el proyecto, el equipo y su visión. Te ayuda a entender el propósito y los objetivos del proyecto."
+        },
+        "whitepaper": {
+          "title": "Libro Blanco",
+          "label": "Leer el libro blanco del proyecto",
+          "content": "La sección del Libro Blanco proporciona información detallada sobre el proyecto, su tecnología y su economía de tokens. Te ayuda a entender las características y beneficios del proyecto."
+        },
+        "faq": {
+          "title": "Preguntas Frecuentes",
+          "label": "Revisa las preguntas Frecuentes",
+          "content": "La sección de Preguntas Frecuentes proporciona respuestas a preguntas comunes sobre el proyecto. Te ayuda a entender las características, beneficios y cómo usarlos."
+        },
+        "feedback": {
+          "title": "Comentarios",
+          "label": "Enviar comentarios",
+          "content": "La sección de Comentarios te permite compartir tus pensamientos y sugerencias sobre el proyecto. Nos ayuda a mejorar el proyecto y satisfacer tus necesidades."
+        },
+        "login": {
+          "title": "Acceso",
+          "label": "Accede a tu cuenta",
+          "content": "La sección de Acceso permite a los usuarios acceder a su cuenta y usar el proyecto. Te ayuda a administrar tu cuenta y participar en el proyecto."
+        }
       }
     },
     "Leaderboard": {
@@ -297,10 +344,15 @@
       "error": "Lo siento, algo salió mal. Por favor, inténtalo de nuevo más tarde."
     }
   },
+  "UnderConstruction": {
+    "title": "Página en Construcción",
+    "description": "¡Estamos trabajando en ello! Vuelve pronto para ver las actualizaciones.",
+    "back": "Regresar al Portal"
+  },
   "General": {
     "bounty": {
       "title": "Recompensa",
-      "tooltip": "Tesoros disponibles en Luckyland",
+      "tooltip": "Tesoros disponibles",
       "description": "¡Gana tesoros venciendo las probabilidades!"
     }
   },
@@ -888,6 +940,15 @@
   },
   "Presale": {
     "title": "Preventa",
+    "Stage": {
+      "badge": "Fase {stage}",
+      "progress": "Progreso",
+      "available": "${symbol} Disponible: {amount}",
+      "MaxReached": {
+        "title": "¡Felicidades! Tu bolsa esta llena de $LUCK por esta etapa. ¡Vuelve pronto!",
+        "advice": "La capacidad de tu billetera sera extendida para las próximas etapas."
+      }
+    },
     "Active": {
       "title": "Preventa Activa",
       "description": "La preventa de Luckyland está activa. Aprovecha esta oportunidad para obtener LUCK a un precio especial."
@@ -898,7 +959,6 @@
         "placeholder": "Cuanta {symbol} quieres?"
       }
     },
-    "stage": "Fase {stage}",
     "state": {
       "planned": "Planificada",
       "open": "En Progreso",
@@ -911,10 +971,10 @@
     "messages": {
       "welcome": {
         "text": "Maravilloso verte aquí! Mi nombre es Lucky, y voy a guiarte a través de la sección de Preventa de Luckyland.",
-        "advice": "La Preventa solo estará disponible por un tiempo limitado, así que asegúrate de unirte antes de que sea demasiado tarde.",
+        "advice": "El acceso exclusivo es limitado, así que asegúrate de unirte antes de que sea demasiado tarde.",
         "select": {
           "title": "¿Qué te gustaría hacer?",
-          "options": "Ir a la Preventa, Ver la economía del projecto, Ver la planificacion, Quiero preguntar"
+          "options": "Ir a la Preventa, Ver la economía del proyecto, Ver la planificacion, Quiero preguntar"
         }
       },
       "assistant": { "text": "" }

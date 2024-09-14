@@ -5,6 +5,7 @@ import {
   Keypair,
 } from '@solana/web3.js';
 import { AnchorProvider, Wallet } from '@coral-xyz/anchor';
+import * as process from 'node:process';
 
 export interface Cluster {
   name: string;
@@ -12,6 +13,7 @@ export interface Cluster {
   network?: ClusterNetwork;
   active?: boolean;
   asCluster: () => Web3Cluster;
+  headers?: Record<string, string>;
 }
 
 export enum ClusterNetwork {
@@ -20,6 +22,13 @@ export enum ClusterNetwork {
   Devnet = 'devnet',
   local = 'local',
 }
+
+const {
+  QUICKNODE_RPC_URL,
+  QUICKNODE_API_KEY,
+  QUICKNODE_DEVNET_RPC_URL,
+  QUICKNODE_DEVNET_API_KEY,
+} = process.env;
 
 export const CLUSTERS = Object.fromEntries(
   [
@@ -41,6 +50,16 @@ export const CLUSTERS = Object.fromEntries(
       name: ClusterNetwork.Mainnet,
       endpoint: clusterApiUrl(ClusterNetwork.Mainnet),
       network: ClusterNetwork.Mainnet,
+    },
+    {
+      name: 'lucky',
+      endpoint: `${QUICKNODE_RPC_URL}/${QUICKNODE_API_KEY}`,
+      network: ClusterNetwork.Mainnet,
+    },
+    {
+      name: 'lucky-dev',
+      endpoint: `${QUICKNODE_DEVNET_RPC_URL}/${QUICKNODE_DEVNET_API_KEY}`,
+      network: ClusterNetwork.Devnet,
     },
   ].map((cluster) => [
     cluster.name,

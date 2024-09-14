@@ -13,7 +13,7 @@ export default function Layout({
 
   return (
     <>
-      <Header />
+      <Header locale={locale} />
       <main>{children}</main>
       <Footer />
     </>

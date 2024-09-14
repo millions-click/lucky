@@ -8,8 +8,8 @@ export type PresaleSettings = {
 };
 
 export const PRESALE = {
-  start: 1724558400000,
-  end: 1724644800000,
+  start: 0,
+  end: 0,
   min: 10_000,
   max: 10_000_000,
   prices: [0.0000003, 0.0000004, 0.0000005, 0.0000006, 0.000001],

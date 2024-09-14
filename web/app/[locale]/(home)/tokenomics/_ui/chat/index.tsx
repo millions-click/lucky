@@ -20,7 +20,10 @@ const MESSAGES = {
       ],
     }),
   },
-  assistant: { Actions: () => <Assistant scope="tokenomics" /> },
+  assistant: {
+    Actions: () => <Assistant scope="tokenomics" />,
+    className: 'z-50',
+  },
 } as ChatMessages;
 
 export function TokenomicsChat() {
@@ -37,7 +40,6 @@ export function TokenomicsChat() {
         namespace: 'Tokenomics',
         palId: 'lucky',
         backdrop: ' ',
-        className: 'z-50',
       }}
     />
   );

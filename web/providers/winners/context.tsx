@@ -56,7 +56,7 @@ function Provider({
   limit = 2,
   children,
 }: ProviderProps) {
-  const { cluster, portal } = usePortal();
+  const { state, cluster, portal } = usePortal();
   const [active, setActive] = useState(enabled);
   const { toasts } = useToasterStore();
 
@@ -72,6 +72,7 @@ function Provider({
   }, [toasts.length, limit]);
 
   useEffect(() => {
+    if (state !== 'success') return;
     if (!active && !portal) return;
 
     const subscriptionId = portal.addEventListener(
@@ -98,7 +99,7 @@ function Provider({
     return () => {
       portal.removeEventListener(subscriptionId);
     };
-  }, [portal, cluster, active, ignore]);
+  }, [state, portal, cluster, active, ignore]);
 
   const value = {
     setActive,
