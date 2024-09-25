@@ -9,12 +9,15 @@ import { Turns } from './Turns';
 import { Locked } from './Locked';
 
 import type {
+  Seed,
   TurnsSession,
   AttemptSession,
   LuckyPassSession,
 } from '@/actions/types.d';
 import { CountdownProvider } from '@/providers';
 import { createLuckyPass, getTurns, playATurn } from '@/actions';
+
+const freeEntry = process.env.NEXT_PUBLIC_FREE_ENTRY === 'true';
 
 export function LockController() {
   const [attempt, setAttempts] = useState<AttemptSession | null>(null);
@@ -54,10 +57,49 @@ export function LockController() {
     setPass(pass);
     setTurns(turns);
     setAttempts(attempt);
+
+    return { turns, attempt, pass };
   }, []);
 
+  const _createLuckyPass = async (match: boolean, seed: Seed) => {
+    const {
+      pass,
+      turns,
+      attempt: _attempt,
+    } = match ? await createLuckyPass(seed) : await playATurn();
+
+    setTurns(turns);
+    if (pass) setPass(pass);
+    if (!attempt || _attempt.attempts !== attempt.attempts)
+      setAttempts(_attempt);
+  };
+
   useEffect(() => {
-    load().then();
+    const timestamp = Date.now();
+    const debounce = setTimeout(
+      () =>
+        load().then(({ pass }) => {
+          console.log('LockController:load->then', {
+            freeEntry,
+            pass,
+            gen: freeEntry && !pass,
+          });
+
+          if (freeEntry && !pass)
+            return setTimeout(
+              () =>
+                _createLuckyPass(true, {
+                  trigger: 500,
+                  value: 69,
+                  timestamp,
+                }),
+              1000
+            );
+        }),
+      100
+    );
+
+    return () => clearTimeout(debounce);
   }, []);
 
   return attempt ? (
@@ -75,17 +117,7 @@ export function LockController() {
         <LockDoor
           vortex={vortexActivated}
           disabled={state !== 'playing' && state !== 'idle'}
-          onAttempt={async (match, seed) => {
-            const {
-              pass,
-              turns,
-              attempt: _attempt,
-            } = match ? await createLuckyPass(seed) : await playATurn();
-
-            setTurns(turns);
-            if (pass) setPass(pass);
-            if (_attempt.attempts !== attempt.attempts) setAttempts(_attempt);
-          }}
+          onAttempt={_createLuckyPass}
         />
 
         {state === 'locked' && <Locked attempt={attempt} />}
