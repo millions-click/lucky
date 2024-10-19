@@ -1,0 +1,2769 @@
+{
+  "address": "HCZ5KdroZ7BQrmkZq1a72t2FVVQuxqVjkR4ZmAvi8CTr",
+  "metadata": {
+    "name": "games",
+    "version": "0.1.0",
+    "spec": "0.1.0",
+    "description": "Created with Anchor"
+  },
+  "instructions": [
+    {
+      "name": "activate_game",
+      "discriminator": [
+        166,
+        184,
+        159,
+        118,
+        22,
+        67,
+        88,
+        37
+      ],
+      "accounts": [
+        {
+          "name": "owner",
+          "writable": true,
+          "signer": true
+        },
+        {
+          "name": "game",
+          "writable": true,
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  76,
+                  85,
+                  67,
+                  75,
+                  89,
+                  95,
+                  71,
+                  65,
+                  77,
+                  69
+                ]
+              },
+              {
+                "kind": "account",
+                "path": "owner"
+              },
+              {
+                "kind": "account",
+                "path": "secret"
+              }
+            ]
+          }
+        },
+        {
+          "name": "secret"
+        }
+      ],
+      "args": []
+    },
+    {
+      "name": "add_game_mode",
+      "discriminator": [
+        237,
+        39,
+        123,
+        180,
+        37,
+        214,
+        32,
+        156
+      ],
+      "accounts": [
+        {
+          "name": "owner",
+          "writable": true,
+          "signer": true
+        },
+        {
+          "name": "game",
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  76,
+                  85,
+                  67,
+                  75,
+                  89,
+                  95,
+                  71,
+                  65,
+                  77,
+                  69
+                ]
+              },
+              {
+                "kind": "account",
+                "path": "owner"
+              },
+              {
+                "kind": "account",
+                "path": "secret"
+              }
+            ]
+          }
+        },
+        {
+          "name": "mode",
+          "writable": true,
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  71,
+                  65,
+                  77,
+                  69,
+                  95,
+                  77,
+                  79,
+                  68,
+                  69
+                ]
+              },
+              {
+                "kind": "account",
+                "path": "game"
+              },
+              {
+                "kind": "arg",
+                "path": "mode_seed"
+              }
+            ]
+          }
+        },
+        {
+          "name": "secret"
+        },
+        {
+          "name": "system_program",
+          "address": "11111111111111111111111111111111"
+        }
+      ],
+      "args": [
+        {
+          "name": "_mode_seed",
+          "type": "string"
+        },
+        {
+          "name": "settings",
+          "type": {
+            "defined": {
+              "name": "GameModeSettings"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "close_game",
+      "discriminator": [
+        237,
+        236,
+        157,
+        201,
+        253,
+        20,
+        248,
+        67
+      ],
+      "accounts": [
+        {
+          "name": "owner",
+          "writable": true,
+          "signer": true
+        },
+        {
+          "name": "game",
+          "writable": true,
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  76,
+                  85,
+                  67,
+                  75,
+                  89,
+                  95,
+                  71,
+                  65,
+                  77,
+                  69
+                ]
+              },
+              {
+                "kind": "account",
+                "path": "owner"
+              },
+              {
+                "kind": "account",
+                "path": "secret"
+              }
+            ]
+          }
+        },
+        {
+          "name": "secret"
+        },
+        {
+          "name": "system_program",
+          "address": "11111111111111111111111111111111"
+        }
+      ],
+      "args": []
+    },
+    {
+      "name": "close_game_mode",
+      "discriminator": [
+        3,
+        76,
+        123,
+        99,
+        249,
+        219,
+        30,
+        46
+      ],
+      "accounts": [
+        {
+          "name": "owner",
+          "writable": true,
+          "signer": true
+        },
+        {
+          "name": "game",
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  76,
+                  85,
+                  67,
+                  75,
+                  89,
+                  95,
+                  71,
+                  65,
+                  77,
+                  69
+                ]
+              },
+              {
+                "kind": "account",
+                "path": "owner"
+              },
+              {
+                "kind": "account",
+                "path": "secret"
+              }
+            ]
+          }
+        },
+        {
+          "name": "mode",
+          "writable": true,
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  71,
+                  65,
+                  77,
+                  69,
+                  95,
+                  77,
+                  79,
+                  68,
+                  69
+                ]
+              },
+              {
+                "kind": "account",
+                "path": "game"
+              },
+              {
+                "kind": "arg",
+                "path": "mode_seed"
+              }
+            ]
+          }
+        },
+        {
+          "name": "secret"
+        }
+      ],
+      "args": [
+        {
+          "name": "_mode_seed",
+          "type": "string"
+        }
+      ]
+    },
+    {
+      "name": "create_game",
+      "discriminator": [
+        124,
+        69,
+        75,
+        66,
+        184,
+        220,
+        72,
+        206
+      ],
+      "accounts": [
+        {
+          "name": "owner",
+          "writable": true,
+          "signer": true
+        },
+        {
+          "name": "game",
+          "writable": true,
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  76,
+                  85,
+                  67,
+                  75,
+                  89,
+                  95,
+                  71,
+                  65,
+                  77,
+                  69
+                ]
+              },
+              {
+                "kind": "account",
+                "path": "owner"
+              },
+              {
+                "kind": "account",
+                "path": "secret"
+              }
+            ]
+          }
+        },
+        {
+          "name": "secret"
+        },
+        {
+          "name": "system_program",
+          "address": "11111111111111111111111111111111"
+        }
+      ],
+      "args": [
+        {
+          "name": "name",
+          "type": "string"
+        }
+      ]
+    },
+    {
+      "name": "create_treasure",
+      "discriminator": [
+        181,
+        23,
+        158,
+        25,
+        74,
+        94,
+        113,
+        141
+      ],
+      "accounts": [
+        {
+          "name": "keeper",
+          "writable": true,
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  84,
+                  82,
+                  69,
+                  65,
+                  83,
+                  85,
+                  82,
+                  69,
+                  95,
+                  75,
+                  69,
+                  69,
+                  80,
+                  69,
+                  82
+                ]
+              }
+            ]
+          }
+        },
+        {
+          "name": "escrow",
+          "writable": true,
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  84,
+                  82,
+                  69,
+                  65,
+                  83,
+                  85,
+                  82,
+                  69,
+                  95,
+                  69,
+                  83,
+                  67,
+                  82,
+                  79,
+                  87
+                ]
+              }
+            ]
+          }
+        },
+        {
+          "name": "tollkeeper",
+          "writable": true,
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  84,
+                  79,
+                  76,
+                  76,
+                  75,
+                  69,
+                  69,
+                  80,
+                  69,
+                  82
+                ]
+              }
+            ]
+          }
+        },
+        {
+          "name": "treasure",
+          "writable": true,
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  84,
+                  82,
+                  69,
+                  65,
+                  83,
+                  85,
+                  82,
+                  69
+                ]
+              }
+            ]
+          }
+        },
+        {
+          "name": "authority",
+          "writable": true,
+          "signer": true
+        },
+        {
+          "name": "system_program",
+          "address": "11111111111111111111111111111111"
+        }
+      ],
+      "args": []
+    },
+    {
+      "name": "end_game",
+      "discriminator": [
+        224,
+        135,
+        245,
+        99,
+        67,
+        175,
+        121,
+        252
+      ],
+      "accounts": [
+        {
+          "name": "owner",
+          "writable": true,
+          "signer": true
+        },
+        {
+          "name": "game",
+          "writable": true,
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  76,
+                  85,
+                  67,
+                  75,
+                  89,
+                  95,
+                  71,
+                  65,
+                  77,
+                  69
+                ]
+              },
+              {
+                "kind": "account",
+                "path": "owner"
+              },
+              {
+                "kind": "account",
+                "path": "secret"
+              }
+            ]
+          }
+        },
+        {
+          "name": "secret"
+        }
+      ],
+      "args": []
+    },
+    {
+      "name": "forge_stronghold",
+      "discriminator": [
+        125,
+        248,
+        245,
+        212,
+        231,
+        38,
+        125,
+        34
+      ],
+      "accounts": [
+        {
+          "name": "keeper",
+          "writable": true,
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  84,
+                  82,
+                  69,
+                  65,
+                  83,
+                  85,
+                  82,
+                  69,
+                  95,
+                  75,
+                  69,
+                  69,
+                  80,
+                  69,
+                  82
+                ]
+              }
+            ]
+          }
+        },
+        {
+          "name": "stronghold",
+          "writable": true,
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  84,
+                  82,
+                  69,
+                  65,
+                  83,
+                  85,
+                  82,
+                  69,
+                  95,
+                  86,
+                  65,
+                  85,
+                  76,
+                  84
+                ]
+              },
+              {
+                "kind": "account",
+                "path": "gem"
+              }
+            ]
+          }
+        },
+        {
+          "name": "gem"
+        },
+        {
+          "name": "treasure",
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  84,
+                  82,
+                  69,
+                  65,
+                  83,
+                  85,
+                  82,
+                  69
+                ]
+              }
+            ]
+          }
+        },
+        {
+          "name": "supplier",
+          "writable": true,
+          "signer": true
+        },
+        {
+          "name": "system_program",
+          "address": "11111111111111111111111111111111"
+        },
+        {
+          "name": "token_program",
+          "address": "TokenkegQfeZyiNwAJbNbGKPFXCWuBvf9Ss623VQ5DA"
+        },
+        {
+          "name": "rent",
+          "address": "SysvarRent111111111111111111111111111111111"
+        }
+      ],
+      "args": []
+    },
+    {
+      "name": "fund_bounty",
+      "discriminator": [
+        36,
+        148,
+        139,
+        239,
+        172,
+        37,
+        58,
+        255
+      ],
+      "accounts": [
+        {
+          "name": "supplier",
+          "writable": true,
+          "signer": true
+        },
+        {
+          "name": "reserve",
+          "writable": true
+        },
+        {
+          "name": "bounty",
+          "writable": true
+        },
+        {
+          "name": "escrow",
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  84,
+                  82,
+                  69,
+                  65,
+                  83,
+                  85,
+                  82,
+                  69,
+                  95,
+                  69,
+                  83,
+                  67,
+                  82,
+                  79,
+                  87
+                ]
+              }
+            ]
+          }
+        },
+        {
+          "name": "vault",
+          "writable": true,
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  84,
+                  82,
+                  69,
+                  65,
+                  83,
+                  85,
+                  82,
+                  69,
+                  95,
+                  86,
+                  65,
+                  85,
+                  76,
+                  84
+                ]
+              },
+              {
+                "kind": "account",
+                "path": "bounty"
+              }
+            ]
+          }
+        },
+        {
+          "name": "gem"
+        },
+        {
+          "name": "system_program",
+          "address": "11111111111111111111111111111111"
+        },
+        {
+          "name": "token_program",
+          "address": "TokenkegQfeZyiNwAJbNbGKPFXCWuBvf9Ss623VQ5DA"
+        },
+        {
+          "name": "rent",
+          "address": "SysvarRent111111111111111111111111111111111"
+        }
+      ],
+      "args": [
+        {
+          "name": "amount",
+          "type": "u64"
+        }
+      ]
+    },
+    {
+      "name": "issue_bounty",
+      "discriminator": [
+        188,
+        205,
+        76,
+        253,
+        211,
+        189,
+        235,
+        161
+      ],
+      "accounts": [
+        {
+          "name": "supplier",
+          "writable": true,
+          "signer": true
+        },
+        {
+          "name": "bounty",
+          "writable": true,
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  66,
+                  79,
+                  85,
+                  78,
+                  84,
+                  89
+                ]
+              },
+              {
+                "kind": "account",
+                "path": "task"
+              },
+              {
+                "kind": "account",
+                "path": "gem"
+              },
+              {
+                "kind": "account",
+                "path": "trader"
+              }
+            ]
+          }
+        },
+        {
+          "name": "task"
+        },
+        {
+          "name": "gem"
+        },
+        {
+          "name": "trader"
+        },
+        {
+          "name": "stronghold",
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  84,
+                  82,
+                  69,
+                  65,
+                  83,
+                  85,
+                  82,
+                  69,
+                  95,
+                  86,
+                  65,
+                  85,
+                  76,
+                  84
+                ]
+              },
+              {
+                "kind": "account",
+                "path": "gem"
+              }
+            ]
+          }
+        },
+        {
+          "name": "collector",
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  84,
+                  79,
+                  76,
+                  76,
+                  75,
+                  69,
+                  69,
+                  80,
+                  69,
+                  82
+                ]
+              },
+              {
+                "kind": "account",
+                "path": "trader"
+              }
+            ]
+          }
+        },
+        {
+          "name": "system_program",
+          "address": "11111111111111111111111111111111"
+        }
+      ],
+      "args": [
+        {
+          "name": "settings",
+          "type": {
+            "defined": {
+              "name": "BountySettings"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "launch_escrow",
+      "discriminator": [
+        161,
+        135,
+        44,
+        107,
+        109,
+        7,
+        163,
+        113
+      ],
+      "accounts": [
+        {
+          "name": "tollkeeper",
+          "writable": true,
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  84,
+                  79,
+                  76,
+                  76,
+                  75,
+                  69,
+                  69,
+                  80,
+                  69,
+                  82
+                ]
+              }
+            ]
+          }
+        },
+        {
+          "name": "collector",
+          "writable": true,
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  84,
+                  79,
+                  76,
+                  76,
+                  75,
+                  69,
+                  69,
+                  80,
+                  69,
+                  82
+                ]
+              },
+              {
+                "kind": "account",
+                "path": "trader"
+              }
+            ]
+          }
+        },
+        {
+          "name": "trader"
+        },
+        {
+          "name": "treasure",
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  84,
+                  82,
+                  69,
+                  65,
+                  83,
+                  85,
+                  82,
+                  69
+                ]
+              }
+            ]
+          }
+        },
+        {
+          "name": "supplier",
+          "writable": true,
+          "signer": true
+        },
+        {
+          "name": "system_program",
+          "address": "11111111111111111111111111111111"
+        },
+        {
+          "name": "token_program",
+          "address": "TokenkegQfeZyiNwAJbNbGKPFXCWuBvf9Ss623VQ5DA"
+        },
+        {
+          "name": "rent",
+          "address": "SysvarRent111111111111111111111111111111111"
+        }
+      ],
+      "args": []
+    },
+    {
+      "name": "launch_store",
+      "discriminator": [
+        98,
+        90,
+        49,
+        144,
+        191,
+        89,
+        172,
+        234
+      ],
+      "accounts": [
+        {
+          "name": "trader"
+        },
+        {
+          "name": "feed"
+        },
+        {
+          "name": "store",
+          "writable": true,
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  83,
+                  84,
+                  79,
+                  82,
+                  69
+                ]
+              },
+              {
+                "kind": "account",
+                "path": "trader"
+              },
+              {
+                "kind": "account",
+                "path": "feed"
+              }
+            ]
+          }
+        },
+        {
+          "name": "collector",
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  84,
+                  79,
+                  76,
+                  76,
+                  75,
+                  69,
+                  69,
+                  80,
+                  69,
+                  82
+                ]
+              },
+              {
+                "kind": "account",
+                "path": "trader"
+              }
+            ]
+          }
+        },
+        {
+          "name": "treasure",
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  84,
+                  82,
+                  69,
+                  65,
+                  83,
+                  85,
+                  82,
+                  69
+                ]
+              }
+            ]
+          }
+        },
+        {
+          "name": "authority",
+          "writable": true,
+          "signer": true,
+          "relations": [
+            "treasure"
+          ]
+        },
+        {
+          "name": "system_program",
+          "address": "11111111111111111111111111111111"
+        }
+      ],
+      "args": [
+        {
+          "name": "settings",
+          "type": {
+            "defined": {
+              "name": "StoreSettings"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "pause_game",
+      "discriminator": [
+        133,
+        116,
+        165,
+        66,
+        173,
+        81,
+        10,
+        85
+      ],
+      "accounts": [
+        {
+          "name": "owner",
+          "writable": true,
+          "signer": true
+        },
+        {
+          "name": "game",
+          "writable": true,
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  76,
+                  85,
+                  67,
+                  75,
+                  89,
+                  95,
+                  71,
+                  65,
+                  77,
+                  69
+                ]
+              },
+              {
+                "kind": "account",
+                "path": "owner"
+              },
+              {
+                "kind": "account",
+                "path": "secret"
+              }
+            ]
+          }
+        },
+        {
+          "name": "secret"
+        }
+      ],
+      "args": []
+    },
+    {
+      "name": "play_round",
+      "discriminator": [
+        38,
+        35,
+        89,
+        4,
+        59,
+        139,
+        225,
+        250
+      ],
+      "accounts": [
+        {
+          "name": "owner",
+          "writable": true,
+          "signer": true
+        },
+        {
+          "name": "game"
+        },
+        {
+          "name": "mode"
+        },
+        {
+          "name": "bounty"
+        },
+        {
+          "name": "player",
+          "writable": true,
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  76,
+                  85,
+                  67,
+                  75,
+                  89,
+                  95,
+                  80,
+                  76,
+                  65,
+                  89,
+                  69,
+                  82
+                ]
+              },
+              {
+                "kind": "account",
+                "path": "owner"
+              },
+              {
+                "kind": "account",
+                "path": "mode"
+              }
+            ]
+          }
+        },
+        {
+          "name": "ammo",
+          "writable": true
+        },
+        {
+          "name": "bag",
+          "writable": true
+        },
+        {
+          "name": "escrow",
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  84,
+                  82,
+                  69,
+                  65,
+                  83,
+                  85,
+                  82,
+                  69,
+                  95,
+                  69,
+                  83,
+                  67,
+                  82,
+                  79,
+                  87
+                ]
+              }
+            ]
+          }
+        },
+        {
+          "name": "vault",
+          "writable": true,
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  84,
+                  82,
+                  69,
+                  65,
+                  83,
+                  85,
+                  82,
+                  69,
+                  95,
+                  86,
+                  65,
+                  85,
+                  76,
+                  84
+                ]
+              },
+              {
+                "kind": "account",
+                "path": "bounty"
+              }
+            ]
+          }
+        },
+        {
+          "name": "collector",
+          "writable": true,
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  84,
+                  79,
+                  76,
+                  76,
+                  75,
+                  69,
+                  69,
+                  80,
+                  69,
+                  82
+                ]
+              },
+              {
+                "kind": "account",
+                "path": "bounty.trader",
+                "account": "Bounty"
+              }
+            ]
+          }
+        },
+        {
+          "name": "system_program",
+          "address": "11111111111111111111111111111111"
+        },
+        {
+          "name": "token_program",
+          "address": "TokenkegQfeZyiNwAJbNbGKPFXCWuBvf9Ss623VQ5DA"
+        },
+        {
+          "name": "rent",
+          "address": "SysvarRent111111111111111111111111111111111"
+        },
+        {
+          "name": "event_authority",
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  95,
+                  95,
+                  101,
+                  118,
+                  101,
+                  110,
+                  116,
+                  95,
+                  97,
+                  117,
+                  116,
+                  104,
+                  111,
+                  114,
+                  105,
+                  116,
+                  121
+                ]
+              }
+            ]
+          }
+        },
+        {
+          "name": "program",
+          "address": "HCZ5KdroZ7BQrmkZq1a72t2FVVQuxqVjkR4ZmAvi8CTr"
+        }
+      ],
+      "args": [
+        {
+          "name": "round",
+          "type": {
+            "defined": {
+              "name": "Round"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "renew_bounty",
+      "discriminator": [
+        152,
+        166,
+        165,
+        182,
+        73,
+        154,
+        157,
+        13
+      ],
+      "accounts": [
+        {
+          "name": "supplier",
+          "writable": true,
+          "signer": true
+        },
+        {
+          "name": "bounty",
+          "writable": true
+        },
+        {
+          "name": "vault",
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  84,
+                  82,
+                  69,
+                  65,
+                  83,
+                  85,
+                  82,
+                  69,
+                  95,
+                  86,
+                  65,
+                  85,
+                  76,
+                  84
+                ]
+              },
+              {
+                "kind": "account",
+                "path": "bounty"
+              }
+            ]
+          }
+        },
+        {
+          "name": "system_program",
+          "address": "11111111111111111111111111111111"
+        }
+      ],
+      "args": [
+        {
+          "name": "settings",
+          "type": {
+            "defined": {
+              "name": "BountySettings"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "retrieve_gems",
+      "discriminator": [
+        204,
+        176,
+        171,
+        176,
+        184,
+        12,
+        181,
+        84
+      ],
+      "accounts": [
+        {
+          "name": "keeper",
+          "writable": true,
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  84,
+                  82,
+                  69,
+                  65,
+                  83,
+                  85,
+                  82,
+                  69,
+                  95,
+                  75,
+                  69,
+                  69,
+                  80,
+                  69,
+                  82
+                ]
+              }
+            ]
+          }
+        },
+        {
+          "name": "stronghold",
+          "writable": true,
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  84,
+                  82,
+                  69,
+                  65,
+                  83,
+                  85,
+                  82,
+                  69,
+                  95,
+                  86,
+                  65,
+                  85,
+                  76,
+                  84
+                ]
+              },
+              {
+                "kind": "account",
+                "path": "gem"
+              }
+            ]
+          }
+        },
+        {
+          "name": "reserve",
+          "writable": true
+        },
+        {
+          "name": "gem"
+        },
+        {
+          "name": "treasure",
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  84,
+                  82,
+                  69,
+                  65,
+                  83,
+                  85,
+                  82,
+                  69
+                ]
+              }
+            ]
+          }
+        },
+        {
+          "name": "authority",
+          "writable": true,
+          "signer": true,
+          "relations": [
+            "treasure"
+          ]
+        },
+        {
+          "name": "system_program",
+          "address": "11111111111111111111111111111111"
+        },
+        {
+          "name": "token_program",
+          "address": "TokenkegQfeZyiNwAJbNbGKPFXCWuBvf9Ss623VQ5DA"
+        },
+        {
+          "name": "rent",
+          "address": "SysvarRent111111111111111111111111111111111"
+        }
+      ],
+      "args": [
+        {
+          "name": "amount",
+          "type": "u64"
+        }
+      ]
+    },
+    {
+      "name": "stockpile_gems",
+      "discriminator": [
+        242,
+        63,
+        114,
+        233,
+        21,
+        55,
+        29,
+        185
+      ],
+      "accounts": [
+        {
+          "name": "keeper",
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  84,
+                  82,
+                  69,
+                  65,
+                  83,
+                  85,
+                  82,
+                  69,
+                  95,
+                  75,
+                  69,
+                  69,
+                  80,
+                  69,
+                  82
+                ]
+              }
+            ]
+          }
+        },
+        {
+          "name": "stronghold",
+          "writable": true,
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  84,
+                  82,
+                  69,
+                  65,
+                  83,
+                  85,
+                  82,
+                  69,
+                  95,
+                  86,
+                  65,
+                  85,
+                  76,
+                  84
+                ]
+              },
+              {
+                "kind": "account",
+                "path": "gem"
+              }
+            ]
+          }
+        },
+        {
+          "name": "reserve",
+          "writable": true
+        },
+        {
+          "name": "gem"
+        },
+        {
+          "name": "supplier",
+          "writable": true,
+          "signer": true
+        },
+        {
+          "name": "system_program",
+          "address": "11111111111111111111111111111111"
+        },
+        {
+          "name": "token_program",
+          "address": "TokenkegQfeZyiNwAJbNbGKPFXCWuBvf9Ss623VQ5DA"
+        },
+        {
+          "name": "rent",
+          "address": "SysvarRent111111111111111111111111111111111"
+        }
+      ],
+      "args": [
+        {
+          "name": "amount",
+          "type": "u64"
+        }
+      ]
+    },
+    {
+      "name": "store_fill",
+      "discriminator": [
+        243,
+        168,
+        93,
+        10,
+        206,
+        99,
+        57,
+        186
+      ],
+      "accounts": [
+        {
+          "name": "collector",
+          "writable": true,
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  84,
+                  79,
+                  76,
+                  76,
+                  75,
+                  69,
+                  69,
+                  80,
+                  69,
+                  82
+                ]
+              },
+              {
+                "kind": "account",
+                "path": "trader"
+              }
+            ]
+          }
+        },
+        {
+          "name": "reserve",
+          "writable": true
+        },
+        {
+          "name": "trader"
+        },
+        {
+          "name": "supplier",
+          "writable": true,
+          "signer": true
+        },
+        {
+          "name": "system_program",
+          "address": "11111111111111111111111111111111"
+        },
+        {
+          "name": "token_program",
+          "address": "TokenkegQfeZyiNwAJbNbGKPFXCWuBvf9Ss623VQ5DA"
+        },
+        {
+          "name": "rent",
+          "address": "SysvarRent111111111111111111111111111111111"
+        }
+      ],
+      "args": [
+        {
+          "name": "amount",
+          "type": "u64"
+        }
+      ]
+    },
+    {
+      "name": "store_package",
+      "discriminator": [
+        111,
+        110,
+        5,
+        70,
+        30,
+        22,
+        120,
+        11
+      ],
+      "accounts": [
+        {
+          "name": "store",
+          "writable": true
+        },
+        {
+          "name": "package",
+          "writable": true,
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  83,
+                  84,
+                  79,
+                  82,
+                  69
+                ]
+              },
+              {
+                "kind": "account",
+                "path": "store"
+              },
+              {
+                "kind": "arg",
+                "path": "amount"
+              }
+            ]
+          }
+        },
+        {
+          "name": "treasure",
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  84,
+                  82,
+                  69,
+                  65,
+                  83,
+                  85,
+                  82,
+                  69
+                ]
+              }
+            ]
+          }
+        },
+        {
+          "name": "authority",
+          "writable": true,
+          "signer": true,
+          "relations": [
+            "treasure"
+          ]
+        },
+        {
+          "name": "system_program",
+          "address": "11111111111111111111111111111111"
+        }
+      ],
+      "args": [
+        {
+          "name": "amount",
+          "type": "string"
+        },
+        {
+          "name": "settings",
+          "type": {
+            "defined": {
+              "name": "StorePackageSettings"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "store_sale",
+      "discriminator": [
+        96,
+        132,
+        96,
+        126,
+        57,
+        227,
+        31,
+        116
+      ],
+      "accounts": [
+        {
+          "name": "tollkeeper",
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  84,
+                  79,
+                  76,
+                  76,
+                  75,
+                  69,
+                  69,
+                  80,
+                  69,
+                  82
+                ]
+              }
+            ]
+          }
+        },
+        {
+          "name": "collector",
+          "writable": true,
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  84,
+                  79,
+                  76,
+                  76,
+                  75,
+                  69,
+                  69,
+                  80,
+                  69,
+                  82
+                ]
+              },
+              {
+                "kind": "account",
+                "path": "trader"
+              }
+            ]
+          }
+        },
+        {
+          "name": "receiver",
+          "writable": true
+        },
+        {
+          "name": "feed"
+        },
+        {
+          "name": "chainlink_program"
+        },
+        {
+          "name": "trader"
+        },
+        {
+          "name": "store",
+          "writable": true,
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  83,
+                  84,
+                  79,
+                  82,
+                  69
+                ]
+              },
+              {
+                "kind": "account",
+                "path": "trader"
+              },
+              {
+                "kind": "account",
+                "path": "feed"
+              }
+            ]
+          }
+        },
+        {
+          "name": "package",
+          "writable": true,
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  83,
+                  84,
+                  79,
+                  82,
+                  69
+                ]
+              },
+              {
+                "kind": "account",
+                "path": "store"
+              },
+              {
+                "kind": "arg",
+                "path": "amount"
+              }
+            ]
+          }
+        },
+        {
+          "name": "payer",
+          "writable": true,
+          "signer": true
+        },
+        {
+          "name": "system_program",
+          "address": "11111111111111111111111111111111"
+        },
+        {
+          "name": "token_program",
+          "address": "TokenkegQfeZyiNwAJbNbGKPFXCWuBvf9Ss623VQ5DA"
+        },
+        {
+          "name": "rent",
+          "address": "SysvarRent111111111111111111111111111111111"
+        }
+      ],
+      "args": [
+        {
+          "name": "_amount",
+          "type": "string"
+        }
+      ]
+    },
+    {
+      "name": "store_withdraw",
+      "discriminator": [
+        130,
+        100,
+        51,
+        177,
+        247,
+        26,
+        178,
+        151
+      ],
+      "accounts": [
+        {
+          "name": "store",
+          "writable": true
+        },
+        {
+          "name": "treasure",
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  84,
+                  82,
+                  69,
+                  65,
+                  83,
+                  85,
+                  82,
+                  69
+                ]
+              }
+            ]
+          }
+        },
+        {
+          "name": "authority",
+          "writable": true,
+          "signer": true,
+          "relations": [
+            "treasure"
+          ]
+        },
+        {
+          "name": "system_program",
+          "address": "11111111111111111111111111111111"
+        },
+        {
+          "name": "rent",
+          "address": "SysvarRent111111111111111111111111111111111"
+        }
+      ],
+      "args": [
+        {
+          "name": "amount",
+          "type": "u64"
+        }
+      ]
+    },
+    {
+      "name": "update_game",
+      "discriminator": [
+        159,
+        61,
+        132,
+        131,
+        3,
+        234,
+        209,
+        220
+      ],
+      "accounts": [
+        {
+          "name": "owner",
+          "writable": true,
+          "signer": true
+        },
+        {
+          "name": "game",
+          "writable": true,
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  76,
+                  85,
+                  67,
+                  75,
+                  89,
+                  95,
+                  71,
+                  65,
+                  77,
+                  69
+                ]
+              },
+              {
+                "kind": "account",
+                "path": "owner"
+              },
+              {
+                "kind": "account",
+                "path": "secret"
+              }
+            ]
+          }
+        },
+        {
+          "name": "secret"
+        }
+      ],
+      "args": [
+        {
+          "name": "name",
+          "type": "string"
+        }
+      ]
+    },
+    {
+      "name": "update_game_mode",
+      "discriminator": [
+        130,
+        15,
+        217,
+        14,
+        245,
+        15,
+        125,
+        57
+      ],
+      "accounts": [
+        {
+          "name": "owner",
+          "writable": true,
+          "signer": true
+        },
+        {
+          "name": "game",
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  76,
+                  85,
+                  67,
+                  75,
+                  89,
+                  95,
+                  71,
+                  65,
+                  77,
+                  69
+                ]
+              },
+              {
+                "kind": "account",
+                "path": "owner"
+              },
+              {
+                "kind": "account",
+                "path": "secret"
+              }
+            ]
+          }
+        },
+        {
+          "name": "mode",
+          "writable": true,
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  71,
+                  65,
+                  77,
+                  69,
+                  95,
+                  77,
+                  79,
+                  68,
+                  69
+                ]
+              },
+              {
+                "kind": "account",
+                "path": "game"
+              },
+              {
+                "kind": "arg",
+                "path": "mode_seed"
+              }
+            ]
+          }
+        },
+        {
+          "name": "secret"
+        }
+      ],
+      "args": [
+        {
+          "name": "_mode_seed",
+          "type": "string"
+        },
+        {
+          "name": "settings",
+          "type": {
+            "defined": {
+              "name": "GameModeSettings"
+            }
+          }
+        }
+      ]
+    }
+  ],
+  "accounts": [
+    {
+      "name": "Bounty",
+      "discriminator": [
+        237,
+        16,
+        105,
+        198,
+        19,
+        69,
+        242,
+        234
+      ]
+    },
+    {
+      "name": "Game",
+      "discriminator": [
+        27,
+        90,
+        166,
+        125,
+        74,
+        100,
+        121,
+        18
+      ]
+    },
+    {
+      "name": "GameMode",
+      "discriminator": [
+        2,
+        175,
+        72,
+        45,
+        105,
+        253,
+        104,
+        137
+      ]
+    },
+    {
+      "name": "Player",
+      "discriminator": [
+        205,
+        222,
+        112,
+        7,
+        165,
+        155,
+        206,
+        218
+      ]
+    },
+    {
+      "name": "Store",
+      "discriminator": [
+        130,
+        48,
+        247,
+        244,
+        182,
+        191,
+        30,
+        26
+      ]
+    },
+    {
+      "name": "StorePackage",
+      "discriminator": [
+        197,
+        43,
+        47,
+        75,
+        115,
+        107,
+        207,
+        11
+      ]
+    },
+    {
+      "name": "Treasure",
+      "discriminator": [
+        98,
+        92,
+        220,
+        45,
+        191,
+        149,
+        105,
+        178
+      ]
+    }
+  ],
+  "events": [
+    {
+      "name": "WinnerEvent",
+      "discriminator": [
+        80,
+        230,
+        123,
+        48,
+        43,
+        207,
+        255,
+        183
+      ]
+    }
+  ],
+  "errors": [
+    {
+      "code": 6000,
+      "name": "InvalidOwner",
+      "msg": "Bounty is not owned by the supplier"
+    },
+    {
+      "code": 6001,
+      "name": "ThresholdNotReached",
+      "msg": "Vault amount is above threshold"
+    },
+    {
+      "code": 6002,
+      "name": "InvalidGem",
+      "msg": "Invalid gem"
+    },
+    {
+      "code": 6003,
+      "name": "UncollectibleReward",
+      "msg": "Total vault reward is uncollectible"
+    }
+  ],
+  "types": [
+    {
+      "name": "Bounty",
+      "type": {
+        "kind": "struct",
+        "fields": [
+          {
+            "name": "owner",
+            "type": "pubkey"
+          },
+          {
+            "name": "task",
+            "type": "pubkey"
+          },
+          {
+            "name": "gem",
+            "type": "pubkey"
+          },
+          {
+            "name": "reward",
+            "type": "u64"
+          },
+          {
+            "name": "trader",
+            "type": "pubkey"
+          },
+          {
+            "name": "price",
+            "type": "u64"
+          },
+          {
+            "name": "currently_issued",
+            "type": "u64"
+          },
+          {
+            "name": "winners",
+            "type": "u32"
+          },
+          {
+            "name": "total_claimed",
+            "type": "u64"
+          }
+        ]
+      }
+    },
+    {
+      "name": "BountySettings",
+      "type": {
+        "kind": "struct",
+        "fields": [
+          {
+            "name": "price",
+            "type": "u64"
+          },
+          {
+            "name": "reward",
+            "type": "u64"
+          }
+        ]
+      }
+    },
+    {
+      "name": "Game",
+      "type": {
+        "kind": "struct",
+        "fields": [
+          {
+            "name": "name",
+            "type": "string"
+          },
+          {
+            "name": "state",
+            "type": {
+              "defined": {
+                "name": "GameStatus"
+              }
+            }
+          },
+          {
+            "name": "mode",
+            "type": {
+              "defined": {
+                "name": "GameType"
+              }
+            }
+          },
+          {
+            "name": "round",
+            "type": {
+              "defined": {
+                "name": "GameRound"
+              }
+            }
+          },
+          {
+            "name": "choice",
+            "type": {
+              "defined": {
+                "name": "GameChoice"
+              }
+            }
+          },
+          {
+            "name": "algorithm",
+            "type": {
+              "defined": {
+                "name": "GameAlgorithm"
+              }
+            }
+          }
+        ]
+      }
+    },
+    {
+      "name": "GameAlgorithm",
+      "type": {
+        "kind": "enum",
+        "variants": [
+          {
+            "name": "Random"
+          },
+          {
+            "name": "Deterministic"
+          }
+        ]
+      }
+    },
+    {
+      "name": "GameChoice",
+      "type": {
+        "kind": "enum",
+        "variants": [
+          {
+            "name": "Single"
+          },
+          {
+            "name": "Multiple"
+          }
+        ]
+      }
+    },
+    {
+      "name": "GameMode",
+      "type": {
+        "kind": "struct",
+        "fields": [
+          {
+            "name": "game",
+            "type": "pubkey"
+          },
+          {
+            "name": "slots",
+            "type": "u8"
+          },
+          {
+            "name": "digits",
+            "type": "u8"
+          },
+          {
+            "name": "choices",
+            "type": "u32"
+          },
+          {
+            "name": "winner_choice",
+            "type": "u32"
+          },
+          {
+            "name": "pick_winner",
+            "type": "bool"
+          }
+        ]
+      }
+    },
+    {
+      "name": "GameModeSettings",
+      "type": {
+        "kind": "struct",
+        "fields": [
+          {
+            "name": "slots",
+            "type": "u8"
+          },
+          {
+            "name": "digits",
+            "type": "u8"
+          },
+          {
+            "name": "choices",
+            "type": "u32"
+          },
+          {
+            "name": "winner_choice",
+            "type": "u32"
+          },
+          {
+            "name": "pick_winner",
+            "type": "bool"
+          }
+        ]
+      }
+    },
+    {
+      "name": "GameRound",
+      "type": {
+        "kind": "enum",
+        "variants": [
+          {
+            "name": "Single"
+          },
+          {
+            "name": "Multiple"
+          }
+        ]
+      }
+    },
+    {
+      "name": "GameStatus",
+      "type": {
+        "kind": "enum",
+        "variants": [
+          {
+            "name": "Created"
+          },
+          {
+            "name": "Active"
+          },
+          {
+            "name": "Paused"
+          },
+          {
+            "name": "Ended"
+          }
+        ]
+      }
+    },
+    {
+      "name": "GameType",
+      "type": {
+        "kind": "enum",
+        "variants": [
+          {
+            "name": "SinglePlayer"
+          },
+          {
+            "name": "MultiPlayer"
+          }
+        ]
+      }
+    },
+    {
+      "name": "Player",
+      "type": {
+        "kind": "struct",
+        "fields": [
+          {
+            "name": "game",
+            "type": "pubkey"
+          },
+          {
+            "name": "rounds",
+            "type": "u32"
+          },
+          {
+            "name": "last_round",
+            "type": {
+              "vec": "u32"
+            }
+          },
+          {
+            "name": "winning_count",
+            "type": "u32"
+          },
+          {
+            "name": "winner",
+            "type": "bool"
+          }
+        ]
+      }
+    },
+    {
+      "name": "Round",
+      "type": {
+        "kind": "struct",
+        "fields": [
+          {
+            "name": "seed",
+            "type": "u64"
+          },
+          {
+            "name": "choices",
+            "type": {
+              "vec": "u32"
+            }
+          }
+        ]
+      }
+    },
+    {
+      "name": "Store",
+      "type": {
+        "kind": "struct",
+        "fields": [
+          {
+            "name": "trader",
+            "type": "pubkey"
+          },
+          {
+            "name": "feed",
+            "type": "pubkey"
+          },
+          {
+            "name": "price",
+            "type": "i128"
+          }
+        ]
+      }
+    },
+    {
+      "name": "StorePackage",
+      "type": {
+        "kind": "struct",
+        "fields": [
+          {
+            "name": "price",
+            "type": "i128"
+          },
+          {
+            "name": "amount",
+            "type": "u64"
+          },
+          {
+            "name": "sales",
+            "type": "u32"
+          },
+          {
+            "name": "max",
+            "type": "u32"
+          }
+        ]
+      }
+    },
+    {
+      "name": "StorePackageSettings",
+      "type": {
+        "kind": "struct",
+        "fields": [
+          {
+            "name": "price",
+            "type": "i128"
+          },
+          {
+            "name": "sales",
+            "type": "u32"
+          }
+        ]
+      }
+    },
+    {
+      "name": "StoreSettings",
+      "type": {
+        "kind": "struct",
+        "fields": [
+          {
+            "name": "price",
+            "type": "i128"
+          }
+        ]
+      }
+    },
+    {
+      "name": "Treasure",
+      "type": {
+        "kind": "struct",
+        "fields": [
+          {
+            "name": "authority",
+            "type": "pubkey"
+          }
+        ]
+      }
+    },
+    {
+      "name": "WinnerEvent",
+      "type": {
+        "kind": "struct",
+        "fields": [
+          {
+            "name": "player",
+            "type": "pubkey"
+          },
+          {
+            "name": "realm",
+            "type": "pubkey"
+          },
+          {
+            "name": "game",
+            "type": "pubkey"
+          },
+          {
+            "name": "gem",
+            "type": "pubkey"
+          },
+          {
+            "name": "amount",
+            "type": "u64"
+          }
+        ]
+      }
+    }
+  ]
+}

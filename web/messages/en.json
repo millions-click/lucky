@@ -1,0 +1,984 @@
+{
+  "Metadata": {
+    "title": "Luckyland",
+    "description": "Where Prizes 🎉 and FUN 😃 never stops!"
+  },
+  "Components": {
+    "Common": {
+      "title": "Luckyland",
+      "description": "Where Prizes 🎉 and FUN 😃 never stops!",
+      "action": {
+        "next": "Next",
+        "enter": "Enter",
+        "proceed": "Proceed",
+        "activate": "Activate",
+
+        "exit": "Exit",
+        "back": "Back",
+        "close": "Close",
+        "cancel": "Cancel",
+
+        "save": "Save",
+        "done": "Done",
+        "retry": "Retry",
+        "secure": "Secure",
+
+        "lock": "Lock",
+        "unlock": "Unlock",
+
+        "ask": "Ask"
+      },
+      "alert": {
+        "password": {
+          "mismatch": "Passwords do not match",
+          "invalid": "Invalid password"
+        }
+      },
+      "input": {
+        "password": "Password",
+        "confirm": "Confirm password",
+        "question": "Write your question"
+      },
+      "links": {
+        "lobby": "Lobby",
+        "realms": "Realms",
+        "coins": "Coins"
+      }
+    },
+    "Bag": {
+      "title": "Connect your LuckyBag",
+      "description": "There are different ways to do it.",
+      "options": {
+        "generate": "Give me a LuckyBag",
+        "import": "I already have one",
+        "connect": "I'll bring my own"
+      },
+      "Generate": {
+        "loading": "Generating...",
+        "success": "LuckyBag successfully generated!",
+        "error": "Error generating LuckyBag!"
+      },
+      "Import": {
+        "title": "Import LuckyBag",
+        "description": "You must provide your private key to import your LuckyBag.",
+        "action": {
+          "import": "Import",
+          "paste": "Paste key",
+          "upload": "Upload file",
+          "drop": "Drag and drop"
+        },
+        "input": {
+          "pk": {
+            "label": "Private key",
+            "placeholder": "Enter your private key",
+            "valid": "Valid private key",
+            "invalid": "Invalid private key"
+          },
+          "name": {
+            "label": "Name",
+            "placeholder": "Enter a name for your LuckyBag"
+          }
+        }
+      },
+      "Connect": {
+        "title": "Connect your LuckyBag",
+        "description": "This feature is to use external wallets or services.",
+        "advice": "For an improved game experience we highly recommend to use the Lucky Wallet",
+        "action": {
+          "idle": "Connect",
+          "connected": "Connected",
+          "disconnect": "Disconnect"
+        }
+      }
+    },
+    "Generate": {
+      "activate": "Activate",
+      "download": {
+        "title": "LuckyBag Private Key",
+        "encrypt": "Encrypt your key",
+        "recommend": "This is highly recommended.",
+        "button": "Download"
+      },
+      "copy": {
+        "title": "LuckyBag Private Key",
+        "button": "Copy"
+      },
+      "cloud": "Secure cloud storage"
+    },
+    "Secure": {
+      "title": "Secure your LuckyBag",
+      "description": "Please provide a password to protect your LuckyBag.",
+      "session": "Session Time",
+      "button": {
+        "safe": "Set Password",
+        "unsafe": "Proceed without password"
+      },
+      "unsafe": {
+        "confirm": "Are you sure? Without a password, your LuckyBag will be vulnerable to unauthorized access."
+      }
+    },
+    "Activate": {
+      "title": "Pick your bag",
+      "description": "You will need to provide your password to unlock it.",
+      "delete": {
+        "confirm": "Are you sure you want to delete this bag? This action is irreversible.",
+        "button": "Delete"
+      }
+    },
+    "Locked": {
+      "title": {
+        "locked": "LuckyBag is locked",
+        "unlocked": "LuckyBag was accessed"
+      },
+      "description": "Please provide your password to unlock it.",
+      "error": {
+        "change": "Change bag",
+        "reset": "Import"
+      }
+    },
+    "BagKey": {
+      "title": "Encryption Key",
+      "description": "This password will be used to securely store your LuckyBag.",
+      "ttl": {
+        "title": "Session Time",
+        "description": "How long should we keep your session alive?",
+        "options": "day, week, month, 3 months, 6 months"
+      },
+      "input": {
+        "name": {
+          "label": "Bag name",
+          "placeholder": "Enter a name for your LuckyBag"
+        }
+      }
+    },
+    "Buy": {
+      "title": "Buy {token}",
+      "description": "Get your {token} and claim your treasures!",
+      "package": {
+        "pouch": {
+          "title": "Pouch",
+          "description": "Starter package"
+        },
+        "bag": {
+          "title": "Bag",
+          "description": "Common package"
+        },
+        "sack": {
+          "title": "Sack",
+          "description": "Rare package"
+        },
+        "chest": {
+          "title": "Chest",
+          "description": "Epic package"
+        },
+        "vault": {
+          "title": "Vault",
+          "description": "Mythical package"
+        },
+        "treasure": {
+          "title": "Treasure",
+          "description": "Divine package"
+        }
+      },
+      "Pay": {
+        "title": "Confirm your purchase",
+        "disconnected": "You can pay using your favorite wallet.",
+        "success": {
+          "title": "Purchase successful",
+          "message": "Thank you for your purchase! Your {token} have been added to your LuckyBag. You now have {balance} {symbol} to use in Luckyland. Enjoy your adventure!"
+        },
+        "action": {
+          "idle": "Pay",
+          "paying": "Processing...",
+          "completed": "Buy more",
+          "error": "Failed"
+        },
+        "Insufficient": {
+          "title": "Insufficient balance",
+          "description": "You don't have enough {token} to complete this purchase.",
+          "store": "Luckyland Store",
+          "top-up": "LuckyBag Top up | {package} | {amount} {token}",
+          "action": {
+            "title": "Scan to top up",
+            "top-up": "Top up",
+            "transfer": "Transfer",
+            "copy": {
+              "address": "Address",
+              "amount": "Amount"
+            }
+          }
+        }
+      },
+      "action": {
+        "buy": "Buy {amount} {token}",
+        "continue": "Continue"
+      }
+    },
+    "Later": {
+      "advice": "But be aware, your LuckyPass will expire in {time}.",
+      "action": {
+        "save": "Save for later"
+      },
+      "Email": {
+        "title": "Send your LuckyPass",
+        "description": "We will send you an email with your LuckyPass.",
+        "input": {
+          "email": {
+            "label": "Email",
+            "placeholder": "Enter your email"
+          }
+        },
+        "action": {
+          "idle": "Send",
+          "sending": "Sending...",
+          "sent": "Sent",
+          "failed": "Failed"
+        }
+      }
+    },
+    "RealmEntry": {
+      "title": "Realm Entry",
+      "expired": {
+        "title": "LuckyPass expired",
+        "description": "You need to activate a new LuckyPass to enter this realm."
+      },
+      "action": {
+        "buy": "Get a LuckyPass",
+        "activating": "Activating LuckyPass...",
+        "transporting": "Hold on, I'll transport you now..."
+      }
+    },
+    "GamePicker": {
+      "title": "Available games",
+      "Card": {
+        "title": "Game Details",
+        "game": {
+          "slots": "Slots",
+          "choices": "Choices",
+          "pick": "You pick winner",
+          "house": "House pick winner",
+          "winner": "Winner: {choice}",
+          "any": "Equal sides"
+        },
+        "bounty": {
+          "vault": "Treasure",
+          "price": "Price",
+          "reward": "Reward"
+        },
+        "stats": {
+          "title": "Game Stats",
+          "no-data": "You haven't played this game yet.",
+          "wins": "Wins",
+          "losses": "Losses",
+          "rate": "Success rate",
+          "gem": "Earned gems",
+          "ammo": "Used shots",
+          "dust": "Fairy Rounds",
+          "account": "Player account"
+        }
+      }
+    },
+    "Shortcuts": {
+      "title": "Shortcuts",
+      "description": "Here you can find quick links to the main sections of the game.",
+      "action": {
+        "lobby": "Lobby",
+        "store": "Lucky Store",
+        "realms": "Realms",
+        "socials": "Socials"
+      },
+      "pages": {
+        "roadmap": {
+          "title": "Roadmap",
+          "label": "Check the project's roadmap",
+          "content": "The roadmap is a visual representation of our project's goals and milestones. It helps you understand the project's progress and future plans."
+        },
+        "leaderboard": {
+          "title": "Leaderboard",
+          "label": "Check the top players",
+          "content": "The leaderboard shows the top players in the project. Its a place for more prizes and fun."
+        },
+        "buy": {
+          "title": "Buy",
+          "label": "Get your LUCK",
+          "content": "The Buy section allows users to purchase LUCK tokens. It helps you get started with the project and join the community."
+        },
+        "tokenomics": {
+          "title": "Tokenomics",
+          "label": "Learn about the project's tokenomics",
+          "content": "Tokenomics is the study of the project's token economy. It includes the token's distribution, use cases, and supply. Understanding tokenomics can help you make informed decisions about the project."
+        },
+        "about": {
+          "title": "About",
+          "label": "Learn more about the project",
+          "content": "The About section provides information about the project, its team, and its vision. It helps you understand the project's purpose and goals."
+        },
+        "whitepaper": {
+          "title": "Whitepaper",
+          "label": "Read the project's whitepaper",
+          "content": "The Whitepaper section provides detailed information about the project, its technology, and its tokenomics. It helps you understand the project's features and benefits."
+        },
+        "faq": {
+          "title": "FAQ",
+          "label": "Frequently Asked Questions",
+          "content": "The FAQ section provides answers to common questions about the project. It helps you understand the project's features, benefits, and how to use them."
+        },
+        "feedback": {
+          "title": "Feedback",
+          "label": "Send feedback",
+          "content": "The Feedback section allows you to share your thoughts and suggestions about the project. It helps us improve the project and meet your needs."
+        },
+        "login": {
+          "title": "Login",
+          "label": "Access your account",
+          "content": "The Login section allows users to access their account and use the project. It helps you manage your account and participate in the project."
+        }
+      }
+    },
+    "Leaderboard": {
+      "Notification": {
+        "new-winner": "🎉 Winner! {player}"
+      }
+    },
+    "Assistant": {
+      "hello": "I’m glad you’re here! Let’s explore the world of LuckyLand together. What questions or topics would you like to dive into?",
+      "error": "I'm sorry, something went wrong. Please try again later."
+    }
+  },
+  "UnderConstruction": {
+    "title": "Under Construction",
+    "description": "This section is under construction. Please come back later.",
+    "back": "Back to Portal"
+  },
+  "General": {
+    "bounty": {
+      "title": "Bounty",
+      "tooltip": "Available treasures",
+      "description": "Earn treasures beating the odds!"
+    }
+  },
+  "Index": {
+    "messages": [
+      {
+        "text": "Looks like you're lucky today. You've found one of the secret entrances to Luckyland.",
+        "advice": "Can you catch a lucky gem to enter?"
+      },
+      {
+        "text": "Catch a lucky gem and you can enter!",
+        "advice": "Does gems are not easy to catch! Press the lock until you see more gems!"
+      },
+      {
+        "text": "You seem persistent. Let's try again!",
+        "advice": "Better luck this time!"
+      },
+      {
+        "text": "You're back. Let's try again!",
+        "advice": "Remember you only have 3 attempts. Good luck!"
+      },
+      {
+        "text": "I think you already know how it works. Let's try again!",
+        "advice": "Good luck!"
+      },
+      {
+        "text": "🎉 Winner winner chicken dinner! You made it!\n\nWelcome to Luckyland!",
+        "advice": "Touch the portal to hop in!"
+      },
+      {
+        "text": "Welcome back lucky traveler!",
+        "advice": "Touch the portal and let's earn some treasures!"
+      },
+      {
+        "text": "Hello there, you are not allowed to play for a new Lucky Gem yet.",
+        "advice": "If you have a LuckyPass, you can redeem it here.",
+        "select": {
+          "title": "What would you like to do?",
+          "options": "Redeem LuckyPass, Explore"
+        }
+      }
+    ],
+    "turns": {
+      "attempts": "Attempts",
+      "left": "Turns left",
+      "hold": "Your turns reset in"
+    }
+  },
+  "Lobby": {
+    "title": "Welcome to Luckyland!",
+    "messages": {
+      "welcome": {
+        "text": "Greetings lucky traveler! My name is Jessie, you've been transported to the rabbit hole, you might feel dizzy from the trip. Don't worry, it's normal for newbies passing through the lucky portal."
+      },
+      "activate": {
+        "text": "Welcome back lucky traveler! Good to see you again."
+      },
+      "locked": {
+        "text": "Welcome back! Your bag is locked.",
+        "advice": "Use the password you set on this device to unlock it."
+      },
+      "mood": {
+        "text": "I'm here to guide you through Luckyland. You'll find many treasures and challenges along the way. How are you feeling today?",
+        "select": {
+          "title": "Select your mood",
+          "options": "Ready to WIN, Eager to claim treasures, Calm and Cautious, Excited and Lucky"
+        }
+      },
+      "lucky": {
+        "text": "Awesome, I'm also excited to have new lucky ones in this place, it's been quite lonely lately. This place is not for everyone, Luck can drive you crazy that's why you are only allowed to be here for a certain amount of time."
+      },
+      "pass": {
+        "text": "To claim treasures you need a LuckyPass. As you proven to be lucky, you've been granted one.",
+        "advice": "This pass will allow you to enter the realms of Luckyland.",
+        "select": {
+          "title": "What would you like to do?",
+          "options": "Claim treasures, I'll be back later"
+        }
+      },
+      "later": {
+        "text": "No worries, you can return whenever you want.",
+        "select": {
+          "title": "What would you like to do?",
+          "options": "I changed my mind, Send it to me, I'll save it"
+        }
+      },
+      "timer": {
+        "text": "This is your countdown timer, it shows how much time your LuckyPass has left. When you activate it, you'll have 60 minutes to explore Luckyland and claim your treasures.",
+        "advice": "Don't worry, if you are lucky enough --which it seems you are-- you could get at the end of your journey another LuckyPass."
+      },
+      "bag": {
+        "text": "Every LuckyPass is unique and can only be used once. Be careful, if you lose it, there's no way to recover it.",
+        "advice": "Let's set up your LuckyBag so you can get your LuckyPass and some welcome gifts for this journey."
+      },
+      "generated": {
+        "text": "Great! Here is your LuckyBag. Keep it safe, you will only receive your key once.",
+        "advice": "You can use this key to recover it or connect it to another device or app.",
+        "select": {
+          "title": "How would you like to save your PRIVATE KEY?",
+          "options": "Download it, Copy it, Secure cloud storage"
+        }
+      },
+      "secure": {
+        "text": "As a final step we need to secure your device.",
+        "advice": "This password will be required to login on this device only."
+      },
+      "gifts": {
+        "text": "Congratulations! Now that your lucky bag is ready to claim these treasures and you are ready for the fun, let's begin with our journey.",
+        "advice": "As a welcome gift, you can get some free lucky shots. Would you like to get them?",
+        "select": {
+          "title": "What would you like to do?",
+          "options": "Yes! what do I need to do?, I'll buy my lucky shots."
+        }
+      },
+      "claim": {
+        "text": "Your LuckyBag is ready. You can now activate your LuckyPass.",
+        "advice": "Once you, activate it, you'll have 60 minutes to explore Luckyland and claim your treasures.",
+        "select": {
+          "title": "What would you like to do?",
+          "options": "Activate my LuckyPass, I'll be back later"
+        }
+      },
+      "see-you": {
+        "text": "See you soon lucky traveler!",
+        "advice": "Remember, you can always come back to Luckyland and claim your treasures."
+      },
+      "continue": {
+        "text": "Uff, just in time! You can continue your journey in Luckyland.",
+        "advice": "Move forward and claim your treasures!"
+      },
+      "pass-sale": {
+        "text": "Great Journey! You have completed your LuckyPass. You can get a new one in the store or wait for your next lucky gem."
+      }
+    },
+    "links": {
+      "realms": "Realms"
+    },
+    "actions": {
+      "enter": "Enter",
+      "exit": "Exit"
+    }
+  },
+  "Store": {
+    "title": "Store",
+    "description": "Get your Lucky Shots and claim your treasures!",
+    "messages": {
+      "welcome": {
+        "text": "Greetings lucky traveler! My name is Clover, and I'm here to assist you. You've been transported to the LuckyStore.",
+        "advice": "This is the place where you can buy $LS (Lucky Shots) and claim your gifts"
+      },
+      "intro": {
+        "text": "I see you have a special entry to Luckyland! Before you start exploring, you will need some $LS to claim your treasures.",
+        "select": {
+          "title": "Choose your action",
+          "options": "Buy some $LS, Get some Free $LS"
+        }
+      },
+      "buy": {
+        "text": "Great choice! Here are the $LS packages available for purchase.",
+        "advice": "Select the package that best suits your needs."
+      }
+    }
+  },
+  "Realms": {
+    "title": "Realms",
+    "name": {
+      "coin": "Coin Realm",
+      "dice": "Dice Realm",
+      "card": "Card Realm",
+      "slot": "Slot Realm",
+      "roulette": "Roulette Realm"
+    },
+    "messages": {
+      "activate": {
+        "text": "You need to activate you LuckyBag to continue."
+      },
+      "locked": {
+        "text": "Ups! It seems your LuckyBag is locked"
+      },
+      "welcome": {
+        "text": "Greetings lucky traveler! I'm Emili, your guide through the realms of Luckyland. You have been transported to the realms portal.",
+        "advice": "This is where you can explore the different realms of Luckyland."
+      },
+      "first": {
+        "text": "As a first-time visitor, you have only one realm available. New realms will be unlocked as you progress through Luckyland.",
+        "advice": "By entering a realm, your lucky pass will be activated. You can move between realms you have already unlocked."
+      },
+      "expired": {
+        "text": "Awesome journey! Your LuckyPass has expired.",
+        "advice": "You can get a new one in the store or wait for your next lucky gem."
+      }
+    },
+    "coin": {
+      "title": "Coin Realm",
+      "description": "Welcome to the Coin Realm! Here you can earn treasures by flipping coins.",
+      "messages": {
+        "activate": {
+          "text": "You need to activate you LuckyBag to continue."
+        },
+        "locked": {
+          "text": "Ups! It seems your LuckyBag is locked"
+        },
+        "welcome": {
+          "text": "Congratulations! You are now in the Coin Realm. Here you can earn treasures by flipping coins.",
+          "advice": "This is the first of the many realms you can explore in Luckyland."
+        },
+        "buy": {
+          "text": "I'm glad you're enjoying the Coin Realm. You got out of ammo. You need to refill your bag to continue.",
+          "advice": "Please, take into account this is the most expensive realm, and the others also have bigger rewards."
+        }
+      }
+    }
+  },
+  "Coins": {
+    "title": "Coins",
+    "messages": [],
+    "links": {
+      "lobby": "Lobby",
+      "realms": "Realms"
+    },
+    "actions": {
+      "enter": "Enter",
+      "exit": "Exit"
+    }
+  },
+  "Redeem": {
+    "title": "Redeem your Lucky Pass",
+    "Active": {
+      "title": "Active Lucky Pass",
+      "description": {
+        "available": "You have an active Lucky Pass. You can override it by clicking the button below.",
+        "clear": "You have an active Lucky Pass. You can override it by entering a new code."
+      },
+      "action": {
+        "confirm": "Confirm",
+        "cancel": "Cancel"
+      }
+    },
+    "type": {
+      "available": "Click to redeem your Lucky Pass",
+      "clear": "You can redeem your Lucky Pass here. If you have a Lucky Pass, please enter the code below."
+    },
+    "action": {
+      "idle": "Redeem",
+      "success": "Success",
+      "error": "Error"
+    }
+  },
+  "Roadmap": {
+    "title": "Roadmap",
+    "goals": "Goals",
+    "milestones": "Milestones",
+    "state": {
+      "completed": "Completed",
+      "active": "In Progress",
+      "blocked": "Blocked",
+      "upcoming": "Upcoming"
+    },
+    "date": {
+      "completed": "Completed on",
+      "active": "In Progress since",
+      "blocked": "Blocked until"
+    },
+    "steps": [
+      {
+        "title": "Phase 1: Pre-Sale",
+        "slug": "pre-sale",
+        "tags": "solana, web3, luck, fortunate, casino, bet",
+        "description": "Get your LuckyBag and secure it with a password."
+      },
+      {
+        "title": "Phase 2: Launch",
+        "slug": "launch",
+        "tags": "solana, web3, luck, fortunate, casino, bet",
+        "description": "Activate your LuckyPass to enter the realms of Luckyland."
+      },
+      {
+        "title": "Phase 3: Expansion",
+        "slug": "expansion",
+        "tags": "solana, web3, luck, fortunate, casino, bet",
+        "description": "Explore different realms and claim your treasures."
+      },
+      {
+        "title": "Phase 4: Probability Manipulation",
+        "slug": "probability",
+        "tags": "solana, web3, luck, fortunate, casino, bet",
+        "description": "Get your Lucky Shots and claim your treasures."
+      },
+      {
+        "title": "Phase 5: Airdrops",
+        "slug": "airdrops",
+        "tags": "solana, web3, luck, fortunate, casino, bet",
+        "description": "Get your Lucky Shots and claim your treasures."
+      },
+      {
+        "title": "Phase 6: Multiplayer Games",
+        "slug": "multiplayer",
+        "tags": "solana, web3, luck, fortunate, casino, bet",
+        "description": "Get your Lucky Shots and claim your treasures."
+      },
+      {
+        "title": "Phase 7: Realms",
+        "slug": "realms",
+        "tags": "solana, web3, luck, fortunate, casino, bet",
+        "description": "Get your Lucky Shots and claim your treasures."
+      }
+    ],
+    "details": {
+      "pre-sale": {
+        "title": "Phase 1: Pre-Sale",
+        "goals": [
+          "Develop and launch the minimum viable product (MVP).",
+          "Build a committed community of investors and users from the start.",
+          "Raise initial funds for the project deployment."
+        ],
+        "milestones": [
+          {
+            "title": "MVP Launch",
+            "tasks": [
+              "Develop and launch a basic version of the platform on DevNet to showcase the team's capabilities and the project's vision.",
+              "Demonstrate key functionalities to help users understand the project's potential."
+            ]
+          },
+          {
+            "title": "Pre-Sale Start",
+            "tasks": [
+              "Offer 17.5% of the total LUCK supply for early sale.",
+              "Encourage participation in the pre-sale through discounts and exclusive benefits for early investors."
+            ]
+          },
+          {
+            "title": "Community Building",
+            "tasks": [
+              "Start building a community around LuckyLand, using social platforms, forums, and marketing campaigns.",
+              "Encourage investor participation in shaping and improving the project through a DAO (Decentralized Autonomous Organization).",
+              "Organize events and activities to promote community engagement and commitment."
+            ]
+          },
+          {
+            "title": "Pre-Sale Completion",
+            "tasks": [
+              "Complete the pre-sale once 17.5% of the LUCK supply is sold or after a set time period.",
+              "Prepare for the project’s deployment on MainNet and establish liquidity pools on decentralized exchanges."
+            ]
+          }
+        ]
+      },
+      "launch": {
+        "title": "Phase 2: Launch",
+        "goals": [
+          "Initiate full platform operations with community participation.",
+          "Open the first realms and games so users can start earning treasures.",
+          "Activate the main `LUCK` token on DEXs.",
+          "Launch the governance token (LUCKY).",
+          "Distribute initial airdrops and rewards.",
+          "Run promotion and marketing campaigns to attract new users."
+        ],
+        "milestones": [
+          {
+            "title": "MainNet Deployment",
+            "tasks": [
+              "Migrate the platform from DevNet to MainNet.",
+              "Set up liquidity pools on decentralized and centralized exchanges.",
+              "Deploy the governance token and activate the airdrop contract."
+            ]
+          },
+          {
+            "title": "First Realm Launch",
+            "tasks": [
+              "Start with the Coin Realm and the first available games in LuckyLand.",
+              "Distribute the first airdrop of 42.5% of the total LUCK supply through the games.",
+              "Incentivize participation by approximately 2,000 users by giving away 64,000 LUCKYSHOT as an initial promotion."
+            ]
+          },
+          {
+            "title": "Promotions and Discounts",
+            "tasks": [
+              "Offer promotional packages with discounts on LUCKYSHOT for early users participating in the platform.",
+              "Monitor and adjust promotions based on demand and participation."
+            ]
+          },
+          {
+            "title": "Second Realm Opening",
+            "tasks": [
+              "Introduce the Dice Realm, with new rewards and challenges.",
+              "Encourage treasure collection through active community participation."
+            ]
+          },
+          {
+            "title": "Continuous Expansion",
+            "tasks": [
+              "Repeat the cycle of opening and closing realms, starting with the Card Realm and finally the Slot Machines Realm.",
+              "Ensure each realm offers more valuable treasures and more complex challenges than the previous one."
+            ]
+          }
+        ]
+      },
+      "expansion": {
+        "title": "Phase 3: Expansion",
+        "goals": [
+          "Introduce new features and games to keep the community engaged and interested.",
+          "Expand the platform beyond the initial games."
+        ],
+        "milestones": [
+          {
+            "title": "New Game Development",
+            "tasks": [
+              "Develop and launch new games such as roulette, poker, and other challenges.",
+              "Integrate these games into the platform, offering new ways to earn LUCK."
+            ]
+          },
+          {
+            "title": "Special Events",
+            "tasks": [
+              "Organize special events and tournaments to encourage participation and competition among users.",
+              "Offer exclusive prizes and additional rewards for event winners."
+            ]
+          },
+          {
+            "title": "Referral Program",
+            "tasks": [
+              "Launch a referral program to encourage users to invite their friends and family to join LuckyLand.",
+              "Reward users who refer new players with LUCKYSHOT and other prizes."
+            ]
+          },
+          {
+            "title": "Platform Expansion",
+            "tasks": [
+              "Open the platform to the community for participation in creating new realms and games.",
+              "Facilitate participation through the DAO, allowing users to propose and vote on new features."
+            ]
+          },
+          {
+            "title": "DAO Integration",
+            "tasks": [
+              "Activate the governance token, enabling users to influence key project decisions.",
+              "Use this token as a tool to expand the community and increase LuckyLand's visibility."
+            ]
+          }
+        ]
+      },
+      "probability": {
+        "title": "Phase 4: Probability Manipulation",
+        "goals": [
+          "Integrate NFTs within the platform, allowing users to personalize their gaming experience.",
+          "Introduce gameplay mechanics that allow players to increase their chances of winning."
+        ],
+        "milestones": [
+          {
+            "title": "NFT Launch",
+            "tasks": [
+              "Allow users to mint their Lucky Companions, unique NFTs with special abilities.",
+              "Ensure the uniqueness of each NFT through a generation process based on the user's wallet address."
+            ]
+          },
+          {
+            "title": "NFT Integration in Games",
+            "tasks": [
+              "Implement NFT abilities in the games, enabling users to improve their chances of success.",
+              "Expand NFT functionality so they can be used in different types of games."
+            ]
+          },
+          {
+            "title": "NFT Marketplace",
+            "tasks": [
+              "Create a closed marketplace where users can trade their NFTs.",
+              "Ensure that only users committed to the community can access this marketplace."
+            ]
+          },
+          {
+            "title": "Special Events",
+            "tasks": [
+              "Organize special events and tournaments requiring active player participation.",
+              "Offer exclusive prizes and additional rewards for event winners.",
+              "Integrate NFTs into these events, allowing players to use their special abilities to increase their chances of winning."
+            ]
+          }
+        ]
+      },
+      "airdrops": {
+        "title": "Phase 5: Airdrops",
+        "goals": [
+          "Enable other cryptocurrency projects to use the platform for controlled airdrops.",
+          "Incentivize community participation through rewards and special prizes.",
+          "Launch marketing and promotional campaigns to promote LuckyLand's recent integration with other projects."
+        ],
+        "milestones": [
+          {
+            "title": "Platform Opening for Airdrops",
+            "tasks": [
+              "Allow other projects to use LuckyLand's infrastructure for airdrops.",
+              "Establish rules and standards to ensure the quality and value of distributed tokens."
+            ]
+          },
+          {
+            "title": "Project Evaluation and Selection",
+            "tasks": [
+              "Implement an evaluation process to select projects that can perform airdrops on LuckyLand.",
+              "Promote transparency and quality in the distribution of these tokens."
+            ]
+          },
+          {
+            "title": "Ecosystem Expansion",
+            "tasks": [
+              "Use airdrops from other projects to attract new communities to LuckyLand.",
+              "Expand the user base and increase the project's visibility."
+            ]
+          }
+        ]
+      },
+      "multiplayer": {
+        "title": "Phase 6: Multiplayer Games",
+        "goals": [
+          "Expand LuckyLand's game offerings to include multiplayer modes.",
+          "Encourage interaction and competition among players, creating an active and engaged community."
+        ],
+        "milestones": [
+          {
+            "title": "Multiplayer Game Development",
+            "tasks": [
+              "Introduce multiplayer games like poker, ludo, and others where users can compete against each other.",
+              "Ensure these games are fully auditable and fair."
+            ]
+          },
+          {
+            "title": "Betting and Rewards Integration",
+            "tasks": [
+              "Allow users to place bets in multiplayer games using LUCK and LUCKYSHOT.",
+              "Distribute rewards fairly and transparently, based on player performance."
+            ]
+          },
+          {
+            "title": "League and Tournament Creation",
+            "tasks": [
+              "Organize leagues and tournaments that incentivize competition and keep the community engaged.",
+              "Offer special rewards for winners of these events."
+            ]
+          }
+        ]
+      },
+      "realms": {
+        "title": "Phase 7: Realms",
+        "goals": [
+          "Expand LuckyLand by creating new realms and allowing other projects to build on the platform.",
+          "Create a diverse and exciting gaming experience for users.",
+          "Encourage exploration and active participation on the platform."
+        ],
+        "milestones": [
+          {
+            "title": "New Realm Development",
+            "tasks": [
+              "Create and launch new realms within LuckyLand, each with its own unique theme and challenges.",
+              "Ensure each realm offers new opportunities to earn LUCK and engage with the platform."
+            ]
+          },
+          {
+            "title": "External Project Integration",
+            "tasks": [
+              "Allow other projects to use LuckyLand's core to build their own games and realms.",
+              "Facilitate interoperability between LuckyLand and other platforms."
+            ]
+          },
+          {
+            "title": "Continuous Expansion",
+            "tasks": [
+              "Continue expanding LuckyLand with new realms and features, ensuring the platform remains relevant and attractive to users."
+            ]
+          }
+        ]
+      }
+    }
+  },
+  "Tokenomics": {
+    "messages": {
+      "welcome": {
+        "text": "Greetings lucky traveler! My name is Lucky, and I'm here to help you. You are in the Tokenomics section of Luckyland.",
+        "advice": "Here you can find information about the economy of our world and how it is used to improve yours.",
+        "select": {
+          "title": "What would you like to do?",
+          "options": "View the supply, View the distribution, View the use, FAQ (Frequently Asked Questions), I want to ask"
+        }
+      },
+      "assistant": { "text": "" }
+    }
+  },
+  "Presale": {
+    "title": "Presale",
+    "Stage": {
+      "badge": "Stage {stage}",
+      "progress": "Progress",
+      "available": "Available ${symbol}: {amount}",
+      "MaxReached": {
+        "title": "Congratulations! Your bag is full of $LUCK for this stage. Come back soon!",
+        "advice": "Your wallet will be extended for the next stages."
+      }
+    },
+    "Active": {
+      "title": "Active Presale",
+      "description": "The Luckyland presale is active. Take advantage of this opportunity to get LUCK at a special price."
+    },
+    "input": {
+      "amount": {
+        "label": "Amount of {symbol}",
+        "placeholder": "How much {symbol} do you want?"
+      }
+    },
+    "state": {
+      "planned": "Planned",
+      "open": "Open",
+      "closed": "Closed"
+    },
+    "Planned": {
+      "title": "The presale has not started yet",
+      "description": "The {name} Presale will start on {date}."
+    },
+    "messages": {
+      "welcome": {
+        "text": "Wonderful to see you here! My name is Lucky, and I'm here to guide you through the Presale section of Luckyland.",
+        "advice": "The early access is a limited offer, so make sure to join before it's too late.",
+        "select": {
+          "title": "What would you like to do?",
+          "options": "Go to Presale, Check Tokenomics, Check Roadmap, I want to ask"
+        }
+      },
+      "assistant": { "text": "" }
+    }
+  }
+}

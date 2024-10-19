@@ -20,10 +20,27 @@ export enum ClusterNetwork {
   Custom = 'custom',
 }
 
+const rpcNode = process.env.NEXT_PUBLIC_RPC_NODE;
+const rpcNodeDevnet = process.env.NEXT_PUBLIC_RPC_NODE_DEVNET;
+
+if (!rpcNodeDevnet)
+  throw new Error('Missing `NEXT_PUBLIC_RPC_NODE_DEVNET` ENV');
+if (!rpcNode) throw new Error('Missing `NEXT_PUBLIC_RPC_NODE` ENV');
+
 // By default, we don't configure the mainnet-beta cluster
 // The endpoint provided by clusterApiUrl('mainnet-beta') does not allow access from the browser due to CORS restrictions
 // To use the mainnet-beta cluster, provide a custom endpoint
 export const defaultClusters: Cluster[] = [
+  {
+    name: 'lucky',
+    endpoint: rpcNode,
+    network: ClusterNetwork.Mainnet,
+  },
+  {
+    name: 'lucky-dev',
+    endpoint: rpcNodeDevnet,
+    network: ClusterNetwork.Devnet,
+  },
   {
     name: 'devnet',
     endpoint: clusterApiUrl('devnet'),
@@ -37,9 +54,18 @@ export const defaultClusters: Cluster[] = [
   },
 ];
 
+const defaultClusterName = process.env.NEXT_PUBLIC_DEFAULT_CLUSTER;
+const defaultCluster =
+  defaultClusterName &&
+  defaultClusters.find((item) => item.name === defaultClusterName);
+
 const clusterAtom = atomWithStorage<Cluster>(
   'solana-cluster',
-  defaultClusters[0]
+  defaultCluster || defaultClusters[0],
+  undefined,
+  {
+    getOnInit: true,
+  }
 );
 const clustersAtom = atomWithStorage<Cluster[]>(
   'solana-clusters',
@@ -58,7 +84,7 @@ const activeClustersAtom = atom<Cluster[]>((get) => {
 const activeClusterAtom = atom<Cluster>((get) => {
   const clusters = get(activeClustersAtom);
 
-  return clusters.find((item) => item.active) || clusters[0];
+  return defaultCluster || clusters.find((item) => item.active) || clusters[0];
 });
 
 export interface ClusterProviderContext {

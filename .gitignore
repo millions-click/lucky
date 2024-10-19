@@ -7,7 +7,7 @@ tmp
 # dependencies
 node_modules
 # IDEs and editors
-.idea
+/.idea
 .project
 .classpath
 .c9/
@@ -35,6 +35,7 @@ Thumbs.db
 .nx/cache
 # Next.js
 .next
+out
 .anchor
 anchor/target/deploy
 anchor/target/debug
@@ -43,10 +44,18 @@ anchor/target/sbf-solana-solana
 anchor/target/.rustc_info.json
 !anchor/target/idl/*.json
 !anchor/target/types/*.ts
+anchor/bpf-programs/*
 test-ledger
 .yarn
 
 CACHEDIR.TAG
 
 .env*
+!.env.example
 .vercel
+
+# Auto Generated PWA files
+**/public/sw.js
+**/public/sw.js.map
+**/public/workbox-*.js
+**/public/workbox-*.js.map
