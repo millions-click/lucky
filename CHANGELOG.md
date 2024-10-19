@@ -2,6 +2,33 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [0.2.8](///compare/v0.2.7...v0.2.8) (2024-10-19)
+
+
+### Features
+
+* **anchor:** 👻 Withdraw | Presale 5a82926
+* **docs:** 👻 README c133b54
+* **scripts:** 👻 Lucky Cluster 4c44801
+* **scripts:** 👻 Mainnet | Constants d23baa0
+* **scripts:** 👻 Metadata Update | Tokens 103c993
+* **web:** 👻 Cover Letter | Blog 5ba8401
+* **web:** 👻 Early Access 70c2982
+* **web:** 👻 GTM | Analytics f7946f7
+* **web:** 👻 i18n | Nav Links db991bd
+* **web:** 👻 Lucky Cluster 4f2fdbc
+* **web:** 👻 Mainnet 008a673
+* **web:** 👻 Menu | Shortcuts c75f43f
+* **web:** 👻 Opened Portal 72f2871
+* **web:** 👻 Under Construction 0036617
+* **web:** 👻 Withdraw | Presale 85a76e7
+
+
+### Bug Fixes
+
+* **web:** 👻 Nav Links f1b54a4
+* **web:** 👻 Winners Subs 2df6301
+
 ### [0.2.7](///compare/v0.2.6...v0.2.7) (2024-08-28)
 
 
