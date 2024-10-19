@@ -2,7 +2,7 @@ import { AssistantMessages } from './Chat';
 import { UserQuestion } from './UserQuestion';
 
 import { AssistantProvider } from '@/providers';
-import type { AssistantScope } from '@/actions/assistant';
+import type { AssistantScope } from '@/actions/types.d';
 
 type AssistantProps = {
   scope: AssistantScope;

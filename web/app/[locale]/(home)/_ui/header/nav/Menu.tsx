@@ -2,6 +2,7 @@
 
 import { Fragment, type ReactNode } from 'react';
 import { Dialog, Transition } from '@headlessui/react';
+import Link from 'next/link';
 
 import { useMobileMenu } from './useMobileMenu';
 import { OpenButton } from './OpenButton';
@@ -31,7 +32,10 @@ export const Menu = ({ children }: Props) => {
               leaveFrom="bg-neutral-100"
               leaveTo="bg-transparent"
             >
-              <Logo />
+              <Link href="/" className="flex items-center">
+                <Logo className="w-16" />
+                <h1 className="text-3xl sm:text-5xl text-white">Lucky Land</h1>
+              </Link>
               <CloseButton onClick={closeMenu} aria-controls="menu" />
             </Transition.Child>
             <Transition.Child

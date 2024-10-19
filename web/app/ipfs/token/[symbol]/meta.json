@@ -1,7 +1,7 @@
 {
   "description": "A lucky coin.",
   "seller_fee_basis_points": 0,
-  "image": "https://shdw-drive.genesysgo.net/QZNGUVnJgkw6sGQddwZVZkhyUWSUXAjXF9HQAjiVZ55/coin.png",
+  "image": "https://luckyland.quicknode-ipfs.com/ipfs/QmW8MA2nunwKvUMFFgoidE7MdNLCGAzczRCmWYBDm7bqxh/lucky.png",
   "animation_url": null,
   "attributes": [
     {
@@ -13,12 +13,12 @@
       "value": "100%"
     }
   ],
-  "external_url": "https://luckyland.vercel.app",
+  "external_url": "https://luckyland.click",
   "properties": {
     "category": "image",
     "creators": [
       {
-        "address": "LucktycNvshfXyJZcRcbbc5kFtn3ZCSZpxGGKyNGje1",
+        "address": "LuckhEzDRjC8wrPcXQyiK8Vdj5nVuurtfNtq6PQsirw",
         "verified": true,
         "share": 100
       }
@@ -26,7 +26,7 @@
     "files": [
       {
         "type": "image/png",
-        "uri": "https://shdw-drive.genesysgo.net/QZNGUVnJgkw6sGQddwZVZkhyUWSUXAjXF9HQAjiVZ55/coin.png"
+        "uri": "https://luckyland.quicknode-ipfs.com/ipfs/QmW8MA2nunwKvUMFFgoidE7MdNLCGAzczRCmWYBDm7bqxh/lucky.png"
       }
     ]
   }

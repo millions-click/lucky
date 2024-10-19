@@ -1,4 +1,5 @@
 import type { Message, MessagesContext } from '@/providers/types.d';
+import type { AssistantScope } from '@/actions/types.d';
 
 export type AssistantContext = MessagesContext & {
   thread?: string;
@@ -9,4 +10,4 @@ export type AssistantContext = MessagesContext & {
   retry: () => void;
 };
 
-export { Message };
+export { Message, AssistantScope };

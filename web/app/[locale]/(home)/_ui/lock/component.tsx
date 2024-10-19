@@ -3,7 +3,7 @@
 import { useState } from 'react';
 import styles from './styles.module.css';
 
-import type { Seed } from '@/actions/types';
+import type { Seed } from '@/actions/types.d';
 
 const MIN = 1;
 const MAX = 99;

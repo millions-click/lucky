@@ -10,10 +10,11 @@ const CLASS_NAME = {
 type LogoSize = keyof typeof CLASS_NAME;
 type LogoProps = {
   size?: LogoSize;
+  className?: string;
 };
-export function Logo({ size = 'xs' }: LogoProps) {
+export function Logo({ size = 'xs', className = '' }: LogoProps) {
   return (
-    <figure className="relative">
+    <figure className={`relative ${className}`}>
       <Image
         src={'/logo.png'}
         alt="Luckyland Logo"

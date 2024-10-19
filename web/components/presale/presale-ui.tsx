@@ -561,7 +561,7 @@ function PresaleNotOpened({ start }: { start: number }) {
 }
 
 function PresaleCard({ account }: { account: PublicKey }) {
-  const { accountQuery, tokenQuery, closeMutation, purchase } =
+  const { accountQuery, tokenQuery, closeMutation, purchase, withdraw } =
     usePresaleProgramAccount({
       account,
     });
@@ -743,20 +743,41 @@ function PresaleCard({ account }: { account: PublicKey }) {
               label={ellipsify(account.toString())}
             />
           </p>
-          <button
-            className="btn btn-xs btn-secondary btn-outline"
-            onClick={() => {
-              if (
-                !window.confirm('Are you sure you want to close this account?')
-              ) {
-                return;
-              }
-              return closeMutation.mutateAsync();
-            }}
-            disabled={closeMutation.isPending}
-          >
-            Close
-          </button>
+
+          <div className="flex gap-8">
+            <button
+              className="btn btn-xs btn-secondary btn-outline"
+              onClick={() => {
+                if (
+                  !window.confirm(
+                    'Are you sure you want to withdraw all the balance?'
+                  )
+                ) {
+                  return;
+                }
+                return withdraw.mutateAsync(BigInt(0));
+              }}
+              disabled={withdraw.isPending}
+            >
+              Withdraw
+            </button>
+            <button
+              className="btn btn-xs btn-secondary btn-outline"
+              onClick={() => {
+                if (
+                  !window.confirm(
+                    'Are you sure you want to close this account?'
+                  )
+                ) {
+                  return;
+                }
+                return closeMutation.mutateAsync();
+              }}
+              disabled={closeMutation.isPending}
+            >
+              Close
+            </button>
+          </div>
         </div>
       </div>
     </div>

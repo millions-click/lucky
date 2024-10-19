@@ -1,4 +1,4 @@
-import type { AttemptSession } from '@/actions/types';
+import type { AttemptSession } from '@/actions/types.d';
 import { useConfigurableCountdown } from '@/providers';
 import { CountdownBag } from '@/ui';
 

@@ -11,6 +11,8 @@ pub enum SaleErrorCode {
 
     #[msg("Insufficient amount.")]
     InsufficientAmount,
+    #[msg("Insufficient balance.")]
+    InsufficientBalance,
 
     #[msg("Minimum amount not met.")]
     MinAmountNotMet,
@@ -33,4 +35,7 @@ pub enum SaleErrorCode {
     InvalidDate,
     #[msg("Dates are too close.")]
     DatesTooClose,
+
+    #[msg("Invalid authority.")]
+    InvalidAuthority,
 }
